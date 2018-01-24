@@ -1,4 +1,11 @@
-import {otherRouter, appRouter} from '@/router/router';
+import {
+    otherRouter,
+    appRouter,
+    adminappRouter,
+    adminotherRouter,
+    nodeappRouter,
+    nodeotherRouter
+} from '@/router/router';
 import Util from '@/libs/util';
 import Cookies from 'js-cookie';
 import Vue from 'vue';
@@ -14,33 +21,30 @@ const app = {
         pageOpenedList: [{
             title: '首页',
             path: '',
-            name: 'home_index'
+            name: 'node_index'
         }],
         currentPageName: '',
-        currentPath: [
-            {
-                title: '首页',
-                path: '',
-                name: 'home_index'
-            }
-        ], // 面包屑数组
+        currentPath: [], // 面包屑数组
         menuList: [],
-        routers: [
-            otherRouter,
-            ...appRouter
-        ],
-        tagsList: [...otherRouter.children],
+        routers: [],
+        tagsList: [],
         messageCount: 0,
-        dontCache: ['text-editor', 'artical-publish'] // 在这里定义你不想要缓存的页面的name属性值(参见路由配置router.js)
+        dontCache: ['text-editor', 'artical-publish'], // 在这里定义你不想要缓存的页面的name属性值(参见路由配置router.js)
+        userType: localStorage.type,
+        homeIndex: 'admin_index',
+        homePath: '/admin'
     },
     mutations: {
-        setTagsList (state, list) {
-            state.tagsList.push(...list);
-        },
-        updateMenulist (state) {
+        updateMenulist(state) {
             let accessCode = parseInt(Cookies.get('access'));
             let menuList = [];
-            appRouter.forEach((item, index) => {
+            let Router = adminappRouter;
+            if (state.userType == 2) {
+                Router = nodeappRouter;
+            } else if (state.userType == 3) {
+                // 最小用户相关操作
+            }
+            Router.forEach((item, index) => {
                 if (item.access !== undefined) {
                     if (Util.showThisRoute(item.access, accessCode)) {
                         if (item.children.length === 1) {
@@ -87,13 +91,13 @@ const app = {
             });
             state.menuList = menuList;
         },
-        changeMenuTheme (state, theme) {
+        changeMenuTheme(state, theme) {
             state.menuTheme = theme;
         },
-        changeMainTheme (state, mainTheme) {
+        changeMainTheme(state, mainTheme) {
             state.themeColor = mainTheme;
         },
-        addOpenSubmenu (state, name) {
+        addOpenSubmenu(state, name) {
             let hasThisName = false;
             let isEmpty = false;
             if (name.length === 0) {
@@ -106,26 +110,26 @@ const app = {
                 state.openedSubmenuArr.push(name);
             }
         },
-        closePage (state, name) {
+        closePage(state, name) {
             state.cachePage.forEach((item, index) => {
                 if (item === name) {
                     state.cachePage.splice(index, 1);
                 }
             });
         },
-        initCachepage (state) {
+        initCachepage(state) {
             if (localStorage.cachePage) {
                 state.cachePage = JSON.parse(localStorage.cachePage);
             }
         },
-        removeTag (state, name) {
+        removeTag(state, name) {
             state.pageOpenedList.map((item, index) => {
                 if (item.name === name) {
                     state.pageOpenedList.splice(index, 1);
                 }
             });
         },
-        pageOpenedList (state, get) {
+        pageOpenedList(state, get) {
             let openedPage = state.pageOpenedList[get.index];
             if (get.argu) {
                 openedPage.argu = get.argu;
@@ -136,12 +140,12 @@ const app = {
             state.pageOpenedList.splice(get.index, 1, openedPage);
             localStorage.pageOpenedList = JSON.stringify(state.pageOpenedList);
         },
-        clearAllTags (state) {
+        clearAllTags(state) {
             state.pageOpenedList.splice(1);
             state.cachePage.length = 0;
             localStorage.pageOpenedList = JSON.stringify(state.pageOpenedList);
         },
-        clearOtherTags (state, vm) {
+        clearOtherTags(state, vm) {
             let currentName = vm.$route.name;
             let currentIndex = 0;
             state.pageOpenedList.forEach((item, index) => {
@@ -161,35 +165,99 @@ const app = {
             state.cachePage = newCachepage;
             localStorage.pageOpenedList = JSON.stringify(state.pageOpenedList);
         },
-        setOpenedList (state) {
+        setOpenedList(state) {
             state.pageOpenedList = localStorage.pageOpenedList ? JSON.parse(localStorage.pageOpenedList) : [otherRouter.children[0]];
         },
-        setCurrentPath (state, pathArr) {
+        setCurrentPath(state, pathArr) {
             state.currentPath = pathArr;
         },
-        setCurrentPageName (state, name) {
+        setCurrentPageName(state, name) {
             state.currentPageName = name;
         },
-        setAvator (state, path) {
+        setAvator(state, path) {
             localStorage.avatorImgPath = path;
         },
-        switchLang (state, lang) {
+        switchLang(state, lang) {
             state.lang = lang;
             Vue.config.lang = lang;
         },
-        clearOpenedSubmenu (state) {
+        clearOpenedSubmenu(state) {
             state.openedSubmenuArr.length = 0;
         },
-        setMessageCount (state, count) {
+        setMessageCount(state, count) {
             state.messageCount = count;
         },
-        increateTag (state, tagObj) {
+        increateTag(state, tagObj) {
             if (!Util.oneOf(tagObj.name, state.dontCache)) {
                 state.cachePage.push(tagObj.name);
                 localStorage.cachePage = JSON.stringify(state.cachePage);
             }
             state.pageOpenedList.push(tagObj);
             localStorage.pageOpenedList = JSON.stringify(state.pageOpenedList);
+        },
+        setUserType(state, userType) {
+            state.userType = userType;
+        },
+        setInitTags(state) {
+            let tag = [...adminotherRouter.children];
+            let appRouter = adminappRouter;
+            if (state.userType == 2) {
+                tag = [...nodeotherRouter.children];
+                appRouter = nodeappRouter;
+            } else if (state.userType == 3) {
+                // tag =[]
+            }
+            state.tagsList = tag;
+            let tagsList = [];
+            appRouter.map((item) => {
+                if (item.children.length <= 1) {
+                    tagsList.push(item.children[0]);
+                } else {
+                    tagsList.push(...item.children);
+                }
+            });
+            state.tagsList.push(...tagsList);
+        },
+        setInitRouter(state) {
+            let router = [adminotherRouter, ...adminappRouter];
+            if (state.userType == 2) {
+                router = [nodeotherRouter, ...nodeappRouter];
+            } else if (state.userType == 3) {
+
+            }
+            state.routers = router;
+        },
+        // 面包屑导航
+        setInitCurrentPath(state) {
+            let homeIndex = 'admin_index';
+            let path = '/admin';
+            let currentpath = {
+                title: '首页',
+                path: path,
+                name: homeIndex
+            };
+            if (state.userType == 2) {
+                homeIndex = 'node_index';
+                path = '/node';
+                currentpath = {
+                    title: '首页',
+                    path: path,
+                    name: homeIndex
+                };
+            } else if (state.userType == 3) {
+                homeIndex = 'site_index';
+                path = '/site';
+                currentpath = {
+                    title: '首页',
+                    path: path,
+                    name: homeIndex
+                };
+            }
+            state.pageOpenedList[0].name = homeIndex;
+            state.pageOpenedList[0].path = path;
+            state.homePath = path;
+            state.homeIndex = homeIndex;
+            state.currentPath.push(currentpath);
         }
     }
 };

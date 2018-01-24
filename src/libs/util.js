@@ -3,24 +3,11 @@ import env from '../../build/env';
 import semver from 'semver';
 import packjson from '../../package.json';
 
-let util = {
-
-};
+let util = {};
 util.title = function (title) {
     title = title || 'iView admin';
     window.document.title = title;
 };
-
-const ajaxUrl = env === 'development'
-    ? 'http://127.0.0.1:8888'
-    : env === 'production'
-        ? 'https://www.url.com'
-        : 'https://debug.url.com';
-
-util.ajax = axios.create({
-    baseURL: ajaxUrl,
-    timeout: 30000
-});
 
 util.inOf = function (arr, targetArr) {
     let res = true;
@@ -74,9 +61,11 @@ util.handleTitle = function (vm, item) {
     }
 };
 
+// 当前的路径 用于面包屑中
 util.setCurrentPath = function (vm, name) {
     let title = '';
     let isOtherRouter = false;
+    // 查询下是不是当期点击的页面是栏目的子页面
     vm.$store.state.app.routers.forEach(item => {
         if (item.children.length === 1) {
             if (item.children[0].name === name) {
@@ -97,20 +86,27 @@ util.setCurrentPath = function (vm, name) {
         }
     });
     let currentPathArr = [];
-    if (name === 'home_index') {
+    // 当前 路由名是 首页
+    let homeIndex = vm.$store.state.app.homeIndex;
+    let homePath = vm.$store.state.app.homePath;
+    // console.log(homePath);
+    // console.log(homeIndex);
+    // console.log(vm.$store.state.app.userType);
+    if (name === homeIndex) {
         currentPathArr = [
             {
-                title: util.handleTitle(vm, util.getRouterObjByName(vm.$store.state.app.routers, 'home_index')),
+                title: util.handleTitle(vm, util.getRouterObjByName(vm.$store.state.app.routers, homeIndex)),
                 path: '',
-                name: 'home_index'
+                name: homeIndex
             }
         ];
-    } else if ((name.indexOf('_index') >= 0 || isOtherRouter) && name !== 'home_index') {
+    } else if ((name.indexOf('_index') >= 0 || isOtherRouter) && name !== homeIndex) {
+        // 带着 某_index 的相关 其他路由 或 不是非菜单路由 且 name 不是 home_index
         currentPathArr = [
             {
-                title: util.handleTitle(vm, util.getRouterObjByName(vm.$store.state.app.routers, 'home_index')),
-                path: '/home',
-                name: 'home_index'
+                title: util.handleTitle(vm, util.getRouterObjByName(vm.$store.state.app.routers, homeIndex)),
+                path: homePath,
+                name: homeIndex
             },
             {
                 title: title,
@@ -135,61 +131,41 @@ util.setCurrentPath = function (vm, name) {
                 return false;
             }
         })[0];
-        if (currentPathObj.children.length <= 1 && currentPathObj.name === 'home') {
-            currentPathArr = [
-                {
-                    title: '首页',
-                    path: '',
-                    name: 'home_index'
-                }
-            ];
-        } else if (currentPathObj.children.length <= 1 && currentPathObj.name !== 'home') {
-            currentPathArr = [
-                {
-                    title: '首页',
-                    path: '/home',
-                    name: 'home_index'
-                },
-                {
-                    title: currentPathObj.title,
-                    path: '',
-                    name: name
-                }
-            ];
-        } else {
-            let childObj = currentPathObj.children.filter((child) => {
-                return child.name === name;
-            })[0];
-            currentPathArr = [
-                {
-                    title: '首页',
-                    path: '/home',
-                    name: 'home_index'
-                },
-                {
-                    title: currentPathObj.title,
-                    path: '',
-                    name: currentPathObj.name
-                },
-                {
-                    title: childObj.title,
-                    path: currentPathObj.path + '/' + childObj.path,
-                    name: name
-                }
-            ];
-        }
+        let childObj = currentPathObj.children.filter((child) => {
+            return child.name === name;
+        })[0];
+        currentPathArr = [
+            {
+                title: '首页',
+                path: homePath,
+                name: homeIndex
+            },
+            {
+                title: currentPathObj.title,
+                path: '',
+                name: currentPathObj.name
+            },
+            {
+                title: childObj.title,
+                path: currentPathObj.path + '/' + childObj.path,
+                name: name
+            }
+        ];
     }
     vm.$store.commit('setCurrentPath', currentPathArr);
-
     return currentPathArr;
 };
 
+// 打开新的页面相关操作
 util.openNewPage = function (vm, name, argu, query) {
     let pageOpenedList = vm.$store.state.app.pageOpenedList;
     let openedPageLen = pageOpenedList.length;
     let i = 0;
     let tagHasOpened = false;
+    // 判断该页面是不是已经打开过
+    // 打开过的
     while (i < openedPageLen) {
+        // console.log('1' + pageOpenedList[i].name);
         if (name === pageOpenedList[i].name) { // 页面已经打开
             vm.$store.commit('pageOpenedList', {
                 index: i,
@@ -201,6 +177,7 @@ util.openNewPage = function (vm, name, argu, query) {
         }
         i++;
     }
+    // 没有打开过的路况
     if (!tagHasOpened) {
         let tag = vm.$store.state.app.tagsList.filter((item) => {
             if (item.children) {
@@ -263,6 +240,34 @@ util.checkUpdate = function (vm) {
                 desc: '<p>iView-admin更新到了' + version + '了，去看看有哪些变化吧</p><a style="font-size:13px;" href="https://github.com/iview/iview-admin/releases" target="_blank">前往github查看</a>'
             });
         }
+    });
+};
+
+util.warningNotice = function (vm, title, desc = '') {
+    vm.$Notice.warning({
+        title: title,
+        desc: desc || ''
+    });
+};
+
+util.successNotice = function (vm, title, desc = '') {
+    vm.$Notice.success({
+        title: title,
+        desc: desc || ''
+    });
+};
+
+util.errorNotice = function (vm, title, desc = '') {
+    vm.$Notice.error({
+        title: title,
+        desc: desc || ''
+    });
+};
+
+util.infoNotice = function (vm, title, desc = '') {
+    vm.$Notice.info({
+        title: title,
+        desc: desc || ''
     });
 };
 

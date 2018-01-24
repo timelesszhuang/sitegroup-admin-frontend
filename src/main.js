@@ -1,16 +1,34 @@
 import Vue from 'vue';
 import iView from 'iview';
 import {router} from './router/index';
-import {appRouter} from './router/router';
 import store from './store';
 import App from './app.vue';
 import '@/locale';
 import 'iview/dist/styles/iview.css';
 import VueI18n from 'vue-i18n';
 import util from './libs/util';
+import env from '../build/env';
 
 Vue.use(VueI18n);
 Vue.use(iView);
+
+let domain = 'salesman.cc';
+
+const ajaxUrl = env === 'development'
+    ? 'http://local.sitegroup.com/index.php/'
+    : env === 'production'
+        ? 'http://api.' + domain + '/index.php/'
+        : 'http://debugapi.' + domain + '/index.php/';
+
+window.HOST = ajaxUrl;
+window.axios = require('axios');
+window.axios.defaults.baseURL = ajaxUrl;
+// 请求超时时间
+window.axios.defaults.timeout = 1000 * 15;
+// 默认返回值json
+window.axios.defaults.headers['Content-Type'] = 'application/json';
+// 实现跨域操作
+window.axios.defaults.withCredentials = true;
 
 new Vue({
     el: '#app',
@@ -28,17 +46,8 @@ new Vue({
         // 权限菜单过滤相关
         this.$store.commit('updateMenulist');
         // iview-admin检查更新
-        util.checkUpdate(this);
+        // util.checkUpdate(this);
     },
     created () {
-        let tagsList = [];
-        appRouter.map((item) => {
-            if (item.children.length <= 1) {
-                tagsList.push(item.children[0]);
-            } else {
-                tagsList.push(...item.children);
-            }
-        });
-        this.$store.commit('setTagsList', tagsList);
     }
 });
