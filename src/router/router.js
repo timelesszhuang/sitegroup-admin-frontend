@@ -1,14 +1,6 @@
 import Main from '@/views/Main.vue';
 
-// 不作为Main组件的子页面展示的页面单独写，如下
-// export const loginRouter = {
-//     path: '/login',
-//     name: 'login',
-//     meta: {
-//         title: 'Login - 登录'
-//     },
-//     component: () => import('@/views/login.vue')
-// };
+// access 表示方可的类型  跟cookie 中的数据进行比对 1 代表 系统管理用户 2 node节点用户 3 site用户
 
 export const loginRouter = {
     path: '/login',
@@ -19,14 +11,13 @@ export const loginRouter = {
     component: () => import('@/views/Common/login/login.vue')
 };
 
-
 export const page404 = {
     path: '/*',
     name: 'error-404',
     meta: {
         title: '404-页面不存在'
     },
-    component: () => import('@/views/error-page/404.vue')
+    component: () => import('@/views/Common/error-page/404.vue')
 };
 
 export const page403 = {
@@ -35,7 +26,7 @@ export const page403 = {
         title: '403-权限不足'
     },
     name: 'error-403',
-    component: () => import('@//views/error-page/403.vue')
+    component: () => import('@/views/Common/error-page/403.vue')
 };
 
 export const page500 = {
@@ -44,14 +35,16 @@ export const page500 = {
         title: '500-服务端错误'
     },
     name: 'error-500',
-    component: () => import('@/views/error-page/500.vue')
+    component: () => import('@/views/Common/error-page/500.vue')
 };
+
 
 export const preview = {
     path: '/preview',
     name: 'preview',
     component: () => import('@/views/form/article-publish/preview.vue')
 };
+
 
 export const locking = {
     path: '/locking',
@@ -374,9 +367,16 @@ export const nodeappRouter = [
         icon: 'key',
         name: 'access',
         title: '权限管理',
+        access: 2,
         component: Main,
         children: [
-            {path: 'index', title: '权限管理', name: 'access_index', component: () => import('@/views/access/access.vue')}
+            {
+                path: 'index',
+                access: 2,
+                title: '权限管理',
+                name: 'access_index',
+                component: () => import('@/views/access/access.vue')
+            }
         ]
     },
     {
@@ -384,14 +384,14 @@ export const nodeappRouter = [
         icon: 'lock-combination',
         title: '权限测试页',
         name: 'accesstest',
-        access: 0,
+        access: 1,
         component: Main,
         children: [
             {
                 path: 'index',
                 title: '权限测试页',
                 name: 'accesstest_index',
-                access: 0,
+                access: 1,
                 component: () => import('@/views/access/access-test.vue')
             }
         ]

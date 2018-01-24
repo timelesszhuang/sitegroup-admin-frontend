@@ -36,7 +36,7 @@ const app = {
     },
     mutations: {
         updateMenulist(state) {
-            let accessCode = parseInt(Cookies.get('access'));
+            let accessCode = parseInt(Cookies.get('userType'));
             let menuList = [];
             let Router = adminappRouter;
             if (state.userType == 2) {
@@ -45,6 +45,7 @@ const app = {
                 // 最小用户相关操作
             }
             Router.forEach((item, index) => {
+                // 如果 item 设置权限的话 执行的操作
                 if (item.access !== undefined) {
                     if (Util.showThisRoute(item.access, accessCode)) {
                         if (item.children.length === 1) {

@@ -8,7 +8,7 @@ import util from "./util";
 
 const ajaxMethods = {
     methods: {
-        apiGet (url, data) {
+        apiGet(url, data) {
             return new Promise((resolve, reject) => {
                 axios.get(url, data).then((response) => {
                     resolve(response.data);
@@ -18,7 +18,7 @@ const ajaxMethods = {
             });
         },
         // ajax post相关的操作
-        apiPost (url, data) {
+        apiPost(url, data) {
             return new Promise(function (resolve, reject) {
                 axios.post(url, data).then((response) => {
                     resolve(response.data);
@@ -27,7 +27,7 @@ const ajaxMethods = {
                 });
             });
         },
-        apiDelete (url, id) {
+        apiDelete(url, id) {
             return new Promise((resolve, reject) => {
                 axios.delete(url + id).then((response) => {
                     resolve(response.data);
@@ -36,7 +36,7 @@ const ajaxMethods = {
                 });
             });
         },
-        apiPut (url, obj) {
+        apiPut(url, obj) {
             return new Promise((resolve, reject) => {
                 axios.put(url, obj).then((response) => {
                     resolve(response.data);
@@ -45,8 +45,7 @@ const ajaxMethods = {
                 });
             });
         },
-        handleAjaxResponse (res, cb, errCb) {
-            console.log(res);
+        handleAjaxResponse(res, cb, errCb) {
             // 处理ajax请求完成之后相应
             if (res.status === 'success') {
                 if (typeof cb === 'function') {
@@ -57,6 +56,7 @@ const ajaxMethods = {
                     errCb(res.data, res.msg);
                 }
             } else if (res.status === 'loginout') {
+                // 后端提示没有权限操作的时候跳到403页面
                 errCb(res.data, res.msg);
             }
         }
