@@ -76,8 +76,9 @@
                                     style="width:200px;position: relative;z-index: 10000"
                                     label-in-value filterable clearable 　@on-change="changeArticletype">
                                 <Option-group v-for="(item,index) in this.$store.state.commondata.articleType"
-                                              :label="index" :key="item">
-                                    <Option v-for="(peritem ,perindex) in item" :value="peritem.id" :label="peritem.name"
+                                              :label="index" :key="index">
+                                    <Option v-for="(peritem ,perindex) in item" :value="peritem.id"
+                                            :label="peritem.name"
                                             :key="perindex">{{ peritem.name }}
                                     </Option>
                                 </Option-group>
@@ -94,14 +95,19 @@
                         <Input v-model="form.summary" :rows="3" type="textarea" placeholder="请输入文章描述"></Input>
                     </Form-item>
                     <Form-item label="内容" type="image" prop="content" style="height:100%;">
-                        <span @click="addimg('content')" title="素材图图片插入"><Icon type="image"></Icon></span>
+                        <!--<span @click="addimg('content')" title="素材图图片插入"><Icon type="image"></Icon></span>-->
 
                         <!--<Button type="success" size="small" style="display: inline-block" :loading="modal_loading" @click="addimg('content')">-->
                         <!--素材库图片-->
                         <!--</Button>-->
+                        <Card shadow>
+                            <textarea class='tinymce-textarea' id="tinymceEditer"></textarea>
+                        </Card>
+                        <Spin fix v-if="spinShow">
+                            <Icon type="load-c" size=18 class="demo-spin-icon-load"></Icon>
+                            <div>加载组件中...</div>
+                        </Spin>
 
-                        <editor @change="updateData" :content="form.content" :height="300" :auto-height="false">
-                        </editor>
                     </Form-item>
                     <Row>
                         <Col span="12">
@@ -143,192 +149,251 @@
             </div>
 
         </Modal>
-        <!--<materialimg ref="addmaterial"></materialimg>-->
+        <materialimg ref="addmaterial"></materialimg>
     </div>
 </template>
 
 
 <script type="text/ecmascript-6">
-    import http from '../../../libs/http';
-    // import materialimg from './materialimg.vue';
+  /* eslint-disable indent,semi */
 
-    export default {
-        data() {
-            const checkarticletype = (rule, value, callback) => {
-                if (!value) {
-                    callback(new Error('请选择文章分类'));
-                } else {
-                    callback();
-                }
-            };
-            return {
-                switch1: true,
-                tag_name: true,
-                action: HOST + 'admin/uploadarticleimage',
-                modal: false,
-                imgshow: true,
-                modal_loading: false,
-                editor_id: '',
-                img: '',
-                form: {
-                    summary: '',
-                    thumbnails: '',
-                    keywords: '',
-                    readcount: 0,
-                    title: '',
-                    shorttitle: '',
-                    auther: '',
-                    come_from: '',
-                    articletype_id: 0,
-                    articletype_name: '',
-                    content: '',
-                    title_color: '',
-                    tag_id: [],
-                    tags: ''
-                },
-                selects: true,
-                AddRule: {
-                    title: [
-                        {required: true, message: '请填写文章标题', trigger: 'blur'}
-                    ],
-                    come_from: [
-                        {required: true, message: '请填写文章来源', trigger: 'blur'}
-                    ],
-                    auther: [
-                        {required: true, message: '请填写文章作者', trigger: 'blur'}
-                    ],
-                    articletype_id: [
-                        {required: true, validator: checkarticletype, trigger: 'blur'}
-                    ]
+  import http from '../../../libs/http'
+  import tinymce from 'tinymce'
+  import materialimg from './materialimg.vue'
+  // eslint-disable-next-line indent
 
-                }
-            };
-        },
-        // components: {materialimg},
-        methods: {
-            change(status) {
-                if (status) {
-                    this.tag_name = true;
-                    this.$Message.info('切换到下拉选择');
-                } else {
-                    this.tag_name = false;
-                    this.$Message.info('切换到添加标签');
-                }
-            },
-            changeTagtype(value) {
-                this.form.tag_id = value.value;
-            },
-            getsrc(src) {
-                this.imgpath(src);
-            },
-            addimg(img) {
-                this.img = img;
-                this.$refs.addmaterial.getData();
-                this.$refs.addmaterial.modal = true;
-            },
-            imgpath(src) {
-                if (src) {
-                    if (this.img == 'content') {
-                        let imgsrc = '<img src=' + src + '>';
-                        this.form.content += imgsrc;
-                        return src;
-                    } else if (this.img == 'suolue') {
-                    }
-                    this.form.thumbnails = src;
-                    return src;
-                }
-                return this.form.thumbnails;
-            },
-            addtags() {
-                let data = {
-                    type: 'article',
-                    name: this.form.tags
-                };
-                this.apiPost('admin/tags', data).then((res) => {
-                    this.handelResponse(res, (data, msg) => {
-                        let tempN = this.form.tag_id;
-                        let tagId = data.id;
-                        let tagnum = tagId.toString();
-                        tempN.push(tagnum);
-                        this.form.tags = '';
-                        this.$parent.gettag();
-                        this.$Message.success(msg);
-                    }, (data, msg) => {
-                        this.$Message.error(msg);
-                    });
-                }, (res) => {
-                    // 处理错误信息
-                    this.$Message.error('网络异常，请稍后重试。');
-                });
-            },
-            // 缩略图上传回调
-            getResponse(response, file, filelist) {
-                this.form.thumbnails = response.url;
-                if (response.status) {
-                    this.$Message.success(response.msg);
-                    this.imgpath();
-                    this.imgshow = true;
-                    this.$refs.upImg.clearFiles();
-                } else {
-                    this.$Message.error(response.msg);
-                }
-                this.$refs.upImg.clearFiles();
-            },
-            getErrorInfo(error, file, filelist) {
-                this.$Message.error(error);
-            },
-
-            formatError() {
-                this.$Message.error('文件格式只支持 jpg,jpeg,png三种格式。');
-            },
-            updateData(data) {
-                this.form.content = data;
-                this.editorText = data;
-            },
-            changeArticletype(value) {
-                this.form.articletype_name = value.label;
-                this.form.articletype_id = value.value;
-            },
-            add() {
-                this.$refs.add.validate((valid) => {
-                    if (valid) {
-                        this.modal_loading = true;
-                        let data = this.form;
-                        this.apiPost('article', data).then((res) => {
-                            this.handelResponse(res, (data, msg) => {
-                                this.modal = false;
-                                this.$parent.getData();
-                                this.$Message.success(msg);
-                                this.modal_loading = false;
-                                this.imgshow = false;
-                                this.form.thumbnails = '';
-                                this.$refs.add.resetFields();
-
-                                this.$refs.select.clearSingleSelect();
-                            }, (data, msg) => {
-                                this.modal_loading = false;
-                                this.$Message.error(msg);
-                            });
-                        }, (res) => {
-                            // 处理错误信息
-                            this.modal_loading = false;
-                            this.$Message.error('网络异常，请稍后重试。');
-                        });
-                    }
-                });
-            }
-        },
-        mixins: [http],
-        props: {
-            articletype: {
-                default: []
-            },
-            tagname: {
-                default: {}
-            },
-            imgsrc: {}
+  export default {
+    components: {materialimg},
+    data () {
+      const checkarticletype = (rule, value, callback) => {
+        if (!value) {
+          callback(new Error('请选择文章分类'))
+        } else {
+          callback()
         }
-    };
+      }
+      return {
+        spinShow: true,
+        switch1: true,
+        tag_name: true,
+        action: HOST + 'admin/uploadarticleimage',
+        modal: false,
+        imgshow: true,
+        modal_loading: false,
+        editor_id: '',
+        img: '',
+        form: {
+          summary: '',
+          thumbnails: '',
+          keywords: '',
+          readcount: 0,
+          title: '',
+          shorttitle: '',
+          auther: '',
+          come_from: '',
+          articletype_id: 0,
+          articletype_name: '',
+          content: '',
+          title_color: '',
+          tag_id: [],
+          tags: ''
+        },
+        selects: true,
+        AddRule: {
+          title: [
+            {required: true, message: '请填写文章标题', trigger: 'blur'}
+          ],
+          come_from: [
+            {required: true, message: '请填写文章来源', trigger: 'blur'}
+          ],
+          auther: [
+            {required: true, message: '请填写文章作者', trigger: 'blur'}
+          ],
+          articletype_id: [
+            {required: true, validator: checkarticletype, trigger: 'blur'}
+          ]
+
+        }
+      }
+    },
+    methods: {
+      init: function () {
+        this.$nextTick(() => {
+          let vm = this
+          let height = document.body.offsetHeight - 300
+          tinymce.init({
+            selector: '#tinymceEditer',
+            branding: false,
+            elementpath: false,
+            height: height,
+            language: 'zh_CN.GB2312',
+            menubar: 'edit insert view format table tools',
+            plugins: [
+              'fullscreen',
+              'wordcount',
+              'advlist autolink lists link image charmap print preview hr anchor pagebreak imagetools',
+              'searchreplace visualblocks visualchars code fullpage',
+              'insertdatetime media nonbreaking save table contextmenu directionality',
+              'emoticons paste textcolor colorpicker textpattern imagetools codesample'
+            ],
+            toolbar1: ' newnote print preview | undo redo | insert | styleselect | forecolor backcolor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image emoticons media codesample | mybutton | fullscreen |',
+            autosave_interval: '20s',
+            image_advtab: true,
+            table_default_styles: {
+              width: '100%',
+              borderCollapse: 'collapse'
+            },
+            setup: function (editor) {
+              editor.on('init', function (e) {
+                vm.spinShow = false
+                tinymce.get('tinymceEditer').setContent(vm.form.content)
+              })
+              editor.on('keydown', function (e) {
+                // editor.insertContent(vm.form.content)
+                // localStorage.editorContent = tinymce.get('tinymceEditer').getContent()
+                // tinymce.get('tinymceEditer').setContent(vm.form.content)
+              })
+              editor.addButton('mybutton', {
+                text: '素材库图片',
+                icon: false,
+                onclick: function () {
+                  vm.$refs.addmaterial.getData()
+                  vm.$refs.addmaterial.modal = true
+                }
+              })
+              editor.addMenuItem('myitem', {
+                text: 'My menu item',
+                context: 'tools',
+                onclick: function () {
+                  editor.insertContent('&nbsp;Here\'s some content!&nbsp;')
+                }
+              })
+            }
+          })
+        })
+      },
+      change (status) {
+        if (status) {
+          this.tag_name = true
+          this.$Message.info('切换到下拉选择')
+        } else {
+          this.tag_name = false
+          this.$Message.info('切换到添加标签')
+        }
+      },
+      changeTagtype (value) {
+        this.form.tag_id = value.value
+      },
+      getsrc (src) {
+        let imgsrc = '<img src=' + src + '>'
+        this.form.content = this.form.content + imgsrc
+        tinymce.get('tinymceEditer').setContent(this.form.content)
+      },
+      addimg (img) {
+        this.img = img
+        this.$refs.addmaterial.getData()
+        this.$refs.addmaterial.modal = true
+      },
+      imgpath (src) {
+        if (src) {
+          let imgsrc = '<img src=' + src + '>'
+          this.form.content = imgsrc
+          return imgsrc
+        }
+      },
+      addtags () {
+        let data = {
+          type: 'article',
+          name: this.form.tags
+        }
+        this.apiPost('admin/tags', data).then((res) => {
+          this.handelResponse(res, (data, msg) => {
+            let tempN = this.form.tag_id
+            let tagId = data.id
+            let tagnum = tagId.toString()
+            tempN.push(tagnum)
+            this.form.tags = ''
+            this.$parent.gettag()
+            this.$Message.success(msg)
+          }, (data, msg) => {
+            this.$Message.error(msg)
+          })
+        }, (res) => {
+          // 处理错误信息
+          this.$Message.error('网络异常，请稍后重试。')
+        })
+      },
+      // 缩略图上传回调
+      getResponse (response, file, filelist) {
+        this.form.thumbnails = response.url
+        if (response.status) {
+          this.$Message.success(response.msg)
+          this.imgpath()
+          this.imgshow = true
+          this.$refs.upImg.clearFiles()
+        } else {
+          this.$Message.error(response.msg)
+        }
+        this.$refs.upImg.clearFiles()
+      },
+      getErrorInfo (error, file, filelist) {
+        this.$Message.error(error)
+      },
+
+      formatError () {
+        this.$Message.error('文件格式只支持 jpg,jpeg,png三种格式。')
+      },
+
+      changeArticletype (value) {
+        this.form.articletype_name = value.label
+        this.form.articletype_id = value.value
+      },
+      add () {
+        this.$refs.add.validate((valid) => {
+          if (valid) {
+            this.modal_loading = true
+            let data = this.form
+            this.apiPost('article', data).then((res) => {
+              this.handelResponse(res, (data, msg) => {
+                this.modal = false
+                this.$parent.getData()
+                this.$Message.success(msg)
+                this.modal_loading = false
+                this.imgshow = false
+                this.form.thumbnails = ''
+                this.$refs.add.resetFields()
+
+                this.$refs.select.clearSingleSelect()
+              }, (data, msg) => {
+                this.modal_loading = false
+                this.$Message.error(msg)
+              })
+            }, (res) => {
+              // 处理错误信息
+              this.modal_loading = false
+              this.$Message.error('网络异常，请稍后重试。')
+            })
+          }
+        })
+      }
+    },
+    mounted () {
+      this.init()
+    },
+    destroyed () {
+      tinymce.get('tinymceEditer').destroy()
+    },
+    mixins: [http],
+    props: {
+      articletype: {
+        default: []
+      },
+      tagname: {
+        default: {}
+      },
+      imgsrc: {}
+    }
+  }
 </script>
 <style>
     .ql-container .ql-editor {
