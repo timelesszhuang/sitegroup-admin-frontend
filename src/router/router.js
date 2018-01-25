@@ -39,6 +39,7 @@ export const page500 = {
 };
 
 
+
 export const preview = {
     path: '/preview',
     name: 'preview',
@@ -367,12 +368,12 @@ export const nodeappRouter = [
         icon: 'key',
         name: 'access',
         title: '权限管理',
-        access: 2,
+        access: 1,
         component: Main,
         children: [
             {
                 path: 'index',
-                access: 2,
+                access: 1,
                 title: '权限管理',
                 name: 'access_index',
                 component: () => import('@/views/access/access.vue')
@@ -424,6 +425,15 @@ export const nodeappRouter = [
                 name: 'text-editor',
                 title: '富文本编辑器',
                 component: () => import('@/views/my-components/text-editor/text-editor.vue')
+            },
+          {
+
+
+                path: 'test',
+                icon: 'compose',
+                name: 'test',
+                title: '编辑器',
+                component: () => import('@/views/my-components/test/index.vue')
             },
             {
                 path: 'md-editor',
