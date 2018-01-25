@@ -102,7 +102,6 @@
 
                         <editor @change="updateData" :content="form.content" :height="300" :auto-height="false">
                         </editor>
-
                     </Form-item>
                     <Row>
                         <Col span="12">

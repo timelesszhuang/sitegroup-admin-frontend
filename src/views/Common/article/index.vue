@@ -81,8 +81,6 @@
                         this.datas = data.rows;
                         this.total = data.total;
                         this.pageSize = 10;
-                    }, (data, msg) => {
-                        this.$Message.error(msg);
                     });
                 }, (data) => {
                     this.$Message.error('网络异常，请稍后重试');

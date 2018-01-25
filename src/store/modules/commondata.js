@@ -1,12 +1,14 @@
 const commondata = {
     state: {
-        articleType: []
+        articleType: [],
+        productType: [],
+        questionType: [],
+        questionTag: [],
+        articleTag: [],
+        productTag: [],
+        Tag: []
     },
-    mutations: {
-        articleType (state, articleType) {
-            state.articleType = articleType;
-        }
-    }
+    mutations: {}
 };
 
 export default commondata;
