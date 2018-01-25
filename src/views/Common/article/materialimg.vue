@@ -18,12 +18,6 @@
           <Option value="selfadd">添加</Option>
         </Select>
         标签:
-        <Select v-model="tag_id" style="width:200px"
-                label-in-value  filterable clearable   >
-          <Option-group  v-for="(item,index) in tagname" :label="index" :key="item">
-            <Option v-for="(items,indexs) in item"  :value="indexs" :label="items" :key="index">{{ items }}</Option>
-          </Option-group>
-        </Select>
         <Button type="primary" @click="queryData">查询</Button>
       </div>
       <div class="content" style="margin-top:10px;">
@@ -44,9 +38,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import http from '../../../assets/js/http.js'
-  import common from '../../../assets/js/common.js'
-
+  import http from '../../../libs/http';
+  /* eslint-disable space-before-function-paren */
 
   export default {
     data() {
@@ -111,8 +104,8 @@
           }
         }
         this.apiGet('admin/libraryimgset', data).then((data) => {
-          this.handelResponse(data, (data, msg) => {
-            this.datas = data.rows
+          this.handleAjaxResponse(data, (data, msg) => {
+            this.datas = data.rows;
             this.total = data.total;
           }, (data, msg) => {
             this.$Message.error(msg);
@@ -137,6 +130,7 @@
       },
       xuanze(index){
         let editsrc = this.datas[index].imgsrc
+        //console.log(editsrc)
         this.$parent.getsrc(editsrc)
         this.modal = false
       },
@@ -144,7 +138,7 @@
         let data = {
         }
         this.apiPost('admin/gettags', data).then((res) => {
-          this.handelResponse(res, (data, msg) => {
+          this.handleAjaxResponse(res, (data, msg) => {
             this.tagname = data
             this.modal = false;
           }, (data, msg) => {
@@ -250,6 +244,6 @@
         return columns;
       }
     },
-    mixins: [http,common]
+    mixins: [http],
   }
 </script>
