@@ -345,24 +345,29 @@ export const nodeotherRouter = {
 };
 // 作为node Main组件的子页面展示并且在左侧菜单显示的路由写在nodeappRouter里
 export const nodeappRouter = [
-    // {
-    //     path: '/access',
-    //     icon: 'key',
-    //     name: 'access',
-    //     title: '营销计划',
-    //     component: Main,
-    //     children: [
-    //         {path: 'index', title: '营销模式', name: 'access_index', component: () => import('@/views/access/access.vue')},
-    //         {
-    //             path: 'index',
-    //             title: '活动创意管理',
-    //             name: 'access_index',
-    //             component: () => import('@/views/access/access.vue')
-    //         },
-    //         {path: 'index', title: '场景秀', name: 'access_index', component: () => import('@/views/access/access.vue')},
-    //         {path: 'index', title: '案例中心', name: 'access_index', component: () => import('@/views/access/access.vue')},
-    //     ]
-    // },
+    {
+        path: '/content',
+        icon: 'key',
+        name: 'content',
+        title: '内容管理',
+        component: Main,
+        children: [
+            {
+                path: 'article',
+                title: '文章管理',
+                name: 'article',
+                component: () => import('@/views/Common/article/index.vue')
+            },
+            {
+                path: 'index',
+                title: '活动创意管理',
+                name: 'access_index',
+                component: () => import('@/views/access/access.vue')
+            },
+            // {path: 'index', title: '场景秀', name: 'access_index', component: () => import('@/views/access/access.vue')},
+            // {path: 'index', title: '案例中心', name: 'access_index', component: () => import('@/views/access/access.vue')},
+        ]
+    },
     {
         path: '/access',
         icon: 'key',

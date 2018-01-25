@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 const user = {
     state: {},
     mutations: {
-        logout(state, vm) {
+        logout (state, vm) {
             Cookies.remove('user_id');
             Cookies.remove('type');
             Cookies.remove('rememberMe');

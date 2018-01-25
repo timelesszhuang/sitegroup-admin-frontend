@@ -19,11 +19,10 @@
 
 
 
-
 <script>
   /* eslint-disable indent */
 
-// eslint-disable-next-line indent
+  // eslint-disable-next-line indent
   import tinymce from 'tinymce';
   export default {
     data: function () {

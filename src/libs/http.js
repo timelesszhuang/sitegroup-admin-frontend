@@ -45,7 +45,7 @@ const ajaxMethods = {
                 });
             });
         },
-        handleAjaxResponse(res, cb, errCb) {
+        handleAjaxResponse (res, cb, errCb) {
             // 处理ajax请求完成之后相应
             if (res.status === 'success') {
                 if (typeof cb === 'function') {
