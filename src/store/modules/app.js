@@ -39,9 +39,10 @@ const app = {
             let accessCode = parseInt(Cookies.get('userType'));
             let menuList = [];
             let Router = adminappRouter;
-            if (state.userType === 2) {
+            if (parseInt(state.userType) === 2) {
+                // 站点node 相关管理
                 Router = nodeappRouter;
-            } else if (state.userType === 3) {
+            } else if (parseInt(state.userType) === 3) {
                 // 最小用户相关操作
                 Router = siteappRouter;
             }

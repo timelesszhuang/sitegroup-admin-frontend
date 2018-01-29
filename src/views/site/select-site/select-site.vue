@@ -6,6 +6,10 @@
                 v-model="modal"
                 :closable="false"
                 :mask-closable="false">
+            <p slot="header" style="color:#f60;text-align:center">
+                <Icon type="ios-list"></Icon>
+                <span>选择要管理的网站</span>
+            </p>
             <p>Content of dialog</p>
             <p>Content of dialog</p>
             <p>Content of dialog</p>
