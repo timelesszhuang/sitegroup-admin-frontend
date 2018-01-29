@@ -1,6 +1,6 @@
 import {
-    otherRouter,
-    appRouter,
+    siteotherRouter,
+    siteappRouter,
     adminappRouter,
     adminotherRouter,
     nodeappRouter,
@@ -39,10 +39,11 @@ const app = {
             let accessCode = parseInt(Cookies.get('userType'));
             let menuList = [];
             let Router = adminappRouter;
-            if (state.userType == 2) {
+            if (state.userType === 2) {
                 Router = nodeappRouter;
-            } else if (state.userType == 3) {
+            } else if (state.userType === 3) {
                 // 最小用户相关操作
+                Router = siteappRouter;
             }
             Router.forEach((item, index) => {
                 // 如果 item 设置权限的话 执行的操作
@@ -167,7 +168,14 @@ const app = {
             localStorage.pageOpenedList = JSON.stringify(state.pageOpenedList);
         },
         setOpenedList(state) {
-            state.pageOpenedList = localStorage.pageOpenedList ? JSON.parse(localStorage.pageOpenedList) : [otherRouter.children[0]];
+            // 默认打开第一个页面
+            let router = adminotherRouter;
+            if (parseInt(Cookies.get('type')) === 2) {
+                router = nodeotherRouter;
+            } else if (parseInt(Cookies.get('type') === 3)) {
+                router = siteotherRouter;
+            }
+            state.pageOpenedList = localStorage.pageOpenedList ? JSON.parse(localStorage.pageOpenedList) : [router.children[0]];
         },
         setCurrentPath(state, pathArr) {
             state.currentPath = pathArr;

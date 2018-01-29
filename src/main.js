@@ -41,16 +41,16 @@ new Vue({
     data: {
         currentPageName: ''
     },
-    mounted() {
+    mounted () {
         this.currentPageName = this.$route.name;
         // 显示打开的页面的列表
-        this.$store.commit('setOpenedList');
+        // this.$store.commit('setOpenedList');
         this.$store.commit('initCachepage');
         // 权限菜单过滤相关
         this.$store.commit('updateMenulist');
         // iview-admin检查更新
         // util.checkUpdate(this);
     },
-    created() {
+    created () {
     }
 });

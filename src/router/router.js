@@ -617,11 +617,11 @@ export const adminappRouter = [
 export const siteotherRouter = {
     path: '/',
     name: 'otherRouter',
-    redirect: '/home',
+    redirect: '/site',
     component: Main,
     title: '',
     children: [
-        {path: 'home', title: {i18n: 'home'}, name: 'home_index', component: () => import('@/views/home/home.vue')},
+        {path: 'site', title: {i18n: 'home'}, name: 'site_index', component: () => import('@/views/home/home.vue')},
         {
             path: 'ownspace',
             title: '个人中心',
@@ -643,6 +643,7 @@ export const siteotherRouter = {
         {path: 'message', title: '消息中心', name: 'message_index', component: () => import('@/views/message/message.vue')}
     ]
 };
+
 // 作为Main组件的子页面展示并且在左侧菜单显示的路由写在appRouter里
 export const siteappRouter = [
     {

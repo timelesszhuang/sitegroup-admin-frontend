@@ -186,7 +186,7 @@
                     this.apiPost('login', data).then((res) => {
                         this.handleAjaxResponse(res, (data, msg) => {
                             // 用户的user_id
-                            let user_id = data.login_id;
+                            let userId = data.login_id;
                             // 自动登陆的key
                             let rememberKey = data.remember_key;
                             // 用户的类型
@@ -194,10 +194,15 @@
                             if (this.remember) {
                                 Cookies.set('remember', true, {expires: 7});
                             }
-                            Cookies.set('user_id', user_id);
+                            // 如果这次的 type 跟 cookies 不一致的话 需要清空下 localstorage相关信息
+                            if (Cookies.get('type') !== undefined && parseInt(Cookies.get('type')) !== type) {
+                                // 需要清空一下以前的相关代码
+                                this.$store.commit('logout', this);
+                            }
+                            Cookies.set('user_id', userId);
                             Cookies.set('type', type);
                             Cookies.set('rememberKey', rememberKey);
-                            localStorage.user_id = user_id;
+                            localStorage.user_id = userId;
                             localStorage.type = type;
                             localStorage.rememberKey = rememberKey;
                             // 需要跳转到首页
@@ -210,7 +215,7 @@
                             } else if (type === 3) {
                                 // 用户首页
                                 this.$router.push({
-                                    name: 'user_index'
+                                    name: 'site_index'
                                 });
                             } else if (type === 1) {
                                 // 公司总管理后台账号进入
