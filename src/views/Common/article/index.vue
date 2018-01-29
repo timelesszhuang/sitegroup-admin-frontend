@@ -32,7 +32,7 @@
                 </div>
             </div>
         </div>
-        <articleadd ref="add" :tagname="tagname"></articleadd>
+        <articleadd ref="add"></articleadd>
     </div>
 </template>
 

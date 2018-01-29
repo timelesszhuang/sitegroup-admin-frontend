@@ -8,6 +8,7 @@ import 'iview/dist/styles/iview.css';
 import VueI18n from 'vue-i18n';
 import util from './libs/util';
 import env from '../build/env';
+import Cookies from 'js-cookie';
 
 Vue.use(VueI18n);
 Vue.use(iView);
@@ -15,7 +16,8 @@ Vue.use(iView);
 let domain = 'salesman.cc';
 
 const ajaxUrl = env === 'development'
-    ? 'http://local.sitegroup.com/index.php/'
+    // ? 'http://local.sitegroup.com/index.php/'
+    ? 'http://bn.sjy/index.php/'
     : env === 'production'
         ? 'http://api.' + domain + '/index.php/'
         : 'http://debugapi.' + domain + '/index.php/';
@@ -29,6 +31,7 @@ window.axios.defaults.timeout = 1000 * 15;
 window.axios.defaults.headers['Content-Type'] = 'application/json';
 // 实现跨域操作
 window.axios.defaults.withCredentials = true;
+window.Cookies = Cookies;
 
 new Vue({
     el: '#app',
@@ -38,7 +41,7 @@ new Vue({
     data: {
         currentPageName: ''
     },
-    mounted () {
+    mounted() {
         this.currentPageName = this.$route.name;
         // 显示打开的页面的列表
         this.$store.commit('setOpenedList');
@@ -48,6 +51,6 @@ new Vue({
         // iview-admin检查更新
         // util.checkUpdate(this);
     },
-    created () {
+    created() {
     }
 });

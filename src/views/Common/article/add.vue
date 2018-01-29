@@ -122,7 +122,7 @@
                             <Select ref="select" :clearable="selects" v-model="form.tag_id"
                                     style="position:relative;text-align: left;width:350px;z-index: 10000;"
                                     label-in-value multiple filterable　>
-                                <Option v-for="(item,index) in tagname" :value="index" :label="item" :key="index">
+                                <Option v-for="(item,index) in this.$store.state.commondata.articleTag" :value="index" :label="item" :key="index">
                                     {{item}}
                                 </Option>
                             </Select>
@@ -175,7 +175,7 @@
       return {
         spinShow: true,
         switch1: true,
-        tag_name: true,
+        tag_name: '',
         action: HOST + 'admin/uploadarticleimage',
         modal: false,
         imgshow: true,
@@ -385,12 +385,6 @@
     },
     mixins: [http],
     props: {
-      articletype: {
-        default: []
-      },
-      tagname: {
-        default: {}
-      },
       imgsrc: {}
     }
   }

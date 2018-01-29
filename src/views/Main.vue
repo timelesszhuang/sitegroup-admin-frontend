@@ -39,7 +39,7 @@
                         <Row type="flex" justify="end" align="middle" class="user-dropdown-innercon">
                             <Dropdown transfer trigger="click" @on-click="handleClickUserDropdown">
                                 <a href="javascript:void(0)">
-                                    <span class="main-user-name">{{ userName }}</span>
+                                    <span class="main-user-name">{{userName}}</span>
                                     <Icon type="arrow-down-b"></Icon>
                                 </a>
                                 <DropdownMenu slot="list">
@@ -47,7 +47,7 @@
                                     <DropdownItem name="loginout" divided>退出登录</DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
-                            <Avatar :src="avatorPath" style="background: #619fe7;margin-left: 10px;"></Avatar>
+                            <!--<Avatar :src="avatorPath" style="background: #619fe7;margin-left: 10px;"></Avatar>-->
                         </Row>
                     </div>
                 </div>
@@ -73,8 +73,8 @@
     import lockScreen from './main-components/lockscreen/lockscreen.vue';
     import messageTip from './main-components/message-tip.vue';
     import themeSwitch from './main-components/theme-switch/theme-switch.vue';
-    import Cookies from 'js-cookie';
     import util from '@/libs/util.js';
+    import http from '../libs/http';
 
     export default {
         components: {
@@ -89,7 +89,7 @@
         data() {
             return {
                 shrink: false,
-                userName: '',
+                userName: '测试啊啊啊',
                 isFullScreen: false,
                 openedSubmenuArr: this.$store.state.app.openedSubmenuArr
             };
@@ -132,7 +132,6 @@
                 if (pathArr.length >= 2) {
                     this.$store.commit('addOpenSubmenu', pathArr[1].name);
                 }
-                this.userName = Cookies.get('user');
                 let messageCount = 3;
                 this.messageCount = messageCount.toString();
                 this.checkTag(this.$route.name);
@@ -149,10 +148,14 @@
                     });
                 } else if (name === 'loginout') {
                     // 退出登录
-                    this.$store.commit('logout', this);
-                    this.$store.commit('clearOpenedSubmenu');
-                    this.$router.push({
-                        name: 'login'
+                    this.apiGet('logout').then((res) => {
+                        this.handleAjaxResponse(res, (data, msg) => {
+                            this.$store.commit('logout', this);
+                            this.$store.commit('clearOpenedSubmenu');
+                            this.$router.push({
+                                name: 'login'
+                            });
+                        });
                     });
                 }
             },
@@ -202,6 +205,7 @@
             // 显示打开的页面的列表
             this.$store.commit('setOpenedList');
 
-        }
+        },
+        mixins: [http]
     };
 </script>
