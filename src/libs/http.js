@@ -57,20 +57,27 @@ const ajaxMethods = {
             // data  可为空数组 请求成功的数据
             if (res.status === 'success') {
                 if (typeof cb === 'function') {
-                    cb(res.data, res.msg);
+                    res.msg = res.msg === '' ? '操作成功' : res.msg;
+                    if (typeof cb === 'function') {
+                        cb(res.data, res.msg);
+                    } else {
+                        this.$Notice.success({
+                            title: res.msg,
+                            desc: res.detail === undefined ? '' : res.detail
+                        });
+                    }
                 }
             } else if (res.status === 'failed') {
                 if (typeof errCb === 'function') {
                     errCb(res.data, res.msg);
                 } else {
                     this.$Notice.error({
-                        title: res.msg === '' ? '操作异常，请售后再试' : res.msg,
+                        title: res.msg === '' ? '操作失败' : res.msg,
                         desc: res.detail === undefined ? '' : res.detail
                     });
                 }
             } else if (res.status === 'logout') {
                 // 后端提示没有权限操作的时候跳到403页面
-                // errCb(res.data, res.msg);
                 if (typeof errCb === 'function') {
                     errCb(res.data, res.msg);
                 } else {
