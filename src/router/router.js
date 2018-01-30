@@ -105,6 +105,24 @@ export const nodeappRouter = [
                 name: 'article',
                 component: () => import('@/views/Common/article/index.vue')
             },
+          // {
+          //   path: 'question',
+          //   title: '问答管理',
+          //   name: 'question',
+          //   component: () => import('@/views/Common/questionmanage/tab.vue')
+          // },
+          // {
+          //   path: 'product',
+          //   title: '产品管理',
+          //   name: 'product',
+          //   component: () => import('@/views/Common/productmanage/tab.vue')
+          // },
+          // {
+          //   path: 'imglist',
+          //   title: '图片集管理',
+          //   name: 'imglist',
+          //   component: () => import('@/views/Common/imglist/index.vue')
+          // },
             {
                 path: 'index',
                 title: '活动创意管理',

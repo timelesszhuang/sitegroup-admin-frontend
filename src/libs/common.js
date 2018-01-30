@@ -7,10 +7,10 @@
 const common = {
     methods: {
         // 获取文章分类的 id => name 属性
-        getArticleType(reset = false) {
+        getArticleType (reset = false) {
             let articletype = this.$store.state.commondata.articleType;
             if (articletype.length === 0 || reset) {
-                this.apiGet('articletype/gettype').then((res) => {
+                this.apiGet('get_article_type_list').then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.$store.state.commondata.articleType = data;
                     }, (data, msg) => {
@@ -22,7 +22,7 @@ const common = {
                 });
             }
         },
-        getProductType(reset = false) {
+        getProductType (reset = false) {
             // 获取产品分类
             let productType = this.$store.state.commondata.productType;
             if (productType.length === 0 || reset) {
@@ -38,7 +38,7 @@ const common = {
                 });
             }
         },
-        getQuestionType(reset = false) {
+        getQuestionType (reset = false) {
             let questionType = this.$store.state.commondata.questionType;
             if (questionType.length === 0 || reset) {
                 this.apiGet('questionType/list').then((res) => {
@@ -53,7 +53,7 @@ const common = {
                 });
             }
         },
-        getProductTag(reset = false) {
+        getProductTag (reset = false) {
             let productTag = this.$store.state.commondata.productTag;
             if (productTag.length === 0 || reset) {
                 let data = {
@@ -71,13 +71,13 @@ const common = {
                 });
             }
         },
-        getArticleTag(reset = false) {
+        getArticleTag (reset = false) {
             let articleTag = this.$store.state.commondata.articleTag;
             if (articleTag.length === 0 || reset) {
                 let data = {
-                    type: 'product'
+                    type: 'article'
                 };
-                this.apiPost('admin/gettags', data).then((res) => {
+                this.apiPost('get_tags', data).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.$store.state.commondata.articleTag = data;
                     }, (data, msg) => {
@@ -89,10 +89,12 @@ const common = {
                 });
             }
         },
-        getAllTag(reset = false) {
+        getAllTag (reset = false) {
             let Tag = this.$store.state.commondata.Tag;
             if (Tag.length === 0 || reset) {
-                let data = {};
+                let data = {
+                    type: 'article'
+                };
                 this.apiPost('admin/gettags', data).then((res) => {
                     this.handelResponse(res, (data, msg) => {
                         this.$store.state.commondata.Tag = data;
