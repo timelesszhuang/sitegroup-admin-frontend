@@ -33,13 +33,14 @@
             </div>
         </div>
         <articleadd ref="add"></articleadd>
+        <articlesave ref="save"></articlesave>
     </div>
 </template>
-
 <script>
     import http from '../../../libs/http';
     import common from '../../../libs/common';
     import articleadd from './add';
+    import articlesave from './save';
     export default {
         name: 'index',
         data () {
@@ -62,6 +63,7 @@
         },
         mounted () {
             this.getArticleType();
+            this.getArticleTag();
         },
         created () {
             this.getData();
@@ -103,9 +105,25 @@
             // 添加文章相关操作
             add () {
                 this.$refs.add.modal = true;
+            },
+            edit (index) {
+                let editid = this.datas[index].id;
+                // this.apiGet('imglist/' + editid).then((res) => {
+                //     this.handelResponse(res, (data, msg) => {
+                //         this.editinfo = data;
+                //         this.modal = false;
+                this.$refs.save.edit(editid);
+                this.$refs.save.modal = true;
+                //     }, (data, msg) => {
+                //         this.$Message.error(msg);
+                //     });
+                // }, (res) => {
+                //     // 处理错误信息
+                //     this.$Message.error('网络异常，请稍后重试。');
+                // });
             }
         },
-        components: {articleadd},
+        components: {articleadd, articlesave},
         computed: {
             tableColumns () {
                 let columns = [];

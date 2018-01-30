@@ -69,10 +69,6 @@
     created() {
       // this.getData(img);
       this.gettag();
-      this.getArticleType((data) => {
-        this.articletypelist = data
-      });
-      this.gettag();
     },
     methods: {
       //@click="dan" @dblclick="shuang"
@@ -103,7 +99,7 @@
             tag_id:this.tag_id
           }
         }
-        this.apiGet('admin/libraryimgset', data).then((data) => {
+        this.apiGet('libraryimgset', data).then((data) => {
           this.handleAjaxResponse(data, (data, msg) => {
             this.datas = data.rows;
             this.total = data.total;
@@ -136,8 +132,9 @@
       },
       gettag() {
         let data = {
+          type:'article'
         }
-        this.apiPost('admin/gettags', data).then((res) => {
+        this.apiPost('get_tags', data).then((res) => {
           this.handleAjaxResponse(res, (data, msg) => {
             this.tagname = data
             this.modal = false;

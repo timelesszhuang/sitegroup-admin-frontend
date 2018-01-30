@@ -1193,7 +1193,7 @@ jsc */
                       var acceptExts = '.jpg,.jpeg,.png,.gif';
 
                       var uploadTab = {
-                          title: 'Upload',
+                          title: '本地上传',
                           type: 'form',
                           layout: 'flex',
                           direction: 'column',
@@ -1208,7 +1208,7 @@ jsc */
                                   spacing: 10,
                                   items: [
                                       {
-                                          text: 'Browse for an image',
+                                          text: '浏览本地图片',
                                           type: 'browsebutton',
                                           accept: acceptExts,
                                           onchange: onFileInput
@@ -1220,7 +1220,7 @@ jsc */
                                   ]
                               },
                               {
-                                  text: 'Drop an image here',
+                                  text: '将图片拖拽到这里上传',
                                   type: 'dropzone',
                                   accept: acceptExts,
                                   height: 100,

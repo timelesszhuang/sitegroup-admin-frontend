@@ -66,12 +66,12 @@
 
                         <Col span="12">
                         <div v-if="imgshow" style="margin:0 auto;max-width: 200px;margin-right: 300px">
-                            <img style="max-width: 200px;" :src=imgpath() alt=""></div>
+                            <img style="max-width: 200px;" :src= this.form.thumbnails alt=""></div>
                         </Col>
                     </Row>
                     <Row>
                         <Col span="12">
-                        <Form-item label="文章分类" prop="articletype_id">
+                        <Form-item label="文章分类" prop="articletype_id" style="position: relative;z-index: 100">
                             <Select ref="select" :clearable="selects" v-model="form.articletype_id"
                                     style="width:200px;position: relative;z-index: 10000"
                                     label-in-value filterable clearable 　@on-change="changeArticletype">
@@ -91,12 +91,14 @@
                         </Form-item>
                         </Col>
                     </Row>
+
                     <Form-item label="文章描述" prop="summary">
                         <Input v-model="form.summary" :rows="3" type="textarea" placeholder="请输入文章描述"></Input>
                     </Form-item>
-                    <Form-item label="内容" type="image" prop="content" style="height:100%;">
+                    <div style="width: 90px;text-align: center;font-size: 12px;">内容
+                    </div>
+                    <Form-item class="contentarticle" label="内容">
                         <!--<span @click="addimg('content')" title="素材图图片插入"><Icon type="image"></Icon></span>-->
-
                         <!--<Button type="success" size="small" style="display: inline-block" :loading="modal_loading" @click="addimg('content')">-->
                         <!--素材库图片-->
                         <!--</Button>-->
@@ -107,7 +109,6 @@
                             <Icon type="load-c" size=18 class="demo-spin-icon-load"></Icon>
                             <div>加载组件中...</div>
                         </Spin>
-
                     </Form-item>
                     <Row>
                         <Col span="12">
@@ -118,11 +119,12 @@
                     </Row>
                     <Row>
                         <Col span="21">
-                        <Form-item v-if="tag_name" label="分类标签" prop="tag_id">
+                        <Form-item v-if="tag_name" label="分类标签" prop="tag_id" style="position: relative;z-index: 10">
                             <Select ref="select" :clearable="selects" v-model="form.tag_id"
                                     style="position:relative;text-align: left;width:350px;z-index: 10000;"
                                     label-in-value multiple filterable　>
-                                <Option v-for="(item,index) in this.$store.state.commondata.articleTag" :value="index" :label="item" :key="index">
+                                <Option v-for="(item,index) in this.$store.state.commondata.articleTag" :value="index"
+                                        :label="item" :key="index">
                                     {{item}}
                                 </Option>
                             </Select>
@@ -158,6 +160,7 @@
   /* eslint-disable indent,semi */
 
   import http from '../../../libs/http'
+  import common from '../../../libs/common';
   import tinymce from 'tinymce'
   import materialimg from './materialimg.vue'
   // eslint-disable-next-line indent
@@ -175,13 +178,14 @@
       return {
         spinShow: true,
         switch1: true,
-        tag_name: '',
-        action: HOST + 'admin/uploadarticleimage',
+        tag_name: true,
+        action: HOST + 'article_image_upload',
         modal: false,
         imgshow: true,
         modal_loading: false,
         editor_id: '',
         img: '',
+        imgcontent: '',
         form: {
           summary: '',
           thumbnails: '',
@@ -198,6 +202,7 @@
           tag_id: [],
           tags: ''
         },
+        tagname: {},
         selects: true,
         AddRule: {
           title: [
@@ -239,6 +244,31 @@
             toolbar1: ' newnote print preview | undo redo | insert | styleselect | forecolor backcolor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image emoticons media codesample | mybutton | fullscreen |',
             autosave_interval: '20s',
             image_advtab: true,
+            automatic_uploads: true,
+            images_reuse_filename: true,
+            images_upload_url: 'http://bn.sjy/index.php/article_image_upload',
+            images_upload_handler: function (blobInfo, success, failure) {
+              let xhr, formData;
+              xhr = new XMLHttpRequest();
+              xhr.withCredentials = true;
+              xhr.open('POST', 'http://bn.sjy/index.php/article_image_upload');
+              xhr.onload = function () {
+                var json;
+                if (xhr.status != 200) {
+                  failure('HTTP Error: ' + xhr.status);
+                  return;
+                }
+                json = JSON.parse(xhr.responseText);
+                if (!json || typeof json.data.url !== 'string') {
+                  failure('Invalid JSON: ' + xhr.responseText);
+                  return;
+                }
+                success(json.data.url);
+              }
+              formData = new FormData();
+              formData.append('file', blobInfo.blob(), blobInfo.filename());
+              xhr.send(formData);
+            },
             table_default_styles: {
               width: '100%',
               borderCollapse: 'collapse'
@@ -246,7 +276,7 @@
             setup: function (editor) {
               editor.on('init', function (e) {
                 vm.spinShow = false
-                tinymce.get('tinymceEditer').setContent(vm.form.content)
+                // tinymce.get('tinymceEditer').setContent(vm.imgcontent)
               })
               editor.on('keydown', function (e) {
                 // editor.insertContent(vm.form.content)
@@ -257,17 +287,18 @@
                 text: '素材库图片',
                 icon: false,
                 onclick: function () {
+                  vm.img = 'content'
                   vm.$refs.addmaterial.getData()
                   vm.$refs.addmaterial.modal = true
                 }
               })
-              editor.addMenuItem('myitem', {
-                text: 'My menu item',
-                context: 'tools',
-                onclick: function () {
-                  editor.insertContent('&nbsp;Here\'s some content!&nbsp;')
-                }
-              })
+              // editor.addMenuItem('myitem', {
+              //   text: 'My menu item',
+              //   context: 'tools',
+              //   onclick: function () {
+              //     editor.insertContent('&nbsp;Here\'s some content!&nbsp;')
+              //   }
+              // })
             }
           })
         })
@@ -285,9 +316,12 @@
         this.form.tag_id = value.value
       },
       getsrc (src) {
-        let imgsrc = '<img src=' + src + '>'
-        this.form.content = this.form.content + imgsrc
-        tinymce.get('tinymceEditer').setContent(this.form.content)
+        if (this.img == 'content') {
+          let imgsrc = '<img src=' + src + '>'
+          tinymce.get('tinymceEditer').insertContent(imgsrc)
+        } else if (this.img == 'suolue') {
+          this.form.thumbnails = src
+        }
       },
       addimg (img) {
         this.img = img
@@ -296,24 +330,34 @@
       },
       imgpath (src) {
         if (src) {
-          let imgsrc = '<img src=' + src + '>'
-          this.form.content = imgsrc
-          return imgsrc
+          if (this.img == 'content') {
+            let imgsrc = '<img src=' + src + '>';
+            this.form.content += imgsrc;
+            return src;
+          } else if (this.img == 'suolue') {
+            this.form.thumbnails = src;
+            return src;
+          }
         }
+        if (this.form.thumbnails) {
+          return this.form.thumbnails;
+        }
+
+        return '';
       },
       addtags () {
         let data = {
           type: 'article',
           name: this.form.tags
         }
-        this.apiPost('admin/tags', data).then((res) => {
-          this.handelResponse(res, (data, msg) => {
+        this.apiPost('tags', data).then((res) => {
+          this.handleAjaxResponse(res, (data, msg) => {
             let tempN = this.form.tag_id
             let tagId = data.id
             let tagnum = tagId.toString()
             tempN.push(tagnum)
             this.form.tags = ''
-            this.$parent.gettag()
+            this.getArticleTag(true);
             this.$Message.success(msg)
           }, (data, msg) => {
             this.$Message.error(msg)
@@ -323,16 +367,29 @@
           this.$Message.error('网络异常，请稍后重试。')
         })
       },
+      // gettag () {
+      //   let data = {
+      //     type: 'article'
+      //   }
+      //   this.apiPost('get_tags', data).then((res) => {
+      //     this.handleAjaxResponse(res, (data, msg) => {
+      //       this.tagname = data
+      //     }, (data, msg) => {
+      //       this.$Message.error(msg);
+      //     })
+      //   }, (res) => {
+      //     this.$Message.error('网络异常，请稍后重试。');
+      //   })
+      // },
       // 缩略图上传回调
       getResponse (response, file, filelist) {
-        this.form.thumbnails = response.url
+        this.form.thumbnails = response.data.url
         if (response.status) {
-          this.$Message.success(response.msg)
-          this.imgpath()
+          this.$Message.success('上传成功')
           this.imgshow = true
           this.$refs.upImg.clearFiles()
         } else {
-          this.$Message.error(response.msg)
+          this.$Message.error('上传失败')
         }
         this.$refs.upImg.clearFiles()
       },
@@ -352,9 +409,15 @@
         this.$refs.add.validate((valid) => {
           if (valid) {
             this.modal_loading = true
+            let activeEditor = tinymce.activeEditor;
+            let editBody = activeEditor.getBody();
+            activeEditor.selection.select(editBody);
+            let text = activeEditor.selection.getContent({ 'format': 'html' });
+            this.form.content = text
             let data = this.form
+            console.log(data)
             this.apiPost('article', data).then((res) => {
-              this.handelResponse(res, (data, msg) => {
+              this.handleAjaxResponse(res, (data, msg) => {
                 this.modal = false
                 this.$parent.getData()
                 this.$Message.success(msg)
@@ -362,7 +425,6 @@
                 this.imgshow = false
                 this.form.thumbnails = ''
                 this.$refs.add.resetFields()
-
                 this.$refs.select.clearSingleSelect()
               }, (data, msg) => {
                 this.modal_loading = false
@@ -383,7 +445,7 @@
     destroyed () {
       tinymce.get('tinymceEditer').destroy()
     },
-    mixins: [http],
+    mixins: [http,common],
     props: {
       imgsrc: {}
     }
@@ -394,5 +456,10 @@
         min-height: 20em;
         padding-bottom: 1em;
         max-height: 25em;
+    }
+
+    .contentarticle .ivu-form-item-content {
+        margin-left: 20px !important;
+
     }
 </style>
