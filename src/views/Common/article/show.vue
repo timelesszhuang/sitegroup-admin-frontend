@@ -34,34 +34,51 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import http from '../../../assets/js/http.js';
+  import http from '../../../libs/http';
+  import common from '../../../libs/common';
   export default {
-    data() {
-      return {
-        editorOption: {},
-        modal: false,
-        modal_loading: false,
-      }
-    },
-    methods: {
-      close() {
-        this.modal = false;
-      }
-    },
-    mixins: [http],
-    props: {
-      form: {
-        default: {
-          title: "",
-          auther: '',
-          articletype_id: 0,
-          articletype_name: '',
-          content: ''
-        }
-      }
-    }
-  }
-
+      data () {
+          return {
+              editorOption: {},
+              modal: false,
+              modal_loading: false,
+              form: {
+                  summary: '',
+                  thumbnails: '',
+                  keywords: '',
+                  readcount: 0,
+                  title: '',
+                  shorttitle: '',
+                  auther: '',
+                  come_from: '',
+                  articletype_id: 0,
+                  articletype_name: '',
+                  content: '',
+                  title_color: '',
+                  tag_id: [],
+                  tags: ''
+              }
+          };
+      },
+      methods: {
+          edit (editid) {
+              this.apiGet('article/' + editid).then((res) => {
+                  this.handleAjaxResponse(res, (data, msg) => {
+                      this.form = data;
+                  }, (data, msg) => {
+                      this.$Message.error(msg);
+                  });
+              }, (res) => {
+                  // 处理错误信息
+                  this.$Message.error('网络异常，请稍后重试。');
+              });
+          },
+          close () {
+              this.modal = false;
+          }
+      },
+      mixins: [http, common]
+  };
 </script>
 <style scoped>
   .img img{

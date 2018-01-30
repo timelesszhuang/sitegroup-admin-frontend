@@ -6,7 +6,8 @@ const commondata = {
         questionTag: [],
         articleTag: [],
         productTag: [],
-        Tag: []
+        Tag: [],
+        TagType: []
     },
     mutations: {}
 };

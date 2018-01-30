@@ -6,7 +6,7 @@
       <Select ref="select" v-model="tag_id"  filterable clearable  placeholder="标签名"
               style="position:relative;text-align: left;width:250px;z-index: 10000;"
               label-in-value filterable　>
-        <Option v-for="item in tagname" :value="item.id" :label="item.tag" :key="item">
+        <Option v-for="(item, index) in this.$store.state.commondata.TagType" :value="item.id" :label="item.tag" :key="index">
           {{ item.tag }}
         </Option>
       </Select>
@@ -38,164 +38,154 @@
 
 <script type="text/ecmascript-6">
   import http from '../../../libs/http';
+  import common from '../../../libs/common';
   import articleadd from './add.vue';
   import articlesave from './save.vue';
 
   export default {
-    data() {
-      return {
-        self: this,
-        border: true,
-        stripe: true,
-        showheader: true,
-        showIndex: true,
-        size: 'small',
-        current: 1,
-        total: 0,
-        page: 1,
-        rows: 10,
-        name: '',
-        datas: [],
-        editinfo: {},
-        tagname:[],
-        tag_id:0,
-      }
-    },
-    components: {articleadd, articlesave},
-    created() {
-      this.getData();
-      this.gettagtype();
-    },
-    methods: {
-      getData() {
-        let data = {
-          params: {
-            page: this.page,
-            rows: this.rows,
-            name: this.name,
-            tag_id:this.tag_id
-          }
-        }
-        this.apiGet('articletype', data).then((data) => {
-          this.handelResponse(data, (data, msg) => {
-            this.datas = data.rows
-            this.total = data.total;
-          }, (data, msg) => {
-            this.$Message.error(msg);
-          })
-        }, (data) => {
-          this.$Message.error('网络异常，请稍后重试');
-        })
+      data () {
+          return {
+              self: this,
+              border: true,
+              stripe: true,
+              showheader: true,
+              showIndex: true,
+              size: 'small',
+              current: 1,
+              total: 0,
+              page: 1,
+              rows: 10,
+              name: '',
+              datas: [],
+              editinfo: {},
+              tagname: [],
+              tag_id: 0
+          };
       },
-      gettagtype() {
-        this.apiGet('typetag?all=1').then((res) => {
-          this.handelResponse(res, (data, msg) => {
-            this.tagname = data
-          }, (data, msg) => {
-            this.$Message.error(msg);
-          })
-        }, (res) => {
-          //处理错误信息
-          this.$Message.error('网络异常，请稍后重试。');
-        })
+      components: {articleadd, articlesave},
+      created () {
+          // this.gettagtype();
       },
-      changePage(page) {
-        this.page = page;
-        this.getData();
+      mounted () {
+          this.getTagType();
       },
-      changePageSize(pagesize) {
-        this.rows = pagesize;
-        this.getData();
-      },
-      queryData() {
-        this.getData();
-      },
-      add() {
-        this.$refs.add.modal = true
-      },
-      edit(index) {
-        let editid = this.datas[index].id
-        this.apiGet('articletype/' + editid).then((res) => {
-          this.handelResponse(res, (data, msg) => {
-            this.editinfo = data
-            this.modal = false;
-            this.$refs.save.modal = true
-          }, (data, msg) => {
-            this.$Message.error(msg);
-          })
-        }, (res) => {
-          //处理错误信息
-          this.$Message.error('网络异常，请稍后重试。');
-        })
-      },
-    },
-    computed: {
-      tableColumns() {
-        let columns = [];
-        let _this = this
-        if (this.showCheckbox) {
-          columns.push({
-            type: 'selection',
-            width: 60,
-            align: 'center'
-          })
-        }
-        if (this.showIndex) {
-          columns.push({
-            type: 'index',
-            width: 60,
-            align: 'center'
-          })
-        }
-        columns.push({
-          title: '分类名',
-          key: 'name',
-          sortable: true
-        });
-        columns.push({
-          title: '英文名',
-          key: 'alias',
-          sortable: true
-        });
-        columns.push({
-          title: '描述',
-          key: 'detail'
-        });
-        columns.push({
-          title: '标签',
-          key: 'tag'
-        });
-        columns.push(
-          {
-            title: '操作',
-            key: 'action',
-            width: 150,
-            align: 'center',
-            fixed: 'right',
-            render(h, params) {
-              return h('div', [
-                h('Button', {
-                  props: {
-                    size: 'small'
-                  },
-                  attrs: {
-                    type: 'primary'
-                  },
-                  on: {
-                    click: function () {
-                      //不知道为什么这个地方不是我需要的this
-                      _this.edit(params.index)
-                    }
+      methods: {
+          getData () {
+              let data = {
+                  params: {
+                      page: this.page,
+                      rows: this.rows,
+                      name: this.name,
+                      tag_id: this.tag_id
                   }
-                }, '修改')
-              ]);
-            }
+              };
+              this.apiGet('type', data).then((data) => {
+                  this.handleAjaxResponse(data, (data, msg) => {
+                      this.datas = data.rows;
+                      this.total = data.total;
+                  }, (data, msg) => {
+                      this.$Message.error(msg);
+                  });
+              }, (data) => {
+                  this.$Message.error('网络异常，请稍后重试');
+              });
+          },
+          changePage (page) {
+              this.page = page;
+              this.getData();
+          },
+          changePageSize (pagesize) {
+              this.rows = pagesize;
+              this.getData();
+          },
+          queryData () {
+              this.getData();
+          },
+          add () {
+              this.$refs.add.modal = true;
+          },
+          edit (index) {
+              let editid = this.datas[index].id;
+              this.$refs.save.modal = true;
+              this.$refs.save.edit(editid);
 
+              // this.apiGet('articletype/' + editid).then((res) => {
+              //     this.handelResponse(res, (data, msg) => {
+              //         this.editinfo = data;
+              //         this.modal = false;
+              //
+              //     }, (data, msg) => {
+              //         this.$Message.error(msg);
+              //     });
+              // }, (res) => {
+              //     // 处理错误信息
+              //     this.$Message.error('网络异常，请稍后重试。');
+              // });
           }
-        );
-        return columns;
-      }
-    },
-    mixins: [http]
-  }
+      },
+      computed: {
+          tableColumns () {
+              let columns = [];
+              let _this = this;
+              if (this.showCheckbox) {
+                  columns.push({
+                      type: 'selection',
+                      width: 60,
+                      align: 'center'
+                  });
+              }
+              if (this.showIndex) {
+                  columns.push({
+                      type: 'index',
+                      width: 60,
+                      align: 'center'
+                  });
+              }
+              columns.push({
+                  title: '分类名',
+                  key: 'name',
+                  sortable: true
+              });
+              columns.push({
+                  title: '英文名',
+                  key: 'alias',
+                  sortable: true
+              });
+              columns.push({
+                  title: '描述',
+                  key: 'detail'
+              });
+              columns.push(
+                  {
+                      title: '操作',
+                      key: 'action',
+                      width: 150,
+                      align: 'center',
+                      fixed: 'right',
+                      render (h, params) {
+                          return h('div', [
+                              h('Button', {
+                                  props: {
+                                      size: 'small'
+                                  },
+                                  attrs: {
+                                      type: 'primary'
+                                  },
+                                  on: {
+                                      click: function () {
+                                          // 不知道为什么这个地方不是我需要的this
+                                          _this.edit(params.index);
+                                      }
+                                  }
+                              }, '修改')
+                          ]);
+                      }
+
+                  }
+              );
+              return columns;
+          }
+      },
+      mixins: [http, common]
+  };
 </script>

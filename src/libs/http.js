@@ -8,7 +8,7 @@ import util from './util';
 
 const ajaxMethods = {
     methods: {
-        apiGet(url, data) {
+        apiGet (url, data) {
             return new Promise((resolve, reject) => {
                 axios.get(url, data).then((response) => {
                     resolve(response.data);
@@ -18,7 +18,7 @@ const ajaxMethods = {
             });
         },
         // ajax post相关的操作
-        apiPost(url, data) {
+        apiPost (url, data) {
             return new Promise(function (resolve, reject) {
                 axios.post(url, data).then((response) => {
                     resolve(response.data);
@@ -27,7 +27,7 @@ const ajaxMethods = {
                 });
             });
         },
-        apiDelete(url, id) {
+        apiDelete (url, id) {
             return new Promise((resolve, reject) => {
                 axios.delete(url + id).then((response) => {
                     resolve(response.data);
@@ -36,7 +36,7 @@ const ajaxMethods = {
                 });
             });
         },
-        apiPut(url, obj) {
+        apiPut (url, obj) {
             return new Promise((resolve, reject) => {
                 axios.put(url, obj).then((response) => {
                     resolve(response.data);
@@ -98,7 +98,7 @@ const ajaxMethods = {
                 });
             }
         },
-        autologin() {
+        autologin () {
             // 首先判断是不是允许自动登陆
             if (!Cookies.get('rememeber') || !Cookies.get('rememberKey')) {
                 // 用户没有设置自动登陆
@@ -107,11 +107,15 @@ const ajaxMethods = {
                 });
             }
             this.$Message.success('系统正在自动登录......');
+            let type = 'node';
+            if (parseInt(Cookies.get('type')) === 3) {
+                type = 'site';
+            }
             let data = {
                 remember_key: Cookies.get('rememberKey'),
                 login_id: Cookies.get('user_id'),
-                login_type: Cookies.get('type')
-            }
+                login_type: type
+            };
             this.apiPost('auto_login', data).then((res) => {
                 this.handleAjaxResponse(res, (data, msg) => {
                     // 自动登陆成功的操作
@@ -129,10 +133,9 @@ const ajaxMethods = {
                     });
                 }, (data, msg) => {
                     // 自动登录失败的操作
-                    this.showMsg('warning', '自动登录失败，请重新登陆');
                     // Cookies.set('rememberMe', false);
                     this.$router.push({
-                        name: 'login.'
+                        name: 'login'
                     });
                 });
             });

@@ -70,119 +70,117 @@
 <script type="text/ecmascript-6">
   import http from '../../../libs/http';
   export default {
-    data() {
-      const checkquestiontype = (rule, value, callback) => {
-        if (!value) {
-          callback(new Error('请选择问答分类'));
-        } else {
-          callback();
-        }
-      };
-      return {
-        switch1: true,
-        tag_name: true,
-        modal: false,
-        selects:true,
-        modal_loading: false,
-        AddRule: {
-          question: [
-            {required: true, message: '请填写问题名', trigger: 'blur'},
-          ],
-          content_paragraph: [
-            {required: true, message: '请填写答案', trigger: 'blur'},
-          ],
-          questiontype_id: [
-            {required: true,validator: checkquestiontype, trigger: 'blur'}
-          ]
-        }
-      }
-    },
-    methods: {
-      change(status) {
-        if (status) {
-          this.tag_name = true
-          this.$Message.info('切换到下拉选择');
-        } else {
-          this.tag_name = false
-          this.$Message.info('切换到添加标签');
-        }
-
+      data () {
+          const checkquestiontype = (rule, value, callback) => {
+              if (!value) {
+                  callback(new Error('请选择问答分类'));
+              } else {
+                  callback();
+              }
+          };
+          return {
+              switch1: true,
+              tag_name: true,
+              modal: false,
+              selects: true,
+              modal_loading: false,
+              AddRule: {
+                  question: [
+                      {required: true, message: '请填写问题名', trigger: 'blur'}
+                  ],
+                  content_paragraph: [
+                      {required: true, message: '请填写答案', trigger: 'blur'}
+                  ],
+                  questiontype_id: [
+                      {required: true, validator: checkquestiontype, trigger: 'blur'}
+                  ]
+              }
+          };
       },
-      changeTagtype(value) {
-        this.form.tag_id = value.value
-      },
-      updateData(data) {
-        this.form.content_paragraph = data
-      },
-      changeArticletype(type) {
-        this.form.type_name = type.label;
-      },
-      addtags() {
-        let data = {
-          type: "question",
-          name:this.form.tags
-        }
-        this.apiPost('admin/tags', data).then((res) => {
-          this.handelResponse(res, (data, msg) => {
-            let tempN = this.form.tag_id
-            let tagId = data.id
-            let tagnum = tagId.toString()
-            tempN.push(tagnum)
-            this.$parent.gettag();
-            this.$Message.success(msg);
-          }, (data, msg) => {
-            this.$Message.error(msg);
-          })
-        }, (res) => {
-          //处理错误信息
-          this.$Message.error('网络异常，请稍后重试。');
-        })
-
-      },
-      clearQuestionType(){
-        this.$refs.select.clearSingleSelect()
-      },
-      add() {
-        this.$refs.questionadd.validate((valid) => {
-          if (valid) {
-            this.modal_loading = true;
-            let data = this.form
-            let id = data.id;
-            this.apiPut('question/' + id, data).then((res) => {
-              this.handelResponse(res, (data, msg) => {
-                this.modal = false;
-                this.$parent.getData();
-                this.$Message.success(msg);
-                this.modal_loading = false;
-                this.$refs.questionadd.resetFields();
-                this.$refs.select.clearSingleSelect()
-              }, (data, msg) => {
-                this.modal_loading = false;
-                this.$Message.error(msg);
-              })
-            }, (res) => {
-              //处理错误信息
-              this.modal_loading = false;
-              this.$Message.error('网络异常，请稍后重试。');
-            })
+      methods: {
+          change (status) {
+              if (status) {
+                  this.tag_name = true;
+                  this.$Message.info('切换到下拉选择');
+              } else {
+                  this.tag_name = false;
+                  this.$Message.info('切换到添加标签');
+              }
+          },
+          changeTagtype (value) {
+              this.form.tag_id = value.value;
+          },
+          updateData (data) {
+              this.form.content_paragraph = data;
+          },
+          changeArticletype (type) {
+              this.form.type_name = type.label;
+          },
+          addtags () {
+              let data = {
+                  type: 'question',
+                  name: this.form.tags
+              };
+              this.apiPost('admin/tags', data).then((res) => {
+                  this.handelResponse(res, (data, msg) => {
+                      let tempN = this.form.tag_id;
+                      let tagId = data.id;
+                      let tagnum = tagId.toString();
+                      tempN.push(tagnum);
+                      this.$parent.gettag();
+                      this.$Message.success(msg);
+                  }, (data, msg) => {
+                      this.$Message.error(msg);
+                  });
+              }, (res) => {
+                  // 处理错误信息
+                  this.$Message.error('网络异常，请稍后重试。');
+              });
+          },
+          clearQuestionType () {
+              this.$refs.select.clearSingleSelect();
+          },
+          add () {
+              this.$refs.questionadd.validate((valid) => {
+                  if (valid) {
+                      this.modal_loading = true;
+                      let data = this.form;
+                      let id = data.id;
+                      this.apiPut('question/' + id, data).then((res) => {
+                          this.handelResponse(res, (data, msg) => {
+                              this.modal = false;
+                              this.$parent.getData();
+                              this.$Message.success(msg);
+                              this.modal_loading = false;
+                              this.$refs.questionadd.resetFields();
+                              this.$refs.select.clearSingleSelect();
+                          }, (data, msg) => {
+                              this.modal_loading = false;
+                              this.$Message.error(msg);
+                          });
+                      }, (res) => {
+                          // 处理错误信息
+                          this.modal_loading = false;
+                          this.$Message.error('网络异常，请稍后重试。');
+                      });
+                  }
+              });
           }
-        })
-      }
-    },
-    props: {
-      form: {
-        default: {
-          question: '',
-          content_paragraph: '',
-        }
       },
-      questiontype: {
-        default: []
+      props: {
+          form: {
+              default: {
+                  question: '',
+                  content_paragraph: ''
+              }
+          },
+          questiontype: {
+              default: []
+          },
+          tagname: {
+              default: {}
+          }
       },
-      tagname: {
-        default: {}
-      }
-    },
-    mixins: [http]
-  }
+      mixins: [http]
+  };
 </script>

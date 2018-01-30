@@ -15,7 +15,7 @@
             </Select>
             <Button type="primary" @click="queryData">查询</Button>
             <Button type="success" @click="add">添加</Button>
-            <!--<Button type="error" @click="importadd">csv导入</Button>-->
+            <Button type="error" @click="importadd">csv导入</Button>
         </div>
         <div class="content" style="margin-top:10px;">
             <Table :border="border" :stripe="stripe" :show-header="showheader"
@@ -34,6 +34,9 @@
         </div>
         <articleadd ref="add"></articleadd>
         <articlesave ref="save"></articlesave>
+        <articleshow ref="show"></articleshow>
+        <articlecsv ref="csvimport"></articlecsv>
+        <!--<showhtml ref="showhtml" :form="showhtmldata"></showhtml>-->
     </div>
 </template>
 <script>
@@ -41,6 +44,10 @@
     import common from '../../../libs/common';
     import articleadd from './add';
     import articlesave from './save';
+    // import showhtml from './showhtml.vue';
+    import articleshow from './show.vue';
+    import articlecsv from './csvimport.vue';
+
     export default {
         name: 'index',
         data () {
@@ -102,9 +109,48 @@
                 this.rows = pagesize;
                 this.getData();
             },
+            importadd () {
+                this.$refs.csvimport.modal = true;
+                this.$refs.csvimport.csvclose();
+            },
+            show (index) {
+                let editid = this.datas[index].id;
+                this.$refs.show.edit(editid);
+                this.$refs.show.modal = true;
+            },
+            showhtml (index) {
+                let data = this.datas[index];
+                this.apiPost('articleshowhtml', data).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        if (data.length == 1) {
+                            let open = window.open(data[0].url);
+                            if (!open) {
+                                this.error(false);
+                            }
+                        } else {
+                            this.showhtmldata = data;
+                            this.$refs.showhtml.modal = true;
+                        }
+                        this.modal = false;
+                    }, (data, msg) => {
+                        this.modal_loading = false;
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                    this.modal_loading = false;
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            },
             // 添加文章相关操作
             add () {
                 this.$refs.add.modal = true;
+            },
+            error (nodesc) {
+                this.$Notice.error({
+                    title: '预览模板页被浏览器拦截,请允许',
+                    desc: nodesc ? '' : ''
+                });
             },
             edit (index) {
                 let editid = this.datas[index].id;
@@ -123,7 +169,7 @@
                 // });
             }
         },
-        components: {articleadd, articlesave},
+        components: {articleadd, articlesave, articleshow, articlecsv},
         computed: {
             tableColumns () {
                 let columns = [];

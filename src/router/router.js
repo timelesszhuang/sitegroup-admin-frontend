@@ -105,6 +105,12 @@ export const nodeappRouter = [
                 name: 'article',
                 component: () => import('@/views/Common/article/index.vue')
             },
+          {
+            path: 'articlemanage',
+            title: '文章管理',
+            name: 'articlemanage',
+            component: () => import('@/views/Common/articlemanage/tab.vue')
+          },
           // {
           //   path: 'question',
           //   title: '问答管理',

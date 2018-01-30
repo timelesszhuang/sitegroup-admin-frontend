@@ -25,47 +25,47 @@
 <script type="text/ecmascript-6">
   import http from '../../../libs/http';
   export default {
-    data() {
-      return {
-        modal: false,
-        modal_loading: false,
-        form: {
-          tag: "",
-        },
-        AddRule: {
-          tag: [
-            {required: true, message: '请输入标签名称', trigger: 'blur'},
-          ],
-        }
-      }
-    },
-    methods: {
-      add() {
-        this.$refs.articleadd.validate((valid) => {
-          if(valid){
-            this.modal_loading = true;
-            let data = this.form;
-            this.apiPost('typetag', data).then((res) => {
-              this.handelResponse(res, (data, msg) => {
-                this.modal = false;
-                this.$parent.getData();
-                this.$Message.success(msg);
-                this.modal_loading = false;
-                this.$refs.articleadd.resetFields();
-              }, (data, msg) => {
-                this.modal_loading = false;
-                this.$Message.error(msg);
-              })
-            }, (res) => {
-              //处理错误信息
-              this.modal_loading = false;
-              this.$Message.error('网络异常，请稍后重试。');
-            })
+      data () {
+          return {
+              modal: false,
+              modal_loading: false,
+              form: {
+                  tag: ''
+              },
+              AddRule: {
+                  tag: [
+                      {required: true, message: '请输入标签名称', trigger: 'blur'}
+                  ]
+              }
+          };
+      },
+      methods: {
+          add () {
+              this.$refs.articleadd.validate((valid) => {
+                  if (valid) {
+                      this.modal_loading = true;
+                      let data = this.form;
+                      this.apiPost('type_tag', data).then((res) => {
+                          this.handleAjaxResponse(res, (data, msg) => {
+                              this.modal = false;
+                              this.$parent.getData();
+                              this.$Message.success(msg);
+                              this.modal_loading = false;
+                              this.$refs.articleadd.resetFields();
+                          }, (data, msg) => {
+                              this.modal_loading = false;
+                              this.$Message.error(msg);
+                          });
+                      }, (res) => {
+                          // 处理错误信息
+                          this.modal_loading = false;
+                          this.$Message.error('网络异常，请稍后重试。');
+                      });
+                  }
+              });
           }
-        })
-      }
-    },
-    mixins: [http],
+      },
+      mixins: [http]
 
-  }
+  };
 </script>

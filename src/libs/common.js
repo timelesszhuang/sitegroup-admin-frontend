@@ -10,7 +10,11 @@ const common = {
         getArticleType (reset = false) {
             let articletype = this.$store.state.commondata.articleType;
             if (articletype.length === 0 || reset) {
-                this.apiGet('get_article_type_list').then((res) => {
+                let data = {
+                    params: {module_type: 'article'
+                    }
+                };
+                this.apiGet('get_type_list', data).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.$store.state.commondata.articleType = data;
                     }, (data, msg) => {
@@ -41,7 +45,11 @@ const common = {
         getQuestionType (reset = false) {
             let questionType = this.$store.state.commondata.questionType;
             if (questionType.length === 0 || reset) {
-                this.apiGet('questionType/list').then((res) => {
+                let data = {
+                    params: {module_type: 'question'
+                    }
+                };
+                this.apiGet('get_type_list', data).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.$store.state.commondata.questionType = data;
                     }, (data, msg) => {
@@ -75,9 +83,11 @@ const common = {
             let articleTag = this.$store.state.commondata.articleTag;
             if (articleTag.length === 0 || reset) {
                 let data = {
-                    type: 'article'
+                    params: {
+                        type: 'article'
+                    }
                 };
-                this.apiPost('get_tags', data).then((res) => {
+                this.apiGet('get_tags', data).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.$store.state.commondata.articleTag = data;
                     }, (data, msg) => {
@@ -93,11 +103,30 @@ const common = {
             let Tag = this.$store.state.commondata.Tag;
             if (Tag.length === 0 || reset) {
                 let data = {
-                    type: 'article'
+                    params: {
+                    }
                 };
-                this.apiPost('admin/gettags', data).then((res) => {
-                    this.handelResponse(res, (data, msg) => {
+                this.apiGet('get_tags', data).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
                         this.$store.state.commondata.Tag = data;
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            }
+        },
+        getTagType (reset = false) {
+            let TagType = this.$store.state.commondata.TagType;
+            if (TagType.length === 0 || reset) {
+                let data = {
+                    params: {}
+                };
+                this.apiGet('type_tag?all=1', data).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.$store.state.commondata.TagType = data;
                     }, (data, msg) => {
                         this.$Message.error(msg);
                     });

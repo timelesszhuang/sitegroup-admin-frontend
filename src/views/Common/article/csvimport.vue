@@ -29,10 +29,15 @@
             <a v-bind:href=this.csvpath target="_blank">点击下载模板</a>
           </Form-item>
           <Form-item label="文章分类" prop="articletype_id">
-            <Select ref="select" :clearable="selects"v-model="form.articletype_id" style="width:200px"
-                    label-in-value    filterable clearable  　@on-change="changeArticletype" >
-              <Option-group  v-for="(item,index) in articletype" :label="index" :key="item">
-                <Option v-for="items in item"  :value="items.id" :label="items.name" :key="index">{{ items.name }}</Option>
+            <Select ref="select" :clearable="selects" v-model="form.articletype_id"
+                    style="width:200px;position: relative;z-index: 10000"
+                    label-in-value filterable clearable 　@on-change="changeArticletype">
+              <Option-group v-for="(item,index) in this.$store.state.commondata.articleType"
+                            :label="index" :key="index">
+                <Option v-for="(peritem ,perindex) in item" :value="peritem.id"
+                        :label="peritem.name"
+                        :key="perindex">{{ peritem.name }}
+                </Option>
               </Option-group>
             </Select>
           </Form-item>
@@ -58,91 +63,88 @@
   import http from '../../../libs/http';
 
   export default {
-    data() {
-      const checkarticletype = (rule, value, callback) => {
-        if (!value) {
-          callback(new Error('请选择文章分类'));
-        } else {
-          callback();
-        }
-      };
-      return {
-        action: HOST + 'article/csvupload',
-        modal: false,
-        dataerror:[],
-        csvpath:'http://lexiaoyi.oss-cn-beijing.aliyuncs.com/importarticlecsv/importdemo.csv',
-        importcsv: true,
-        modal_loading: false,
-        errorinfo: "",
-        form: {
-          csvupload: ''
-        },
-        selects: true,
-        AddRule: {}
-      }
-    },
-    methods: {
-      getResponse(response, file, filelist) {
-        this.form.csvupload = response.url;
-        this.$Message.success(response.msg);
+      data () {
+          const checkarticletype = (rule, value, callback) => {
+              if (!value) {
+                  callback(new Error('请选择文章分类'));
+              } else {
+                  callback();
+              }
+          };
+          return {
+              action: HOST + 'article_csv_upload',
+              modal: false,
+              dataerror: [],
+              csvpath: 'http://lexiaoyi.oss-cn-beijing.aliyuncs.com/importarticlecsv/importdemo.csv',
+              importcsv: true,
+              modal_loading: false,
+              errorinfo: '',
+              form: {
+                  csvupload: ''
+              },
+              selects: true,
+              AddRule: {
+                  articletype_id: [
+                      {required: true, validator: checkarticletype, trigger: 'blur'}
+                  ]
+              }
+          };
       },
-      getErrorInfo(error, file, filelist) {
-        this.$Message.error(error);
-      },
-      formatError() {
-        this.$Message.error('文件格式只支持 csv格式。');
-      },
-      changeArticletype(value) {
-        this.form.articletype_name = value.label
-        this.form.articletype_id = value.value
-      },
-      close(){
-        this.modal_loading = false;
-        this.modal = false
-        this.importcsv = true
-
-      },
-      csvclose(){
-        this.importcsv = true
-
-      },
-      addcsv() {
-        this.$refs.addcsv.validate((valid) => {
-          if (valid) {
-            this.modal_loading = true;
-            let data = this.form;
-            this.apiPost('article/csvimport', data).then((res) => {
-              this.handelResponse(res, (data, msg) => {
-                if(data.error){
-                  this.dataerror =  data.error
-                  this.importcsv = false
-                }
-                this.$parent.getData();
-                this.$Message.success(msg);
-                this.modal_loading = false;
-                this.$refs.addcsv.resetFields();
-                this.$refs.select.clearSingleSelect()
-                this.$refs.uploadcsv.clearFiles()
-              }, (data, msg) => {
-                this.modal_loading = false;
-                this.$Message.error(msg);
-              })
-            }, (res) => {
-              //处理错误信息
+      methods: {
+          getResponse (response, file, filelist) {
+              this.form.csvupload = response.data.url;
+              this.$Message.success(response.msg);
+          },
+          getErrorInfo (error, file, filelist) {
+              this.$Message.error(error);
+          },
+          formatError () {
+              this.$Message.error('文件格式只支持 csv格式。');
+          },
+          changeArticletype (value) {
+              this.form.articletype_name = value.label;
+              this.form.articletype_id = value.value;
+          },
+          close () {
               this.modal_loading = false;
-              this.$Message.error('网络异常，请稍后重试。');
-            })
+              this.modal = false;
+              this.importcsv = true;
+          },
+          csvclose () {
+              this.importcsv = true;
+          },
+          addcsv () {
+              this.$refs.addcsv.validate((valid) => {
+                  if (valid) {
+                      this.modal_loading = true;
+                      let data = this.form;
+                      this.apiPost('article_csv_import', data).then((res) => {
+                          this.handleAjaxResponse(res, (data, msg) => {
+                              if (data.error) {
+                                  this.dataerror = data.error;
+                                  this.importcsv = false;
+                              }
+                              this.$parent.getData();
+                              this.$Message.success(msg);
+                              this.modal_loading = false;
+                              this.$refs.addcsv.resetFields();
+                              this.$refs.select.clearSingleSelect();
+                              this.$refs.uploadcsv.clearFiles();
+                          }, (data, msg) => {
+                              this.modal_loading = false;
+                              this.$Message.error(msg);
+                          });
+                      }, (res) => {
+                          // 处理错误信息
+                          this.modal_loading = false;
+                          this.$Message.error('网络异常，请稍后重试。');
+                      });
+                  }
+              });
           }
-        })
-      }
-    },
-    mixins: [http],
-    props: {
-      articletype: {
-        default: []
-      }
-    }
-  }
+      },
+      mixins: [http]
+  };
 </script>
 <style>
   .ql-container .ql-editor {
