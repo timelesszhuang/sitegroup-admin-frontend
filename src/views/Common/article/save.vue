@@ -196,7 +196,7 @@
               spinShow: true,
               tag_name: true,
               switch1: true,
-              action: HOST + 'admin/uploadarticleimage',
+              action: HOST + 'article_image_upload',
               imgshow: true,
               editorOption: {
                   modules: {
@@ -279,6 +279,31 @@
                       toolbar1: ' newnote print preview | undo redo | insert | styleselect | forecolor backcolor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image emoticons media codesample | mybutton | fullscreen |',
                       autosave_interval: '20s',
                       image_advtab: true,
+                      automatic_uploads: true,
+                      images_reuse_filename: true,
+                      images_upload_url: 'http://bn.sjy/index.php/article_image_upload',
+                      images_upload_handler: function (blobInfo, success, failure) {
+                          let xhr, formData;
+                          xhr = new XMLHttpRequest();
+                          xhr.withCredentials = true;
+                          xhr.open('POST', 'http://bn.sjy/index.php/article_image_upload');
+                          xhr.onload = function () {
+                              var json;
+                              if (xhr.status != 200) {
+                                  failure('HTTP Error: ' + xhr.status);
+                                  return;
+                              }
+                              json = JSON.parse(xhr.responseText);
+                              if (!json || typeof json.data.url !== 'string') {
+                                  failure('Invalid JSON: ' + xhr.responseText);
+                                  return;
+                              }
+                              success(json.data.url);
+                          };
+                          formData = new FormData();
+                          formData.append('file', blobInfo.blob(), blobInfo.filename());
+                          xhr.send(formData);
+                      },
                       table_default_styles: {
                           width: '100%',
                           borderCollapse: 'collapse'
@@ -361,11 +386,12 @@
                   name: this.form.tags
               };
               this.apiPost('tags', data).then((res) => {
-                  this.handelResponse(res, (data, msg) => {
-                      let tempN = [];
+                  this.handleAjaxResponse(res, (data, msg) => {
+                      let tempN = this.form.tag_id;
                       let tagId = data.id;
                       let tagnum = tagId.toString();
                       tempN.push(tagnum);
+                      this.form.tags = '';
                       this.getArticleTag(true);
                       this.$Message.success(msg);
                   }, (data, msg) => {
