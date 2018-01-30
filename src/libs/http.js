@@ -93,7 +93,9 @@ const ajaxMethods = {
                     desc: res.detail === undefined ? '' : res.detail
                 });
             } else {
-                this.autologin();
+                this.$Notice.warning({
+                    title: res.msg === '' ? '返回值状态异常，请售后再试' : res.msg
+                });
             }
         },
         autologin() {

@@ -52,6 +52,13 @@ export const locking = {
     component: () => import('@/views/main-components/lockscreen/components/locking-page.vue')
 };
 
+export const selectsite = {
+    path: '/site_select',
+    title: '管理站点选择',
+    name: 'site_select',
+    component: () => import('@/views/site/select-site/select-site.vue')
+};
+
 
 // node 的 作为Main组件的子页面展示但是不在左侧菜单显示的路由写在nodeotherRouter里
 export const nodeotherRouter = {
@@ -619,7 +626,7 @@ export const siteotherRouter = {
     name: 'otherRouter',
     redirect: '/site',
     component: Main,
-    title: '',
+    title: '网站管理后台',
     children: [
         {path: 'site', title: {i18n: 'home'}, name: 'site_index', component: () => import('@/views/home/home.vue')},
         {
@@ -887,6 +894,7 @@ export const routers = [
     // 公司总管理员账号
     adminotherRouter,
     ...adminappRouter,
+    selectsite,
     preview,
     locking,
     page500,
@@ -899,6 +907,7 @@ export const noderouters = [
     loginRouter,
     nodeotherRouter,
     ...nodeappRouter,
+    selectsite,
     preview,
     locking,
     page500,
@@ -912,6 +921,7 @@ export const adminrouters = [
     loginRouter,
     adminotherRouter,
     ...adminappRouter,
+    selectsite,
     preview,
     locking,
     page500,
@@ -924,6 +934,7 @@ export const siterouters = [
     loginRouter,
     siteotherRouter,
     ...siteappRouter,
+    selectsite,
     preview,
     locking,
     page500,

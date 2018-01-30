@@ -214,8 +214,9 @@
                                 });
                             } else if (type === 3) {
                                 // 用户首页
+                                // 跳转到选择站点的页面
                                 this.$router.push({
-                                    name: 'site_index'
+                                    name: 'site_select'
                                 });
                             } else if (type === 1) {
                                 // 公司总管理后台账号进入
@@ -246,21 +247,13 @@
                 }
             }
         },
+        mounted: function () {
+            // 默认进入登录页面的话需要 清除下之前的登陆信息
+            this.$store.commit('logout', this);
+        },
         created: function () {
             let date1 = new Date();
             this.copytime = date1.getFullYear();
-            // 第一次如果是记住密码的话  会到本地存储中取出相关数据 然后自动登录
-            // this.checkIsRememberpassword();
-            // 没有设置记住密码 的话 或者是第一次登陆的情况下 会到后台获取基本的配置数据
-            /* this.apiGet('common/login/getNoauth').then((res) => {
-                this.handelResponse(res, (data, msg) => {
-                    this.showTitle(data);
-                }, (data, msg) => {
-                    this.showMsg('warning', msg);
-                });
-            }, (data) => {
-                this.showMsg('warning', '网络异常，请稍后重试');
-            }); */
             this.verifyUrl = this.verifyImg;
         },
         mixins: [http]

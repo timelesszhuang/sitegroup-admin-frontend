@@ -27,6 +27,9 @@ const RouterConfig = {
 export const router = new VueRouter(RouterConfig);
 
 router.beforeEach((to, from, next) => {
+    if (to.name === 'error-404' || to.name === 'error-403' || to.name === 'error-500') {
+        next();
+    }
     // 需要处理下自动登陆的情况
     // iview 相关菜单加载时间操作
     iView.LoadingBar.start();
@@ -47,6 +50,11 @@ router.beforeEach((to, from, next) => {
             });
         } else {
             const curRouterObj = Util.getRouterObjByName([nodeotherRouter, ...nodeappRouter], to.name);
+            if (!curRouterObj) {
+                next({
+                    name: 'error-404'
+                });
+            }
             if (curRouterObj && curRouterObj.access !== undefined) { // 需要判断权限的路由
                 if (curRouterObj.access === parseInt(Cookies.get('type'))) {
                     Util.toDefaultPage([adminotherRouter, ...adminappRouter], to.name, router, next); // 如果在地址栏输入的是一级菜单则默认打开其第一个二级菜单的页面
@@ -73,6 +81,11 @@ router.beforeEach((to, from, next) => {
             });
         } else {
             const curRouterObj = Util.getRouterObjByName([nodeotherRouter, ...nodeappRouter], to.name);
+            if (!curRouterObj) {
+                next({
+                    name: 'error-404'
+                });
+            }
             if (curRouterObj && curRouterObj.access !== undefined) { // 需要判断权限的路由
                 if (curRouterObj.access === parseInt(Cookies.get('type'))) {
                     Util.toDefaultPage([nodeotherRouter, ...nodeappRouter], to.name, router, next); // 如果在地址栏输入的是一级菜单则默认打开其第一个二级菜单的页面
@@ -89,29 +102,45 @@ router.beforeEach((to, from, next) => {
         }
     } else if (userType === '3') {
         // site用户
-        if (!Cookies.get('user_id') && to.name !== 'login') { // 判断是否已经登录且前往的页面不是登录页
-            next({
-                name: 'login'
-            });
-        } else if (Cookies.get('user_id') && to.name === 'login') { // 判断是否已经登录且前往的是登录页
-            Util.title();
-            next({
-                name: 'site_index'
-            });
+        if (!Cookies.get('siteId') && Cookies.get('user_id')) {
+            // 已经登陆过了 但是没有选择管理的站点
+            if (to.name !== 'site_select') {
+                next({
+                    name: 'site_select'
+                });
+            } else {
+                next();
+            }
         } else {
-            const curRouterObj = Util.getRouterObjByName([siteotherRouter, ...siteappRouter], to.name);
-            if (curRouterObj && curRouterObj.access !== undefined) { // 需要判断权限的路由
-                if (curRouterObj.access === parseInt(Cookies.get('type'))) {
-                    Util.toDefaultPage([siteotherRouter, ...siteappRouter], to.name, router, next); // 如果在地址栏输入的是一级菜单则默认打开其第一个二级菜单的页面
-                } else {
+            if (!Cookies.get('user_id') && to.name !== 'login') { // 判断是否已经登录且前往的页面不是登录页
+                next({
+                    name: 'login'
+                });
+            } else if (Cookies.get('user_id') && to.name === 'login') { // 判断是否已经登录且前往的是登录页
+                Util.title();
+                next({
+                    name: 'site_index'
+                });
+            } else {
+                const curRouterObj = Util.getRouterObjByName([siteotherRouter, ...siteappRouter], to.name);
+                if (!curRouterObj) {
                     next({
-                        replace: true,
-                        name: 'error-403'
+                        name: 'error-404'
                     });
                 }
-            } else {
-                // 没有配置权限的路由, 直接通过
-                Util.toDefaultPage([...siterouters], to.name, router, next);
+                if (curRouterObj && curRouterObj.access !== undefined) { // 需要判断权限的路由
+                    if (curRouterObj.access === parseInt(Cookies.get('type'))) {
+                        Util.toDefaultPage([siteotherRouter, ...siteappRouter], to.name, router, next); // 如果在地址栏输入的是一级菜单则默认打开其第一个二级菜单的页面
+                    } else {
+                        next({
+                            replace: true,
+                            name: 'error-403'
+                        });
+                    }
+                } else {
+                    // 没有配置权限的路由, 直接通过
+                    Util.toDefaultPage([...siterouters], to.name, router, next);
+                }
             }
         }
     } else if (userType === undefined) {

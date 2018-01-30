@@ -31,6 +31,7 @@
                     </div>
                 </div>
                 <div class="header-avator-con">
+                    <site-change v-if="showSiteChange"></site-change>
                     <full-screen v-model="isFullScreen" @on-change="fullscreenChange"></full-screen>
                     <lock-screen></lock-screen>
                     <message-tip v-model="mesCount"></message-tip>
@@ -64,7 +65,6 @@
                 </keep-alive>
             </div>
         </div>
-        <select-site ref="selectSite"></select-site>
     </div>
 </template>
 <script>
@@ -77,8 +77,7 @@
     import themeSwitch from './main-components/theme-switch/theme-switch.vue';
     import util from '@/libs/util.js';
     import http from '../libs/http';
-    // 站点选择
-    import selectSite from './site/select-site/select-site';
+    import siteChange from './site/select-site/site-change';
 
     export default {
         components: {
@@ -89,42 +88,44 @@
             lockScreen,
             messageTip,
             themeSwitch,
-            selectSite
+            siteChange
         },
-        data() {
+        data () {
             return {
                 shrink: false,
                 userName: '测试啊啊啊',
                 isFullScreen: false,
-                openedSubmenuArr: this.$store.state.app.openedSubmenuArr
+                openedSubmenuArr: this.$store.state.app.openedSubmenuArr,
+                // 只有最小的节点才能操作相关切换站点操作
+                showSiteChange: false
             };
         },
         computed: {
-            menuList() {
+            menuList () {
                 return this.$store.state.app.menuList;
             },
-            pageTagsList() {
+            pageTagsList () {
                 return this.$store.state.app.pageOpenedList; // 打开的页面的页面对象
             },
-            currentPath() {
+            currentPath () {
                 return this.$store.state.app.currentPath; // 当前面包屑数组
             },
-            avatorPath() {
+            avatorPath () {
                 return localStorage.avatorImgPath;
             },
-            cachePage() {
+            cachePage () {
                 return this.$store.state.app.cachePage;
             },
-            lang() {
+            lang () {
                 return this.$store.state.app.lang;
             },
-            menuTheme() {
+            menuTheme () {
                 return this.$store.state.app.menuTheme;
             },
-            mesCount() {
+            mesCount () {
                 return this.$store.state.app.messageCount;
-            },
-            showAddCompanyInfo() {
+            }
+            /* showAddCompanyInfo() {
                 // 完善公司信息 公司相关信息 只有type 为2 的才会做该操作
                 let type = Cookies.get('type');
                 let isShow = false;
@@ -132,12 +133,10 @@
                     isShow = true;
                 }
                 return isShow;
-            }
+            } */
         },
         methods: {
-            init() {
-                // 弹出窗体来选择要操作的站点
-                this.selectUserSite();
+            init () {
                 // 设置已经打开的页面
                 this.$store.commit('setOpenedList');
                 this.$store.commit('setInitRouter');
@@ -150,21 +149,18 @@
                 if (pathArr.length >= 2) {
                     this.$store.commit('addOpenSubmenu', pathArr[1].name);
                 }
+                if (parseInt(Cookies.get('type')) === 3) {
+                    this.showSiteChange = true;
+                }
                 let messageCount = 3;
                 this.messageCount = messageCount.toString();
                 this.checkTag(this.$route.name);
                 this.$store.commit('setMessageCount', 3);
             },
-            selectUserSite() {
-                // 选择最小节点要操作的站点  如果是已经 type为 3的 则需要展现出来 允许管理的后台
-                if (parseInt(Cookies.get('type')) === 3) {
-                    this.$refs.selectSite.modal = true;
-                }
-            },
-            toggleClick() {
+            toggleClick () {
                 this.shrink = !this.shrink;
             },
-            handleClickUserDropdown(name) {
+            handleClickUserDropdown (name) {
                 if (name === 'ownSpace') {
                     util.openNewPage(this, 'ownspace_index');
                     this.$router.push({
@@ -183,7 +179,7 @@
                     });
                 }
             },
-            checkTag(name) {
+            checkTag (name) {
                 let openpageHasTag = this.pageTagsList.some(item => {
                     if (item.name === name) {
                         return true;
@@ -193,10 +189,10 @@
                     util.openNewPage(this, name, this.$route.params || {}, this.$route.query || {});
                 }
             },
-            handleSubmenuChange(val) {
+            handleSubmenuChange (val) {
                 // console.log(val)
             },
-            beforePush(name) {
+            beforePush (name) {
                 // if (name === 'accesstest_index') {
                 //     return false;
                 // } else {
@@ -204,12 +200,12 @@
                 // }
                 return true;
             },
-            fullscreenChange(isFullScreen) {
+            fullscreenChange (isFullScreen) {
                 // console.log(isFullScreen);
             }
         },
         watch: {
-            '$route'(to) {
+            '$route' (to) {
                 this.$store.commit('setCurrentPageName', to.name);
                 let pathArr = util.setCurrentPath(this, to.name);
                 if (pathArr.length > 2) {
@@ -218,14 +214,14 @@
                 this.checkTag(to.name);
                 localStorage.currentPageName = to.name;
             },
-            lang() {
+            lang () {
                 util.setCurrentPath(this, this.$route.name); // 在切换语言时用于刷新面包屑
             }
         },
-        mounted() {
+        mounted () {
             this.init();
         },
-        created() {
+        created () {
             // 显示打开的页面的列表
             this.$store.commit('setOpenedList');
         },

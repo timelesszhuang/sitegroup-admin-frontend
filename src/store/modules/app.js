@@ -230,10 +230,10 @@ const app = {
         },
         setInitRouter(state) {
             let router = [adminotherRouter, ...adminappRouter];
-            if (state.userType == 2) {
+            if (parseInt(state.userType) === 2) {
                 router = [nodeotherRouter, ...nodeappRouter];
-            } else if (state.userType == 3) {
-
+            } else if (parseInt(state.userType) === 3) {
+                router = [siteotherRouter, ...siteappRouter];
             }
             state.routers = router;
         },
@@ -246,7 +246,7 @@ const app = {
                 path: path,
                 name: homeIndex
             };
-            if (state.userType == 2) {
+            if (parseInt(state.userType) === 2) {
                 homeIndex = 'node_index';
                 path = '/node';
                 currentpath = {
@@ -254,7 +254,7 @@ const app = {
                     path: path,
                     name: homeIndex
                 };
-            } else if (state.userType == 3) {
+            } else if (parseInt(state.userType) === 3) {
                 homeIndex = 'site_index';
                 path = '/site';
                 currentpath = {
