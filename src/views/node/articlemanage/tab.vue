@@ -17,7 +17,6 @@
 <script>
   import http from '../../../libs/http';
   import common from '../../../libs/common';
-
   import artic from '../../Common/article/index';
   import articletype from '../articletype/index';
   import tag from '../tag/index.vue';

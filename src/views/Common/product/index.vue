@@ -67,8 +67,8 @@
       components: {padd, psave, editimg, showhtml},
       created () {
           this.getData();
-          this.getproducttype();
-          this.gettag();
+          // this.getproducttype();
+          // this.gettag();
       },
       methods: {
           getData () {
@@ -80,8 +80,8 @@
                       type_id: this.type_id
                   }
               };
-              this.apiGet('admin/product', data).then((data) => {
-                  this.handelResponse(data, (data, msg) => {
+              this.apiGet('product', data).then((data) => {
+                  this.handleAjaxResponse(data, (data, msg) => {
                       this.datas = data.rows;
                       this.total = data.total;
                   }, (data, msg) => {

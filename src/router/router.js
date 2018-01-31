@@ -115,6 +115,12 @@ export const nodeappRouter = [
         name: 'question',
         component: () => import('@/views/node/questionmanage/tab.vue')
       },
+      {
+        path: 'product',
+        title: '产品管理',
+        name: 'product',
+        component: () => import('@/views/node/productmanage/tab.vue')
+      },
       // {
       //   path: 'product',
       //   title: '产品管理',
