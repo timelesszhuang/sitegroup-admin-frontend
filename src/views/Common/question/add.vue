@@ -17,14 +17,12 @@
             <Form-item label="问答分类" prop="articletype_id">
               <Select v-model="form.type_id"  ref="select" :clearable="selects" style="width:200px;position: relative;z-index: 10000;"
                       label-in-value  filterable clearable  placeholder="根据分类查询" @on-change="changeArticletype"  >
-                <Option-group  v-for="(item,index) in questiontype" :label="index" :key="item">
-                  <Option v-for="items in item"  :value="items.id" :label="items.name" :key="index">{{ items.name }}</Option>
+                <Option-group  v-for="(item,index) in this.$store.state.commondata.questionType" :label="index" :key="index">
+                  <Option v-for="(items, indexs) in item"  :value="items.id" :label="items.name" :key="indexs">{{ items.name }}</Option>
                 </Option-group>
               </Select>
             </Form-item>
             <Form-item label="答案" prop="content_paragraph">
-
-              <!--<editor @change="updateData" :content="form.content_paragraph"  :height="300" :auto-height="false"></editor>-->
               <Card shadow>
                 <textarea class='tinymce-textarea' id="tinymceEditer"></textarea>
               </Card>
@@ -46,10 +44,9 @@
                 <Select ref="select" :clearable="selects" v-model="form.tag_id"
                         style="position:relative;text-align: left;width:350px;z-index: 10000;"
                         label-in-value multiple　>
-                  <Option v-for="(item,index) in tagname" :value="index" :label="item" :key="index">
+                  <Option v-for="(item,index) in this.$store.state.commondata.questionTag" :value="index" :label="item" :key="index">
                     {{item}}
                   </Option>
-
                 </Select>
               </Form-item>
               <Form-item label="分类标签" v-if="!tag_name" prop="tag_id">
@@ -71,6 +68,7 @@
           <Button type="success" size="large" :loading="modal_loading" @click="add">保存</Button>
         </div>
       </Modal>
+      <materialimg ref="addmaterial"></materialimg>
     </div>
   </div>
 
@@ -78,8 +76,11 @@
 
 <script type="text/ecmascript-6">
   import http from '../../../libs/http';
+  import common from '../../../libs/common';
   import tinymce from 'tinymce';
+  import materialimg from '../article/materialimg.vue';
   export default {
+      components: {materialimg},
       data () {
           const checkquestiontype = (rule, value, callback) => {
               if (!value) {
@@ -89,6 +90,7 @@
               }
           };
           return {
+              img: '',
               spinShow: true,
               switch1: true,
               tag_name: true,
@@ -154,7 +156,7 @@
                       setup: function (editor) {
                           editor.on('init', function (e) {
                               vm.spinShow = false;
-                              tinymce.get('tinymceEditer').setContent(vm.form.content);
+                              // tinymce.get('tinymceEditer').setContent(vm.form.content);
                           });
                           editor.on('keydown', function (e) {
                               // editor.insertContent(vm.form.content)
@@ -165,15 +167,9 @@
                               text: '素材库图片',
                               icon: false,
                               onclick: function () {
-                                  // vm.$refs.addmaterial.getData();
-                                  // vm.$refs.addmaterial.modal = true;
-                              }
-                          });
-                          editor.addMenuItem('myitem', {
-                              text: 'My menu item',
-                              context: 'tools',
-                              onclick: function () {
-                                  editor.insertContent('&nbsp;Here\'s some content!&nbsp;');
+                                  vm.img = 'content';
+                                  vm.$refs.addmaterial.getData();
+                                  vm.$refs.addmaterial.modal = true;
                               }
                           });
                       }
@@ -183,7 +179,14 @@
           changeTagtype (value) {
               this.form.tag_id = value.value;
           },
-
+          getsrc (src) {
+              if (this.img == 'content') {
+                  let imgsrc = '<img src=' + src + '>';
+                  tinymce.get('tinymceEditer').insertContent(imgsrc);
+              } else if (this.img == 'suolue') {
+                  this.form.thumbnails = src;
+              }
+          },
           addtags () {
               let data = {
                   type: 'question',
@@ -202,7 +205,7 @@
                   });
               }, (res) => {
                   // 处理错误信息
-                  this.$Message.error('网络异常，请稍后重试。');
+
               });
           },
           changeArticletype (type) {
@@ -212,15 +215,14 @@
               this.$refs.questionadd.validate((valid) => {
                   if (valid) {
                       this.modal_loading = true;
-                    var activeEditor = tinymce.activeEditor;
-                    var editBody = activeEditor.getBody();
-                    activeEditor.selection.select(editBody);
-                    var text = activeEditor.selection.getContent({'format' : 'html'});
-                    this.form.ccc = text;
-                    console.log(text);
+                      var activeEditor = tinymce.activeEditor;
+                      var editBody = activeEditor.getBody();
+                      activeEditor.selection.select(editBody);
+                      var text = activeEditor.selection.getContent({'format': 'html'});
+                      this.form.content_paragraph = text;
                       let data = this.form;
                       this.apiPost('question', data).then((res) => {
-                          this.handelResponse(res, (data, msg) => {
+                          this.handleAjaxResponse(res, (data, msg) => {
                               this.modal = false;
                               this.$parent.getData();
                               this.$Message.success(msg);
@@ -234,7 +236,6 @@
                       }, (res) => {
                           // 处理错误信息
                           this.modal_loading = false;
-                          this.$Message.error('网络异常，请稍后重试。');
                       });
                   }
               });
@@ -246,14 +247,7 @@
       destroyed () {
           tinymce.get('tinymceEditer').destroy();
       },
-      mixins: [http],
-      props: {
-          questiontype: {
-              default: []
-          },
-          tagname: {
-              default: {}
-          }
-      }
+      mixins: [http, common]
+  
   };
 </script>

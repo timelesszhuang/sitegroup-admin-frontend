@@ -444,7 +444,7 @@
     destroyed () {
       tinymce.get('tinymceEditer').destroy()
     },
-    mixins: [http,common],
+    mixins: [http, common],
     props: {
       imgsrc: {}
     }

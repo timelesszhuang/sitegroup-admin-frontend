@@ -56,7 +56,7 @@
     components: {questiontypeadd, questiontypesave},
     created () {
 //      this.getData();
-      this.gettagtype()
+//       this.gettagtype()
     },
     methods: {
       getData() {
@@ -79,18 +79,18 @@
           this.$Message.error('网络异常，请稍后重试');
         })
       },
-      gettagtype() {
-        this.apiGet('typetag?all=1').then((res) => {
-          this.handelResponse(res, (data, msg) => {
-            this.tagname = data
-          }, (data, msg) => {
-            this.$Message.error(msg);
-          })
-        }, (res) => {
-          //处理错误信息
-          this.$Message.error('网络异常，请稍后重试。');
-        })
-      },
+      // gettagtype() {
+      //   this.apiGet('typetag?all=1').then((res) => {
+      //     this.handelResponse(res, (data, msg) => {
+      //       this.tagname = data
+      //     }, (data, msg) => {
+      //       this.$Message.error(msg);
+      //     })
+      //   }, (res) => {
+      //     //处理错误信息
+      //     this.$Message.error('网络异常，请稍后重试。');
+      //   })
+      // },
       changePage(page){
         this.page = page;
         this.getData();

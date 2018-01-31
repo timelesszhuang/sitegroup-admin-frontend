@@ -96,24 +96,25 @@ export const nodeappRouter = [
     title: '内容管理',
     component: Main,
     children: [
-      {
-        path: 'article',
-        title: '文章管理',
-        name: 'article',
-        component: () => import('@/views/Common/article/index.vue')
-      },
+      // {
+      //   path: 'article',
+      //   title: '文章管理',
+      //   name: 'article',
+      //   component: () => import('@/views/Common/article/index.vue')
+      // },
+
       {
         path: 'articlemanage',
         title: '文章管理',
         name: 'articlemanage',
-        component: () => import('@/views/Common/articlemanage/tab.vue')
+        component: () => import('@/views/node/articlemanage/tab.vue')
       },
-      // {
-      //   path: 'question',
-      //   title: '问答管理',
-      //   name: 'question',
-      //   component: () => import('@/views/Common/questionmanage/tab.vue')
-      // },
+      {
+        path: 'question',
+        title: '问答管理',
+        name: 'question',
+        component: () => import('@/views/node/questionmanage/tab.vue')
+      },
       // {
       //   path: 'product',
       //   title: '产品管理',
@@ -674,20 +675,15 @@ export const siteotherRouter = {
 export const siteappRouter = [
   {
     path: '/article',
-    icon: 'compose',
-    name: 'articletest',
-    title: '文章管理',
+    icon: 'earth',
+    title: "文章",
+    name: '文章',
     component: Main,
     children: [
       {
-        path: 'article',
-        title: '文章管理',
-        name: 'article',
-        component: () => import('@/views/Common/article/index.vue')
-      }, {
-        path: 'article1',
-        title: '文章管理',
-        name: 'article1',
+        path: 'index',
+        title: "文章",
+        name: 'article_index',
         component: () => import('@/views/Common/article/index.vue')
       }
     ]

@@ -6,8 +6,8 @@
       问答分类:
       <Select v-model="type_id" style="width:200px;position: relative;z-index: 10000;"
               label-in-value  filterable clearable  placeholder="根据分类查询"   >
-        <Option-group  v-for="(item,index) in questiontypelist" :label="index" :key="item">
-          <Option v-for="items in item"  :value="items.id" :label="items.name" :key="index">{{ items.name }}</Option>
+        <Option-group  v-for="(item,index) in this.$store.state.commondata.questionType" :label="index" :key="index">
+          <Option v-for="(items, indexs) in item"  :value="items.id" :label="items.name" :key="indexs">{{ items.name }}</Option>
         </Option-group>
       </Select>
       <Button type="primary" @click="queryData">查询</Button>
@@ -26,9 +26,9 @@
         </div>
       </div>
     </div>
-    <questionadd ref="add"  :tagname="tagname" :questiontype="questiontypelist"></questionadd>
-    <questionsave ref="save"  :tagname="tagname" :form="editinfo" :questiontype="questiontypelist"></questionsave>
-    <showhtml ref="showhtml" :form="showhtmldata"></showhtml>
+    <questionadd ref="add"></questionadd>
+    <questionsave ref="save" ></questionsave>
+    <!--<showhtml ref="showhtml" :form="showhtmldata"></showhtml>-->
   </div>
 
 </template>
@@ -38,7 +38,7 @@
   import common from '../../../libs/common';
   import questionadd from './add.vue';
   import questionsave from './save.vue';
-  import showhtml from './showhtml.vue';
+  // import showhtml from './showhtml.vue';
 
   export default {
       data () {
@@ -62,12 +62,13 @@
               tagname: {}
           };
       },
-      components: {questionadd, questionsave, showhtml},
+      components: {questionadd, questionsave},
       created () {
           this.getData();
       },
       mounted () {
           this.getQuestionType();
+          this.getQuestionTag();
       },
       methods: {
           getData () {
@@ -80,14 +81,14 @@
                   }
               };
               this.apiGet('question', data).then((data) => {
-                  this.handelResponse(data, (data, msg) => {
+                  this.handleAjaxResponse(data, (data, msg) => {
                       this.datas = data.rows;
                       this.total = data.total;
                   }, (data, msg) => {
                       this.$Message.error(msg);
                   });
               }, (data) => {
-                  this.$Message.error('网络异常，请稍后重试');
+
               });
           },
           changePage (page) {
@@ -112,30 +113,8 @@
           },
           edit (index) {
               let editid = this.datas[index].id;
-              this.apiGet('question/' + editid).then((res) => {
-                  this.handelResponse(res, (data, msg) => {
-                      delete data.create_time;
-                      delete data.update_time;
-                      this.editinfo = data;
-                      this.editinfo = data;
-                      let tempNUmber = [];
-                      if (this.editinfo.tags !== '') {
-                          this.editinfo.tags.split(',').map(function (key) {
-                              tempNUmber.push(key);
-                          });
-                      }
-                      this.editinfo.tag_id = tempNUmber;
-                      this.editinfo.tags = '';
-                      this.modal = false;
-                      this.$refs.save.clearQuestionType;
-                      this.$refs.save.modal = true;
-                  }, (data, msg) => {
-                      this.$Message.error(msg);
-                  });
-              }, (res) => {
-                  // 处理错误信息
-                  this.$Message.error('网络异常，请稍后重试。');
-              });
+              this.$refs.save.edit(editid);
+              this.$refs.save.modal = true;
           },
           showhtml (index) {
               let data = this.datas[index];
@@ -158,7 +137,7 @@
               }, (res) => {
                   // 处理错误信息
                   this.modal_loading = false;
-                  this.$Message.error('网络异常，请稍后重试。');
+
               });
           },
           remove (index) {
@@ -172,7 +151,7 @@
                   cancelText: '取消',
                   onOk: (index) => {
                       _this.apiDelete('question/', id).then((res) => {
-                          _this.handelResponse(res, (data, msg) => {
+                          _this.handleAjaxResponse(res, (data, msg) => {
                               _this.getData();
                               _this.$Message.success(msg);
                           }, (data, msg) => {
@@ -180,7 +159,7 @@
                           });
                       }, (res) => {
                           // 处理错误信息
-                          _this.$Message.error('网络异常，请稍后重试');
+
                       });
                   },
                   onCancel: () => {

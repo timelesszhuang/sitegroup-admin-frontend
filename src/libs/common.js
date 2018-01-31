@@ -30,7 +30,11 @@ const common = {
             // 获取产品分类
             let productType = this.$store.state.commondata.productType;
             if (productType.length === 0 || reset) {
-                this.apiGet('admin/getProductType').then((res) => {
+                let data = {
+                    params: {module_type: 'product'
+                    }
+                };
+                this.apiGet('get_type_list', data).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.$store.state.commondata.prodyctType = data;
                     }, (data, msg) => {
@@ -90,6 +94,26 @@ const common = {
                 this.apiGet('get_tags', data).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.$store.state.commondata.articleTag = data;
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            }
+        },
+        getQuestionTag (reset = false) {
+            let questionTag = this.$store.state.commondata.questionTag;
+            if (questionTag.length === 0 || reset) {
+                let data = {
+                    params: {
+                        type: 'question'
+                    }
+                };
+                this.apiGet('get_tags', data).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.$store.state.commondata.questionTag = data;
                     }, (data, msg) => {
                         this.$Message.error(msg);
                     });
