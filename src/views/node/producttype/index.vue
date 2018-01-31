@@ -19,7 +19,7 @@
       <Table :context="self" :border="border" :stripe="stripe" :show-header="showheader"
              :size="size" :data="datas" :columns="tableColumns" style="width: 100%">
       </Table>
-      <div style="margin: 10px;overflow: hidden">
+      <div style="0margin: 10px;overflow: hidden">
         <div style="float: right;">
           <Page :total="total" :current="current" @on-change="changePage" @on-page-size-change="changePageSize"
                 show-total

@@ -24,11 +24,11 @@
       components: {artic, articletype, tag},
       methods: {
           getdata (name) {
-              if (name == 'article') {
+              if (name === 'article') {
                   this.$refs.articl.getData();
-              } else if (name == 'articletype') {
+              } else if (name === 'articletype') {
                   this.$refs.articlet.getData();
-              } else if (name == 'tag') {
+              } else if (name === 'tag') {
                   this.$refs.tagname.getData();
               }
           }

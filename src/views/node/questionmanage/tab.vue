@@ -1,4 +1,5 @@
 <template>
+  <card>
   <Tabs value="question"  @on-click="getdata">
     <Tab-pane label="问答" name="question">
       <question ref="wenda"></question>
@@ -7,6 +8,7 @@
       <questiontype ref="wendatype"></questiontype>
     </Tab-pane>
   </Tabs>
+  </card>
 </template>
 <script>
   import http from '../../../libs/http';

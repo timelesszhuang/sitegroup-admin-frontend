@@ -76,7 +76,8 @@
                       page: this.page,
                       rows: this.rows,
                       name: this.name,
-                      tag_id: this.tag_id
+                      tag_id: this.tag_id,
+
                   }
               };
               this.apiGet('type', data).then((data) => {

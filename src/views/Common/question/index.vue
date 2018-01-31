@@ -1,5 +1,6 @@
 <template>
   <div>
+      <card>
     <div class="top">
       问答:
       <Input v-model="content" placeholder="问答" style="width:300px;"></Input>
@@ -29,6 +30,7 @@
     <questionadd ref="add"></questionadd>
     <questionsave ref="save" ></questionsave>
     <showhtml ref="showhtml" :form="showhtmldata"></showhtml>
+  </card>
   </div>
 
 </template>
@@ -39,6 +41,7 @@
   import questionadd from './add.vue';
   import questionsave from './save.vue';
   import showhtml from './showhtml.vue';
+  import Card from 'iview/src/components/card/card'
 
   export default {
       data () {
@@ -62,7 +65,9 @@
               tagname: {}
           };
       },
-      components: {questionadd, questionsave, showhtml},
+      components: {
+        Card,
+        questionadd, questionsave, showhtml},
       created () {
           this.getData();
       },
