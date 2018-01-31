@@ -36,7 +36,7 @@ const app = {
     },
     mutations: {
         updateMenulist(state) {
-            let accessCode = parseInt(Cookies.get('userType'));
+            let accessCode = parseInt(Cookies.get('type'));
             let menuList = [];
             let Router = adminappRouter;
             if (parseInt(state.userType) === 2) {
@@ -109,6 +109,9 @@ const app = {
             if (state.openedSubmenuArr.indexOf(name) > -1) {
                 hasThisName = true;
             }
+            // console.log(state.openedSubmenuArr);
+            // console.log(hasThisName);
+            // console.log(isEmpty);
             if (!hasThisName && !isEmpty) {
                 state.openedSubmenuArr.push(name);
             }
@@ -211,11 +214,12 @@ const app = {
         setInitTags(state) {
             let tag = [...adminotherRouter.children];
             let appRouter = adminappRouter;
-            if (state.userType == 2) {
+            if (parseInt(state.userType) === 2) {
                 tag = [...nodeotherRouter.children];
                 appRouter = nodeappRouter;
-            } else if (state.userType == 3) {
-                // tag =[]
+            } else if (parseInt(state.userType) === 3) {
+                tag = [...siteotherRouter.children];
+                appRouter = siteappRouter;
             }
             state.tagsList = tag;
             let tagsList = [];

@@ -4,44 +4,46 @@
 
 
 <template>
-    <div >
-        <div class="top">
-            标题:
-            <Input v-model="title" placeholder="请输入文章标题" style="width:300px;"></Input>
-            文章分类:
-            <Select v-model="article_type" style="width:200px"
-                    label-in-value filterable clearable>
-                <Option-group v-for="(item,index) in this.$store.state.commondata.articleType" :label="index"
-                              :key="index">
-                    <Option v-for="(peritem,perindex) in item" :value="peritem.id" :label="peritem.name"
-                            :key="peritem.id">{{ peritem.name }}
-                    </Option>
-                </Option-group>
-            </Select>
-            <Button type="primary" @click="queryData">查询</Button>
-            <Button type="success" @click="add">添加</Button>
-            <Button type="error" @click="importadd">csv导入</Button>
-        </div>
-        <div class="content" style="margin-top:10px;">
-            <Table :border="border" :stripe="stripe" :show-header="showheader"
-                   :size="size" :data="datas" :columns="tableColumns" style="width: 100%">
-            </Table>
-            <div style="margin: 10px;overflow: hidden">
-                <div style="float: right;">
-                    <Page v-show="page_show" :total="total" :current="current" :page-size="pageSize"
-                          @on-change="changePage"
-                          @on-page-size-change="changePageSize"
-                          show-total
-                          show-elevator show-sizer>
-                    </Page>
+    <div>
+        <card>
+            <div class="top">
+                标题:
+                <Input v-model="title" placeholder="请输入文章标题" style="width:300px;"></Input>
+                文章分类:
+                <Select v-model="article_type" style="width:200px"
+                        label-in-value filterable clearable>
+                    <Option-group v-for="(item,index) in this.$store.state.commondata.articleType" :label="index"
+                                  :key="index">
+                        <Option v-for="(peritem,perindex) in item" :value="peritem.id" :label="peritem.name"
+                                :key="peritem.id">{{ peritem.name }}
+                        </Option>
+                    </Option-group>
+                </Select>
+                <Button type="primary" @click="queryData">查询</Button>
+                <Button type="success" @click="add">添加</Button>
+                <Button type="error" @click="importadd">csv导入</Button>
+            </div>
+            <div class="content" style="margin-top:10px;">
+                <Table :border="border" :stripe="stripe" :show-header="showheader"
+                       :size="size" :data="datas" :columns="tableColumns" style="width: 100%">
+                </Table>
+                <div style="margin: 10px;overflow: hidden">
+                    <div style="float: right;">
+                        <Page v-show="page_show" :total="total" :current="current" :page-size="pageSize"
+                              @on-change="changePage"
+                              @on-page-size-change="changePageSize"
+                              show-total
+                              show-elevator show-sizer>
+                        </Page>
+                    </div>
                 </div>
             </div>
-        </div>
-        <articleadd ref="add"></articleadd>
-        <articlesave ref="save"></articlesave>
-        <articleshow ref="show"></articleshow>
-        <articlecsv ref="csvimport"></articlecsv>
-        <showhtml ref="showhtml" :form="showhtmldata"></showhtml>
+            <articleadd ref="add"></articleadd>
+            <articlesave ref="save"></articlesave>
+            <articleshow ref="show"></articleshow>
+            <articlecsv ref="csvimport"></articlecsv>
+            <showhtml ref="showhtml" :form="showhtmldata"></showhtml>
+        </card>
     </div>
 </template>
 <script>
@@ -55,7 +57,7 @@
 
     export default {
         name: 'index',
-        data () {
+        data() {
             return {
                 page_show: true,
                 border: true,
@@ -74,15 +76,15 @@
                 showhtmldata: []
             };
         },
-        mounted () {
+        mounted() {
             this.getArticleType();
             this.getArticleTag();
         },
-        created () {
+        created() {
             this.getData();
         },
         methods: {
-            getData () {
+            getData() {
                 let data = {
                     params: {
                         page: this.page,
@@ -102,30 +104,30 @@
                 });
             },
 
-            queryData () {
+            queryData() {
                 this.page = 1;
                 this.page_show = false;
                 this.getData();
                 this.page_show = true;
             },
-            changePage (page) {
+            changePage(page) {
                 this.page = page;
                 this.getData();
             },
-            changePageSize (pagesize) {
+            changePageSize(pagesize) {
                 this.rows = pagesize;
                 this.getData();
             },
-            importadd () {
+            importadd() {
                 this.$refs.csvimport.modal = true;
                 this.$refs.csvimport.csvclose();
             },
-            show (index) {
+            show(index) {
                 let editid = this.datas[index].id;
                 this.$refs.show.edit(editid);
                 this.$refs.show.modal = true;
             },
-            showhtml (index) {
+            showhtml(index) {
                 let data = this.datas[index];
                 this.apiPost('article_show_html', data).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
@@ -149,16 +151,16 @@
                 });
             },
             // 添加文章相关操作
-            add () {
+            add() {
                 this.$refs.add.modal = true;
             },
-            error (nodesc) {
+            error(nodesc) {
                 this.$Notice.error({
                     title: '预览模板页被浏览器拦截,请允许',
                     desc: nodesc ? '' : ''
                 });
             },
-            edit (index) {
+            edit(index) {
                 let editid = this.datas[index].id;
                 // this.apiGet('imglist/' + editid).then((res) => {
                 //     this.handelResponse(res, (data, msg) => {
@@ -177,7 +179,7 @@
         },
         components: {articleadd, articlesave, articleshow, articlecsv, showhtml},
         computed: {
-            tableColumns () {
+            tableColumns() {
                 let columns = [];
                 let _this = this;
                 if (this.showCheckbox) {
@@ -196,7 +198,7 @@
                 columns.push({
                     title: '标题',
                     sortable: true,
-                    render (h, params) {
+                    render(h, params) {
                         return h('span', {
                             attrs: {
                                 title: params.row.title,
@@ -226,7 +228,7 @@
                         key: 'action',
                         align: 'center',
                         fixed: 'right',
-                        render (h, params) {
+                        render(h, params) {
                             return h('div', [
                                 h('Button', {
                                     props: {

@@ -50,9 +50,9 @@
                     onOk: () => {
                     },
                     onCancel: () => {
-                        return false
+                        return false;
                     }
-                })
+                });
             },
             getSiteList() {
                 this.apiGet('get_site_list').then((res) => {
@@ -65,7 +65,6 @@
             }
         },
         mounted() {
-            console.log(localStorage.siteList);
             this.getSiteList();
         },
         mixins: [http]

@@ -1,5 +1,3 @@
-import util from './util';
-
 /**
  * Created by timeless on 18.1.20
  * @author 赵兴壮<834916321@qq.com>
@@ -8,39 +6,43 @@ import util from './util';
 
 const ajaxMethods = {
     methods: {
-        apiGet (url, data) {
+        apiGet(url, data) {
             return new Promise((resolve, reject) => {
                 axios.get(url, data).then((response) => {
                     resolve(response.data);
                 }, (response) => {
+                    // console.log(response.status);
                     reject(response);
                 });
             });
         },
         // ajax post相关的操作
-        apiPost (url, data) {
+        apiPost(url, data) {
             return new Promise(function (resolve, reject) {
                 axios.post(url, data).then((response) => {
                     resolve(response.data);
                 }).catch(function (response) {
+                    // console.log(response.status);
                     reject(response);
                 });
             });
         },
-        apiDelete (url, id) {
+        apiDelete(url, id) {
             return new Promise((resolve, reject) => {
                 axios.delete(url + id).then((response) => {
                     resolve(response.data);
                 }, (response) => {
+                    // console.log(response.status);
                     reject(response);
                 });
             });
         },
-        apiPut (url, obj) {
+        apiPut(url, obj) {
             return new Promise((resolve, reject) => {
                 axios.put(url, obj).then((response) => {
                     resolve(response.data);
                 }, (response) => {
+                    // console.log(response.status);
                     reject(response);
                 });
             });
@@ -98,7 +100,7 @@ const ajaxMethods = {
                 });
             }
         },
-        autologin () {
+        autologin() {
             // 首先判断是不是允许自动登陆
             if (!Cookies.get('rememeber') || !Cookies.get('rememberKey')) {
                 // 用户没有设置自动登陆
