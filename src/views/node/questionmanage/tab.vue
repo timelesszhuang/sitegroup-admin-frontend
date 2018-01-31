@@ -12,7 +12,7 @@
   import http from '../../../libs/http';
   import common from '../../../libs/common';
   import question from '../../Common/question/index.vue';
-  import questiontype from '../../Common/questiontype/questiontype.vue';
+  import questiontype from '../questiontype/questiontype.vue';
   export default {
       components: {question, questiontype},
       methods: {

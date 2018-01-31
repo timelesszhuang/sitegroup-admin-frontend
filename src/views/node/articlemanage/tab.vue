@@ -17,8 +17,8 @@
   import common from '../../../libs/common';
 
   import artic from '../../Common/article/index';
-  import articletype from '../../Common/articletype/index';
-  import tag from '../../Common/tag/index.vue';
+  import articletype from '../articletype/index';
+  import tag from '../tag/index.vue';
   export default {
       components: {artic, articletype, tag},
       methods: {
