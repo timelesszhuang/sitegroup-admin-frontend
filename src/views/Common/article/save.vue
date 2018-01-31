@@ -254,7 +254,7 @@
                   });
               }, (res) => {
                   // 处理错误信息
-                  this.$Message.error('网络异常，请稍后重试。');
+
               });
           },
           init: function () {
@@ -399,7 +399,7 @@
                   });
               }, (res) => {
                   // 处理错误信息
-                  this.$Message.error('网络异常，请稍后重试。');
+
               });
           },
           // 缩略图上传回调
@@ -455,7 +455,7 @@
                       }, (res) => {
                           // 处理错误信息
                           this.modal_loading = false;
-                          this.$Message.error('网络异常，请稍后重试。');
+
                       });
                   }
               });
@@ -497,7 +497,7 @@
                       }, (res) => {
                           // 处理错误信息
                           this.modal_loading = false;
-                          this.$Message.error('网络异常，请稍后重试。');
+
                       });
                   }
               });

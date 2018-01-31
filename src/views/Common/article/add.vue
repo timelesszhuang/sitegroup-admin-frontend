@@ -364,7 +364,7 @@
           })
         }, (res) => {
           // 处理错误信息
-          this.$Message.error('网络异常，请稍后重试。')
+
         })
       },
       // gettag () {
@@ -433,7 +433,6 @@
             }, (res) => {
               // 处理错误信息
               this.modal_loading = false
-              this.$Message.error('网络异常，请稍后重试。')
             })
           }
         })
