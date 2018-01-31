@@ -187,18 +187,22 @@
                   this.form.thumbnails = src;
               }
           },
+          changeArticletype (type) {
+              this.form.type_name = type.label;
+          },
           addtags () {
               let data = {
                   type: 'question',
                   name: this.form.tags
               };
-              this.apiPost('admin/tags', data).then((res) => {
-                  this.handelResponse(res, (data, msg) => {
+              this.apiPost('tags', data).then((res) => {
+                  this.handleAjaxResponse(res, (data, msg) => {
                       let tempN = this.form.tag_id;
                       let tagId = data.id;
                       let tagnum = tagId.toString();
                       tempN.push(tagnum);
-                      this.$parent.gettag();
+                      this.form.tags = '';
+                      this.getQuestionTag(true);
                       this.$Message.success(msg);
                   }, (data, msg) => {
                       this.$Message.error(msg);
@@ -207,9 +211,6 @@
                   // 处理错误信息
 
               });
-          },
-          changeArticletype (type) {
-              this.form.type_name = type.label;
           },
           add () {
               this.$refs.questionadd.validate((valid) => {

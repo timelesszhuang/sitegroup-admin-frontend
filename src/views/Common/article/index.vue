@@ -4,7 +4,7 @@
 
 
 <template>
-    <div>
+    <div >
         <div class="top">
             标题:
             <Input v-model="title" placeholder="请输入文章标题" style="width:300px;"></Input>

@@ -97,7 +97,7 @@
               tag_name: true,
               modal: false,
               selects: true,
-            spinShow:true,
+              spinShow: true,
               modal_loading: false,
               form: {
                   question: '',
@@ -122,86 +122,86 @@
       },
       methods: {
           init: function () {
-          this.$nextTick(() => {
-            let vm = this;
-            let height = document.body.offsetHeight - 300;
-            tinymce.init({
-              selector: '#tinymceEditersave',
-              branding: false,
-              elementpath: false,
-              height: height,
-              language: 'zh_CN.GB2312',
-              menubar: 'edit insert view format table tools',
-              plugins: [
-                'fullscreen',
-                'wordcount',
-                'advlist autolink lists link image charmap print preview hr anchor pagebreak imagetools',
-                'searchreplace visualblocks visualchars code fullpage',
-                'insertdatetime media nonbreaking save table contextmenu directionality',
-                'emoticons paste textcolor colorpicker textpattern imagetools codesample'
-              ],
-              toolbar1: ' newnote print preview | undo redo | insert | styleselect | forecolor backcolor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image emoticons media codesample | mybutton | fullscreen |',
-              autosave_interval: '20s',
-              image_advtab: true,
-              automatic_uploads: true,
-              images_reuse_filename: true,
-              images_upload_url: 'http://bn.sjy/index.php/article_image_upload',
-              images_upload_handler: function (blobInfo, success, failure) {
-                let xhr, formData;
-                xhr = new XMLHttpRequest();
-                xhr.withCredentials = true;
-                xhr.open('POST', 'http://bn.sjy/index.php/article_image_upload');
-                xhr.onload = function () {
-                  var json;
-                  if (xhr.status != 200) {
-                    failure('HTTP Error: ' + xhr.status);
-                    return;
-                  }
-                  json = JSON.parse(xhr.responseText);
-                  if (!json || typeof json.data.url !== 'string') {
-                    failure('Invalid JSON: ' + xhr.responseText);
-                    return;
-                  }
-                  success(json.data.url);
-                };
-                formData = new FormData();
-                formData.append('file', blobInfo.blob(), blobInfo.filename());
-                xhr.send(formData);
-              },
-              table_default_styles: {
-                width: '100%',
-                borderCollapse: 'collapse'
-              },
-              setup: function (editor) {
-                editor.on('init', function (e) {
-                  vm.spinShow = false;
-                  //tinymce.get('tinymceEditersave').setContent(vm.imgcontent);
-                });
-                editor.on('keydown', function (e) {
-                  // editor.insertContent(vm.form.content)
-                  // localStorage.editorContent = tinymce.get('tinymceEditer').getContent()
-                  // tinymce.get('tinymceEditer').setContent(vm.form.content)
-                });
-                editor.addButton('mybutton', {
-                  text: '素材库图片',
-                  icon: false,
-                  onclick: function () {
-                    vm.img = 'content';
-                    vm.$refs.addmaterial.getData();
-                    vm.$refs.addmaterial.modal = true;
-                  }
-                });
-                // editor.addMenuItem('myitem', {
-                //     text: 'My menu item',
-                //     context: 'tools',
-                //     onclick: function () {
-                //         editor.insertContent('&nbsp;Here\'s some content!&nbsp;');
-                //     }
-                // });
-              }
-            });
-          });
-        },
+              this.$nextTick(() => {
+                  let vm = this;
+                  let height = document.body.offsetHeight - 300;
+                  tinymce.init({
+                      selector: '#tinymceEditersave',
+                      branding: false,
+                      elementpath: false,
+                      height: height,
+                      language: 'zh_CN.GB2312',
+                      menubar: 'edit insert view format table tools',
+                      plugins: [
+                          'fullscreen',
+                          'wordcount',
+                          'advlist autolink lists link image charmap print preview hr anchor pagebreak imagetools',
+                          'searchreplace visualblocks visualchars code fullpage',
+                          'insertdatetime media nonbreaking save table contextmenu directionality',
+                          'emoticons paste textcolor colorpicker textpattern imagetools codesample'
+                      ],
+                      toolbar1: ' newnote print preview | undo redo | insert | styleselect | forecolor backcolor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image emoticons media codesample | mybutton | fullscreen |',
+                      autosave_interval: '20s',
+                      image_advtab: true,
+                      automatic_uploads: true,
+                      images_reuse_filename: true,
+                      images_upload_url: 'http://bn.sjy/index.php/article_image_upload',
+                      images_upload_handler: function (blobInfo, success, failure) {
+                          let xhr, formData;
+                          xhr = new XMLHttpRequest();
+                          xhr.withCredentials = true;
+                          xhr.open('POST', 'http://bn.sjy/index.php/article_image_upload');
+                          xhr.onload = function () {
+                              var json;
+                              if (xhr.status != 200) {
+                                  failure('HTTP Error: ' + xhr.status);
+                                  return;
+                              }
+                              json = JSON.parse(xhr.responseText);
+                              if (!json || typeof json.data.url !== 'string') {
+                                  failure('Invalid JSON: ' + xhr.responseText);
+                                  return;
+                              }
+                              success(json.data.url);
+                          };
+                          formData = new FormData();
+                          formData.append('file', blobInfo.blob(), blobInfo.filename());
+                          xhr.send(formData);
+                      },
+                      table_default_styles: {
+                          width: '100%',
+                          borderCollapse: 'collapse'
+                      },
+                      setup: function (editor) {
+                          editor.on('init', function (e) {
+                              vm.spinShow = false;
+                              // tinymce.get('tinymceEditersave').setContent(vm.imgcontent);
+                          });
+                          editor.on('keydown', function (e) {
+                              // editor.insertContent(vm.form.content)
+                              // localStorage.editorContent = tinymce.get('tinymceEditer').getContent()
+                              // tinymce.get('tinymceEditer').setContent(vm.form.content)
+                          });
+                          editor.addButton('mybutton', {
+                              text: '素材库图片',
+                              icon: false,
+                              onclick: function () {
+                                  vm.img = 'content';
+                                  vm.$refs.addmaterial.getData();
+                                  vm.$refs.addmaterial.modal = true;
+                              }
+                          });
+                          // editor.addMenuItem('myitem', {
+                          //     text: 'My menu item',
+                          //     context: 'tools',
+                          //     onclick: function () {
+                          //         editor.insertContent('&nbsp;Here\'s some content!&nbsp;');
+                          //     }
+                          // });
+                      }
+                  });
+              });
+          },
           change (status) {
               if (status) {
                   this.tag_name = true;
@@ -225,13 +225,14 @@
                   type: 'question',
                   name: this.form.tags
               };
-              this.apiPost('admin/tags', data).then((res) => {
-                  this.handelResponse(res, (data, msg) => {
+              this.apiPost('tags', data).then((res) => {
+                  this.handleAjaxResponse(res, (data, msg) => {
                       let tempN = this.form.tag_id;
                       let tagId = data.id;
                       let tagnum = tagId.toString();
                       tempN.push(tagnum);
-                      this.$parent.gettag();
+                      this.form.tags = '';
+                      this.getQuestionTag(true);
                       this.$Message.success(msg);
                   }, (data, msg) => {
                       this.$Message.error(msg);
@@ -271,8 +272,13 @@
                       this.modal_loading = true;
                       let data = this.form;
                       let id = data.id;
+                      var activeEditor = tinymce.activeEditor;
+                      var editBody = activeEditor.getBody();
+                      activeEditor.selection.select(editBody);
+                      var text = activeEditor.selection.getContent({'format': 'html'});
+                      this.form.content_paragraph = text;
                       this.apiPut('question/' + id, data).then((res) => {
-                          this.handelResponse(res, (data, msg) => {
+                          this.handleAjaxResponse(res, (data, msg) => {
                               this.modal = false;
                               this.$parent.getData();
                               this.$Message.success(msg);
@@ -305,12 +311,12 @@
       //         default: {}
       //     }
       // },
-    mounted () {
-      this.init();
-    },
-    destroyed () {
-      tinymce.get('tinymceEditersave').destroy();
-    },
+      mounted () {
+          this.init();
+      },
+      destroyed () {
+          tinymce.get('tinymceEditersave').destroy();
+      },
       mixins: [http, common]
   };
 </script>

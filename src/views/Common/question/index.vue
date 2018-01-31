@@ -28,7 +28,7 @@
     </div>
     <questionadd ref="add"></questionadd>
     <questionsave ref="save" ></questionsave>
-    <!--<showhtml ref="showhtml" :form="showhtmldata"></showhtml>-->
+    <showhtml ref="showhtml" :form="showhtmldata"></showhtml>
   </div>
 
 </template>
@@ -38,7 +38,7 @@
   import common from '../../../libs/common';
   import questionadd from './add.vue';
   import questionsave from './save.vue';
-  // import showhtml from './showhtml.vue';
+  import showhtml from './showhtml.vue';
 
   export default {
       data () {
@@ -62,7 +62,7 @@
               tagname: {}
           };
       },
-      components: {questionadd, questionsave},
+      components: {questionadd, questionsave, showhtml},
       created () {
           this.getData();
       },
@@ -118,8 +118,8 @@
           },
           showhtml (index) {
               let data = this.datas[index];
-              this.apiPost('questionshowhtml', data).then((res) => {
-                  this.handelResponse(res, (data, msg) => {
+              this.apiPost('question_show_html', data).then((res) => {
+                  this.handleAjaxResponse(res, (data, msg) => {
                       if (data.length == 1) {
                           let open = window.open(data[0].url);
                           if (!open) {
@@ -137,7 +137,6 @@
               }, (res) => {
                   // 处理错误信息
                   this.modal_loading = false;
-
               });
           },
           remove (index) {
@@ -236,22 +235,7 @@
                                           _this.showhtml(params.index);
                                       }
                                   }
-                              }, '页面预览'),
-                              h('Button', {
-                                  props: {
-                                      size: 'small'
-                                  },
-                                  attrs: {
-                                      type: 'error',
-                                      style: 'margin-left:3px'
-                                  },
-                                  on: {
-                                      click: function () {
-                                          // 不知道为什么这个地方不是我需要的this
-                                          _this.remove(params.index);
-                                      }
-                                  }
-                              }, '删除')
+                              }, '页面预览')
                           ]);
                       }
 

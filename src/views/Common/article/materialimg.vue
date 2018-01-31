@@ -107,7 +107,7 @@
                       tag_id: this.tag_id
                   }
               };
-              this.apiGet('libraryimgset', data).then((data) => {
+              this.apiGet('library_imgset', data).then((data) => {
                   this.handleAjaxResponse(data, (data, msg) => {
                       this.datas = data.rows;
                       this.total = data.total;
