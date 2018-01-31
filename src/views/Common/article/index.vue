@@ -36,7 +36,7 @@
         <articlesave ref="save"></articlesave>
         <articleshow ref="show"></articleshow>
         <articlecsv ref="csvimport"></articlecsv>
-        <!--<showhtml ref="showhtml" :form="showhtmldata"></showhtml>-->
+        <showhtml ref="showhtml" :form="showhtmldata"></showhtml>
     </div>
 </template>
 <script>
@@ -44,7 +44,7 @@
     import common from '../../../libs/common';
     import articleadd from './add';
     import articlesave from './save';
-    // import showhtml from './showhtml.vue';
+    import showhtml from './showhtml.vue';
     import articleshow from './show.vue';
     import articlecsv from './csvimport.vue';
 
@@ -65,7 +65,8 @@
                 pageSize: 10,
                 title: '',
                 article_type: 0,
-                datas: []
+                datas: [],
+                showhtmldata: []
             };
         },
         mounted () {
@@ -95,6 +96,7 @@
 
                 });
             },
+
             queryData () {
                 this.page = 1;
                 this.page_show = false;
@@ -120,7 +122,7 @@
             },
             showhtml (index) {
                 let data = this.datas[index];
-                this.apiPost('articleshowhtml', data).then((res) => {
+                this.apiPost('article_show_html', data).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         if (data.length == 1) {
                             let open = window.open(data[0].url);
@@ -168,7 +170,7 @@
                 // });
             }
         },
-        components: {articleadd, articlesave, articleshow, articlecsv},
+        components: {articleadd, articlesave, articleshow, articlecsv, showhtml},
         computed: {
             tableColumns () {
                 let columns = [];
