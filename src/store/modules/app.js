@@ -32,7 +32,8 @@ const app = {
         dontCache: ['text-editor', 'artical-publish'], // 在这里定义你不想要缓存的页面的name属性值(参见路由配置router.js)
         userType: localStorage.type,
         homeIndex: 'admin_index',
-        homePath: '/admin'
+        homePath: '/admin',
+        autoLoginStatus: false
     },
     mutations: {
         updateMenulist(state) {
@@ -93,6 +94,10 @@ const app = {
                 }
             });
             state.menuList = menuList;
+        },
+        changeAutoLoginStatus(state, status) {
+            // 判断请求是不是已经发送过了
+            state.autoLoginStatus = status;
         },
         changeMenuTheme(state, theme) {
             state.menuTheme = theme;

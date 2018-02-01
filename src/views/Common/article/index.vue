@@ -38,10 +38,10 @@
                     </div>
                 </div>
             </div>
-            <articleadd ref="add"></articleadd>
-            <articlesave ref="save"></articlesave>
-            <articleshow ref="show"></articleshow>
-            <articlecsv ref="csvimport"></articlecsv>
+            <articleadd ref="add" v-on:getdata="getData"></articleadd>
+            <articlesave ref="save" v-on:getdata="getData"></articlesave>
+            <articleshow ref="show" ></articleshow>
+            <articlecsv ref="csvimport" v-on:getdata="getData"></articlecsv>
             <showhtml ref="showhtml" :form="showhtmldata"></showhtml>
         </card>
     </div>
@@ -131,7 +131,7 @@
                 let data = this.datas[index];
                 this.apiPost('article_show_html', data).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
-                        if (data.length == 1) {
+                        if (data.length === 1) {
                             let open = window.open(data[0].url);
                             if (!open) {
                                 this.error(false);
