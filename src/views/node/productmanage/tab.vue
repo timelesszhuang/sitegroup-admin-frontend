@@ -1,4 +1,5 @@
 <template>
+  <card>
   <Tabs value="product"  @on-click="getdata">
     <Tab-pane label="产品" name="product">
       <product ref="chanpin"></product>
@@ -7,6 +8,7 @@
       <producttype ref="chanpintype"></producttype>
     </Tab-pane>
   </Tabs>
+  </card>
 </template>
 <script>
   import http from '../../../libs/http';

@@ -1,12 +1,13 @@
 <template>
   <div>
+      <card>
     <div class="top">
       分类名:
       <Input v-model="name" placeholder="产品名" style="width:300px;"></Input>
-      <Select v-model="type_id" style="width:200px"
-              label-in-value  filterable clearable  placeholder="根据分类查询"  >
-        <Option-group  v-for="(item,index) in ptype" :label="index" :key="item">
-          <Option v-for="items in item"  :value="items.id" :label="items.name" :key="index">{{ items.name }}</Option>
+      <Select v-model="type_id" style="width:200px;position: relative;z-index: 10000;"
+              label-in-value  filterable clearable  placeholder="根据分类查询"   >
+        <Option-group  v-for="(item,index) in this.$store.state.commondata.productType" :label="index" :key="index">
+          <Option v-for="(items, indexs) in item"  :value="items.id" :label="items.name" :key="indexs">{{ items.name }}</Option>
         </Option-group>
       </Select>
       <Button type="primary" @click="queryData">查询</Button>
@@ -27,19 +28,21 @@
         </div>
       </div>
     </div>
-    <padd ref="add"  :tagname="tagname" :ptype="ptype"></padd>
-    <psave ref="save"  :tagname="tagname" :ptype="ptype" :form="editinfo"></psave>
-    <editimg ref="editimg" :form="imginfo"></editimg>
-    <showhtml ref="showhtml" :form="showhtmldata"></showhtml>
+    <padd ref="add" ></padd>
+    <!--<psave ref="save"  :tagname="tagname" :ptype="ptype" :form="editinfo"></psave>-->
+    <!--<editimg ref="editimg" :form="imginfo"></editimg>-->
+    <!--<showhtml ref="showhtml" :form="showhtmldata"></showhtml>-->
+          </card>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import http from '../../../libs/http';
+  import common from '../../../libs/common';
   import padd from './add.vue';
-  import psave from './save.vue';
-  import editimg from './editimg.vue';
-  import showhtml from './showhtml.vue';
+  // import psave from './save.vue';
+  // import editimg from './editimg.vue';
+  // import showhtml from './showhtml.vue';
   export default {
       data () {
           return {
@@ -64,7 +67,12 @@
               tagname: {}
           };
       },
-      components: {padd, psave, editimg, showhtml},
+      // psave, editimg, showhtml
+      components: { padd },
+      mounted () {
+          this.getProductType();
+          this.getProductTag();
+      },
       created () {
           this.getData();
           // this.getproducttype();
@@ -91,24 +99,24 @@
                   this.$Message.error('网络异常，请稍后重试');
               });
           },
-          gettag () {
-              let data = {
-                  type: 'product'
-              };
-              this.apiPost('admin/gettags', data).then((res) => {
-                  this.handelResponse(res, (data, msg) => {
-                      this.tagname = data;
-                      this.modal = false;
-                  }, (data, msg) => {
-                      this.modal_loading = false;
-                      this.$Message.error(msg);
-                  });
-              }, (res) => {
-                  // 处理错误信息
-                  this.modal_loading = false;
-                  this.$Message.error('网络异常，请稍后重试。');
-              });
-          },
+          // gettag () {
+          //     let data = {
+          //         type: 'product'
+          //     };
+          //     this.apiPost('admin/gettags', data).then((res) => {
+          //         this.handelResponse(res, (data, msg) => {
+          //             this.tagname = data;
+          //             this.modal = false;
+          //         }, (data, msg) => {
+          //             this.modal_loading = false;
+          //             this.$Message.error(msg);
+          //         });
+          //     }, (res) => {
+          //         // 处理错误信息
+          //         this.modal_loading = false;
+          //         this.$Message.error('网络异常，请稍后重试。');
+          //     });
+          // },
           changePage (page) {
               this.page = page;
               this.getData();
@@ -134,6 +142,7 @@
           },
           add () {
               this.$refs.add.modal = true;
+              this.$refs.add.edit = false;
           },
           showhtml (index) {
               let data = this.datas[index];
@@ -157,27 +166,9 @@
               });
           },
           edit (index) {
-              let editid = this.datas[index].id;
-              this.apiGet('admin/product/' + editid).then((res) => {
-                  this.handelResponse(res, (data, msg) => {
-                      this.editinfo = data;
-                      let tempNUmber = [];
-                      if (this.editinfo.tags !== '') {
-                          this.editinfo.tags.split(',').map(function (key) {
-                              tempNUmber.push(key);
-                          });
-                      }
-                      this.editinfo.tag_id = tempNUmber;
-                      this.editinfo.tags = '';
-                      this.modal = false;
-                      this.$refs.save.modal = true;
-                  }, (data, msg) => {
-                      this.$Message.error(msg);
-                  });
-              }, (res) => {
-                  // 处理错误信息
-                  this.$Message.error('网络异常，请稍后重试。');
-              });
+            let editid = this.datas[index].id;
+            this.$refs.add.modal = true;
+            this.$refs.add.editdata(editid);
           },
           editimg (index) {
               let editid = this.datas[index].id;
@@ -314,6 +305,6 @@
               return columns;
           }
       },
-      mixins: [http]
+      mixins: [http, common]
   };
 </script>

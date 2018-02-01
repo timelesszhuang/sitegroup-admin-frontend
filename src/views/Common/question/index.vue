@@ -41,7 +41,6 @@
   import questionadd from './add.vue';
   import questionsave from './save.vue';
   import showhtml from './showhtml.vue';
-  import Card from 'iview/src/components/card/card'
 
   export default {
       data () {
@@ -66,8 +65,7 @@
           };
       },
       components: {
-        Card,
-        questionadd, questionsave, showhtml},
+          questionadd, questionsave, showhtml},
       created () {
           this.getData();
       },

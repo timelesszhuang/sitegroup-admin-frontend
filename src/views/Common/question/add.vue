@@ -14,7 +14,7 @@
             <Form-item label="问题名" prop="question">
               <Input type="text" v-model="form.question" placeholder="请填写问题"></Input>
             </Form-item>
-            <Form-item label="问答分类" prop="articletype_id">
+            <Form-item label="问答分类" prop="questiontype_id">
               <Select v-model="form.type_id"  ref="select" :clearable="selects" style="width:200px;position: relative;z-index: 10000;"
                       label-in-value  filterable clearable  placeholder="根据分类查询" @on-change="changeArticletype"  >
                 <Option-group  v-for="(item,index) in this.$store.state.commondata.questionType" :label="index" :key="index">

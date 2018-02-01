@@ -36,7 +36,7 @@ const common = {
                 };
                 this.apiGet('get_type_list', data).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
-                        this.$store.state.commondata.prodyctType = data;
+                        this.$store.state.commondata.productType = data;
                     }, (data, msg) => {
                         this.$Message.error(msg);
                     });
@@ -65,24 +65,6 @@ const common = {
                 });
             }
         },
-        getProductTag (reset = false) {
-            let productTag = this.$store.state.commondata.productTag;
-            if (productTag.length === 0 || reset) {
-                let data = {
-                    type: 'product'
-                };
-                this.apiPost('admin/gettags', data).then((res) => {
-                    this.handleAjaxResponse(res, (data, msg) => {
-                        this.$store.state.commondata.productTag = data;
-                    }, (data, msg) => {
-                        this.$Message.error(msg);
-                    });
-                }, (res) => {
-                    // 处理错误信息
-                    this.$Message.error('网络异常，请稍后重试。');
-                });
-            }
-        },
         getArticleTag (reset = false) {
             let articleTag = this.$store.state.commondata.articleTag;
             if (articleTag.length === 0 || reset) {
@@ -94,6 +76,26 @@ const common = {
                 this.apiGet('get_tags', data).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.$store.state.commondata.articleTag = data;
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            }
+        },
+        getProductTag (reset = false) {
+            let productTag = this.$store.state.commondata.productTag;
+            if (productTag.length === 0 || reset) {
+                let data = {
+                    params: {
+                        type: 'product'
+                    }
+                };
+                this.apiGet('get_tags', data).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.$store.state.commondata.productTag = data;
                     }, (data, msg) => {
                         this.$Message.error(msg);
                     });

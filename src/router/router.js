@@ -119,7 +119,7 @@ export const nodeappRouter = [
         path: 'product',
         title: '产品管理',
         name: 'product',
-        component: () => import('@/views/node/productmanage/tab.vue')
+        component: () => import('@/views/Common/product/index.vue')
       },
       // {
       //   path: 'product',

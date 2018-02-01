@@ -19,7 +19,7 @@
                 type="select"
                 ref="upImg"
                 with-credentials
-                name="img"
+                name="file"
                 :format="['jpg','jpeg','png','gif']"
                 :on-success="getResponse"
                 :on-error="getErrorInfo"
@@ -124,179 +124,199 @@
 
 <script type="text/ecmascript-6">
   import http from '../../../libs/http';
-
+  import common from '../../../libs/common';
+  import tinymce from 'tinymce';
 
   export default {
-    data() {
-      const checkptype = (rule, value, callback) => {
-        if (!value) {
-          callback(new Error('请选择文章分类'));
-        } else {
-          callback();
-        }
-      };
-      return {
-        tag_name: true,
-        switch1: true,
-        selects:true,
-        other_is_show: false,
-        modal: false,
-        modal_loading: false,
-        action: HOST + 'admin/uploadProductBigImg',
-        otheraction: HOST + 'admin/uploadProductSerImg',
-        type_name: '',
-        value1: 0,
-        AddRule: {
-          name: [
-            {required: true, message: '请填写文章分类', trigger: 'blur'},
-          ],
-          detail: [
-            {required: true, message: '请填写文章详情', trigger: 'blur'},
-          ],
-          type_name: [
-            {required: true, validator: checkptype, trigger: 'blur'}
-          ]
-        }
-      }
-    },
-    created() {
-
-    },
-    computed: {
-      imgshow: function () {
-        if (this.form.image) {
-          return true;
-        }
-        return false;
-      }
-    },
-    methods: {
-      change(status) {
-        if (status) {
-          this.tag_name = true
-          this.$Message.info('切换到下拉选择');
-        } else {
-          this.tag_name = false
-          this.$Message.info('切换到添加标签');
-        }
+      data () {
+          const checkptype = (rule, value, callback) => {
+              if (!value) {
+                  callback(new Error('请选择文章分类'));
+              } else {
+                  callback();
+              }
+          };
+          return {
+              tag_name: true,
+              switch1: true,
+              selects: true,
+              other_is_show: false,
+              modal: false,
+              modal_loading: false,
+              action: HOST + 'admin/uploadProductBigImg',
+              otheraction: HOST + 'admin/uploadProductSerImg',
+              type_name: '',
+              value1: 0,
+              AddRule: {
+                  name: [
+                      {required: true, message: '请填写文章分类', trigger: 'blur'}
+                  ],
+                  detail: [
+                      {required: true, message: '请填写文章详情', trigger: 'blur'}
+                  ],
+                  type_name: [
+                      {required: true, validator: checkptype, trigger: 'blur'}
+                  ]
+              }
+          };
+      },
+      created () {
 
       },
-      changeTagtype(value) {
-        this.form.tag_id = value.value
-      },
-      addtags() {
-        let data = {
-          type: "product",
-          name:this.form.tags
-        }
-        this.apiPost('admin/tags', data).then((res) => {
-          this.handelResponse(res, (data, msg) => {
-            let tempN = []
-            let tagId = data.id
-            let tagnum = tagId.toString()
-            tempN.push(tagnum)
-            this.$parent.gettag();
-            this.$Message.success(msg);
-          }, (data, msg) => {
-            this.$Message.error(msg);
-          })
-        }, (res) => {
-          //处理错误信息
-          this.$Message.error('网络异常，请稍后重试。');
-        })
+      computed: {
+          edit (editid) {
+              this.apiGet('product/' + editid).then((res) => {
+                  this.handleAjaxResponse(res, (data, msg) => {
+                      this.form = data;
+                      tinymce.get('tinymceEditer').setContent(this.form.detail);
+                      let tempNUmber = [];
+                      if (this.form.tags !== '') {
+                          this.form.tags.split(',').map(function (key) {
+                              tempNUmber.push(key);
+                          });
+                      }
+                      this.form.tag_id = tempNUmber;
+                      this.form.tags = '';
+                  }, (data, msg) => {
+                      this.$Message.error(msg);
+                  });
+              }, (res) => {
+                  // 处理错误信息
 
-      },
-      imgpath() {
-        return this.form.image;
-      },
-      updateData(data) {
-        console.log(data)
-        this.form.detail = data
-      },
-      updatefeild4(data) {
-        this.form.field4 = data
-      },
-      changePtype(value) {
-        this.form.type_id = value.value
-        this.form.type_name = value.label
-      },
-      //缩略图上传回调
-      getResponse(response, file, filelist) {
-        this.form.image = response.url;
-        if (response.status) {
-          this.$Message.success(response.msg);
-          this.imgpath();
-        } else {
-          this.$Message.error(response.msg);
-        }
-        this.$refs.upImg.clearFiles()
-      },
-      getErrorInfo(error, file, filelist) {
-        this.$Message.error(error);
-      },
-      formatError() {
-        this.$Message.error('文件格式只支持 jpg,jpeg,png三种格式。');
-      },
-      getError(error, file, filelist) {
-        this.$Message.error(error);
-      },
-      formatE() {
-        this.$Message.error('文件格式只支持 jpg,jpeg,png三种格式。');
-      },
-      save() {
-        this.$refs.psave.validate((valid) => {
-          if (valid) {
-            this.modal_loading = true;
-            let data = this.form;
-            let id = data.id;
-            this.apiPut('admin/product/' + id, data).then((res) => {
-              this.handelResponse(res, (data, msg) => {
-                this.modal = false;
-                this.$parent.getData();
-                this.$Message.success(msg);
-                this.modal_loading = false;
-                this.$refs.psave.resetFields();
-              }, (data, msg) => {
-                this.modal_loading = false;
-                this.$Message.error(msg);
-              })
-            }, (res) => {
-              //处理错误信息
-              this.modal_loading = false;
-              this.$Message.error('网络异常，请稍后重试。');
-            })
+              });
+          },
+          imgshow: function () {
+              if (this.form.image) {
+                  return true;
+              }
+              return false;
           }
-        })
-      }
-    },
-    props: {
-      form: {
-        default: {
-          name: "",
-          detail: "",
-          image: '',
-          summary: '',
-          payway: "",
-          sn: '',
-          type_name: '',
-          type_id: 0,
-          keywords: '',
-          title: '',
-          description: '',
-          field1: '',
-          field2: '',
-          field3: '',
-          field4: '',
-          content: ''
-        }
       },
-      ptype: {
-        default: []
+      methods: {
+          change (status) {
+              if (status) {
+                  this.tag_name = true;
+                  this.$Message.info('切换到下拉选择');
+              } else {
+                  this.tag_name = false;
+                  this.$Message.info('切换到添加标签');
+              }
+          },
+          changeTagtype (value) {
+              this.form.tag_id = value.value;
+          },
+          addtags () {
+              let data = {
+                  type: 'product',
+                  name: this.form.tags
+              };
+              this.apiPost('admin/tags', data).then((res) => {
+                  this.handelResponse(res, (data, msg) => {
+                      let tempN = [];
+                      let tagId = data.id;
+                      let tagnum = tagId.toString();
+                      tempN.push(tagnum);
+                      this.$parent.gettag();
+                      this.$Message.success(msg);
+                  }, (data, msg) => {
+                      this.$Message.error(msg);
+                  });
+              }, (res) => {
+                  // 处理错误信息
+                  this.$Message.error('网络异常，请稍后重试。');
+              });
+          },
+          imgpath () {
+              return this.form.image;
+          },
+          updateData (data) {
+              console.log(data);
+              this.form.detail = data;
+          },
+          updatefeild4 (data) {
+              this.form.field4 = data;
+          },
+          changePtype (value) {
+              this.form.type_id = value.value;
+              this.form.type_name = value.label;
+          },
+          // 缩略图上传回调
+          getResponse (response, file, filelist) {
+              this.form.image = response.url;
+              if (response.status) {
+                  this.$Message.success(response.msg);
+                  this.imgpath();
+              } else {
+                  this.$Message.error(response.msg);
+              }
+              this.$refs.upImg.clearFiles();
+          },
+          getErrorInfo (error, file, filelist) {
+              this.$Message.error(error);
+          },
+          formatError () {
+              this.$Message.error('文件格式只支持 jpg,jpeg,png三种格式。');
+          },
+          getError (error, file, filelist) {
+              this.$Message.error(error);
+          },
+          formatE () {
+              this.$Message.error('文件格式只支持 jpg,jpeg,png三种格式。');
+          },
+          save () {
+              this.$refs.psave.validate((valid) => {
+                  if (valid) {
+                      this.modal_loading = true;
+                      let data = this.form;
+                      let id = data.id;
+                      this.apiPut('admin/product/' + id, data).then((res) => {
+                          this.handelResponse(res, (data, msg) => {
+                              this.modal = false;
+                              this.$parent.getData();
+                              this.$Message.success(msg);
+                              this.modal_loading = false;
+                              this.$refs.psave.resetFields();
+                          }, (data, msg) => {
+                              this.modal_loading = false;
+                              this.$Message.error(msg);
+                          });
+                      }, (res) => {
+                          // 处理错误信息
+                          this.modal_loading = false;
+                          this.$Message.error('网络异常，请稍后重试。');
+                      });
+                  }
+              });
+          }
       },
-      tagname: {
-        default: {}
+      props: {
+          form: {
+              default: {
+                  name: '',
+                  detail: '',
+                  image: '',
+                  summary: '',
+                  payway: '',
+                  sn: '',
+                  type_name: '',
+                  type_id: 0,
+                  keywords: '',
+                  title: '',
+                  description: '',
+                  field1: '',
+                  field2: '',
+                  field3: '',
+                  field4: '',
+                  content: ''
+              }
+          },
+          ptype: {
+              default: []
+          },
+          tagname: {
+              default: {}
+          }
       },
-    },
-    mixins: [http],
-  }
+      mixins: [http, common]
+  };
 </script>
