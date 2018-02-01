@@ -474,7 +474,6 @@
                       this.form.field4 = text1;
                       let data = this.form;
                       let id = data.id;
-                      let _this = this
                       this.apiPut('product/' + id, data).then((res) => {
                           this.handleAjaxResponse(res, (data, msg) => {
                               this.modal = false;
