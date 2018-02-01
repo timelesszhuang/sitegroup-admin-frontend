@@ -1,526 +1,529 @@
 <template>
-  <div>
-    <Modal
-      v-model="modal"
-      width="900"
-      :styles="{top: '20px'}"
-    >
-      <p slot="header">
-        <span v-if="this.form.url">添加到私有文章库&nbsp;&nbsp;&nbsp; <a v-bind:href="url" target="_blank">点此查看原文章</a></span>
-        <span v-else>修改文章</span>
-      </p>
-      <div>
+    <div>
+        <Modal
+                v-model="modal"
+                width="900"
+                :styles="{top: '20px'}"
+        >
+            <p slot="header">
+                <span v-if="this.form.url">添加到私有文章库&nbsp;&nbsp;&nbsp; <a v-bind:href="url"
+                                                                         target="_blank">点此查看原文章</a></span>
+                <span v-else>修改文章</span>
+            </p>
+            <div>
 
 
-        <Form ref="save" :model="form" :label-width="90" :rules="AddRule" class="node-add-form">
-          <Row :gutter="16">
-            <Col span="17">
-            <Form-item label="标题" prop="title">
-              <Input type="text" v-model="form.title" placeholder="请输入标题"></Input>
-            </Form-item>
-            </Col>
-            <Col span="5">
-            <ColorPicker v-model="form.title_color"/>
-            </Col>
-          </Row>
-          <Row>
-            <Col span="8">
-            <Form-item label="简略标题" prop="shorttitle">
-              <Input type="text" v-model="form.shorttitle" placeholder="请输入简略标题"></Input>
-            </Form-item>
-            </Col>
-          </Row>
-          <Row>
-            <Col span="12">
-            <Form-item label="来源" prop="come_from">
-              <Input type="text" v-model="form.come_from" placeholder="请输入来源"
-                     style="width: 200px;"></Input>
-            </Form-item>
-            </Col>
-            <Col span="12">
-            <Form-item label="作者" prop="auther">
-              <Input type="text" v-model="form.auther" placeholder="请输入作者" style="width: 200px;"></Input>
-            </Form-item>
-            </Col>
-          </Row>
-          <Row>
-            <Col span="12">
-            <Form-item label="缩略图上传">
-              <Upload
-                      style="display: inline-block"
-                      type="select"
-                      ref="upImg"
-                      with-credentials
-                      name="file"
-                      :format="['jpg','jpeg','png','gif']"
-                      :on-success="getResponse"
-                      :on-error="getErrorInfo"
-                      :on-format-error="formatError"
-                      :action="action">
-                <Button type="ghost" icon="ios-cloud-upload-outline">上传缩略图</Button>
-              </Upload>
-              <Button type="success" style="display: inline-block" :loading="modal_loading"
-                      @click="addimg('suolue')">
-                素材库图片
-              </Button>
-            </Form-item>
+                <Form ref="save" :model="form" :label-width="90" :rules="AddRule" class="node-add-form">
+                    <Row :gutter="16">
+                        <Col span="17">
+                        <Form-item label="标题" prop="title">
+                            <Input type="text" v-model="form.title" placeholder="请输入标题"></Input>
+                        </Form-item>
+                        </Col>
+                        <Col span="5">
+                        <ColorPicker v-model="form.title_color"/>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col span="8">
+                        <Form-item label="简略标题" prop="shorttitle">
+                            <Input type="text" v-model="form.shorttitle" placeholder="请输入简略标题"></Input>
+                        </Form-item>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col span="12">
+                        <Form-item label="来源" prop="come_from">
+                            <Input type="text" v-model="form.come_from" placeholder="请输入来源"
+                                   style="width: 200px;"></Input>
+                        </Form-item>
+                        </Col>
+                        <Col span="12">
+                        <Form-item label="作者" prop="auther">
+                            <Input type="text" v-model="form.auther" placeholder="请输入作者" style="width: 200px;"></Input>
+                        </Form-item>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col span="12">
+                        <Form-item label="缩略图上传">
+                            <Upload
+                                    style="display: inline-block"
+                                    type="select"
+                                    ref="upImg"
+                                    with-credentials
+                                    name="file"
+                                    :format="['jpg','jpeg','png','gif']"
+                                    :on-success="getResponse"
+                                    :on-error="getErrorInfo"
+                                    :on-format-error="formatError"
+                                    :action="action">
+                                <Button type="ghost" icon="ios-cloud-upload-outline">上传缩略图</Button>
+                            </Upload>
+                            <Button type="success" style="display: inline-block" :loading="modal_loading"
+                                    @click="addimg('suolue')">
+                                素材库图片
+                            </Button>
+                        </Form-item>
 
-            </Col>
+                        </Col>
 
-            <Col span="12">
-            <div v-if="imgshow" style="margin:0 auto;max-width: 200px;margin-right: 300px">
-              <img style="max-width: 200px;" :src=this.form.thumbnails alt=""></div>
-            </Col>
-          </Row>
-          <Row>
-            <Col span="12">
-            <Form-item label="文章分类" prop="articletype_id" style="position: relative;z-index: 100">
-              <Select ref="select" :clearable="selects" v-model="form.articletype_id"
-                      style="width:200px;position: relative;z-index: 10000"
-                      label-in-value filterable clearable 　@on-change="changeArticletype">
-                <Option-group v-for="(item,index) in this.$store.state.commondata.articleType"
-                              :label="index" :key="index">
-                  <Option v-for="(peritem ,perindex) in item" :value="peritem.id"
-                          :label="peritem.name"
-                          :key="perindex">{{ peritem.name }}
-                  </Option>
-                </Option-group>
-              </Select>
-            </Form-item>
-            </Col>
-            <Col span="12">
-            <Form-item label="阅读次数" prop="readcount">
-              <InputNumber :min="1" v-model="form.readcount" placeholder="请输入作者"></InputNumber>
-            </Form-item>
-            </Col>
-          </Row>
+                        <Col span="12">
+                        <div v-if="imgshow" style="margin:0 auto;max-width: 200px;margin-right: 300px">
+                            <img style="max-width: 200px;" :src=this.form.thumbnails alt=""></div>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col span="12">
+                        <Form-item label="文章分类" prop="articletype_id" style="position: relative;z-index: 100">
+                            <Select ref="select" :clearable="selects" v-model="form.articletype_id"
+                                    style="width:200px;position: relative;z-index: 10000"
+                                    label-in-value filterable clearable 　@on-change="changeArticletype">
+                                <Option-group v-for="(item,index) in this.$store.state.commondata.articleType"
+                                              :label="index" :key="index">
+                                    <Option v-for="(peritem ,perindex) in item" :value="peritem.id"
+                                            :label="peritem.name"
+                                            :key="perindex">{{ peritem.name }}
+                                    </Option>
+                                </Option-group>
+                            </Select>
+                        </Form-item>
+                        </Col>
+                        <Col span="12">
+                        <Form-item label="阅读次数" prop="readcount">
+                            <InputNumber :min="1" v-model="form.readcount" placeholder="请输入作者"></InputNumber>
+                        </Form-item>
+                        </Col>
+                    </Row>
 
-          <Form-item label="文章描述" prop="summary">
-            <Input v-model="form.summary" :rows="3" type="textarea" placeholder="请输入文章描述"></Input>
-          </Form-item>
-          <div style="width: 90px;text-align: center;font-size: 12px;">内容
-          </div>
-          <Form-item class="contentarticle" label="内容">
-            <!--<span @click="addimg('content')" title="素材图图片插入"><Icon type="image"></Icon></span>-->
-            <!--<Button type="success" size="small" style="display: inline-block" :loading="modal_loading" @click="addimg('content')">-->
-            <!--素材库图片-->
-            <!--</Button>-->
-            <Card shadow>
-              <textarea class='tinymce-textarea' id="tinymceEditersave"></textarea>
-            </Card>
-            <Spin fix v-if="spinShow">
-              <Icon type="load-c" size=18 class="demo-spin-icon-load"></Icon>
-              <div>加载组件中...</div>
-            </Spin>
-          </Form-item>
-          <Row>
-            <Col span="12">
-            <Form-item label="页面关键词" prop="keywords">
-              <Input type="text" v-model="form.keywords" placeholder="请输入页面关键词(请用英文符号,分割)"></Input>
-            </Form-item>
-            </Col>
-          </Row>
-          <Row>
-            <Col span="21" style="position: relative;z-index: 10">
-            <Form-item v-if="tag_name" label="分类标签" prop="tag_id" >
-              <Select ref="select" :clearable="selects" v-model="form.tag_id"
-                      style="position:relative;text-align: left;width:350px;z-index: 10000;"
-                      label-in-value multiple filterable　>
-                <Option v-for="(item,index) in this.$store.state.commondata.articleTag" :value="index"
-                        :label="item" :key="index">
-                  {{item}}
-                </Option>
-              </Select>
-            </Form-item>
-            <Form-item label="分类标签" v-if="!tag_name" prop="tags">
-              <Input type="text" style="width:350px;" v-model="form.tags" placeholder="请输入标签区分分类"></Input>
-              <Button type="success" size="small" :loading="modal_loading" @click="addtags">添加标签</Button>
-            </Form-item>
-            </Col>
-            <Col span="3">
-            <i-switch size="large" v-model="switch1" @on-change="change">
-              <span slot="open">选择</span>
-              <span slot="close">填写</span>
-            </i-switch>
-            </Col>
-          </Row>
-        </Form>
-        <Alert style="font-size:15px;font-weight: bold;text-align:center;" type="warning">
-          图片上传限制:&nbsp;&nbsp;&nbsp;单张图片限制为512KB大小&nbsp;&nbsp;&nbsp;
-        </Alert>
-      </div>
-      <div slot="footer">
-        <Button type="success" v-if="this.form.url" size="large" :loading="modal_loading" @click="add">添加</Button>
-        <Button type="success" size="large" v-else-if="!this.form.url" :loading="modal_loading" @click="save">保存
-        </Button>
-      </div>
-    </Modal>
-    <materialimg ref="addmaterial"></materialimg>
-  </div>
+                    <Form-item label="文章描述" prop="summary">
+                        <Input v-model="form.summary" :rows="3" type="textarea" placeholder="请输入文章描述"></Input>
+                    </Form-item>
+                    <div style="width: 90px;text-align: center;font-size: 12px;">内容
+                    </div>
+                    <Form-item class="contentarticle" label="内容">
+                        <!--<span @click="addimg('content')" title="素材图图片插入"><Icon type="image"></Icon></span>-->
+                        <!--<Button type="success" size="small" style="display: inline-block" :loading="modal_loading" @click="addimg('content')">-->
+                        <!--素材库图片-->
+                        <!--</Button>-->
+                        <Card shadow>
+                            <textarea class='tinymce-textarea' id="tinymceEditersave"></textarea>
+                        </Card>
+                        <Spin fix v-if="spinShow">
+                            <Icon type="load-c" size=18 class="demo-spin-icon-load"></Icon>
+                            <div>加载组件中...</div>
+                        </Spin>
+                    </Form-item>
+                    <Row>
+                        <Col span="12">
+                        <Form-item label="页面关键词" prop="keywords">
+                            <Input type="text" v-model="form.keywords" placeholder="请输入页面关键词(请用英文符号,分割)"></Input>
+                        </Form-item>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col span="21" style="position: relative;z-index: 10">
+                        <Form-item v-if="tag_name" label="分类标签" prop="tag_id">
+                            <Select ref="select" :clearable="selects" v-model="form.tag_id"
+                                    style="position:relative;text-align: left;width:350px;z-index: 10000;"
+                                    label-in-value multiple filterable　>
+                                <Option v-for="(item,index) in this.$store.state.commondata.articleTag" :value="index"
+                                        :label="item" :key="index">
+                                    {{item}}
+                                </Option>
+                            </Select>
+                        </Form-item>
+                        <Form-item label="分类标签" v-if="!tag_name" prop="tags">
+                            <Input type="text" style="width:350px;" v-model="form.tags" placeholder="请输入标签区分分类"></Input>
+                            <Button type="success" size="small" :loading="modal_loading" @click="addtags">添加标签</Button>
+                        </Form-item>
+                        </Col>
+                        <Col span="3">
+                        <i-switch size="large" v-model="switch1" @on-change="change">
+                            <span slot="open">选择</span>
+                            <span slot="close">填写</span>
+                        </i-switch>
+                        </Col>
+                    </Row>
+                </Form>
+                <Alert style="font-size:15px;font-weight: bold;text-align:center;" type="warning">
+                    图片上传限制:&nbsp;&nbsp;&nbsp;单张图片限制为512KB大小&nbsp;&nbsp;&nbsp;
+                </Alert>
+            </div>
+            <div slot="footer">
+                <Button type="success" v-if="this.form.url" size="large" :loading="modal_loading" @click="add">添加
+                </Button>
+                <Button type="success" size="large" v-else-if="!this.form.url" :loading="modal_loading" @click="save">保存
+                </Button>
+            </div>
+        </Modal>
+        <materialimg ref="addmaterial"></materialimg>
+    </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import http from '../../../libs/http';
-  import common from '../../../libs/common';
-  import tinymce from 'tinymce';
-  import materialimg from './materialimg.vue';
-  export default {
-      components: {materialimg},
-      data () {
-          const checkarticletype = (rule, value, callback) => {
-              if (!value) {
-                  callback(new Error('请选择文章分类'));
-              } else {
-                  callback();
-              }
-          };
-          return {
-              img: '',
-              form: {
-                  summary: '',
-                  thumbnails: '',
-                  keywords: '',
-                  readcount: 0,
-                  title: '',
-                  shorttitle: '',
-                  auther: '',
-                  come_from: '',
-                  articletype_id: 0,
-                  articletype_name: '',
-                  content: '',
-                  title_color: '',
-                  tag_id: [],
-                  tags: ''
-              },
-              imgcontent: '',
-              spinShow: true,
-              tag_name: true,
-              switch1: true,
-              action: HOST + 'article_image_upload',
-              imgshow: true,
-              editorOption: {
-                  modules: {
-                      history: {
-                          delay: 1000,
-                          maxStack: 50
-                      }
-                  }
-              },
-              selects: true,
-              fullscreenLoading: '',
-              uploadData: {},
-              modal: false,
-              modal_loading: false,
-              AddRule: {
-                  title: [
-                      {required: true, message: '请填写文章标题', trigger: 'blur'}
-                  ],
-                  come_from: [
-                      {required: true, message: '请填写文章来源', trigger: 'blur'}
-                  ],
-                  auther: [
-                      {required: true, message: '请填写文章作者', trigger: 'blur'}
-                  ],
-                  articletype_id: [
-                      {validator: checkarticletype, trigger: 'blur'}
-                  ]
-                  // tag_id: [
-                  //   {required: true, validator: checktag, trigger: 'blur'}
-                  // ]
-              }
-          };
-      },
-      computed: {
-          // url: function () {
-          //     return this.form.url;
-          // }
-      },
-      methods: {
-          edit (editid) {
-              this.apiGet('article/' + editid).then((res) => {
-                  this.handleAjaxResponse(res, (data, msg) => {
-                      this.form = data;
-                      tinymce.get('tinymceEditersave').setContent(this.form.content);
-                      let tempNUmber = [];
-                      if (this.form.tags !== '') {
-                          this.form.tags.split(',').map(function (key) {
-                              tempNUmber.push(key);
-                          });
-                      }
-                      this.form.tag_id = tempNUmber;
-                      this.form.tags = '';
-                  }, (data, msg) => {
-                      this.$Message.error(msg);
-                  });
-              }, (res) => {
-                  // 处理错误信息
+    import http from '../../../libs/http';
+    import common from '../../../libs/common';
+    import tinymce from 'tinymce';
+    import materialimg from './materialimg.vue';
 
-              });
-          },
-          init: function () {
-              this.$nextTick(() => {
-                  let vm = this;
-                  let height = document.body.offsetHeight - 300;
-                  tinymce.init({
-                      selector: '#tinymceEditersave',
-                      branding: false,
-                      elementpath: false,
-                      height: height,
-                      language: 'zh_CN.GB2312',
-                      menubar: 'edit insert view format table tools',
-                      plugins: [
-                          'fullscreen',
-                          'wordcount',
-                          'advlist autolink lists link image charmap print preview hr anchor pagebreak imagetools',
-                          'searchreplace visualblocks visualchars code fullpage',
-                          'insertdatetime media nonbreaking save table contextmenu directionality',
-                          'emoticons paste textcolor colorpicker textpattern imagetools codesample'
-                      ],
-                      toolbar1: ' newnote print preview | undo redo | insert | styleselect | forecolor backcolor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image emoticons media codesample | mybutton | fullscreen |',
-                      autosave_interval: '20s',
-                      image_advtab: true,
-                      automatic_uploads: true,
-                      images_reuse_filename: true,
-                      images_upload_url: 'http://bn.sjy/index.php/article_image_upload',
-                      images_upload_handler: function (blobInfo, success, failure) {
-                          let xhr, formData;
-                          xhr = new XMLHttpRequest();
-                          xhr.withCredentials = true;
-                          xhr.open('POST', 'http://bn.sjy/index.php/article_image_upload');
-                          xhr.onload = function () {
-                              var json;
-                              if (xhr.status != 200) {
-                                  failure('HTTP Error: ' + xhr.status);
-                                  return;
-                              }
-                              json = JSON.parse(xhr.responseText);
-                              if (!json || typeof json.data.url !== 'string') {
-                                  failure('Invalid JSON: ' + xhr.responseText);
-                                  return;
-                              }
-                              success(json.data.url);
-                          };
-                          formData = new FormData();
-                          formData.append('file', blobInfo.blob(), blobInfo.filename());
-                          xhr.send(formData);
-                      },
-                      table_default_styles: {
-                          width: '100%',
-                          borderCollapse: 'collapse'
-                      },
-                      setup: function (editor) {
-                          editor.on('init', function (e) {
-                              vm.spinShow = false;
-                              tinymce.get('tinymceEditersave').setContent(vm.imgcontent);
-                          });
-                          editor.on('keydown', function (e) {
-                              // editor.insertContent(vm.form.content)
-                              // localStorage.editorContent = tinymce.get('tinymceEditer').getContent()
-                              // tinymce.get('tinymceEditer').setContent(vm.form.content)
-                          });
-                          editor.addButton('mybutton', {
-                              text: '素材库图片',
-                              icon: false,
-                              onclick: function () {
-                                  vm.img = 'content';
-                                  vm.$refs.addmaterial.getData();
-                                  vm.$refs.addmaterial.modal = true;
-                              }
-                          });
-                          // editor.addMenuItem('myitem', {
-                          //     text: 'My menu item',
-                          //     context: 'tools',
-                          //     onclick: function () {
-                          //         editor.insertContent('&nbsp;Here\'s some content!&nbsp;');
-                          //     }
-                          // });
-                      }
-                  });
-              });
-          },
-          change (status) {
-              if (status) {
-                  this.tag_name = true;
-                  this.$Message.info('切换到下拉选择');
-              } else {
-                  this.tag_name = false;
-                  this.$Message.info('切换到添加标签');
-              }
-          },
-          changeTagtype (value) {
-              this.form.tag_id = value.value;
-          },
-          getsrc (src) {
-              if (this.img == 'content') {
-                  let imgsrc = '<img src=' + src + '>';
-                  tinymce.get('tinymceEditersave').insertContent(imgsrc);
-              } else if (this.img == 'suolue') {
-                  this.form.thumbnails = src;
-              }
-          },
-          addimg (img) {
-              this.img = img;
-              this.$refs.addmaterial.getData();
-              this.$refs.addmaterial.modal = true;
-          },
-          imgpath (src) {
-              if (src) {
-                  if (this.img == 'content') {
-                      let imgsrc = '<img src=' + src + '>';
-                      this.form.content += imgsrc;
-                      return src;
-                  } else if (this.img == 'suolue') {
-                  }
-                  this.form.thumbnails = src;
-                  return src;
-              }
-              if (this.form.thumbnails) {
-                  return this.form.thumbnails;
-              }
+    export default {
+        components: {materialimg},
+        data() {
+            const checkarticletype = (rule, value, callback) => {
+                if (!value) {
+                    callback(new Error('请选择文章分类'));
+                } else {
+                    callback();
+                }
+            };
+            return {
+                img: '',
+                form: {
+                    summary: '',
+                    thumbnails: '',
+                    keywords: '',
+                    readcount: 0,
+                    title: '',
+                    shorttitle: '',
+                    auther: '',
+                    come_from: '',
+                    articletype_id: 0,
+                    articletype_name: '',
+                    content: '',
+                    title_color: '',
+                    tag_id: [],
+                    tags: ''
+                },
+                imgcontent: '',
+                spinShow: true,
+                tag_name: true,
+                switch1: true,
+                action: HOST + 'article_image_upload',
+                imgshow: true,
+                editorOption: {
+                    modules: {
+                        history: {
+                            delay: 1000,
+                            maxStack: 50
+                        }
+                    }
+                },
+                selects: true,
+                fullscreenLoading: '',
+                uploadData: {},
+                modal: false,
+                modal_loading: false,
+                AddRule: {
+                    title: [
+                        {required: true, message: '请填写文章标题', trigger: 'blur'}
+                    ],
+                    come_from: [
+                        {required: true, message: '请填写文章来源', trigger: 'blur'}
+                    ],
+                    auther: [
+                        {required: true, message: '请填写文章作者', trigger: 'blur'}
+                    ],
+                    articletype_id: [
+                        {validator: checkarticletype, trigger: 'blur'}
+                    ]
+                    // tag_id: [
+                    //   {required: true, validator: checktag, trigger: 'blur'}
+                    // ]
+                }
+            };
+        },
+        computed: {
+            // url: function () {
+            //     return this.form.url;
+            // }
+        },
+        methods: {
+            edit(editid) {
+                this.apiGet('article/' + editid).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.form = data;
+                        tinymce.get('tinymceEditersave').setContent(this.form.content);
+                        let tempNUmber = [];
+                        if (this.form.tags !== '') {
+                            this.form.tags.split(',').map(function (key) {
+                                tempNUmber.push(key);
+                            });
+                        }
+                        this.form.tag_id = tempNUmber;
+                        this.form.tags = '';
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
 
-              return '';
-          },
-          addtags () {
-              let data = {
-                  type: 'article',
-                  name: this.form.tags
-              };
-              this.apiPost('tags', data).then((res) => {
-                  this.handleAjaxResponse(res, (data, msg) => {
-                      let tempN = this.form.tag_id;
-                      let tagId = data.id;
-                      let tagnum = tagId.toString();
-                      tempN.push(tagnum);
-                      this.form.tags = '';
-                      this.getArticleTag(true);
-                      this.$Message.success(msg);
-                  }, (data, msg) => {
-                      this.$Message.error(msg);
-                  });
-              }, (res) => {
-                  // 处理错误信息
+                });
+            },
+            init: function () {
+                this.$nextTick(() => {
+                    let vm = this;
+                    let height = document.body.offsetHeight - 300;
+                    tinymce.init({
+                        selector: '#tinymceEditersave',
+                        branding: false,
+                        elementpath: false,
+                        height: height,
+                        language: 'zh_CN.GB2312',
+                        menubar: 'edit insert view format table tools',
+                        plugins: [
+                            'fullscreen',
+                            'wordcount',
+                            'advlist autolink lists link image charmap print preview hr anchor pagebreak imagetools',
+                            'searchreplace visualblocks visualchars code fullpage',
+                            'insertdatetime media nonbreaking save table contextmenu directionality',
+                            'emoticons paste textcolor colorpicker textpattern imagetools codesample'
+                        ],
+                        toolbar1: ' newnote print preview | undo redo | insert | styleselect | forecolor backcolor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image emoticons media codesample | mybutton | fullscreen |',
+                        autosave_interval: '20s',
+                        image_advtab: true,
+                        automatic_uploads: true,
+                        images_reuse_filename: true,
+                        images_upload_url: 'http://bn.sjy/index.php/article_image_upload',
+                        images_upload_handler: function (blobInfo, success, failure) {
+                            let xhr, formData;
+                            xhr = new XMLHttpRequest();
+                            xhr.withCredentials = true;
+                            xhr.open('POST', 'http://bn.sjy/index.php/article_image_upload');
+                            xhr.onload = function () {
+                                var json;
+                                if (xhr.status != 200) {
+                                    failure('HTTP Error: ' + xhr.status);
+                                    return;
+                                }
+                                json = JSON.parse(xhr.responseText);
+                                if (!json || typeof json.data.url !== 'string') {
+                                    failure('Invalid JSON: ' + xhr.responseText);
+                                    return;
+                                }
+                                success(json.data.url);
+                            };
+                            formData = new FormData();
+                            formData.append('file', blobInfo.blob(), blobInfo.filename());
+                            xhr.send(formData);
+                        },
+                        table_default_styles: {
+                            width: '100%',
+                            borderCollapse: 'collapse'
+                        },
+                        setup: function (editor) {
+                            editor.on('init', function (e) {
+                                vm.spinShow = false;
+                                tinymce.get('tinymceEditersave').setContent(vm.imgcontent);
+                            });
+                            editor.on('keydown', function (e) {
+                                // editor.insertContent(vm.form.content)
+                                // localStorage.editorContent = tinymce.get('tinymceEditer').getContent()
+                                // tinymce.get('tinymceEditer').setContent(vm.form.content)
+                            });
+                            editor.addButton('mybutton', {
+                                text: '素材库图片',
+                                icon: false,
+                                onclick: function () {
+                                    vm.img = 'content';
+                                    vm.$refs.addmaterial.getData();
+                                    vm.$refs.addmaterial.modal = true;
+                                }
+                            });
+                            // editor.addMenuItem('myitem', {
+                            //     text: 'My menu item',
+                            //     context: 'tools',
+                            //     onclick: function () {
+                            //         editor.insertContent('&nbsp;Here\'s some content!&nbsp;');
+                            //     }
+                            // });
+                        }
+                    });
+                });
+            },
+            change(status) {
+                if (status) {
+                    this.tag_name = true;
+                    this.$Message.info('切换到下拉选择');
+                } else {
+                    this.tag_name = false;
+                    this.$Message.info('切换到添加标签');
+                }
+            },
+            changeTagtype(value) {
+                this.form.tag_id = value.value;
+            },
+            getsrc(src) {
+                if (this.img == 'content') {
+                    let imgsrc = '<img src=' + src + '>';
+                    tinymce.get('tinymceEditersave').insertContent(imgsrc);
+                } else if (this.img == 'suolue') {
+                    this.form.thumbnails = src;
+                }
+            },
+            addimg(img) {
+                this.img = img;
+                this.$refs.addmaterial.getData();
+                this.$refs.addmaterial.modal = true;
+            },
+            imgpath(src) {
+                if (src) {
+                    if (this.img == 'content') {
+                        let imgsrc = '<img src=' + src + '>';
+                        this.form.content += imgsrc;
+                        return src;
+                    } else if (this.img == 'suolue') {
+                    }
+                    this.form.thumbnails = src;
+                    return src;
+                }
+                if (this.form.thumbnails) {
+                    return this.form.thumbnails;
+                }
 
-              });
-          },
-          // 缩略图上传回调
-          getResponse (response, file, filelist) {
-              this.form.thumbnails = response.url;
-              if (response.status) {
-                  this.$Message.success(response.msg);
-                  this.imgpath();
-                  this.imgshow = true;
-                  this.$refs.upImg.clearFiles();
-              } else {
-                  this.$Message.error(response.msg);
-              }
-              this.$refs.upImg.clearFiles();
-          },
-          getErrorInfo (error, file, filelist) {
-              this.$Message.error(error);
-          },
-          formatError () {
-              this.$Message.error('文件格式只支持 jpg,jpeg,png三种格式。');
-          },
-          updateData (data) {
-              this.form.content = data;
-          },
-          changeArticletype (value) {
-              this.form.articletype_name = value.label;
-              this.form.articletype_id = value.value;
-          },
-          save () {
-              this.$refs.save.validate((valid) => {
-                  if (valid) {
-                      this.modal_loading = true;
-                      let data = this.form;
-                      let activeEditor = tinymce.activeEditor;
-                      let editBody = activeEditor.getBody();
-                      activeEditor.selection.select(editBody);
-                      let text = activeEditor.selection.getContent({ 'format': 'html' });
-                      this.form.content = text;
-                      let id = data.id;
-                      this.apiPut('article/' + id, data).then((res) => {
-                          this.handleAjaxResponse(res, (data, msg) => {
-                              this.modal = false;
-                              this.$parent.getData();
-                              this.$Message.success(msg);
-                              // this.imgpath();
-                              this.modal_loading = false;
-                              this.$refs.save.resetFields();
-                              this.$refs.select.clearSingleSelect();
-                          }, (data, msg) => {
-                              this.modal_loading = false;
-                              this.$Message.error(msg);
-                          });
-                      }, (res) => {
-                          // 处理错误信息
-                          this.modal_loading = false;
+                return '';
+            },
+            addtags() {
+                let data = {
+                    type: 'article',
+                    name: this.form.tags
+                };
+                this.apiPost('tags', data).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        let tempN = this.form.tag_id;
+                        let tagId = data.id;
+                        let tagnum = tagId.toString();
+                        tempN.push(tagnum);
+                        this.form.tags = '';
+                        this.getArticleTag(true);
+                        this.$Message.success(msg);
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
 
-                      });
-                  }
-              });
-          },
-          add () {
-              this.$refs.save.validate((valid) => {
-                  if (valid) {
-                      this.modal_loading = true;
-                      let data = {
-                          articletype_id: this.form.articletype_id,
-                          articletype_name: this.form.articletype_name,
-                          auther: this.form.auther,
-                          summary: this.form.summary,
-                          title: this.form.title,
-                          title_color: this.form.title_color,
-                          content: this.form.content,
-                          come_from: this.form.come_from,
-                          posttime: this.form.createtime,
-                          thumbnails: this.form.thumbnails,
-                          readcount: this.form.readcount,
-                          keywords: this.form.keywords,
-                          shorttitle: this.form.shorttitle,
-                          is_collection: this.form.is_collection,
-                          tag_id: this.form.tag_id
-                      };
-                      //            let data = this.form;
-                      this.apiPost('article', data).then((res) => {
-                          this.handleAjaxResponse(res, (data, msg) => {
-                              this.modal = false;
-                              this.$parent.getData();
-                              this.$Message.success(msg);
-                              this.modal_loading = false;
-                              this.$refs.save.resetFields();
-                              this.$refs.select.clearSingleSelect();
-                          }, (data, msg) => {
-                              this.modal_loading = false;
-                              this.$Message.error(msg);
-                          });
-                      }, (res) => {
-                          // 处理错误信息
-                          this.modal_loading = false;
+                });
+            },
+            // 缩略图上传回调
+            getResponse(response, file, filelist) {
+                this.form.thumbnails = response.url;
+                if (response.status) {
+                    this.$Message.success(response.msg);
+                    this.imgpath();
+                    this.imgshow = true;
+                    this.$refs.upImg.clearFiles();
+                } else {
+                    this.$Message.error(response.msg);
+                }
+                this.$refs.upImg.clearFiles();
+            },
+            getErrorInfo(error, file, filelist) {
+                this.$Message.error(error);
+            },
+            formatError() {
+                this.$Message.error('文件格式只支持 jpg,jpeg,png三种格式。');
+            },
+            updateData(data) {
+                this.form.content = data;
+            },
+            changeArticletype(value) {
+                this.form.articletype_name = value.label;
+                this.form.articletype_id = value.value;
+            },
+            save() {
+                this.$refs.save.validate((valid) => {
+                    if (valid) {
+                        this.modal_loading = true;
+                        let data = this.form;
+                        let activeEditor = tinymce.activeEditor;
+                        let editBody = activeEditor.getBody();
+                        activeEditor.selection.select(editBody);
+                        let text = activeEditor.selection.getContent({'format': 'html'});
+                        this.form.content = text;
+                        let id = data.id;
+                        this.apiPut('article/' + id, data).then((res) => {
+                            this.handleAjaxResponse(res, (data, msg) => {
+                                this.modal = false;
+                                this.$emit('getdata');
+                                this.$Message.success(msg);
+                                // this.imgpath();
+                                this.modal_loading = false;
+                                this.$refs.save.resetFields();
+                                this.$refs.select.clearSingleSelect();
+                            }, (data, msg) => {
+                                this.modal_loading = false;
+                                this.$Message.error(msg);
+                            });
+                        }, (res) => {
+                            // 处理错误信息
+                            this.modal_loading = false;
 
-                      });
-                  }
-              });
-          }
+                        });
+                    }
+                });
+            },
+            add() {
+                this.$refs.save.validate((valid) => {
+                    if (valid) {
+                        this.modal_loading = true;
+                        let data = {
+                            articletype_id: this.form.articletype_id,
+                            articletype_name: this.form.articletype_name,
+                            auther: this.form.auther,
+                            summary: this.form.summary,
+                            title: this.form.title,
+                            title_color: this.form.title_color,
+                            content: this.form.content,
+                            come_from: this.form.come_from,
+                            posttime: this.form.createtime,
+                            thumbnails: this.form.thumbnails,
+                            readcount: this.form.readcount,
+                            keywords: this.form.keywords,
+                            shorttitle: this.form.shorttitle,
+                            is_collection: this.form.is_collection,
+                            tag_id: this.form.tag_id
+                        };
+                        //            let data = this.form;
+                        this.apiPost('article', data).then((res) => {
+                            this.handleAjaxResponse(res, (data, msg) => {
+                                this.modal = false;
+                                this.$parent.getData();
+                                this.$Message.success(msg);
+                                this.modal_loading = false;
+                                this.$refs.save.resetFields();
+                                this.$refs.select.clearSingleSelect();
+                            }, (data, msg) => {
+                                this.modal_loading = false;
+                                this.$Message.error(msg);
+                            });
+                        }, (res) => {
+                            // 处理错误信息
+                            this.modal_loading = false;
 
-      },
-      mounted () {
-          this.init();
-      },
-      destroyed () {
-          tinymce.get('tinymceEditersave').destroy();
-      },
-      mixins: [http, common],
-      props: {
-          //
-          // tagname: {
-          //     default: {}
-          // },
-      }
-  };
+                        });
+                    }
+                });
+            }
+
+        },
+        mounted() {
+            this.init();
+        },
+        destroyed() {
+            tinymce.get('tinymceEditersave').destroy();
+        },
+        mixins: [http, common],
+        props: {
+            //
+            // tagname: {
+            //     default: {}
+            // },
+        }
+    };
 </script>
 <style>
-  .ql-editor {
-    max-height: 1000px !important;
-  }
+    .ql-editor {
+        max-height: 1000px !important;
+    }
 </style>

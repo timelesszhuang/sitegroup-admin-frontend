@@ -80,15 +80,20 @@ const ajaxMethods = {
                 }
             } else if (res.status === 'logout') {
                 // 后端提示没有权限操作的时候跳到403页面
-                if (typeof errCb === 'function') {
-                    errCb(res.data, res.msg);
-                } else {
-                    this.$Notice.error({
-                        title: res.msg === '' ? '操作异常，请售后再试' : res.msg,
-                        desc: res.detail === undefined ? '' : res.detail
-                    });
+                if (!this.$store.state.app.autoLoginStatus) {
+                    // 设置自动登陆
+                    this.$store.commit('changeAutoLoginStatus', true);
+                    if (typeof errCb === 'function') {
+                        errCb(res.data, res.msg);
+                    } else {
+                        this.$Notice.error({
+                            title: res.msg === '' ? '操作异常，请售后再试' : res.msg,
+                            desc: res.detail === undefined ? '' : res.detail
+                        });
+                    }
+                    //
+                    this.autologin();
                 }
-                this.autologin();
             } else if (res.status === 'noauth') {
                 this.$Notice.warning({
                     title: res.msg === '' ? '操作异常，请售后再试' : res.msg,
@@ -130,12 +135,13 @@ const ajaxMethods = {
                     Cookies.set('user_id', user_id);
                     Cookies.set('type', type);
                     Cookies.set('rememberKey', rememberKey);
+                    this.$store.commit('changeAutoLoginStatus', false);
                     this.$router.push({
                         name: this.$store.state.homeIndex
                     });
                 }, (data, msg) => {
                     // 自动登录失败的操作
-                    // Cookies.set('rememberMe', false);
+                    this.$store.commit('logout');
                     this.$router.push({
                         name: 'login'
                     });

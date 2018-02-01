@@ -250,6 +250,8 @@
         mounted: function () {
             // 默认进入登录页面的话需要 清除下之前的登陆信息
             this.$store.commit('logout', this);
+            // 如果是从自动登陆过来的
+            this.$store.commit('changeAutoLoginStatus', false);
         },
         created: function () {
             let date1 = new Date();
