@@ -45,12 +45,11 @@
                             </div>
                         </TabPane>
                         <TabPane label="修改图片" name="name2">
-
                             <Form ref="editimg" :model="form" :label-width="90" :rules="AddRule" class="node-add-form">
                                 <Row v-if="is_show">
                                     <Col span="8">
                                     <Form-item label="修改图片" prop="imgser">
-                                        <Select style="width:120px;" placeholder="图片" label-in-value filterable
+                                        <Select style="width:120px;" placeholder="图片" label-in-value clearable
                                                 clearable @on-change="changeEditImg" ref="imgselect">
                                             <Option v-for="(item,index) in form.imglist" :value="index" :key="index">
                                                 图片{{index + 1}}
@@ -76,25 +75,23 @@
                             </Form>
                             <div>
                                 <Row>
-                                    <Col span="20" style="padding-left: 75%">
-                                    <Upload
-                                            v-if="this.img"
+                                    <Col span="20" style="padding-left:75%">
+                                    <Upload v-if="this.img"
                                             type="select"
                                             ref="upImg"
                                             with-credentials
                                             name="updateimg"
                                             :format="['jpg','jpeg','png','gif']"
-                                            :on-success="getResponse"
+                                            :on-success="getEditResponse"
                                             :on-error="getErrorInfo"
                                             :on-format-error="formatError"
                                             :action="action"
-                                            :data="editotherdata"
-                                    >
+                                            :data="editotherdata">
                                         <Button type="ghost" icon="ios-cloud-upload-outline">替换</Button>
                                     </Upload>
                                     </Col>
                                     <Col span="2">
-                                    <Button v-if="this.img" @click="saveinfo()">保存</Button>
+                                    &nbsp;<Button v-if="this.img" type="primary" @click="saveinfo()">保存</Button>
                                     </Col>
                                     <Col span="2">
                                     <Button v-if="this.img" type="warning" @click="delimg()">删除</Button>
@@ -111,8 +108,6 @@
                             </Alert>
                         </TabPane>
                     </Tabs>
-
-
                 </div>
                 <div slot="footer">
                 </div>
@@ -137,6 +132,7 @@
                     title: '',
                     link: ''
                 },
+                form: {},
                 AddRule: {},
                 AddRule1: {
                     title: [
@@ -148,7 +144,7 @@
                 },
                 // 是不是需要显示修改等操作
                 is_show: false,
-                action: window.HOST + 'uploadimglistimgser'
+                action: window.HOST + 'upload_img_list_imgser'
             };
         },
         created() {
@@ -160,7 +156,6 @@
                     'id': this.form.id,
                     'link': this.addform.link,
                     'title': this.addform.title
-
                 };
             },
             editotherdata: function () {
@@ -174,15 +169,15 @@
         },
         methods: {
             getData(editid) {
-                this.apiGet('getimgser/' + editid).then((res) => {
+                this.apiGet('get_imgser/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
-                        this.imginfo = data;
+                        this.form = data;
                         if (data.imglist && data.imglist.length) {
-                            this.$refs.editimg.is_show = true;
+                            this.is_show = true;
                         } else {
-                            this.$refs.editimg.is_show = false;
+                            this.is_show = false;
                         }
-                        this.$refs.editimg.img = '';
+                        this.img = '';
                     }, (data, msg) => {
                         this.$Message.error(msg);
                     });
@@ -200,17 +195,35 @@
                 this.form.title = this.form.imglist[value.value].title;
             },
             // 上传图片成功之后的链接 添加跟删除都会有
-            getResponse(response, file, filelist) {
-                if (response.status) {
-                    this.form.imglist = response.imglist;
+            getResponse(response) {
+                if (response.status === 'success') {
+                    this.form.imglist = response.data;
                     this.is_show = true;
-                    this.$refs.addimage.resetFields();
                     this.$Message.success(response.msg);
                     this.imgshow = true;
                     this.addform.title = '';
                     this.addform.link = '';
                     this.img = '';
                     this.$refs.addimage.resetFields();
+                    this.$refs.addImg.clearFiles();
+                } else {
+                    this.$Message.error(response.msg);
+                    this.$refs.addimage.resetFields();
+                }
+                this.$refs.addimage.resetFields();
+            },
+            getEditResponse(response) {
+                if (response.status === 'success') {
+                    this.form.imglist = response.data;
+                    this.is_show = true;
+                    this.$refs.addimage.resetFields();
+                    this.$Message.success(response.msg);
+                    this.imgshow = true;
+                    this.form.title = '';
+                    this.form.link = '';
+                    this.img = '';
+                    this.$refs.editimg.resetFields();
+                    this.$refs.upImg.clearFiles();
                     this.$refs.imgselect.clearSingleSelect();
                 } else {
                     this.$Message.error(response.msg);
@@ -236,10 +249,10 @@
                     okText: '确定',
                     cancelText: '取消',
                     onOk: (index) => {
-                        _this.apiGet('deleteImgser/' + id + '/' + _this.imgIndex).then((res) => {
+                        _this.apiGet('delete_imgser/' + id + '/' + _this.imgIndex).then((res) => {
                             _this.handleAjaxResponse(res, (data, msg) => {
                                 _this.$Message.success(msg);
-                                if (data.length == 0) {
+                                if (data.length === 0) {
                                     _this.is_show = false;
                                 }
                                 _this.form.imglist = data;
@@ -266,10 +279,10 @@
                 let id = this.form.id;
                 let link = this.form.link;
                 let title = this.form.title;
-                _this.apiPost('saveinfo/', {id: id, index: _this.imgIndex, link: link, title: title}).then((res) => {
+                _this.apiPost('save_info/', {id: id, index: _this.imgIndex, link: link, title: title}).then((res) => {
                     _this.handleAjaxResponse(res, (data, msg) => {
                         _this.$Message.success(msg);
-                        if (data.length == 0) {
+                        if (data.length === 0) {
                             _this.is_show = false;
                         }
                         _this.form.imglist = data;
