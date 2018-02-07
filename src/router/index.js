@@ -101,6 +101,9 @@ router.beforeEach((to, from, next) => {
             }
         }
     } else if (userType === '3') {
+        console.log(to.name);
+        console.log(Cookies.get('siteId'));
+        console.log(Cookies.get('user_id'));
         // site用户
         if (!Cookies.get('siteId') && Cookies.get('user_id')) {
             // 已经登陆过了 但是没有选择管理的站点

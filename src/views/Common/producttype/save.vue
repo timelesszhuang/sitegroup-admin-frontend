@@ -93,7 +93,7 @@
                       let data = this.form;
                       let id = data.id;
                       this.apiPut('admin/productType/' + id, data).then((res) => {
-                          this.handelResponse(res, (data, msg) => {
+                          this.handleAjaxResponse(res, (data, msg) => {
                               this.modal = false;
                               this.$parent.getData();
                               this.$Message.success(msg);

@@ -1,322 +1,241 @@
 <template>
-  <div>
     <div>
-      <Modal
-        v-model="modal"
-        width="800"
-        :styles="{top: '20px'}"
-      >
-        <p slot="header">
-          <span>修改问答</span>
-        </p>
         <div>
-          <Form ref="questionadd" :model="form" :label-width="90" :rules="AddRule" class="node-add-form">
-            <Form-item label="问题名称" prop="question">
-              <Input type="text" v-model="form.question" placeholder="请填写问答分类"></Input>
-            </Form-item>
-            <Form-item label="问答分类" prop="articletype_id">
-
-              <Select v-model="form.type_id"  ref="select" :clearable="selects" style="width:200px;position: relative;z-index: 10000;"
-                      label-in-value  filterable clearable   @on-change="changeArticletype"  >
-                <Option-group  v-for="(item,index) in this.$store.state.commondata.questionType" :label="index" :key="index">
-                  <Option v-for="(items, indexs) in item"  :value="items.id" :label="items.name" :key="indexs">{{ items.name }}</Option>
-                </Option-group>
-              </Select>
-            </Form-item>
-              <div style="width: 90px;text-align: center;font-size: 12px;">内容
-              </div>
-              <Form-item class="contentarticle" label="内容">
-                  <!--<span @click="addimg('content')" title="素材图图片插入"><Icon type="image"></Icon></span>-->
-                  <!--<Button type="success" size="small" style="display: inline-block" :loading="modal_loading" @click="addimg('content')">-->
-                  <!--素材库图片-->
-                  <!--</Button>-->
-                  <Card shadow>
-                      <textarea class='tinymce-textarea' id="tinymceEditersave"></textarea>
-                  </Card>
-                  <Spin fix v-if="spinShow">
-                      <Icon type="load-c" size=18 class="demo-spin-icon-load"></Icon>
-                      <div>加载组件中...</div>
-                  </Spin>
-              </Form-item>
-            <Form-item label="页面关键词" prop="keywords">
-              <Input type="text" v-model="form.keywords" placeholder="请输入页面关键词(尽量用英文符号分割)" style="width: 200px;"></Input>
-            </Form-item>
-            <Form-item label="页面描述" prop="description">
-              <Input v-model="form.description" :rows="3" type="textarea" placeholder="请输入页面描述"></Input>
-            </Form-item>
-            <Row>
-              <Col span="21">
-              <Form-item v-if="tag_name" label="分类标签" prop="tags">
-                 <Select ref="select" :clearable="selects" v-model="form.tag_id"
-                            style="position:relative;text-align: left;width:350px;z-index: 10000;"
-                            label-in-value multiple filterable　>
-                  <Option v-for="(item,index) in this.$store.state.commondata.questionTag" :value="index"
-                          :label="item" :key="index">
-                      {{item}}
-                  </Option>
-              </Select>
-              </Form-item>
-              <Form-item label="分类标签" v-if="!tag_name" prop="tag_id">
-                <Input type="text" style="width:350px;" v-model="form.tags" placeholder="请输入标签区分分类"></Input>
-                <Button type="success" size="small" :loading="modal_loading" @click="addtags">添加标签</Button>
-              </Form-item>
-              </Col>
-              <Col span="3">
-              <i-switch size="large" v-model="switch1" @on-change="change">
-                <span slot="open">选择</span>
-                <span slot="close">填写</span>
-              </i-switch>
-              </Col>
-            </Row>
-          </Form>
-
+            <Modal v-model="modal" width="800" :styles="{top: '20px'}" 　:mask-closable="false">
+                <p slot="header">
+                    <span>修改问答</span>
+                </p>
+                <div>
+                    <Form ref="questionadd" :model="form" :label-width="90" :rules="AddRule" class="node-add-form">
+                        <Form-item label="问题名称" prop="question">
+                            <Input type="text" v-model="form.question" placeholder="请填写问答分类"></Input>
+                        </Form-item>
+                        <Form-item label="问答分类" prop="type_id">
+                            <Select v-model="form.type_id" ref="select" :clearable="selects" style="width:200px;"
+                                    label-in-value filterable clearable @on-change="changeArticletype">
+                                <Option-group v-for="(item,index) in this.$store.state.commondata.questionType"
+                                              :label="index" :key="index">
+                                    <Option v-for="(items, indexs) in item" :value="items.id" :label="items.name"
+                                            :key="indexs">{{ items.name }}
+                                    </Option>
+                                </Option-group>
+                            </Select>
+                        </Form-item>
+                        <Form-item class="contentarticle" label="内容">
+                            <Card shadow>
+                                <textarea class='tinymce-textarea' id="tinymceEditersave"></textarea>
+                            </Card>
+                            <Spin fix v-if="spinShow">
+                                <Icon type="load-c" size=18 class="demo-spin-icon-load"></Icon>
+                                <div>加载组件中...</div>
+                            </Spin>
+                        </Form-item>
+                        <Form-item label="页面关键词" prop="keywords">
+                            <Input type="text" v-model="form.keywords" placeholder="请输入页面关键词(尽量用英文符号分割)"
+                                   style="width: 200px;"></Input>
+                        </Form-item>
+                        <Form-item label="页面描述" prop="description">
+                            <Input v-model="form.description" :rows="3" type="textarea" placeholder="请输入页面描述"></Input>
+                        </Form-item>
+                        <Row>
+                            <Col span="21">
+                            <Form-item v-if="tag_name" label="分类标签" prop="tags">
+                                <Select ref="select" :clearable="selects" v-model="form.tag_id"
+                                        style="text-align: left;width:350px;"
+                                        label-in-value multiple filterable　>
+                                    <Option v-for="(item,index) in this.$store.state.commondata.questionTag"
+                                            :value="index"
+                                            :label="item" :key="index">
+                                        {{item}}
+                                    </Option>
+                                </Select>
+                            </Form-item>
+                            <Form-item label="分类标签" v-if="!tag_name" prop="tag_id">
+                                <Input type="text" style="width:350px;" v-model="tags"
+                                       placeholder="请输入标签区分分类"></Input>
+                                <Button type="success" size="small" :loading="modal_loading" @click="addtags">添加标签
+                                </Button>
+                            </Form-item>
+                            </Col>
+                            <Col span="3">
+                            <i-switch size="large" v-model="switch1" @on-change="change">
+                                <span slot="open">选择</span>
+                                <span slot="close">填写</span>
+                            </i-switch>
+                            </Col>
+                        </Row>
+                    </Form>
+                </div>
+                <div slot="footer">
+                    <Button type="success" size="large" :loading="modal_loading" @click="add">保存</Button>
+                </div>
+            </Modal>
+            <materialimg ref="editmaterial" v-on:addmaterial="addmaterial"></materialimg>
         </div>
-        <div slot="footer">
-          <Button type="success" size="large" :loading="modal_loading" @click="add">保存</Button>
-        </div>
-      </Modal>
     </div>
-  </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import http from '../../../libs/http';
-  import common from '../../../libs/common';
-  import tinymce from 'tinymce';
-  export default {
-      data () {
-          const checkquestiontype = (rule, value, callback) => {
-              if (!value) {
-                  callback(new Error('请选择问答分类'));
-              } else {
-                  callback();
-              }
-          };
-          return {
-              switch1: true,
-              tag_name: true,
-              modal: false,
-              selects: true,
-              spinShow: true,
-              modal_loading: false,
-              form: {
-                  question: '',
-                  content_paragraph: '',
-                  type_id: 0,
-                  type_name: '',
-                  tag_id: [],
-                  tags: ''
-              },
-              AddRule: {
-                  question: [
-                      {required: true, message: '请填写问题名', trigger: 'blur'}
-                  ],
-                  content_paragraph: [
-                      {required: true, message: '请填写答案', trigger: 'blur'}
-                  ],
-                  questiontype_id: [
-                      {required: true, validator: checkquestiontype, trigger: 'blur'}
-                  ]
-              }
-          };
-      },
-      methods: {
-          init: function () {
-              this.$nextTick(() => {
-                  let vm = this;
-                  let height = document.body.offsetHeight - 300;
-                  tinymce.init({
-                      selector: '#tinymceEditersave',
-                      branding: false,
-                      elementpath: false,
-                      height: height,
-                      language: 'zh_CN.GB2312',
-                      menubar: 'edit insert view format table tools',
-                      plugins: [
-                          'fullscreen',
-                          'wordcount',
-                          'advlist autolink lists link image charmap print preview hr anchor pagebreak imagetools',
-                          'searchreplace visualblocks visualchars code fullpage',
-                          'insertdatetime media nonbreaking save table contextmenu directionality',
-                          'emoticons paste textcolor colorpicker textpattern imagetools codesample'
-                      ],
-                      toolbar1: ' newnote print preview | undo redo | insert | styleselect | forecolor backcolor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image emoticons media codesample | mybutton | fullscreen |',
-                      autosave_interval: '20s',
-                      image_advtab: true,
-                      automatic_uploads: true,
-                      images_reuse_filename: true,
-                      images_upload_url: 'http://bn.sjy/index.php/article_image_upload',
-                      images_upload_handler: function (blobInfo, success, failure) {
-                          let xhr, formData;
-                          xhr = new XMLHttpRequest();
-                          xhr.withCredentials = true;
-                          xhr.open('POST', 'http://bn.sjy/index.php/article_image_upload');
-                          xhr.onload = function () {
-                              var json;
-                              if (xhr.status != 200) {
-                                  failure('HTTP Error: ' + xhr.status);
-                                  return;
-                              }
-                              json = JSON.parse(xhr.responseText);
-                              if (!json || typeof json.data.url !== 'string') {
-                                  failure('Invalid JSON: ' + xhr.responseText);
-                                  return;
-                              }
-                              success(json.data.url);
-                          };
-                          formData = new FormData();
-                          formData.append('file', blobInfo.blob(), blobInfo.filename());
-                          xhr.send(formData);
-                      },
-                      table_default_styles: {
-                          width: '100%',
-                          borderCollapse: 'collapse'
-                      },
-                      setup: function (editor) {
-                          editor.on('init', function (e) {
-                              vm.spinShow = false;
-                              // tinymce.get('tinymceEditersave').setContent(vm.imgcontent);
-                          });
-                          editor.on('keydown', function (e) {
-                              // editor.insertContent(vm.form.content)
-                              // localStorage.editorContent = tinymce.get('tinymceEditer').getContent()
-                              // tinymce.get('tinymceEditer').setContent(vm.form.content)
-                          });
-                          editor.addButton('mybutton', {
-                              text: '素材库图片',
-                              icon: false,
-                              onclick: function () {
-                                  vm.img = 'content';
-                                  vm.$refs.addmaterial.getData();
-                                  vm.$refs.addmaterial.modal = true;
-                              }
-                          });
-                          // editor.addMenuItem('myitem', {
-                          //     text: 'My menu item',
-                          //     context: 'tools',
-                          //     onclick: function () {
-                          //         editor.insertContent('&nbsp;Here\'s some content!&nbsp;');
-                          //     }
-                          // });
-                      }
-                  });
-              });
-          },
-          change (status) {
-              if (status) {
-                  this.tag_name = true;
-                  this.$Message.info('切换到下拉选择');
-              } else {
-                  this.tag_name = false;
-                  this.$Message.info('切换到添加标签');
-              }
-          },
-          changeTagtype (value) {
-              this.form.tag_id = value.value;
-          },
-          updateData (data) {
-              this.form.content_paragraph = data;
-          },
-          changeArticletype (type) {
-              this.form.type_name = type.label;
-          },
-          addtags () {
-              let data = {
-                  type: 'question',
-                  name: this.form.tags
-              };
-              this.apiPost('tags', data).then((res) => {
-                  this.handleAjaxResponse(res, (data, msg) => {
-                      let tempN = this.form.tag_id;
-                      let tagId = data.id;
-                      let tagnum = tagId.toString();
-                      tempN.push(tagnum);
-                      this.form.tags = '';
-                      this.getQuestionTag(true);
-                      this.$Message.success(msg);
-                  }, (data, msg) => {
-                      this.$Message.error(msg);
-                  });
-              }, (res) => {
-                  // 处理错误信息
+    import http from '../../../libs/http';
+    import common from '../../../libs/common';
+    import tinymce from 'tinymce';
+    import tinymceInit from '../../../libs/tinymceInit';
+    import materialimg from '../article/materialimg.vue';
 
-              });
-          },
-          clearQuestionType () {
-              this.$refs.select.clearSingleSelect();
-          },
-          edit (editid) {
-              this.apiGet('question/' + editid).then((res) => {
-                  this.handleAjaxResponse(res, (data, msg) => {
-                      this.form = data;
-                      tinymce.get('tinymceEditersave').setContent(this.form.content_paragraph);
-                      let tempNUmber = [];
-                      if (this.form.tags !== '') {
-                          this.form.tags.split(',').map(function (key) {
-                              tempNUmber.push(key);
-                          });
-                      }
-                      this.form.tag_id = tempNUmber;
-                      this.form.tags = '';
-                  }, (data, msg) => {
-                      this.$Message.error(msg);
-                  });
-              }, (res) => {
-                  // 处理错误信息
+    export default {
+        components: {materialimg},
+        data() {
+            const checkquestiontype = (rule, value, callback) => {
+                if (!value) {
+                    callback(new Error('请选择问答分类'));
+                } else {
+                    callback();
+                }
+            };
+            return {
+                switch1: true,
+                tag_name: true,
+                modal: false,
+                selects: true,
+                spinShow: true,
+                modal_loading: false,
+                img: '',
+                form: {
+                    question: '',
+                    content_paragraph: '',
+                    type_id: 0,
+                    type_name: '',
+                    tag_id: []
+                },
+                tags: '',
+                AddRule: {
+                    question: [
+                        {required: true, message: '请填写问题名', trigger: 'blur'}
+                    ],
+                    content_paragraph: [
+                        {required: true, message: '请填写答案', trigger: 'blur'}
+                    ],
+                    type_id: [
+                        {required: true, validator: checkquestiontype, trigger: 'blur'}
+                    ]
+                }
+            };
+        },
+        methods: {
+            init: function () {
+                this.$nextTick(() => {
+                    this.tinymceInit(this, document.body.offsetHeight - 500, 'tinymceEditersave');
+                });
+            },
+            change(status) {
+                if (status) {
+                    this.tag_name = true;
+                    this.$Message.info('切换到下拉选择');
+                } else {
+                    this.tag_name = false;
+                    this.$Message.info('切换到添加标签');
+                }
+            },
+            changeTagtype(value) {
+                this.form.tag_id = value.value;
+            },
+            updateData(data) {
+                this.form.content_paragraph = data;
+            },
+            changeArticletype(type) {
+                this.form.type_name = type.label;
+            },
+            addtags() {
+                let data = {
+                    type: 'question',
+                    name: this.tags
+                };
+                this.apiPost('tags', data).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        let tempN = this.form.tag_id;
+                        let tagId = data.id;
+                        let tagnum = tagId.toString();
+                        tempN.push(tagnum);
+                        this.tags = '';
+                        this.getQuestionTag(true);
+                        this.$Message.success(msg);
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
 
-              });
-          },
-          add () {
-              this.$refs.questionadd.validate((valid) => {
-                  if (valid) {
-                      this.modal_loading = true;
-                      let data = this.form;
-                      let id = data.id;
-                      var activeEditor = tinymce.activeEditor;
-                      var editBody = activeEditor.getBody();
-                      activeEditor.selection.select(editBody);
-                      var text = activeEditor.selection.getContent({'format': 'html'});
-                      this.form.content_paragraph = text;
-                      this.apiPut('question/' + id, data).then((res) => {
-                          this.handleAjaxResponse(res, (data, msg) => {
-                              this.modal = false;
-                              this.$parent.getData();
-                              this.$Message.success(msg);
-                              this.modal_loading = false;
-                              this.$refs.questionadd.resetFields();
-                              this.$refs.select.clearSingleSelect();
-                          }, (data, msg) => {
-                              this.modal_loading = false;
-                              this.$Message.error(msg);
-                          });
-                      }, (res) => {
-                          // 处理错误信息
-                          this.modal_loading = false;
-                      });
-                  }
-              });
-          }
-      },
-      // props: {
-      //     form: {
-      //         default: {
-      //             question: '',
-      //             content_paragraph: ''
-      //         }
-      //     },
-      //     questiontype: {
-      //         default: []
-      //     },
-      //     tagname: {
-      //         default: {}
-      //     }
-      // },
-      mounted () {
-          this.init();
-      },
-      destroyed () {
-          tinymce.get('tinymceEditersave').destroy();
-      },
-      mixins: [http, common]
-  };
+                });
+            },
+            clearQuestionType() {
+                this.$refs.select.clearSingleSelect();
+            },
+            edit(editid) {
+                this.apiGet('question/' + editid).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.form = data;
+                        tinymce.get('tinymceEditersave').setContent(this.form.content_paragraph);
+                        let tempNUmber = [];
+                        if (this.form.tags !== '') {
+                            this.form.tags.split(',').map(function (key) {
+                                tempNUmber.push(key);
+                            });
+                        }
+                        delete this.form.tags;
+                        this.form.tag_id = tempNUmber;
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+
+                });
+            },
+            add() {
+                this.$refs.questionadd.validate((valid) => {
+                    if (valid) {
+                        this.modal_loading = true;
+                        let data = this.form;
+                        let id = data.id;
+                        var activeEditor = tinymce.activeEditor;
+                        var editBody = activeEditor.getBody();
+                        activeEditor.selection.select(editBody);
+                        var text = activeEditor.selection.getContent({'format': 'html'});
+                        this.form.content_paragraph = text;
+                        this.apiPut('question/' + id, data).then((res) => {
+                            this.handleAjaxResponse(res, (data, msg) => {
+                                this.modal = false;
+                                this.$emit('getdata');
+                                this.$Message.success(msg);
+                                this.modal_loading = false;
+                                this.$refs.questionadd.resetFields();
+                                this.$refs.select.clearSingleSelect();
+                            }, (data, msg) => {
+                                this.modal_loading = false;
+                                this.$Message.error(msg);
+                            });
+                        }, (res) => {
+                            // 处理错误信息
+                            this.modal_loading = false;
+                        });
+                    }
+                });
+            },
+            addmaterial(src) {
+                if (this.img === 'content') {
+                    let imgsrc = '<img src=' + src + '>';
+                    tinymce.get('tinymceEditersave').insertContent(imgsrc);
+                } else if (this.img === 'suolue') {
+                    this.form.thumbnails = src;
+                }
+            },
+        },
+        mounted() {
+            this.init();
+        },
+        destroyed() {
+            tinymce.get('tinymceEditersave').destroy();
+        },
+        mixins: [http, common, tinymceInit]
+    };
 </script>

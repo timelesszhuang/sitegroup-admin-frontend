@@ -165,7 +165,7 @@
           cancelText: '取消',
           onOk: (index) => {
             _this.apiGet('admin/deleteProductImg/' + id + '/' + _this.imgIndex).then((res) => {
-              _this.handelResponse(res, (data, msg) => {
+              _this.handleAjaxResponse(res, (data, msg) => {
                 _this.$Message.success(msg);
                 if (data.length == 0) {
                   _this.is_show = false

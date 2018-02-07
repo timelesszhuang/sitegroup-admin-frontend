@@ -17,9 +17,6 @@
             <Form-item label="详情" prop="detail">
               <Input type="text" v-model="form.detail" placeholder="请输入节点相关信息"></Input>
             </Form-item>
-            <!--<Form-item label="分类标签" prop="tag">-->
-            <!--<Input type="text" v-model="form.tag" placeholder="请输入标签区分分类"></Input>-->
-            <!--</Form-item>-->
             <Row>
               <Col span="21">
               <Form-item v-if="tag_name" label="分类标签" prop="tag_id">

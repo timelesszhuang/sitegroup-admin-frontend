@@ -1,201 +1,177 @@
 <template>
-  <div>
-      <card>
-    <div class="top">
-      问答分类:
-      <Input v-model="name" placeholdr="问答分类" style="width:300px;"></Input>
-      <Select ref="select" v-model="tag_id"  filterable clearable  placeholder="标签名"
-              style="position:relative;text-align: left;width:250px;z-index: 10000;"
-              label-in-value filterable　>
-        <Option v-for="(item, index) in this.$store.state.commondata.TagType" :value="item.id" :label="item.tag" :key="index">
-          {{ item.tag }}
-        </Option>
-      </Select>
-      <Button type="primary" @click="queryData">查询</Button>
-      <Button type="success" @click="add">添加</Button>
+    <div>
+        <card>
+            <div class="top">
+                问答分类:
+                <Input v-model="name" placeholdr="问答分类" style="width:300px;"></Input>
+                <Select ref="select" v-model="tag_id" filterable clearable placeholder="标签名"
+                        style="position:relative;text-align: left;width:250px;z-index: 10000;"
+                        label-in-value filterable　>
+                    <Option v-for="(item, index) in this.$store.state.commondata.TagType" :value="item.id"
+                            :label="item.tag" :key="index">
+                        {{ item.tag }}
+                    </Option>
+                </Select>
+                <Button type="primary" @click="queryData">查询</Button>
+                <Button type="success" @click="add">添加</Button>
+            </div>
+            <div class="content" style="margin-top:10px;">
+                <Table :context="self" :border="border" :stripe="stripe" :show-header="showheader"
+                       :size="size" :data="datas" :columns="tableColumns" style="width: 100%">
+                </Table>
+                <div style="margin: 10px;overflow: hidden">
+                    <div style="float: right;">
+                        <Page :total="total" :current="current" @on-change="changePage"
+                              @on-page-size-change="changePageSize"
+                              show-total
+                              show-elevator></Page>
+                    </div>
+                </div>
+            </div>
+            <questiontypeadd ref="add" v-on:getdata="getData"></questiontypeadd>
+            <questiontypesave ref="save" v-on:getdata="getData"></questiontypesave>
+        </card>
     </div>
-    <div class="content" style="margin-top:10px;">
-      <Table :context="self" :border="border" :stripe="stripe" :show-header="showheader"
-             :size="size" :data="datas" :columns="tableColumns" style="width: 100%">
-      </Table>
-      <div style="margin: 10px;overflow: hidden">
-        <div style="float: right;">
-          <Page :total="total" :current="current" @on-change="changePage" @on-page-size-change="changePageSize"
-                show-total
-                show-elevator ></Page>
-        </div>
-      </div>
-    </div>
-    <questiontypeadd ref="add"> </questiontypeadd>
-    <questiontypesave ref="save"> </questiontypesave>
-      </card>
-  </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import http from '../../../libs/http';
-  import common from '../../../libs/common';
-  import questiontypeadd from './questiontypeadd.vue';
-  import questiontypesave from './questiontypesave.vue';
-  export default {
-      data () {
-          return {
-              self: this,
-              border: true,
-              stripe: true,
-              showheader: true,
-              size: 'small',
-              current: 1,
-              total: 0,
-              page: 1,
-              rows: 10,
-              name: '',
-              datas: [],
-              editinfo: {},
-              tag_id: 0
-          };
-      },
-      components: {questiontypeadd, questiontypesave},
-      created () {
-          //      this.getData();
-          //       this.gettagtype()
-      },
-      mounted () {
-          this.getTagType();
-      },
-      methods: {
-          getData () {
-              let data = {
-                  params: {
-                      page: this.page,
-                      rows: this.rows,
-                      name: this.name,
-                      tag_id: this.tag_id,
-                      module_type: 'question'
-                  }
-              };
-              this.apiGet('type', data).then((data) => {
-                  this.handleAjaxResponse(data, (data, msg) => {
-                      this.datas = data.rows;
-                      this.total = data.total;
-                  }, (data, msg) => {
-                      this.$Message.error(msg);
-                  });
-              }, (data) => {
-                  this.$Message.error('网络异常，请稍后重试');
-              });
-          },
-          // gettagtype() {
-          //   this.apiGet('typetag?all=1').then((res) => {
-          //     this.handelResponse(res, (data, msg) => {
-          //       this.tagname = data
-          //     }, (data, msg) => {
-          //       this.$Message.error(msg);
-          //     })
-          //   }, (res) => {
-          //     //处理错误信息
-          //     this.$Message.error('网络异常，请稍后重试。');
-          //   })
-          // },
-          changePage (page) {
-              this.page = page;
-              this.getData();
-          },
-          changePageSize (pagesize) {
-              this.rows = pagesize;
-              this.getData();
-          },
-          queryData () {
-              this.getData();
-          },
-          add () {
-              this.$refs.add.modal = true;
-          },
-          edit (index) {
-              let editid = this.datas[index].id;
-              this.$refs.save.modal = true;
-              this.$refs.save.edit(editid);
+    import http from '../../../libs/http';
+    import common from '../../../libs/common';
+    import questiontypeadd from './questiontypeadd.vue';
+    import questiontypesave from './questiontypesave.vue';
 
-          // this.apiGet('articletype/' + editid).then((res) => {
-          //     this.handelResponse(res, (data, msg) => {
-          //         this.editinfo = data;
-          //         this.modal = false;
-          //
-          //     }, (data, msg) => {
-          //         this.$Message.error(msg);
-          //     });
-          // }, (res) => {
-          //     // 处理错误信息
-          //     this.$Message.error('网络异常，请稍后重试。');
-          // });
-          }
-      },
-      computed: {
-          tableColumns () {
-              let _this = this;
-              let columns = [];
-              if (this.showCheckbox) {
-                  columns.push({
-                      type: 'selection',
-                      width: 60,
-                      align: 'center'
-                  });
-              }
-              if (this.showIndex) {
-                  columns.push({
-                      type: 'index',
-                      width: 60,
-                      align: 'center'
-                  });
-              }
-              columns.push({
-                  title: '分类名',
-                  key: 'name',
-                  sortable: true
-              });
-              columns.push({
-                  title: '英文名',
-                  key: 'alias',
-                  sortable: true
-              });
-              columns.push({
-                  title: '创建时间',
-                  key: 'create_time',
-                  sortable: true
-              });
-              columns.push(
-                  {
-                      title: '操作',
-                      key: 'action',
-                      width: 200,
-                      align: 'center',
-                      fixed: 'right',
-                      render (h, params) {
-                          return h('div', [
-                              h('Button', {
-                                  props: {
-                                      size: 'small'
-                                  },
-                                  style: {
-                                      marginRight: '5px'
-                                  },
-                                  attrs: {
-                                      type: 'primary'
-                                  },
-                                  on: {
-                                      click: function () {
-                                          // 不知道为什么这个地方不是我需要的this
-                                          _this.edit(params.index);
-                                      }
-                                  }
-                              }, '修改')
-                          ]);
-                      }
-                  }
-              );
-              return columns;
-          }
-      },
-      mixins: [http, common]
-  };
+    export default {
+        data() {
+            return {
+                self: this,
+                border: true,
+                stripe: true,
+                showheader: true,
+                size: 'small',
+                current: 1,
+                total: 0,
+                page: 1,
+                rows: 10,
+                name: '',
+                datas: [],
+                editinfo: {},
+                tag_id: 0
+            };
+        },
+        components: {questiontypeadd, questiontypesave},
+        created() {
+        },
+        mounted() {
+            this.getTagType();
+        },
+        methods: {
+            getData() {
+                let data = {
+                    params: {
+                        page: this.page,
+                        rows: this.rows,
+                        name: this.name,
+                        tag_id: this.tag_id,
+                        module_type: 'question'
+                    }
+                };
+                this.apiGet('type', data).then((data) => {
+                    this.handleAjaxResponse(data, (data, msg) => {
+                        this.datas = data.rows;
+                        this.total = data.total;
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (data) => {
+                    this.$Message.error('网络异常，请稍后重试');
+                });
+            },
+            changePage(page) {
+                this.page = page;
+                this.getData();
+            },
+            changePageSize(pagesize) {
+                this.rows = pagesize;
+                this.getData();
+            },
+            queryData() {
+                this.getData();
+            },
+            add() {
+                this.$refs.add.modal = true;
+            },
+            edit(index) {
+                let editid = this.datas[index].id;
+                this.$refs.save.modal = true;
+                this.$refs.save.getTypeData(editid);
+            }
+        },
+        computed: {
+            tableColumns() {
+                let _this = this;
+                let columns = [];
+                if (this.showCheckbox) {
+                    columns.push({
+                        type: 'selection',
+                        width: 60,
+                        align: 'center'
+                    });
+                }
+                if (this.showIndex) {
+                    columns.push({
+                        type: 'index',
+                        width: 60,
+                        align: 'center'
+                    });
+                }
+                columns.push({
+                    title: '分类名',
+                    key: 'name',
+                    sortable: true
+                });
+                columns.push({
+                    title: '英文名',
+                    key: 'alias',
+                    sortable: true
+                });
+                columns.push({
+                    title: '创建时间',
+                    key: 'create_time',
+                    sortable: true
+                });
+                columns.push(
+                    {
+                        title: '操作',
+                        key: 'action',
+                        width: 200,
+                        align: 'center',
+                        fixed: 'right',
+                        render(h, params) {
+                            return h('div', [
+                                h('Button', {
+                                    props: {
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        marginRight: '5px'
+                                    },
+                                    attrs: {
+                                        type: 'primary'
+                                    },
+                                    on: {
+                                        click: function () {
+                                            // 不知道为什么这个地方不是我需要的this
+                                            _this.edit(params.index);
+                                        }
+                                    }
+                                }, '修改')
+                            ]);
+                        }
+                    }
+                );
+                return columns;
+            }
+        },
+        mixins: [http, common]
+    };
 </script>

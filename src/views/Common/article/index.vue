@@ -2,7 +2,6 @@
     @import '../../../styles/common.less';
 </style>
 
-
 <template>
     <div>
         <card>
@@ -40,7 +39,7 @@
             </div>
             <articleadd ref="add" v-on:getdata="getData"></articleadd>
             <articlesave ref="save" v-on:getdata="getData"></articlesave>
-            <articleshow ref="show" ></articleshow>
+            <articleshow ref="show"></articleshow>
             <articlecsv ref="csvimport" v-on:getdata="getData"></articlecsv>
             <showhtml ref="showhtml" :form="showhtmldata"></showhtml>
         </card>
@@ -162,19 +161,8 @@
             },
             edit(index) {
                 let editid = this.datas[index].id;
-                // this.apiGet('imglist/' + editid).then((res) => {
-                //     this.handelResponse(res, (data, msg) => {
-                //         this.editinfo = data;
-                //         this.modal = false;
                 this.$refs.save.edit(editid);
                 this.$refs.save.modal = true;
-                //     }, (data, msg) => {
-                //         this.$Message.error(msg);
-                //     });
-                // }, (res) => {
-                //     // 处理错误信息
-                //     this.$Message.error('网络异常，请稍后重试。');
-                // });
             }
         },
         components: {articleadd, articlesave, articleshow, articlecsv, showhtml},

@@ -15,7 +15,7 @@
             <Row>
                 <div class="selectsite">
                     <h2 class="title">
-                        <Icon type="information-circled"></Icon>
+                        <Icon type="information-circled" style="color: #00a050"></Icon>
                         站点选择
                     </h2>
                     <ul class="site-select-ul">
@@ -29,6 +29,10 @@
                             </span>
                         </li>
                     </ul>
+                    <Alert type="success" show-icon>
+                        站点选择
+                        <span slot="desc">选择您要管理的网站</span>
+                    </Alert>
                 </div>
             </Row>
         </div>
@@ -67,10 +71,12 @@
                 this.apiPost('set_site_info', data).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         // 站点的site相关信息
-                        localStorage.siteId = siteId;
-                        Cookies.set('siteId', siteId);
-                        localStorage.siteName = siteName;
-                        localStorage.siteUrl = siteUrl;
+                        this.$store.commit('changeSiteInfo', {
+                            'siteId': siteId,
+                            'siteName': siteName,
+                            'siteUrl': siteUrl
+                        });
+                        this.$store.commit('changeSite');
                         this.$router.push({
                             name: 'site_index'
                         });

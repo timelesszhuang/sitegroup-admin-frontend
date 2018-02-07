@@ -88,7 +88,6 @@
           changeTagtype (value) {
               this.form.tag_id = value.value;
           },
-
           add () {
               this.$refs.articleadd.validate((valid) => {
                   if (valid) {
@@ -98,7 +97,7 @@
                       this.apiPost('type', data).then((res) => {
                           this.handleAjaxResponse(res, (data, msg) => {
                               this.modal = false;
-                              this.$parent.getData();
+                              this.$emit('getdata');
                               this.$Message.success(msg);
                               this.modal_loading = false;
                               this.$refs.articleadd.resetFields();

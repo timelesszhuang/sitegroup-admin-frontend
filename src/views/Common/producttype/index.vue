@@ -74,7 +74,7 @@
                   }
               };
               this.apiGet('admin/productType', data).then((data) => {
-                  this.handelResponse(data, (data, msg) => {
+                  this.handleAjaxResponse(data, (data, msg) => {
                       this.datas = data.rows;
                       this.total = data.total;
                   }, (data, msg) => {
@@ -86,7 +86,7 @@
           },
           // gettagtype () {
           //     this.apiGet('typetag?all=1').then((res) => {
-          //         this.handelResponse(res, (data, msg) => {
+          //         this.handleAjaxResponse(res, (data, msg) => {
           //             this.tagname = data;
           //         }, (data, msg) => {
           //             this.$Message.error(msg);
@@ -114,7 +114,7 @@
           edit (index) {
               let editid = this.datas[index].id;
               this.apiGet('admin/productType/' + editid).then((res) => {
-                  this.handelResponse(res, (data, msg) => {
+                  this.handleAjaxResponse(res, (data, msg) => {
                       this.editinfo = data;
                       this.modal = false;
                       this.$refs.save.modal = true;

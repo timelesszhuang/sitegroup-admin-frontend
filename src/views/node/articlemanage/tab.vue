@@ -15,24 +15,25 @@
 </template>
 
 <script>
-  import http from '../../../libs/http';
-  import common from '../../../libs/common';
-  import artic from '../../Common/article/index';
-  import articletype from '../articletype/index';
-  import tag from '../tag/index.vue';
-  export default {
-      components: {artic, articletype, tag},
-      methods: {
-          getdata (name) {
-              if (name === 'article') {
-                  this.$refs.articl.getData();
-              } else if (name === 'articletype') {
-                  this.$refs.articlet.getData();
-              } else if (name === 'tag') {
-                  this.$refs.tagname.getData();
-              }
-          }
-      },
-      mixins: [http, common]
-  };
+    import http from '../../../libs/http';
+    import common from '../../../libs/common';
+    import artic from '../../Common/article/index';
+    import articletype from '../articletype/index';
+    import tag from '../tag/index.vue';
+
+    export default {
+        components: {artic, articletype, tag},
+        methods: {
+            getdata(name) {
+                if (name === 'article') {
+                    this.$refs.articl.getData();
+                } else if (name === 'articletype') {
+                    this.$refs.articlet.getData();
+                } else if (name === 'tag') {
+                    this.$refs.tagname.getData();
+                }
+            }
+        },
+        mixins: [http, common]
+    };
 </script>

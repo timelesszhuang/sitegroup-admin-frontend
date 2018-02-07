@@ -33,7 +33,11 @@ const app = {
         userType: localStorage.type,
         homeIndex: 'admin_index',
         homePath: '/admin',
-        autoLoginStatus: false
+        // 是不是已经有请求提交过自动登录
+        autoLoginStatus: false,
+        // 如果是site 的相关信息
+        siteUrl: localStorage.siteUrl,
+        siteName: localStorage.siteName
     },
     mutations: {
         updateMenulist(state) {
@@ -245,6 +249,18 @@ const app = {
                 router = [siteotherRouter, ...siteappRouter];
             }
             state.routers = router;
+        },
+        changeSiteInfo(state, siteInfo) {
+            // 选择完站点 修改相关站点的信息
+            let siteId = siteInfo.siteId;
+            let siteName = siteInfo.siteName;
+            let siteUrl = siteInfo.siteUrl;
+            state.siteName = siteName;
+            state.siteUrl = siteUrl;
+            Cookies.set('siteId', siteId);
+            localStorage.siteId = siteId;
+            localStorage.siteName = siteName;
+            localStorage.siteUrl = siteUrl;
         },
         // 面包屑导航
         setInitCurrentPath(state) {

@@ -32,6 +32,8 @@ window.axios.defaults.headers['Content-Type'] = 'application/json';
 // 实现跨域操作
 window.axios.defaults.withCredentials = true;
 window.Cookies = Cookies;
+// 全局的编辑器中图片上传的路径
+window.ImgUploadPath = ajaxUrl + 'image_upload';
 
 new Vue({
     el: '#app',
@@ -41,12 +43,12 @@ new Vue({
     data: {
         currentPageName: ''
     },
-    mounted () {
+    mounted() {
         this.currentPageName = this.$route.name;
         this.$store.commit('initCachepage');
         // iview-admin检查更新
         // util.checkUpdate(this);
     },
-    created () {
+    created() {
     }
 });

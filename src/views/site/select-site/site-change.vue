@@ -1,13 +1,14 @@
 <template>
-    <div style="display:inline-block;">
-        <a :href=siteUrl target="_blank" style="padding-right: 20px">
+    <div class="select-site">
+        <a :href=this.$store.state.app.siteUrl target="_blank" style="padding-right: 20px">
             <Icon type="ios-paperplane-outline"></Icon>
-            {{siteName}}
+            {{this.$store.state.app.siteName}}
         </a>
         <Dropdown trigger="click" @on-click="setSite">
             <a href="javascript:void(0)">
-                切换网站
-                <Icon type="arrow-down-b"></Icon>
+                <Tooltip :content="tooltip" placement="bottom">
+                    <Icon type="arrow-swap" :size="23"></Icon>
+                </Tooltip>
             </a>
             <DropdownMenu slot="list">
                 <DropdownItem v-for="(item, index) in siteList" :key="index" :name="item.id">
@@ -31,27 +32,58 @@
         name: 'siteselect',
         data() {
             return {
+                tooltip: '切换管理网站',
                 // 默认存储在localstorage 中
-                siteList: {},
-                siteName: localStorage.siteName,
-                siteUrl: localStorage.siteUrl
+                siteList: {}
             };
         },
         methods: {
             setSite(siteId) {
                 // 确认
-                alert(siteId)
-                let _this = this;
+                let siteInfo = this.siteList.filter(item => {
+                    return item.id === siteId;
+                })[0];
+                let siteName = siteInfo.site_name;
+                let siteUrl = siteInfo.url;
+                if (parseInt(localStorage.siteId) === siteId) {
+                    this.$Message.warning('当前为' + siteName + '站点，无需切换。');
+                    return;
+                }
                 this.$Modal.confirm({
                     title: '确认',
-                    content: '您确定要切换管理站点?切换会关闭所有已经打开的标签页。',
+                    content: '您确定要切换管理站点?。',
                     okText: '确认',
                     cancelText: '取消',
                     onOk: () => {
+                        this.changeSite(siteId, siteName, siteUrl);
                     },
                     onCancel: () => {
                         return false;
                     }
+                });
+            },
+            changeSite(siteId, siteName, siteUrl) {
+                // 切换网站相关操作
+                // 根据站点的name 相关数据更新
+                let data = {
+                    site_id: siteId
+                }
+                this.apiPost('set_site_info', data).then((res) => {
+                    this.handleAjaxResponse(res, (data) => {
+                        // 站点的site相关信息
+                        this.$store.commit('changeSiteInfo', {
+                            'siteId': siteId,
+                            'siteName': siteName,
+                            'siteUrl': siteUrl
+                        });
+                        this.$store.commit('changeSite');
+                        this.$router.push({
+                            name: 'site_index'
+                        });
+                    }, (res) => {
+                        // 处理错误信息
+                        this.$Message.error('网络异常，请稍后重试。');
+                    });
                 });
             },
             getSiteList() {

@@ -83,15 +83,14 @@ const ajaxMethods = {
                 if (!this.$store.state.app.autoLoginStatus) {
                     // 设置自动登陆
                     this.$store.commit('changeAutoLoginStatus', true);
-                    if (typeof errCb === 'function') {
-                        errCb(res.data, res.msg);
-                    } else {
-                        this.$Notice.error({
-                            title: res.msg === '' ? '操作异常，请售后再试' : res.msg,
-                            desc: res.detail === undefined ? '' : res.detail
-                        });
-                    }
-                    //
+                    // if (typeof errCb === 'function') {
+                    //     errCb(res.data, res.msg);
+                    // } else {
+                    //     this.$Notice.error({
+                    //         title: res.msg === '' ? '操作异常，请售后再试' : res.msg,
+                    //         desc: res.detail === undefined ? '' : res.detail
+                    //     });
+                    // }
                     this.autologin();
                 }
             } else if (res.status === 'noauth') {
@@ -107,11 +106,13 @@ const ajaxMethods = {
         },
         autologin() {
             // 首先判断是不是允许自动登陆
-            if (!Cookies.get('rememeber') || !Cookies.get('rememberKey')) {
+            if (!Cookies.get('remember') || !Cookies.get('rememberKey')) {
                 // 用户没有设置自动登陆
+                this.$store.commit('logout', this);
                 this.$router.push({
                     name: 'login'
                 });
+                return;
             }
             this.$Message.success('系统正在自动登录......');
             let type = 'node';
@@ -136,8 +137,17 @@ const ajaxMethods = {
                     Cookies.set('type', type);
                     Cookies.set('rememberKey', rememberKey);
                     this.$store.commit('changeAutoLoginStatus', false);
+                    if (parseInt(type) === 3) {
+                        // 清空下session 中siteId 然后就会跳转到 选择站点的页面
+                        Cookies.remove('siteId');
+                        // 需要跳转到站点选择页面
+                        this.$router.push({
+                            name: 'site_select'
+                        });
+                        return;
+                    }
                     this.$router.push({
-                        name: this.$store.state.homeIndex
+                        name: this.$store.state.app.homeIndex
                     });
                 }, (data, msg) => {
                     // 自动登录失败的操作
