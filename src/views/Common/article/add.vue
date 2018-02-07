@@ -87,7 +87,6 @@
                             </Form-item>
                             </Col>
                         </Row>
-
                         <Form-item label="文章描述" prop="summary">
                             <Input v-model="form.summary" :rows="3" type="textarea" placeholder="请输入文章描述"></Input>
                         </Form-item>

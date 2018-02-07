@@ -99,7 +99,7 @@
                         </div>
                         <Form-item class="contentarticle">
                             <Card shadow>
-                                <textarea class='tinymce-textarea' id="tinymceEditersave"></textarea>
+                                <textarea class='tinymce-textarea' :id=editImgId></textarea>
                             </Card>
                             <Spin fix v-if="spinShow">
                                 <Icon type="load-c" size=18 class="demo-spin-icon-load"></Icon>
@@ -158,361 +158,365 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import http from '../../../libs/http';
-  import common from '../../../libs/common';
-  import tinymce from 'tinymce';
-  import materialimg from './materialimg.vue';
-  import tinymceInit from '../../../libs/tinymceInit';
+    import http from '../../../libs/http';
+    import common from '../../../libs/common';
+    import tinymce from 'tinymce';
+    import materialimg from './materialimg.vue';
+    import tinymceInit from '../../../libs/tinymceInit';
 
-  export default {
-      components: {materialimg, tinymceInit},
-      data () {
-          const checkarticletype = (rule, value, callback) => {
-              if (!value) {
-                  callback(new Error('请选择文章分类'));
-              } else {
-                  callback();
-              }
-          };
-          return {
-              img: '',
-              form: {
-                  articletype_id: 0,
-                  articletype_name: '',
-                  auther: '',
-                  summary: '',
-                  title: '',
-                  title_color: '',
-                  content: '',
-                  come_from: '',
-                  posttime: '',
-                  thumbnails: '',
-                  readcount: 0,
-                  keywords: '',
-                  shorttitle: '',
-                  is_collection: '',
-                  tag_id: []
-              },
-              tags: '',
-              imgcontent: '',
-              spinShow: true,
-              tag_name: true,
-              switch1: true,
-              action: window.ImgUploadPath,
-              imgshow: true,
-              editorOption: {
-                  modules: {
-                      history: {
-                          delay: 1000,
-                          maxStack: 50
-                      }
-                  }
-              },
-              selects: true,
-              fullscreenLoading: '',
-              uploadData: {},
-              modal: false,
-              modal_loading: false,
-              AddRule: {
-                  title: [
-                      {required: true, message: '请填写文章标题', trigger: 'blur'}
-                  ],
-                  come_from: [
-                      {required: true, message: '请填写文章来源', trigger: 'blur'}
-                  ],
-                  auther: [
-                      {required: true, message: '请填写文章作者', trigger: 'blur'}
-                  ],
-                  articletype_id: [
-                      {validator: checkarticletype, trigger: 'blur'}
-                  ]
-                  // tag_id: [
-                  //   {required: true, validator: checktag, trigger: 'blur'}
-                  // ]
-              }
-          };
-      },
-      methods: {
-          addqq (editid) {
-              this.apiGet('qicq/' + editid).then((res) => {
-                  this.handleAjaxResponse(res, (data, msg) => {
-                      data.thumbnails = '';
-                      data.summary = '';
-                      data.is_collection = 20;
-                      data.readcount = 0;
-                      data.title_color = '';
-                      this.form = data;
-                      this.form.come_from = data.source;
-                      this.form.createtime = data.ptime;
-                      tinymce.get('tinymceEditersave').setContent(this.form.content);
-                      let tempNUmber = [];
-                      this.form.tag_id = tempNUmber;
-                      this.modal = true;
-                  }, (data, msg) => {
-                      this.$Message.error(msg);
-                  });
-              }, (res) => {
-                  // 处理错误信息
-                  this.$Message.error('网络异常，请稍后重试。');
-              });
-          },
-          addhots (editid) {
-              this.apiGet('hot_news/' + editid).then((res) => {
-                  this.handleAjaxResponse(res, (data, msg) => {
-                      data.readcount = 0;
-                      data.title_color = '';
-                      data.is_collection = 20;
-                      this.form = data;
-                      this.form.articletype_id = '';
-                      this.form.articletype_name = '';
-                      this.form.come_from = data.source;
-                      this.form.createtime = data.ptime;
-                      this.form.thumbnails = data.base64img;
-                      tinymce.get('tinymceEditersave').setContent(this.form.content);
-                      let tempNUmber = [];
-                      this.form.tag_id = tempNUmber;
-                      this.modal = true;
-                  }, (data, msg) => {
-                      this.$Message.error(msg);
-                  });
-              }, (res) => {
-                  // 处理错误信息
-                  this.$Message.error('网络异常，请稍后重试。');
-              });
-          },
-          addsouhu (editid) {
-              this.apiGet('souhu/' + editid).then((res) => {
-                  this.handleAjaxResponse(res, (data, msg) => {
-                      data.readcount = 0;
-                      data.summary = '';
-                      this.form.shorttitle = data.short_title;
-                      data.is_collection = 20;
-                      data.title_color = '';
-                      this.form = data;
-                      this.form.come_from = data.source;
-                      this.form.thumbnails = data.thumbnail;
-                      tinymce.get('tinymceEditersave').setContent(this.form.content);
-                      let tempNUmber = [];
-                      this.form.tag_id = tempNUmber;
-                      this.modal = true;
-                  }, (data, msg) => {
-                      this.$Message.error(msg);
-                  });
-              }, (res) => {
-                  // 处理错误信息
-                  this.$Message.error('网络异常，请稍后重试。');
-              });
-          },
-          add163 (editid) {
-              this.apiGet('wangyi/' + editid).then((res) => {
-                  this.handleAjaxResponse(res, (data, msg) => {
-                      data.readcount = 0;
-                      data.is_collection = 20;
-                      data.title_color = '';
-                      this.form = data;
-                      this.form.thumbnails = data.imgsrc;
-                      this.form.summary = data.digest;
-                      this.form.come_from = data.source;
-                      tinymce.get('tinymceEditersave').setContent(this.form.content);
-                      let tempNUmber = [];
-                      this.form.tag_id = tempNUmber;
-                      this.modal = true;
-                  }, (data, msg) => {
-                      this.$Message.error(msg);
-                  });
-              }, (res) => {
-              // 处理错误信息
-                  this.$Message.error('网络异常，请稍后重试。');
-              });
-          },
-          edit (editid) {
-              this.apiGet('article/' + editid).then((res) => {
-                  this.handleAjaxResponse(res, (data, msg) => {
-                      this.form = data;
-                      tinymce.get('tinymceEditersave').setContent(this.form.content);
-                      let tempNUmber = [];
-                      if (this.form.tags !== '') {
-                          this.form.tags.split(',').map(function (key) {
-                              tempNUmber.push(key);
-                          });
-                      }
-                      delete this.form.tags;
-                      this.form.tag_id = tempNUmber;
-                      this.tags = '';
-                  }, (data, msg) => {
-                      this.$Message.error(msg);
-                  });
-              }, (res) => {
-                  // 处理错误信息
-              });
-          },
-          init: function () {
-              this.$nextTick(() => {
-                  let vm = this;
-                  let height = document.body.offsetHeight - 500;
-                  this.tinymceInit(vm, height, 'tinymceEditersave');
-              });
-          },
-          change (status) {
-              if (status) {
-                  this.tag_name = true;
-                  this.$Message.info('切换到下拉选择');
-              } else {
-                  this.tag_name = false;
-                  this.$Message.info('切换到添加标签');
-              }
-          },
-          changeTagtype (value) {
-              this.form.tag_id = value.value;
-          },
-          addmaterial (src) {
-              if (this.img === 'content') {
-                  let imgsrc = '<img src=' + src + '>';
-                  tinymce.get('tinymceEditersave').insertContent(imgsrc);
-              } else if (this.img === 'suolue') {
-                  this.form.thumbnails = src;
-              }
-          },
-          addimg (img) {
-              this.img = img;
-              this.$refs.addmaterial.getData();
-              this.$refs.addmaterial.modal = true;
-          },
-          addtags () {
-              let data = {
-                  type: 'article',
-                  name: this.tags
-              };
-              this.apiPost('tags', data).then((res) => {
-                  this.handleAjaxResponse(res, (data, msg) => {
-                      let tempN = this.form.tag_id;
-                      let tagnum = data.id.toString();
-                      tempN.push(tagnum);
-                      this.tags = '';
-                      this.getArticleTag(true);
-                      this.$Message.success(msg);
-                  }, (data, msg) => {
-                      this.$Message.error(msg);
-                  });
-              }, (res) => {
-                  // 处理错误信息
-              });
-          },
-          // 缩略图上传回调
-          getResponse (response, file, filelist) {
-              this.form.thumbnails = response.url;
-              if (response.status) {
-                  this.$Message.success(response.msg);
-                  this.imgshow = true;
-                  this.$refs.upImg.clearFiles();
-              } else {
-                  this.$Message.error(response.msg);
-              }
-              this.$refs.upImg.clearFiles();
-          },
-          getErrorInfo (error, file, filelist) {
-              this.$Message.error(error);
-          },
-          formatError () {
-              this.$Message.error('文件格式只支持 jpg,jpeg,png三种格式。');
-          },
-          updateData (data) {
-              this.form.content = data;
-          },
-          changeArticletype (value) {
-              this.form.articletype_name = value.label;
-              this.form.articletype_id = value.value;
-          },
-          save () {
-              this.$refs.save.validate((valid) => {
-                  if (valid) {
-                      this.modal_loading = true;
-                      let data = this.form;
-                      let activeEditor = tinymce.get('tinymceEditersave');
-                      activeEditor.selection.select(activeEditor.getBody());
-                      let text = activeEditor.selection.getContent({'format': 'html'});
-                      this.form.content = text;
-                      let id = data.id;
-                      this.apiPut('article/' + id, data).then((res) => {
-                          this.handleAjaxResponse(res, (data, msg) => {
-                              this.modal = false;
-                              this.$emit('getdata');
-                              this.$Message.success(msg);
-                              this.modal_loading = false;
-                              this.$refs.save.resetFields();
-                              this.$refs.select.clearSingleSelect();
-                          }, (data, msg) => {
-                              this.modal_loading = false;
-                              this.$Message.error(msg);
-                          });
-                      }, (res) => {
-                          // 处理错误信息
-                          this.modal_loading = false;
-                      });
-                  }
-              });
-          },
-          add () {
-              this.$refs.save.validate((valid) => {
-                  if (valid) {
-                      this.modal_loading = true;
-                      let data = {
-                          articletype_id: this.form.articletype_id,
-                          articletype_name: this.form.articletype_name,
-                          auther: this.form.auther,
-                          summary: this.form.summary,
-                          title: this.form.title,
-                          title_color: this.form.title_color,
-                          content: this.form.content,
-                          come_from: this.form.come_from,
-                          posttime: this.form.createtime,
-                          thumbnails: this.form.thumbnails,
-                          readcount: this.form.readcount,
-                          keywords: this.form.keywords,
-                          shorttitle: this.form.shorttitle,
-                          is_collection: this.form.is_collection,
-                          tag_id: this.form.tag_id
-                      };
-                      //            let data = this.form;
-                      this.apiPost('article', data).then((res) => {
-                          this.handleAjaxResponse(res, (data, msg) => {
-                              this.modal = false;
-                              this.$parent.getData();
-                              this.$Message.success(msg);
-                              this.modal_loading = false;
-                              this.$refs.save.resetFields();
-                              this.$refs.select.clearSingleSelect();
-                          }, (data, msg) => {
-                              this.modal_loading = false;
-                              this.$Message.error(msg);
-                          });
-                      }, (res) => {
-                          // 处理错误信息
-                          this.modal_loading = false;
-                      });
-                  }
-              });
-          }
-      },
-      mounted () {
-          this.init();
-      },
-      destroyed () {
-          tinymce.get('tinymceEditersave').destroy();
-      },
-      mixins: [http, common, tinymceInit],
-      props: {
-      //
-      // tagname: {
-      //     default: {}
-      // },
-      }
-  };
+    export default {
+        components: {materialimg, tinymceInit},
+        data() {
+            const checkarticletype = (rule, value, callback) => {
+                if (!value) {
+                    callback(new Error('请选择文章分类'));
+                } else {
+                    callback();
+                }
+            };
+            return {
+                img: '',
+                form: {
+                    articletype_id: 0,
+                    articletype_name: '',
+                    auther: '',
+                    summary: '',
+                    title: '',
+                    title_color: '',
+                    content: '',
+                    come_from: '',
+                    posttime: '',
+                    thumbnails: '',
+                    readcount: 0,
+                    keywords: '',
+                    shorttitle: '',
+                    is_collection: '',
+                    tag_id: []
+                },
+                tags: '',
+                imgcontent: '',
+                spinShow: true,
+                tag_name: true,
+                switch1: true,
+                action: window.ImgUploadPath,
+                imgshow: true,
+                editorOption: {
+                    modules: {
+                        history: {
+                            delay: 1000,
+                            maxStack: 50
+                        }
+                    }
+                },
+                selects: true,
+                fullscreenLoading: '',
+                uploadData: {},
+                modal: false,
+                modal_loading: false,
+                AddRule: {
+                    title: [
+                        {required: true, message: '请填写文章标题', trigger: 'blur'}
+                    ],
+                    come_from: [
+                        {required: true, message: '请填写文章来源', trigger: 'blur'}
+                    ],
+                    auther: [
+                        {required: true, message: '请填写文章作者', trigger: 'blur'}
+                    ],
+                    articletype_id: [
+                        {validator: checkarticletype, trigger: 'blur'}
+                    ]
+                    // tag_id: [
+                    //   {required: true, validator: checktag, trigger: 'blur'}
+                    // ]
+                },
+                editImgId: 'tinymceEditersave'
+            };
+        },
+        methods: {
+            addqq(editid) {
+                this.apiGet('qicq/' + editid).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        data.thumbnails = '';
+                        data.summary = '';
+                        data.is_collection = 20;
+                        data.readcount = 0;
+                        data.title_color = '';
+                        this.form = data;
+                        this.form.come_from = data.source;
+                        this.form.createtime = data.ptime;
+                        tinymce.get(this.editImgId).setContent(this.form.content);
+                        let tempNUmber = [];
+                        this.form.tag_id = tempNUmber;
+                        this.modal = true;
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            },
+            addhots(editid) {
+                this.apiGet('hot_news/' + editid).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        data.readcount = 0;
+                        data.title_color = '';
+                        data.is_collection = 20;
+                        this.form = data;
+                        this.form.articletype_id = '';
+                        this.form.articletype_name = '';
+                        this.form.come_from = data.source;
+                        this.form.createtime = data.ptime;
+                        this.form.thumbnails = data.base64img;
+                        tinymce.get(this.editImgId).setContent(this.form.content);
+                        let tempNUmber = [];
+                        this.form.tag_id = tempNUmber;
+                        this.modal = true;
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            },
+            addsouhu(editid) {
+                this.apiGet('souhu/' + editid).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        data.readcount = 0;
+                        data.summary = '';
+                        this.form.shorttitle = data.short_title;
+                        data.is_collection = 20;
+                        data.title_color = '';
+                        this.form = data;
+                        this.form.come_from = data.source;
+                        this.form.thumbnails = data.thumbnail;
+                        tinymce.get(this.editImgId).setContent(this.form.content);
+                        let tempNUmber = [];
+                        this.form.tag_id = tempNUmber;
+                        this.modal = true;
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            },
+            add163(editid) {
+                this.apiGet('wangyi/' + editid).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        data.readcount = 0;
+                        data.is_collection = 20;
+                        data.title_color = '';
+                        this.form = data;
+                        this.form.thumbnails = data.imgsrc;
+                        this.form.summary = data.digest;
+                        this.form.come_from = data.source;
+                        tinymce.get(this.editImgId).setContent(this.form.content);
+                        let tempNUmber = [];
+                        this.form.tag_id = tempNUmber;
+                        this.modal = true;
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            },
+            edit(editid) {
+                this.apiGet('article/' + editid).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.form = data;
+                        tinymce.get(this.editImgId).setContent(this.form.content);
+                        let tempNUmber = [];
+                        if (this.form.tags !== '') {
+                            this.form.tags.split(',').map(function (key) {
+                                tempNUmber.push(key);
+                            });
+                        }
+                        delete this.form.tags;
+                        this.form.tag_id = tempNUmber;
+                        this.tags = '';
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                });
+            },
+            init: function () {
+                this.$nextTick(() => {
+                    let vm = this;
+                    let height = document.body.offsetHeight - 500;
+                    this.tinymceInit(vm, height, this.editImgId);
+                });
+            },
+            change(status) {
+                if (status) {
+                    this.tag_name = true;
+                    this.$Message.info('切换到下拉选择');
+                } else {
+                    this.tag_name = false;
+                    this.$Message.info('切换到添加标签');
+                }
+            },
+            changeTagtype(value) {
+                this.form.tag_id = value.value;
+            },
+            addmaterial(src) {
+                if (this.img === 'content') {
+                    let imgsrc = '<img src=' + src + '>';
+                    tinymce.get(this.editImgId).insertContent(imgsrc);
+                } else if (this.img === 'suolue') {
+                    this.form.thumbnails = src;
+                }
+            },
+            addimg(img) {
+                this.img = img;
+                this.$refs.addmaterial.getData();
+                this.$refs.addmaterial.modal = true;
+            },
+            addtags() {
+                let data = {
+                    type: 'article',
+                    name: this.tags
+                };
+                this.apiPost('tags', data).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        let tempN = this.form.tag_id;
+                        let tagnum = data.id.toString();
+                        tempN.push(tagnum);
+                        this.tags = '';
+                        this.getArticleTag(true);
+                        this.$Message.success(msg);
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                });
+            },
+            // 缩略图上传回调
+            getResponse(response, file, filelist) {
+                this.form.thumbnails = response.url;
+                if (response.status) {
+                    this.$Message.success(response.msg);
+                    this.imgshow = true;
+                    this.$refs.upImg.clearFiles();
+                } else {
+                    this.$Message.error(response.msg);
+                }
+                this.$refs.upImg.clearFiles();
+            },
+            getErrorInfo(error, file, filelist) {
+                this.$Message.error(error);
+            },
+            formatError() {
+                this.$Message.error('文件格式只支持 jpg,jpeg,png三种格式。');
+            },
+            updateData(data) {
+                this.form.content = data;
+            },
+            changeArticletype(value) {
+                this.form.articletype_name = value.label;
+                this.form.articletype_id = value.value;
+            },
+            save() {
+                this.$refs.save.validate((valid) => {
+                    if (valid) {
+                        this.modal_loading = true;
+                        let data = this.form;
+                        let activeEditor = tinymce.get(this.editImgId);
+                        activeEditor.selection.select(activeEditor.getBody());
+                        let text = activeEditor.selection.getContent({'format': 'html'});
+                        this.form.content = text;
+                        let id = data.id;
+                        this.apiPut('article/' + id, data).then((res) => {
+                            this.handleAjaxResponse(res, (data, msg) => {
+                                this.modal = false;
+                                this.$emit('getdata');
+                                this.$Message.success(msg);
+                                this.modal_loading = false;
+                                this.$refs.save.resetFields();
+                                this.$refs.select.clearSingleSelect();
+                            }, (data, msg) => {
+                                this.modal_loading = false;
+                                this.$Message.error(msg);
+                            });
+                        }, (res) => {
+                            // 处理错误信息
+                            this.modal_loading = false;
+                        });
+                    }
+                });
+            },
+            add() {
+                this.$refs.save.validate((valid) => {
+                    if (valid) {
+                        this.modal_loading = true;
+                        let data = {
+                            articletype_id: this.form.articletype_id,
+                            articletype_name: this.form.articletype_name,
+                            auther: this.form.auther,
+                            summary: this.form.summary,
+                            title: this.form.title,
+                            title_color: this.form.title_color,
+                            content: this.form.content,
+                            come_from: this.form.come_from,
+                            posttime: this.form.createtime,
+                            thumbnails: this.form.thumbnails,
+                            readcount: this.form.readcount,
+                            keywords: this.form.keywords,
+                            shorttitle: this.form.shorttitle,
+                            is_collection: this.form.is_collection,
+                            tag_id: this.form.tag_id
+                        };
+                        this.apiPost('article', data).then((res) => {
+                            this.handleAjaxResponse(res, (data, msg) => {
+                                this.modal = false;
+                                this.$parent.getData();
+                                this.$Message.success(msg);
+                                this.modal_loading = false;
+                                this.$refs.save.resetFields();
+                                this.$refs.select.clearSingleSelect();
+                            }, (data, msg) => {
+                                this.modal_loading = false;
+                                this.$Message.error(msg);
+                            });
+                        }, (res) => {
+                            // 处理错误信息
+                            this.modal_loading = false;
+                        });
+                    }
+                });
+            }
+        },
+        created() {
+            this.editImgId = this.editImgId + this.randomWord(true, 3, 32);
+        },
+        mounted() {
+            this.init();
+        },
+        destroyed() {
+            tinymce.get(this.editImgId).destroy();
+        },
+        mixins: [http, common, tinymceInit],
+        props: {
+            //
+            // tagname: {
+            //     default: {}
+            // },
+        }
+    };
 </script>
 <style>
     .ql-editor {
         max-height: 1000px !important;
     }
+
     .contentarticle .ivu-form-item-content {
         margin-left: 20px !important;
 
