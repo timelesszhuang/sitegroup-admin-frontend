@@ -24,7 +24,7 @@
         </div>
         <padd ref="add" v-on:getdata="getData"></padd>
         <psave ref="save" v-on:getdata="getData"></psave>
-        <editimg ref="editimg" ></editimg>
+        <editimg ref="editimg"></editimg>
     </card>
 </template>
 
@@ -98,7 +98,7 @@
                     okText: '确认',
                     cancelText: '取消',
                     onOk: () => {
-                        _this.apiGet('changeimgliststatus/' + editid + '/10').then((res) => {
+                        _this.apiGet('change_imglist_status/' + editid + '/10').then((res) => {
                             _this.handleAjaxResponse(res, (data, msg) => {
                                 _this.getData();
                                 _this.$Message.success(msg);
@@ -125,7 +125,7 @@
                     okText: '确认',
                     cancelText: '取消',
                     onOk: () => {
-                        _this.apiGet('changeimgliststatus/' + editid + '/20').then((res) => {
+                        _this.apiGet('change_imglist_status/' + editid + '/20').then((res) => {
                             _this.handleAjaxResponse(res, (data, msg) => {
                                 _this.getData();
                                 _this.$Message.success(msg);
@@ -148,7 +148,7 @@
                 this.$refs.save.getData(this.datas[index].id);
             },
             editimg(index) {
-                let editid = this.datas[index].id;
+                this.$refs.editimg.getData(this.datas[index].id);
                 this.$refs.editimg.modal = true;
             }
         },
@@ -170,7 +170,6 @@
                         align: 'center'
                     });
                 }
-
                 columns.push({
                     width: '150',
                     title: '图集名称',
