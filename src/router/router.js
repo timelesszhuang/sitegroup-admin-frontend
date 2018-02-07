@@ -125,6 +125,13 @@ export const nodeappRouter = [
                 name: 'imglist',
                 component: () => import('@/views/node/imglist/index.vue')
             },
+          {
+                path: 'contentget',
+                title: '内容管理',
+                icon: 'ionic',
+                name: 'contentget',
+                component: () => import('@/views/node/contentget/index.vue')
+            },
             {
                 path: 'index',
                 icon: 'images',
@@ -134,6 +141,30 @@ export const nodeappRouter = [
             },
             // {path: 'index', title: '场景秀', name: 'access_index', component: () => import('@/views/access/access.vue')},
             // {path: 'index', title: '案例中心', name: 'access_index', component: () => import('@/views/access/access.vue')},
+        ]
+    },
+    {
+        path: '/resource',
+        icon: 'soup-can',
+        name: 'resource',
+        title: '资源聚合',
+        component: Main,
+        children: [
+            {
+
+                path: 'hotnews',
+                icon: 'pricetag',
+                title: '新闻管理',
+                name: 'hotnews',
+                component: () => import('@/views/Common/news/tab.vue')
+            },   {
+                path: 'wechat',
+                icon: 'edit',
+                title: '公众号',
+                name: 'wechat',
+                component: () => import('@/views/node/articlemanage/tab.vue')
+            },
+
         ]
     },
     {
