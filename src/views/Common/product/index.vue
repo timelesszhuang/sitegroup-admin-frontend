@@ -34,8 +34,8 @@
             </div>
             <padd ref="add" v-on:getdata="getData"></padd>
             <psave ref="edit" v-on:getdata="getData"></psave>
-            <!--<editimg ref="editimg" :form="imginfo"></editimg>-->
-            <!--<showhtml ref="showhtml" :form="showhtmldata"></showhtml>-->
+            <editimg ref="editimg" ></editimg>
+            <showhtml ref="showhtml" :form="showhtmldata"></showhtml>
         </card>
     </div>
 </template>
@@ -45,10 +45,10 @@
     import common from '../../../libs/common';
     import padd from './add.vue';
     import psave from './save.vue';
-    // import editimg from './editimg.vue';
-    // import showhtml from './showhtml.vue';
+    import editimg from './editimg.vue';
+    import showhtml from './showhtml.vue';
     export default {
-        data() {
+        data () {
             return {
                 action: window.HOST + 'admin/uploadProductSerImg',
                 self: this,
@@ -71,17 +71,17 @@
                 tagname: {}
             };
         },
-        // psave, editimg, showhtml
-        components: {padd, psave},
-        mounted() {
+        // psave, editimg,
+        components: {padd, psave, editimg, showhtml},
+        mounted () {
             this.getProductType();
             this.getProductTag();
         },
-        created() {
+        created () {
             this.getData();
         },
         methods: {
-            getData() {
+            getData () {
                 let data = {
                     params: {
                         page: this.page,
@@ -101,15 +101,15 @@
                     this.$Message.error('网络异常，请稍后重试');
                 });
             },
-            changePage(page) {
+            changePage (page) {
                 this.page = page;
                 this.getData();
             },
-            changePageSize(pagesize) {
+            changePageSize (pagesize) {
                 this.rows = pagesize;
                 this.getData();
             },
-            queryData() {
+            queryData () {
                 this.getData();
             },
             add () {
@@ -117,12 +117,21 @@
                 this.$refs.add.formReset();
                 this.$refs.add.modal = true;
             },
-            showhtml(index) {
+            error (nodesc) {
+                this.$Notice.error({
+                    title: '预览模板页被浏览器拦截,请允许',
+                    desc: nodesc ? '' : ''
+                });
+            },
+            showhtml (index) {
                 let data = this.datas[index];
-                this.apiPost('productshowhtml', data).then((res) => {
+                this.apiPost('product_show_html', data).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         if (data.length === 1) {
-                            window.open(data[0].url);
+                            let open = window.open(data[0].url);
+                            if (!open) {
+                                this.error(false);
+                            }
                         } else {
                             this.showhtmldata = data;
                             this.$refs.showhtml.modal = true;
@@ -135,37 +144,20 @@
                 }, (res) => {
                     // 处理错误信息
                     this.modal_loading = false;
-                    this.$Message.error('网络异常，请稍后重试。');
                 });
             },
-            edit(index) {
+            edit (index) {
                 let editid = this.datas[index].id;
                 this.$refs.edit.modal = true;
                 this.$refs.edit.editdata(editid);
             },
-            editimg(index) {
+            editimg (index) {
                 let editid = this.datas[index].id;
-                this.apiGet('admin/getProductImgList/' + editid).then((res) => {
-                    this.handleAjaxResponse(res, (data, msg) => {
-                        this.imginfo = data;
-                        if (data.imglist && data.imglist.length) {
-                            this.$refs.editimg.is_show = true;
-                        } else {
-                            this.$refs.editimg.is_show = false;
-                        }
-                        this.$refs.editimg.img = '';
-                        this.$refs.editimg.modal = true;
-                    }, (data, msg) => {
-                        this.$Message.error(msg);
-                    });
-                }, (res) => {
-                    // 处理错误信息
-                    this.$Message.error('网络异常，请稍后重试。');
-                });
+                this.$refs.editimg.editimg(editid);
             }
         },
         computed: {
-            tableColumns() {
+            tableColumns () {
                 let columns = [];
                 let _this = this;
                 if (this.showCheckbox) {
@@ -187,7 +179,7 @@
                     width: '200',
                     key: 'base64',
                     sortable: true,
-                    render(h, params) {
+                    render (h, params) {
                         return h('img', {
                             attrs: {
                                 src: params.row.image,
@@ -225,7 +217,7 @@
                         width: 250,
                         align: 'center',
                         fixed: 'right',
-                        render(h, params) {
+                        render (h, params) {
                             return h('div', [
                                 h('Button', {
                                     props: {
