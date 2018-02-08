@@ -1,0 +1,275 @@
+<template>
+  <div>
+    <div class="top">
+      分类:
+      <Select v-model="type" style="width:200px"
+              label-in-value  filterable clearable   >
+          <Option value="article">文章</Option>
+          <Option value="product">产品</Option>
+          <Option value="question">问答</Option>
+          <Option value="selfadd">添加</Option>
+      </Select>
+      标签:
+      <!--<Select v-model="tag_id"-->
+              <!--style="text-align: left;width:350px;"-->
+              <!--label-in-value  filterable　>-->
+        <!--<Option v-for="(item,index) in this.$store.state.commondata.Tag"-->
+                <!--:value="index"-->
+                <!--:label="item" :key="index">-->
+          <!--{{item}}-->
+        <!--</Option>-->
+      <!--</Select>-->
+      <Select v-model="tag_id" style="width:200px"
+              label-in-value  filterable clearable   >
+        <Option-group  v-for="(item,index) in this.$store.state.commondata.Tag" :label="index" :key="index">
+          <Option v-for="(items,indexs) in item"  :value="indexs" :label="items" :key="indexs">{{ items }}</Option>
+        </Option-group>
+      </Select>
+      <Button type="primary" @click="queryData">查询</Button>
+      <Button type="success" @click="add">添加</Button>
+    </div>
+    <div class="content" style="margin-top:10px;">
+      <Table :context="self" :border="border" :stripe="stripe" :show-header="showheader"
+             :size="size" :data="datas" :columns="tableColumns" style="width: 100%">
+      </Table>
+      <div style="margin: 10px;overflow: hidden">
+        <div style="float: right;">
+          <Page :total="total" :current="current" @on-change="changePage" @on-page-size-change="changePageSize"
+                show-total
+                show-elevator show-sizer></Page>
+        </div>
+      </div>
+    </div>
+    <publicarticlesave ref="save" ></publicarticlesave>
+    <add ref="add" ></add>
+  </div>
+</template>
+
+<script type="text/ecmascript-6">
+  import http from '../../../libs/http';
+  import common from '../../../libs/common';
+  import publicarticlesave from '../../Common/article/save.vue';
+  import add from './add.vue';
+
+  export default {
+      data () {
+          return {
+              self: this,
+              border: true,
+              stripe: true,
+              showheader: true,
+              showIndex: true,
+              size: 'small',
+              message: 'copy data',
+              current: 1,
+              total: 0,
+              page: 1,
+              rows: 10,
+              type: '',
+              datas: [],
+              editinfo: {
+                  title_color: ''
+              },
+              tag_id: 0,
+              clickTimeId: 0
+          };
+      },
+      components: {publicarticlesave, add},
+      created () {
+          this.getData();
+          this.getAllTag();
+      },
+      methods: {
+      // @click="dan" @dblclick="shuang"
+          dan: function () {
+              clearTimeout(this.clickTimeId);
+              this.clickTimeId = setTimeout(function () {
+              }, 250);
+          },
+          shuang: function () {
+              clearTimeout(this.clickTimeId);
+          },
+          doCopy: function (index) {
+              this.$copyText(this.datas[index].imgsrc).then(function (e) {
+              }, function (e) {
+              });
+          },
+          getData () {
+              let data = {
+                  params: {
+                      page: this.page,
+                      rows: this.rows,
+                      type: this.type,
+                      tag_id: this.tag_id
+                  }
+              };
+              this.apiGet('public_image', data).then((data) => {
+                  this.handleAjaxResponse(data, (data, msg) => {
+                      this.datas = data.rows;
+                      this.total = data.total;
+                  }, (data, msg) => {
+                      this.$Message.error(msg);
+                  });
+              }, (data) => {
+                  this.$Message.error('网络异常，请稍后重试');
+              });
+          },
+          changeTitle () {
+              this.page = 1;
+          },
+          changePage (page) {
+              this.page = page;
+              this.getData();
+          },
+          changePageSize (pagesize) {
+              this.rows = pagesize;
+              this.getData();
+          },
+          queryData () {
+              this.getData();
+          },
+          add () {
+              this.$refs.add.modal = true;
+          },
+          remove (index) {
+              // 需要删除确认
+              let id = this.datas[index].id;
+              let _this = this;
+              this.$Modal.confirm({
+                  title: '确认删除',
+                  content: '您确定删除该记录?',
+                  okText: '删除',
+                  cancelText: '取消',
+                  onOk: (index) => {
+                      _this.apiDelete('public_image/', id).then((res) => {
+                          _this.handleAjaxResponse(res, (data, msg) => {
+                              _this.getData();
+                              _this.$Message.success(msg);
+                          }, (data, msg) => {
+                              _this.$Message.error(msg);
+                          });
+                      }, (res) => {
+                          // 处理错误信息
+                          _this.$Message.error('网络异常，请稍后重试');
+                      });
+                  },
+                  onCancel: () => {
+                      return false;
+                  }
+              });
+          }
+      },
+      computed: {
+          tableColumns () {
+              let columns = [];
+              let _this = this;
+              if (this.showCheckbox) {
+                  columns.push({
+                      type: 'selection',
+                      width: 60,
+                      align: 'center'
+                  });
+              }
+              if (this.showIndex) {
+                  columns.push({
+                      type: 'index',
+                      width: 60,
+                      align: 'center'
+                  });
+              }
+              columns.push({
+                  title: '缩略图',
+                  key: 'imgsrc',
+                  width: '180px',
+                  render (h, params) {
+                      if (params.row.imgsrc) {
+                          return h('img', {
+                              attrs: {
+                                  src: params.row.imgsrc,
+                                  title: params.row.title,
+                                  style: 'max-width:150px;'
+                              }
+                          });
+                      }
+                      return '';
+                  }
+              });
+              columns.push({
+                  title: '描述',
+                  key: 'alt',
+                  width: '300px'
+              });
+              columns.push({
+                  title: '分类',
+                  key: 'comefrom',
+                  render (h, params) {
+                      if (params.row.comefrom) {
+                          let type = params.row.comefrom;
+                          if (type === 'article') {
+                              return '文章';
+                          }
+                          if (type === 'quesrtion') {
+                              return '问答';
+                          }
+                          if (type === 'product') {
+                              return '产品';
+                          }
+                          if (type === 'other') {
+                              return '其他';
+                          }// 类型 article 文章 quesrtion 问答 product 产品 other 其他
+                      }
+                      return '';
+                  }
+              });
+              columns.push({
+                  title: '发布时间',
+                  key: 'create_time',
+                  sortable: true
+              });
+              columns.push(
+                  {
+                      title: '操作',
+                      key: 'action',
+                      align: 'center',
+                      fixed: 'right',
+                      render (h, params) {
+                          return h('div', [
+                              h('Button', {
+                                  props: {
+                                      size: 'small'
+                                  },
+                                  attrs: {
+                                      type: 'info'
+                                  },
+                                  on: {
+                                      click: function () {
+                                          // 不知道为什么这个地方不是我需要的this
+                                          _this.remove(params.index);
+                                      }
+                                  }
+                              }, '删除'),
+                              h('Button', {
+                                  props: {
+                                      size: 'small'
+                                  },
+                                  attrs: {
+                                      type: 'primary', style: 'margin-left:3px'
+                                  },
+                                  on: {
+                                      click: function () {
+                                          // 不知道为什么这个地方不是我需要的this
+                                          _this.doCopy(params.index);
+                                      }
+                                  }
+                              }, '复制链接')
+                          ]);
+                      }
+
+                  }
+              );
+              return columns;
+          }
+      },
+      mixins: [http, common]
+  };
+</script>

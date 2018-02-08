@@ -1,14 +1,7 @@
 <template>
   <div>
     <div class="top">
-      标题:
-      <Input v-model="title" placeholder="请输入文章标题" style="width:300px;"></Input>
-      文章分类:
-      <Select v-model="keyword_type" style="width: 200px;" label-in-value filterable clearable>
-        <Option v-for="item in keywordtype" :value="item.id" :label="item.text" :key="item.id">
-          {{ item.text }}
-        </Option>
-      </Select>
+      <Input v-model="title" @on-change="changeTitle" placeholder="标题查询" style="width:300px;"></Input>
       <Button type="primary" @click="queryData">查询</Button>
     </div>
     <div class="content" style="margin-top:10px;">
@@ -17,56 +10,49 @@
       </Table>
       <div style="margin: 10px;overflow: hidden">
         <div style="float: right;">
-          <Page v-show="page_show" :total="total" :current="current" :page-size="pageSize" @on-change="changePage"
-                @on-page-size-change="changePageSize"
+          <Page :total="total" :current="current" @on-change="changePage" @on-page-size-change="changePageSize"
                 show-total
-                show-elevator ></Page>
+                show-elevator show-sizer></Page>
         </div>
       </div>
     </div>
-    <wechatarticlesave ref="save"  ></wechatarticlesave>
+    <!--<articleadd ref="add" :tagname="tagname"></articleadd>-->
+    <!--<articlesave ref="save" :tagname="tagname" :form="editinfo"></articlesave>-->
+    <publicarticlesave ref="save" :form="editinfo" :tagname="tagname" :articletype="articletypelist"></publicarticlesave>
   </div>
-
 </template>
 
 <script type="text/ecmascript-6">
   import http from '../../../libs/http';
   import common from '../../../libs/common';
-  import wechatarticlesave from '../article/save.vue';
+  import publicarticlesave from '../../Common/article/save.vue';
+
   export default {
       data () {
           return {
-              page_show: true,
               self: this,
               border: true,
               stripe: true,
-              current: 1,
               showheader: true,
               showIndex: true,
               size: 'small',
+              current: 1,
               total: 0,
               page: 1,
               rows: 10,
-              pageSize: 10,
               title: '',
-              article_type: 0,
-              keyword_type: 0,
               datas: [],
               editinfo: {
                   title_color: ''
               },
               articletypelist: [],
-              keywordtype: [],
-              tagname: {}
+              tagname: [],
+              tag_id: 0
           };
       },
-      components: {wechatarticlesave},
+      components: {publicarticlesave},
       created () {
-          this.getKeyword();
-      },
-      mounted () {
-          this.getArticleType();
-          this.getArticleTag();
+          this.getData();
       },
       methods: {
           getData () {
@@ -74,21 +60,22 @@
                   params: {
                       page: this.page,
                       rows: this.rows,
-                      title: this.title,
-                      type_id: this.keyword_type
+                      title: this.title
                   }
               };
-              this.apiGet('qicq', data).then((data) => {
+              this.apiGet('public_article', data).then((data) => {
                   this.handleAjaxResponse(data, (data, msg) => {
                       this.datas = data.rows;
                       this.total = data.total;
-                      this.pageSize = 10;
                   }, (data, msg) => {
                       this.$Message.error(msg);
                   });
               }, (data) => {
                   this.$Message.error('网络异常，请稍后重试');
               });
+          },
+          changeTitle () {
+              this.page = 1;
           },
           changePage (page) {
               this.page = page;
@@ -99,36 +86,17 @@
               this.getData();
           },
           queryData () {
-              this.page = 1;
-              this.page_show = false;
               this.getData();
-              this.page_show = true;
           },
           edit (index) {
               let editid = this.datas[index].id;
-              this.$refs.save.addqq(editid);
-          },
-          show (index) {
-              this.getArticle(index);
-              this.$refs.show.modal = true;
-          },
-          getKeyword (func) {
-              this.apiGet('qicq_type_list').then((res) => {
-                  this.handleAjaxResponse(res, (data, msg) => {
-                      this.keywordtype = data;
-                  }, (data, msg) => {
-                      this.$Message.error(msg);
-                  });
-              }, (res) => {
-                  // 处理错误信息
-                  this.$Message.error('网络异常，请稍后重试。');
-              });
+              this.$refs.save.addexclusive(editid);
           }
       },
       computed: {
           tableColumns () {
-              let _this = this;
               let columns = [];
+              let _this = this;
               if (this.showCheckbox) {
                   columns.push({
                       type: 'selection',
@@ -145,8 +113,8 @@
               }
               columns.push({
                   title: '缩略图',
-                  key: 'imgsrc',
-                  width: 150,
+                  key: 'thumbnail',
+                  width: '180px',
                   render (h, params) {
                       if (params.row.thumbnail) {
                           return h('img', {
@@ -163,24 +131,37 @@
               columns.push({
                   title: '标题',
                   key: 'title',
-                  sortable: true
+                  width: '300px'
               });
               columns.push({
                   title: '分类',
-                  width: 150,
-                  key: 'type_name',
-                  sortable: true
+                  key: 'type',
+                  render (h, params) {
+                      if (params.row.type) {
+                          let type = params.row.type;
+                          if (type == 'article') {
+                              return '文章';
+                          }
+                          if (type == 'quesrtion') {
+                              return '问答';
+                          }
+                          if (type == 'product') {
+                              return '产品';
+                          }
+                          if (type == 'other') {
+                              return '其他';
+                          }// 类型 article 文章 quesrtion 问答 product 产品 other 其他
+                      }
+                      return '';
+                  }
               });
               columns.push({
                   title: '来源',
-                  width: 150,
-                  key: 'source',
-                  sortable: true
+                  key: 'comefrom'
               });
               columns.push({
                   title: '发布时间',
-                  width: 150,
-                  key: 'create_time',
+                  key: 'addtime',
                   sortable: true
               });
               columns.push(
@@ -188,7 +169,7 @@
                       title: '操作',
                       key: 'action',
                       align: 'center',
-                      width: 200,
+                      fixed: 'right',
                       render (h, params) {
                           return h('div', [
                               h('Button', {
@@ -207,6 +188,7 @@
                               }, '转移至文章库')
                           ]);
                       }
+
                   }
               );
               return columns;
@@ -215,7 +197,3 @@
       mixins: [http, common]
   };
 </script>
-<style>
-
-
-</style>

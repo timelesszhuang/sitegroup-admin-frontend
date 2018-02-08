@@ -9,9 +9,13 @@ import VueI18n from 'vue-i18n';
 import util from './libs/util';
 import env from '../build/env';
 import Cookies from 'js-cookie';
-
+import VueClipboard from 'vue-clipboard2';
+Vue.use(VueClipboard);
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-default/index.css';
 Vue.use(VueI18n);
 Vue.use(iView);
+Vue.use(ElementUI);
 
 let domain = 'salesman.cc';
 
@@ -43,12 +47,12 @@ new Vue({
     data: {
         currentPageName: ''
     },
-    mounted() {
+    mounted () {
         this.currentPageName = this.$route.name;
         this.$store.commit('initCachepage');
         // iview-admin检查更新
         // util.checkUpdate(this);
     },
-    created() {
+    created () {
     }
 });

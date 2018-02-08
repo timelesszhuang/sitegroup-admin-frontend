@@ -167,6 +167,54 @@ export const nodeappRouter = [
 
         ]
     },
+  {
+        path: '/exclusive',
+        icon: 'soup-can',
+        name: 'exclusive',
+        title: '素材库',
+        component: Main,
+        children: [
+            {
+                path: 'exclusivearticle',
+                icon: 'ios-bookmarks',
+                title: '专属文章',
+                name: 'exclusivearticle',
+                component: () => import('@/views/node/publicarticle/index.vue')
+            },
+          {
+                path: 'exclusiveimg',
+                icon: 'image',
+                title: '专属图片',
+                name: 'exclusiveimg',
+                component: () => import('@/views/node/publicimage/index.vue')
+            },
+
+        ]
+    },
+  {
+        path: '/keyword',
+        icon: 'soup-can',
+        name: 'keyword',
+        title: '站点关键词',
+        component: Main,
+        children: [
+            {
+                path: 'keywordmanage',
+                icon: 'ios-bookmarks',
+                title: '关键词管理',
+                name: 'keywordmanage',
+                component: () => import('@/views/node/keyword/keyword.vue')
+            },
+          {
+                path: 'exclusiveimg',
+                icon: 'image',
+                title: '专属图片',
+                name: 'exclusiveimg',
+                component: () => import('@/views/node/publicimage/index.vue')
+            },
+
+        ]
+    },
     {
         path: '/access',
         icon: 'key',
