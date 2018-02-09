@@ -196,14 +196,14 @@
       methods: {
 
           renderContent (h, { node, data, store }) {
-              if (node) {
+              if (node.data.tag === 'C') {
                   return (
                       <span style="font-size: 14px;">
                           <span>
                               <span>{node.label}</span>
                           </span>
                           <span>
-                              <el-button style="margin-left:20px;font-size: 12px;" type="text" on-click={ () => this.append(node, data) }>添加</el-button>
+
                               <el-button style="margin-left:20px;font-size: 12px;" type="text" on-click={ () => this.editkeyw(node, data) }>修改</el-button>
                               <el-button style="margin-left:20px;font-size: 12px;" type="text" on-click={ () => this.remove(node, data) }>删除</el-button>
                           </span>
