@@ -15,7 +15,7 @@
       <div>
         <Form ref="bkeywordadd" :model="form" :label-width="90" :rules="akeyWordRule" class="company-add-form">
           <Form-item label="B/C类关键词" prop="content">
-            <Input v-model="form.content" type="textarea" placeholder="请输入B/C类关键词"></Input>
+            <Input v-model="form.name" type="textarea" placeholder="请输入B/C类关键词"></Input>
           </Form-item>
         </Form>
       </div>
@@ -33,55 +33,53 @@
 <script>
   import http from '../../../libs/http';
   export default {
-    data () {
-      return {
-        modal: false,
-        modal_loading: false,
-        form: {
-          content: ''
-        },
-        akeyWordRule: {
-          content: [
-            {required: true, message: '请填写B/C类关键词', trigger: 'blur'},
-          ],
-        },
-      }
-    },
-    methods: {
-      addAkeyword()
-      {
-        this.$refs.bkeywordadd.validate((valid) => {
-          if (valid) {
-            this.modal_loading = true;
-            let data = this.form;
-            data.id=this.pid;
-            this.apiPost('admin/insertTag', data).then((res) => {
-              this.handelResponse(res, (data, msg) => {
-                this.modal = false;
-                this.$Message.success(msg);
-                this.modal_loading = false;
-                this.$refs.bkeywordadd.resetFields();
-                setTimeout(function () {
-                  location.reload();
-                }, 1);
-              }, (data, msg) => {
-                this.modal_loading = false;
-                this.$Message.error(msg);
-              })
-            }, (res) => {
-              //处理错误信息
-              this.$Message.error('网络异常，请稍后重试。');
-              this.modal_loading = false;
-            })
-          } else {
-            return false;
+      data () {
+          return {
+              modal: false,
+              modal_loading: false,
+              form: {
+                  name: ''
+              },
+              akeyWordRule: {
+                  name: [
+                      {required: true, message: '请填写B/C类关键词', trigger: 'blur'}
+                  ]
+              }
+          };
+      },
+      methods: {
+          addAkeyword () {
+              this.$refs.bkeywordadd.validate((valid) => {
+                  if (valid) {
+                      this.modal_loading = true;
+                      let data = this.form;
+                      data.id = this.pid;
+                      this.apiPost('keyword', data).then((res) => {
+                          this.handleAjaxResponse(res, (data, msg) => {
+                              this.modal = false;
+                              this.$emit('getd', this.form);
+                              this.$Message.success(msg);
+                              this.modal_loading = false;
+                              this.$refs.bkeywordadd.resetFields();
+
+                          }, (data, msg) => {
+                              this.modal_loading = false;
+                              this.$Message.error(msg);
+                          });
+                      }, (res) => {
+                          // 处理错误信息
+                          this.$Message.error('网络异常，请稍后重试。');
+                          this.modal_loading = false;
+                      });
+                  } else {
+                      return false;
+                  }
+              });
           }
-        })
+      },
+      mixins: [http],
+      props: {
+          pid: Number
       }
-    },
-    mixins: [http],
-    props: {
-      pid:Number
-    }
-  }
+  };
 </script>

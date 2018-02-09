@@ -43,39 +43,34 @@
       },
       methods: {
           addAkeyword () {
-              let data = this.form;
-              data.id = 111;
-              data.keyword = this.form.name;
-              this.$emit('getd',data);
-              this.modal = false
-              // this.$refs.akeywordadd.validate((valid) => {
-              //     if (valid) {
-              //         this.modal_loading = true;
-              //         let data = this.form;
-              //         this.$parent.keyyy(data);
-              //         this.modal_loading = false;
-              //         // this.apiPost('keyword/insertA', data).then((res) => {
-              //         //     this.handelResponse(res, (data, msg) => {
-              //         //         this.modal = false;
-              //         //         setTimeout(function () {
-              //         //             location.reload();
-              //         //         }, 1);
-              //         //         this.$Message.success(msg);
-              //         //         this.modal_loading = false;
-              //         //         this.$refs.akeywordadd.resetFields();
-              //         //     }, (data, msg) => {
-              //         //         this.modal_loading = false;
-              //         //         this.$Message.error(msg);
-              //         //     });
-              //         // }, (res) => {
-              //         //     // 处理错误信息
-              //         //     this.$Message.error('网络异常，请稍后重试。');
-              //         //     this.modal_loading = false;
-              //         // });
-              //     } else {
-              //         return false;
-              //     }
-              // });
+              // let data = this.form;
+              // data.keyword = this.form.name;
+              this.$refs.akeywordadd.validate((valid) => {
+                  if (valid) {
+                      this.modal_loading = true;
+                      let data = this.form;
+                      data.id = 0;
+                      // this.$parent.keyyy(data);
+                      this.modal_loading = false;
+                      this.apiPost('keyword', data).then((res) => {
+                          this.handleAjaxResponse(res, (data, msg) => {
+                              this.modal = false;
+                              this.$emit('getd', this.form);
+                              this.$Message.success(msg);
+                              this.modal_loading = false;
+                          }, (data, msg) => {
+                              this.modal_loading = false;
+                              this.$Message.error(msg);
+                          });
+                      }, (res) => {
+                          // 处理错误信息
+                          this.$Message.error('网络异常，请稍后重试。');
+                          this.modal_loading = false;
+                      });
+                  } else {
+                      return false;
+                  }
+              });
           }
       },
       mixins: [http]

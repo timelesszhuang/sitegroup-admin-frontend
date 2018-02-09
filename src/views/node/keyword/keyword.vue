@@ -142,9 +142,7 @@
         check-strictly
         :load="loadNode"
         lazy
-        :node-click="nodeclick"
         node-key="id"
-        :expand-on-click-node="true"
         :render-content="renderContent"
         ref="tree"
         >
@@ -156,8 +154,8 @@
             <p style="font-size:14px;">B,C类关键词不宜过多,B,C类关键词重复不会添加</p>
         </Alert>
         <keywordUpload ref="upload" :id="checkedNodeId"></keywordUpload>
-        <AkeywordAdd ref="akeywordadd" v-on:getd="keyyy"></AkeywordAdd>
-        <BkeywordAdd ref="bkeywordadd" :pid="checkedNodeId"></BkeywordAdd>
+        <AkeywordAdd ref="akeywordadd" v-on:getd="keyyy"  ></AkeywordAdd>
+        <BkeywordAdd ref="bkeywordadd"   v-on:getd="keyyy"  :pid="checkedNodeId"></BkeywordAdd>
         <CkeywordAdd ref="ckeywordadd"></CkeywordAdd>
         <Updatekeyword ref="updatekeyword" :datas="form"></Updatekeyword>
     </div>
@@ -184,7 +182,7 @@
               checkedNodeId: 0,
               node: [],
               data: [],
-
+              nodedata1: [],
               props: {
                   label: 'label',
                   children: 'children'
@@ -209,19 +207,23 @@
                   </span>);
           },
           append (de, node) {
-            // console.log(de)
-            // console.log(node)
-              this.$refs.akeywordadd.modal = true;
+              // console.log(de)
+              if (!node.children) {
+                  this.$set(node, 'children', this.nodedata1);
+              }
+              this.checkedNodeId = node.id;
+              // console.log(node.id)
+              this.$refs.bkeywordadd.modal = true;
               this.node = node;
-              const newChild = {  label: '44', children: [] };
+              // const newChild = { label: '44', children: [] };
+              // this.data.push(newChild);
           },
           keyyy (data) {
-              this.idd = data.id;
-              this.keywordceshi = data.keyword;
-            // this.node.children.push(newChild);
-              const newChild = { id: this.idd, label: this.keywordceshi, children: [] };
-              console.log(this.data);
-              this.data.children.push(newChild);
+              // this.label = data.keyword;
+              // this.node.children.push(newChild);
+              const newChild = { label: data.name, children: [] };
+              //console.log(this.data);
+              this.node.children.push(newChild);
           },
           remove (node, data) {
               const parent = node.parent;
@@ -361,14 +363,15 @@
           loadNode (node, resolve) {
               if (node.level === 0) {
                   // 第一次请求资源的时候
-                this.getData(0, (data) => {
-                  this.data = data
-                  return resolve(data);
-                });
+                  this.getData(0, (data) => {
+                      this.data = data;
+                      return resolve(data);
+                  });
               } else if (node.level >= 3) {
                   return resolve([]);
               } else {
                   this.getData(node.data.id, (data) => {
+                      this.nodedata1 = data;
                       resolve(data);
                   });
               }
