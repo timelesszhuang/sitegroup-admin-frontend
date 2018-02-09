@@ -16,7 +16,7 @@
       style="margin-bottom: 10px;">
     </el-input>
     <el-tree :data="data"
-             :props="s"
+             :props="props"
              :load="loadNode"
              class="filter-tree"
              lazy="" show-checkbox
