@@ -42,10 +42,12 @@
       mixins: [http],
       methods: {
           saveKeyword () {
-              let id = this.datas.id;
-              let name = this.datas.label;
-              this.apiGet('admin/updateKeyword/' + id + '/' + name).then((res) => {
-                  this.handelResponse(res, (data, msg) => {
+            let data = {
+              name: this.datas.label
+            };
+            let id = this.datas.id;
+            this.apiPut('keyword/' + id, data).then((res) => {
+                  this.handleAjaxResponse(res, (data, msg) => {
                       this.$Message.success(msg);
                       this.modal = false;
                   }, (data, msg) => {

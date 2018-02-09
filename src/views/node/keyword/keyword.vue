@@ -124,9 +124,8 @@
         <Row>
             <Col span="24" style="padding: 10px;">
             <Button type="primary" shape="circle" icon="android-add" @click="addkeyword">批量上传关键词</Button>
-            <Button type="success" shape="circle" icon="android-add" @click="addAkeyword">添加A类关键词</Button>
-            <Button type="success" shape="circle" icon="android-add" @click="addBkeyword">添加B/C类关键词</Button>
-            <Button type="success" shape="circle" icon="android-done" @click="saveKeyword">修改关键词</Button>
+            <Button type="success" shape="circle" icon="android-add" @click="addA">添加A类关键词</Button>
+            <!--<Button type="success" shape="circle" icon="android-done" @click="saveKeyword">修改关键词</Button>-->
             <Button type="error" shape="circle" icon="android-add" @click="removeKeyword">删除关键词</Button>
             </Col>
         </Row>
@@ -154,8 +153,8 @@
             <p style="font-size:14px;">B,C类关键词不宜过多,B,C类关键词重复不会添加</p>
         </Alert>
         <keywordUpload ref="upload" :id="checkedNodeId"></keywordUpload>
-        <AkeywordAdd ref="akeywordadd" v-on:getd="keyyy"  ></AkeywordAdd>
-        <BkeywordAdd ref="bkeywordadd"   v-on:getd="keyyy"  :pid="checkedNodeId"></BkeywordAdd>
+        <AkeywordAdd ref="akeywordadd" v-on:getkeya="addAkeyword"  ></AkeywordAdd>
+        <BkeywordAdd ref="bkeywordadd"   v-on:getkeybc="keyadd"  :pid="checkedNodeId"></BkeywordAdd>
         <CkeywordAdd ref="ckeywordadd"></CkeywordAdd>
         <Updatekeyword ref="updatekeyword" :datas="form"></Updatekeyword>
     </div>
@@ -179,8 +178,10 @@
       components: {keywordUpload, AkeywordAdd, BkeywordAdd, CkeywordAdd, Updatekeyword},
       data () {
           return {
+              keyid: '',
               checkedNodeId: 0,
               node: [],
+              nodedelete: [],
               data: [],
               nodedata1: [],
               props: {
@@ -195,41 +196,140 @@
       methods: {
 
           renderContent (h, { node, data, store }) {
-              return (
-                  <span style="font-size: 14px;">
-                      <span>
-                          <span>{node.label}</span>
-                      </span>
-                      <span>
-                          <el-button style="margin-left:20px;font-size: 12px;" type="text" on-click={ () => this.append(node, data) }>添加</el-button>
-                          <el-button style="margin-left:20px;font-size: 12px;" type="text" on-click={ () => this.remove(node, data) }>删除</el-button>
-                      </span>
-                  </span>);
+              if (node) {
+                  return (
+                      <span style="font-size: 14px;">
+                          <span>
+                              <span>{node.label}</span>
+                          </span>
+                          <span>
+                              <el-button style="margin-left:20px;font-size: 12px;" type="text" on-click={ () => this.append(node, data) }>添加</el-button>
+                              <el-button style="margin-left:20px;font-size: 12px;" type="text" on-click={ () => this.editkeyw(node, data) }>修改</el-button>
+                              <el-button style="margin-left:20px;font-size: 12px;" type="text" on-click={ () => this.remove(node, data) }>删除</el-button>
+                          </span>
+                      </span>);
+              } else {
+                  return (
+                      <span style="font-size: 14px;">
+                          <span>
+                              <span>{node.label}</span>
+                          </span>
+                          <span>
+                              <el-button style="margin-left:20px;font-size: 12px;" type="text" on-click={ () => this.append(node, data) }>添加</el-button>
+                              <el-button style="margin-left:20px;font-size: 12px;" type="text" on-click={ () => this.editkeyw(node, data) }>修改</el-button>
+                              <el-button style="margin-left:20px;font-size: 12px;" type="text" on-click={ () => this.remove(node, data) }>删除</el-button>
+                          </span>
+                      </span>);
+              }
           },
+
           append (de, node) {
-              // console.log(de)
-              if (!node.children) {
+              if (!node.children && node.tag !== 'C') {
                   this.$set(node, 'children', this.nodedata1);
               }
               this.checkedNodeId = node.id;
               // console.log(node.id)
               this.$refs.bkeywordadd.modal = true;
               this.node = node;
-              // const newChild = { label: '44', children: [] };
-              // this.data.push(newChild);
           },
-          keyyy (data) {
-              // this.label = data.keyword;
-              // this.node.children.push(newChild);
-              const newChild = { label: data.name, children: [] };
-              //console.log(this.data);
-              this.node.children.push(newChild);
+          keyadd (data) {
+              data.forEach((item) => {
+                  const newChild = {id: item.id, label: item.label, children: [] };
+                  // console.log(this.data);
+                  this.node.children.push(newChild);
+              });
           },
-          remove (node, data) {
-              const parent = node.parent;
-              const children = parent.data.children || parent.data;
-              const index = children.findIndex(d => d.id === data.id);
-              children.splice(index, 1);
+          editkeyw (de, node) {
+            this.form = node;
+            this.$refs.updatekeyword.modal = true;
+          },
+          remove (node, data1) {
+              // console.log(node)
+              // console.log(data)
+              // console.log(this.nodedata1);
+              // node.childNodes
+              // console.log(node.parent.childNodes.findIndex(d => d.id === data.id));
+              // console.log(node);
+              // console.log(data)
+              //   const parent = node.parent;
+              //   const children = parent.data.children || parent.data;
+              //   const index = children.findIndex(d => d.id === data.id);
+              //   children.splice(index, 1);
+
+              // return false;
+              // node.forEach((item) => {
+              //     this.ids.push(item.id);
+              // });
+              //
+              this.nodedelete = node;
+              let _this = this;
+              this.$Modal.confirm({
+                  title: '确认删除',
+                  content: '您确定删除关键词?',
+                  okText: '删除',
+                  cancelText: '取消',
+                  onOk: () => {
+                      _this.apiDelete('keyword/', _this.nodedelete.data.id).then((res) => {
+                          _this.handleAjaxResponse(res, (data, msg) => {
+                              // 删除数据库中信息
+                              let keyid = 0;
+                              _this.nodedelete.parent.childNodes.forEach((item, index) => {
+                                  if (item.data.id == data1.id) {
+                                      keyid = index;
+                                  }
+                              });
+                              _this.nodedelete.parent.childNodes.splice(keyid, 1);
+                              _this.$Message.success(msg);
+                          }, (data, msg) => {
+                              _this.$Message.error(msg);
+                          });
+                      }, (res) => {
+                          // 处理错误信息
+                          _this.$Message.error('网络异常，请稍后重试');
+                      });
+                  },
+                  onCancel: () => {
+                      return false;
+                  }
+              });
+          },
+          removeKeyword (node, data) {
+              // node.childNodes
+              // console.log(node);
+              // console.log(data)
+              //   const parent = node.parent;
+              //   const children = parent.data.children || parent.data;
+              //   const index = children.findIndex(d => d.id === data.id);
+              //   children.splice(index, 1);
+
+              // return false;
+              // node.forEach((item) => {
+              //     this.ids.push(item.id);
+              // });
+              //
+              let _this = this;
+              this.$Modal.confirm({
+                  title: '确认删除',
+                  content: '您确定删除关键词?',
+                  okText: '删除',
+                  cancelText: '取消',
+                  onOk: () => {
+                      _this.apiDelete('keyword/', node.data.id).then((res) => {
+                          _this.handleAjaxResponse(res, (data, msg) => {
+                              // 删除数据库中信息
+                              _this.$Message.success(msg);
+                          }, (data, msg) => {
+                              _this.$Message.error(msg);
+                          });
+                      }, (res) => {
+                          // 处理错误信息
+                          _this.$Message.error('网络异常，请稍后重试');
+                      });
+                  },
+                  onCancel: () => {
+                      return false;
+                  }
+              });
           },
           saveKeyword () {
               let node = this.$refs.tree.getCheckedNodes();
@@ -258,45 +358,52 @@
                   this.$Message.info('只能选择一个节点作为上级关键词');
               }
           },
-          removeKeyword () {
-              let node = this.$refs.tree.getCheckedNodes();
-              node.forEach((item) => {
-                  this.ids.push(item.id);
-              });
-
-              let _this = this;
-              let data = {
-                  id: this.ids
-              };
-              this.$Modal.confirm({
-                  title: '确认删除',
-                  content: '您确定删除关键词?',
-                  okText: '删除',
-                  cancelText: '取消',
-                  onOk: () => {
-                      _this.apiPost('admin/deleAll', data).then((res) => {
-                          _this.handelResponse(res, (data, msg) => {
-                              setTimeout(function () {
-                                  location.reload();
-                              }, 1000);
-                              // 删除数据库中信息
-                              _this.$Message.success(msg);
-                          }, (data, msg) => {
-                              _this.$Message.error(msg);
-                          });
-                      }, (res) => {
-                          // 处理错误信息
-                          _this.$Message.error('网络异常，请稍后重试');
-                      });
-                  },
-                  onCancel: () => {
-                      return false;
-                  }
+          // removeKeyword () {
+          //     let node = this.$refs.tree.getCheckedNodes();
+          //     node.forEach((item) => {
+          //         this.ids.push(item.id);
+          //     });
+          //
+          //     let _this = this;
+          //     let data = {
+          //         id: this.ids
+          //     };
+          //     this.$Modal.confirm({
+          //         title: '确认删除',
+          //         content: '您确定删除关键词?',
+          //         okText: '删除',
+          //         cancelText: '取消',
+          //         onOk: () => {
+          //             _this.apiPost('admin/deleAll', data).then((res) => {
+          //                 _this.handelResponse(res, (data, msg) => {
+          //                     setTimeout(function () {
+          //                         location.reload();
+          //                     }, 1000);
+          //                     // 删除数据库中信息
+          //                     _this.$Message.success(msg);
+          //                 }, (data, msg) => {
+          //                     _this.$Message.error(msg);
+          //                 });
+          //             }, (res) => {
+          //                 // 处理错误信息
+          //                 _this.$Message.error('网络异常，请稍后重试');
+          //             });
+          //         },
+          //         onCancel: () => {
+          //             return false;
+          //         }
+          //     });
+          // },
+          // 添加A 类关键词
+          addAkeyword (data) {
+              // 添加A 类 关键词
+              data.forEach((item) => {
+                  const newChild = {id: item.id, label: item.label, children: [] };
+                  // console.log(this.data);
+                  this.data.push(newChild);
               });
           },
-          // 添加A 类关键词
-          addAkeyword () {
-              // 添加A 类 关键词
+          addA () {
               this.$refs.akeywordadd.modal = true;
           },
           addBkeyword () {

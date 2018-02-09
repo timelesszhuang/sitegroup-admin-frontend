@@ -55,7 +55,7 @@
                       this.apiPost('keyword', data).then((res) => {
                           this.handleAjaxResponse(res, (data, msg) => {
                               this.modal = false;
-                              this.$emit('getd', this.form);
+                              this.$emit('getkeya', data);
                               this.$Message.success(msg);
                               this.modal_loading = false;
                           }, (data, msg) => {
