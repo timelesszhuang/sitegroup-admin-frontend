@@ -6,7 +6,7 @@
 <template>
   <div>
     <Modal
-      v-model="modal" width="600">
+      v-model="modal" width="600" :mask-closable="false">
       <p slot="header">
         <!--<Icon type="person-add"></Icon>-->
         <Icon type="upload"></Icon>

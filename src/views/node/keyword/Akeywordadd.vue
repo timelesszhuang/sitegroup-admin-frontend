@@ -5,7 +5,7 @@
 </style>
 <template>
   <div>
-    <Modal
+    <Modal :mask-closable="false"
       v-model="modal">
       <p slot="header" style="color:#f60;">
         <Icon type="information-circled"></Icon>
@@ -56,6 +56,7 @@
                           this.handleAjaxResponse(res, (data, msg) => {
                               this.modal = false;
                               this.$emit('getkeya', data);
+                              this.$refs.akeywordadd.resetFields();
                               this.$Message.success(msg);
                               this.modal_loading = false;
                           }, (data, msg) => {
