@@ -294,11 +294,3 @@
       mixins: [http]
   };
 </script>
-<style>
-.el-icon-caret-right:before{
-content: none !important;
-
-
-}
-
-</style>

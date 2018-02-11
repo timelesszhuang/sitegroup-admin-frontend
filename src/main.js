@@ -12,7 +12,7 @@ import Cookies from 'js-cookie';
 import VueClipboard from 'vue-clipboard2';
 Vue.use(VueClipboard);
 import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-default/index.css';
+import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(VueI18n);
 Vue.use(iView);
 Vue.use(ElementUI);
