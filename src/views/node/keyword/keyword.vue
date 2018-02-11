@@ -1,129 +1,8 @@
-<!--<template>-->
- <!--<card>-->
-<!--<el-tree-->
-        <!--:data="data"-->
-        <!--:props="defaultProps"-->
-        <!--show-checkbox-->
-        <!--node-key="id"-->
-        <!--default-expand-all-->
-        <!--:expand-on-click-node="false"-->
-        <!--:render-content="renderContent">-->
-<!--</el-tree>-->
-     <!--<AkeywordAdd ref="akeywordadd" v-on:getd="keyyy"></AkeywordAdd>-->
- <!--</card>-->
-
-  <!--</template>-->
-<!--<script>-->
-  <!--import http from '../../../libs/http';-->
-  <!--import AkeywordAdd from './Akeywordadd.vue';-->
-  <!--let id = 1000;-->
-
-  <!--export default {-->
-      <!--components: { AkeywordAdd},-->
-      <!--data () {-->
-          <!--return {-->
-              <!--idd: '',-->
-              <!--keywordceshi: '',-->
-              <!--node: [],-->
-              <!--data: [{-->
-                  <!--id: 1,-->
-                  <!--label: '一级 1',-->
-                  <!--children: [{-->
-                      <!--id: 4,-->
-                      <!--label: '二级 1-1',-->
-                      <!--children: [{-->
-                          <!--id: 9,-->
-                          <!--label: '三级 1-1-1'-->
-                      <!--}, {-->
-                          <!--id: 10,-->
-                          <!--label: '三级 1-1-2'-->
-                      <!--}]-->
-                  <!--}]-->
-              <!--}, {-->
-                  <!--id: 2,-->
-                  <!--label: '一级 2',-->
-                  <!--children: [{-->
-                      <!--id: 5,-->
-                      <!--label: '二级 2-1'-->
-                  <!--}, {-->
-                      <!--id: 6,-->
-                      <!--label: '二级 2-2'-->
-                  <!--}]-->
-              <!--}, {-->
-                  <!--id: 3,-->
-                  <!--label: '一级 3',-->
-                  <!--children: [{-->
-                      <!--id: 7,-->
-                      <!--label: '二级 3-1'-->
-                  <!--}, {-->
-                      <!--id: 8,-->
-                      <!--label: '二级 3-2'-->
-                  <!--}]-->
-              <!--}],-->
-              <!--defaultProps: {-->
-                  <!--children: 'children',-->
-                  <!--label: 'label'-->
-              <!--}-->
-          <!--};-->
-      <!--},-->
-
-      <!--methods: {-->
-          <!--append (node) {-->
-              <!--this.$refs.akeywordadd.modal = true;-->
-              <!--if (!node.children) {-->
-                  <!--this.$set(node, 'children', []);-->
-              <!--}-->
-              <!--this.node = node;-->
-              <!--// this.data4.push(newChild);-->
-          <!--},-->
-          <!--keyyy (data) {-->
-              <!--console.log(data);-->
-              <!--this.idd = data.id;-->
-              <!--this.keywordceshi = data.keyword;-->
-              <!--const newChild = { id: this.idd, label: this.keywordceshi, children: [] };-->
-              <!--this.node.children.push(newChild);-->
-          <!--},-->
-          <!--remove (node, data) {-->
-              <!--const parent = node.parent;-->
-              <!--const children = parent.data.children || parent.data;-->
-              <!--const index = children.findIndex(d => d.id === data.id);-->
-              <!--children.splice(index, 1);-->
-          <!--},-->
-
-          <!--renderContent (h, { node, data, store }) {-->
-              <!--return (-->
-                  <!--<span style="font-size: 14px;">-->
-                      <!--<span>-->
-                          <!--<span>{node.label}</span>-->
-                      <!--</span>-->
-                      <!--<span>-->
-                          <!--<el-button style="margin-left:20px;font-size: 12px;" type="text" on-click={ () => this.append(data) }>添加</el-button>-->
-                          <!--<el-button style="margin-left:20px;font-size: 12px;" type="text" on-click={ () => this.remove(node, data) }>删除</el-button>-->
-                      <!--</span>-->
-                  <!--</span>);-->
-          <!--}-->
-      <!--},-->
-      <!--mixins: [http]-->
-  <!--};-->
-<!--</script>-->
-<!--<style>-->
- <!--.el-icon-caret-right:before{-->
-  <!--content: none !important;-->
-
-
- <!--}-->
-
-<!--</style>-->
-
-
-
-
-<!--该组件使用 饿了么 tree 实现-->
 <template>
     <div>
         <Row>
             <Col span="24" style="padding: 10px;">
-            <Button type="primary" shape="circle" icon="android-add" @click="addkeyword">批量上传关键词</Button>
+            <!--<Button type="primary" shape="circle" icon="android-add" @click="addkeyword">批量上传关键词</Button>-->
             <Button type="success" shape="circle" icon="android-add" @click="addA">添加A类关键词</Button>
             <!--<Button type="success" shape="circle" icon="android-done" @click="saveKeyword">修改关键词</Button>-->
             <Button type="error" shape="circle" icon="android-add" @click="removeKeyword">删除关键词</Button>
@@ -144,6 +23,7 @@
         node-key="id"
         :render-content="renderContent"
         ref="tree"
+        :filter-node-method="filterNode"
         >
         </el-tree>
         <!--操作相关子组件-->
@@ -203,7 +83,6 @@
                               <span>{node.label}</span>
                           </span>
                           <span>
-
                               <el-button style="margin-left:20px;font-size: 12px;" type="text" on-click={ () => this.editkeyw(node, data) }>修改</el-button>
                               <el-button style="margin-left:20px;font-size: 12px;" type="text" on-click={ () => this.remove(node, data) }>删除</el-button>
                           </span>
@@ -216,13 +95,13 @@
                           </span>
                           <span>
                               <el-button style="margin-left:20px;font-size: 12px;" type="text" on-click={ () => this.append(node, data) }>添加</el-button>
+                              <el-button style="margin-left:20px;font-size: 12px;" type="text" on-click={ () => this.appendall(node, data) }>批量上传 </el-button>
                               <el-button style="margin-left:20px;font-size: 12px;" type="text" on-click={ () => this.editkeyw(node, data) }>修改</el-button>
                               <el-button style="margin-left:20px;font-size: 12px;" type="text" on-click={ () => this.remove(node, data) }>删除</el-button>
                           </span>
                       </span>);
               }
           },
-
           append (de, node) {
               if (!node.children && node.tag !== 'C') {
                   this.$set(node, 'children', this.nodedata1);
@@ -232,35 +111,26 @@
               this.$refs.bkeywordadd.modal = true;
               this.node = node;
           },
+          appendall (de, node) {
+              if (!node.children && node.tag !== 'C') {
+                  this.$set(node, 'children', this.nodedata1);
+              }
+              this.checkedNodeId = node.id;
+              // console.log(node.id)
+              this.$refs.upload.modal = true;
+              this.node = node;
+          },
           keyadd (data) {
               data.forEach((item) => {
                   const newChild = {id: item.id, label: item.label, children: [] };
-                  // console.log(this.data);
                   this.node.children.push(newChild);
               });
           },
           editkeyw (de, node) {
-            this.form = node;
-            this.$refs.updatekeyword.modal = true;
+              this.form = node;
+              this.$refs.updatekeyword.modal = true;
           },
           remove (node, data1) {
-              // console.log(node)
-              // console.log(data)
-              // console.log(this.nodedata1);
-              // node.childNodes
-              // console.log(node.parent.childNodes.findIndex(d => d.id === data.id));
-              // console.log(node);
-              // console.log(data)
-              //   const parent = node.parent;
-              //   const children = parent.data.children || parent.data;
-              //   const index = children.findIndex(d => d.id === data.id);
-              //   children.splice(index, 1);
-
-              // return false;
-              // node.forEach((item) => {
-              //     this.ids.push(item.id);
-              // });
-              //
               this.nodedelete = node;
               let _this = this;
               this.$Modal.confirm({
@@ -274,7 +144,7 @@
                               // 删除数据库中信息
                               let keyid = 0;
                               _this.nodedelete.parent.childNodes.forEach((item, index) => {
-                                  if (item.data.id == data1.id) {
+                                  if (item.data.id === data1.id) {
                                       keyid = index;
                                   }
                               });
@@ -293,28 +163,22 @@
                   }
               });
           },
-          removeKeyword (node, data) {
-              // node.childNodes
-              // console.log(node);
-              // console.log(data)
-              //   const parent = node.parent;
-              //   const children = parent.data.children || parent.data;
-              //   const index = children.findIndex(d => d.id === data.id);
-              //   children.splice(index, 1);
-
-              // return false;
-              // node.forEach((item) => {
-              //     this.ids.push(item.id);
-              // });
-              //
+          removeKeyword () {
+              let node = this.$refs.tree.getCheckedNodes();
+              node.forEach((item) => {
+                  this.ids.push(item.id);
+              });
               let _this = this;
+              let data = {
+                  ids: this.ids
+              };
               this.$Modal.confirm({
                   title: '确认删除',
                   content: '您确定删除关键词?',
                   okText: '删除',
                   cancelText: '取消',
                   onOk: () => {
-                      _this.apiDelete('keyword/', node.data.id).then((res) => {
+                      _this.apiPost('delete_keywords', data).then((res) => {
                           _this.handleAjaxResponse(res, (data, msg) => {
                               // 删除数据库中信息
                               _this.$Message.success(msg);
@@ -358,42 +222,6 @@
                   this.$Message.info('只能选择一个节点作为上级关键词');
               }
           },
-          // removeKeyword () {
-          //     let node = this.$refs.tree.getCheckedNodes();
-          //     node.forEach((item) => {
-          //         this.ids.push(item.id);
-          //     });
-          //
-          //     let _this = this;
-          //     let data = {
-          //         id: this.ids
-          //     };
-          //     this.$Modal.confirm({
-          //         title: '确认删除',
-          //         content: '您确定删除关键词?',
-          //         okText: '删除',
-          //         cancelText: '取消',
-          //         onOk: () => {
-          //             _this.apiPost('admin/deleAll', data).then((res) => {
-          //                 _this.handelResponse(res, (data, msg) => {
-          //                     setTimeout(function () {
-          //                         location.reload();
-          //                     }, 1000);
-          //                     // 删除数据库中信息
-          //                     _this.$Message.success(msg);
-          //                 }, (data, msg) => {
-          //                     _this.$Message.error(msg);
-          //                 });
-          //             }, (res) => {
-          //                 // 处理错误信息
-          //                 _this.$Message.error('网络异常，请稍后重试');
-          //             });
-          //         },
-          //         onCancel: () => {
-          //             return false;
-          //         }
-          //     });
-          // },
           // 添加A 类关键词
           addAkeyword (data) {
               // 添加A 类 关键词
@@ -426,27 +254,6 @@
               if (!value) return true;
               return data.label.indexOf(value) !== -1;
           },
-          // 获取数据
-          // getData (id, func) {
-          //     let data = {};
-          //     if (id != 0) {
-          //         data = {
-          //             params: {
-          //                 id: id
-          //             }
-          //         };
-          //     }
-          //     this.apiGet('keyword', data).then((res) => {
-          //         this.handelResponse(res, (childdata, msg) => {
-          //             func(childdata);
-          //         }, (data, msg) => {
-          //             this.$Message.error(msg);
-          //         });
-          //     }, (res) => {
-          //         // 处理错误信息
-          //         this.$Message.error('网络异常，请稍后重试。');
-          //     });
-          // },
           getData (id, func) {
               let data = {};
               if (id != 0) {

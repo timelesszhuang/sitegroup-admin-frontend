@@ -17,7 +17,7 @@
           <Upload
             type="drag"
             with-credentials
-            name="file_name"
+            name="file"
             :format="['csv']"
             :on-success="getResponse"
             :on-error="getErrorInfo"
@@ -43,64 +43,58 @@
 <script>
   import http from '../../../libs/http';
   export default {
-    data () {
-      return {
-        modal: false,
-        modal_loading: false,
-        label_in_value: true,
-        action: HOST + 'keyword/uploadkeyword',
-        form: {
-          path: '',
-        },
-      }
-    },
-    methods: {
-      getResponse(response, file, filelist){
-        this.form.path = response.data;
-        this.$Message.success(response.msg);
+      data () {
+          return {
+              modal: false,
+              modal_loading: false,
+              label_in_value: true,
+              action: HOST + 'keyword_file',
+              form: {
+                 name: ''
+              }
+          };
       },
-      getErrorInfo(error, file, filelist){
-        this.$Message.error(error);
+      methods: {
+          getResponse (response, file, filelist) {
+              this.form.name = response.data;
+              this.$Message.success(response.msg);
+          },
+          getErrorInfo (error, file, filelist) {
+              this.$Message.error(error);
+          },
+          formatError () {
+              this.$Message.error('文件格式只支持 csv格式。');
+          },
+          add () {
+              if (!this.form.name) {
+                  this.$Message.error('请首先上传csv文件。');
+                  return;
+              }
+              this.form.id = this.id;
+              this.modal_loading = true;
+              let data = this.form;
+              this.apiPost('keyword', data).then((res) => {
+                  this.handleAjaxResponse(res, (data, msg) => {
+                      this.modal = false;
+                      this.$Message.success(msg);
+                      this.modal_loading = false;
+                  }, (data, msg) => {
+                      this.modal_loading = false;
+                      this.$Message.error(msg);
+                  });
+              }, (res) => {
+                  // 处理错误信息
+                  this.modal_loading = false;
+                  this.$Message.error('网络异常，请稍后重试。');
+              });
+          }
+  
       },
-      formatError(){
-        this.$Message.error('文件格式只支持 csv格式。');
+      props: {
+          id: {
+              default: 0
+          }
       },
-      add()
-      {
-        if (!this.form.path) {
-          this.$Message.error('请首先上传csv文件。');
-          return
-        }
-        this.form.id = this.id
-        this.modal_loading = true;
-        let data = this.form;
-        this.apiPost('keyword/insertKeyword', data).then((res) => {
-          this.handelResponse(res, (data, msg) => {
-            this.modal = false;
-            this.$Message.success(msg);
-            this.modal_loading = false;
-            this.$refs.keywordadd.resetFields();
-            setTimeout(function () {
-              location.reload();
-            }, 1000);
-          }, (data, msg) => {
-            this.modal_loading = false;
-            this.$Message.error(msg);
-          })
-        }, (res) => {
-          //处理错误信息
-          this.modal_loading = true;
-          this.$Message.error('网络异常，请稍后重试。');
-        })
-
-      }
-      ,
-    },
-    props: {
-      id: {
-        default: 0
-      },
-    },
-    mixins: [http]
-  }
+      mixins: [http]
+  };
 </script>
