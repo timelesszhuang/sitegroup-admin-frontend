@@ -49,7 +49,7 @@ router.beforeEach((to, from, next) => {
                 name: 'admin_index'
             });
         } else {
-            const curRouterObj = Util.getRouterObjByName([nodeotherRouter, ...nodeappRouter], to.name);
+            const curRouterObj = Util.getRouterObjByName([adminotherRouter, ...adminappRouter], to.name);
             if (!curRouterObj) {
                 next({
                     name: 'error-404'
