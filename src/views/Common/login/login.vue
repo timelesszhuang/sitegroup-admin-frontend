@@ -209,17 +209,20 @@
                             this.$store.commit('setUserType', type);
                             if (type === 2) {
                                 // 节点首页
+                                localStorage.typeName = '集群管理员';
                                 this.$router.push({
                                     name: 'node_index'
                                 });
                             } else if (type === 3) {
                                 // 用户首页
                                 // 跳转到选择站点的页面
+                                localStorage.typeName = '站点管理员';
                                 this.$router.push({
                                     name: 'site_select'
                                 });
                             } else if (type === 1) {
                                 // 公司总管理后台账号进入
+                                localStorage.typeName = '系统管理员';
                                 this.$router.push({
                                     name: 'admin_index'
                                 });

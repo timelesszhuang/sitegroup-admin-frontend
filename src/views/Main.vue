@@ -32,26 +32,12 @@
                 </div>
                 <div class="header-avator-con">
                     <site-change v-if="showSiteChange"></site-change>
+                    <node-name v-if="showComeName"></node-name>
                     <full-screen v-model="isFullScreen" @on-change="fullscreenChange"></full-screen>
                     <lock-screen></lock-screen>
                     <message-tip v-model="mesCount"></message-tip>
                     <theme-switch></theme-switch>
-                    <div class="user-dropdown-menu-con">
-                        <Row type="flex" justify="end" align="middle" class="user-dropdown-innercon">
-                            <Dropdown transfer trigger="click" @on-click="handleClickUserDropdown">
-                                <a href="javascript:void(0)">
-                                    <span class="main-user-name">{{userName}}</span>
-                                    <Icon type="arrow-down-b"></Icon>
-                                </a>
-                                <DropdownMenu slot="list">
-                                    <DropdownItem name="ownSpace">个人中心</DropdownItem>
-                                    <!-- 添加公司信息完善相关 -->
-                                    <DropdownItem name="loginout" divided>退出登录</DropdownItem>
-                                </DropdownMenu>
-                            </Dropdown>
-                            <!--<Avatar :src="avatorPath" style="background: #619fe7;margin-left: 10px;"></Avatar>-->
-                        </Row>
-                    </div>
+                    <user-dropdown></user-dropdown>
                 </div>
             </div>
             <div class="tags-con">
@@ -75,9 +61,12 @@
     import lockScreen from './main-components/lockscreen/lockscreen.vue';
     import messageTip from './main-components/message-tip.vue';
     import themeSwitch from './main-components/theme-switch/theme-switch.vue';
+    // 用户下拉相关操作
+    import userDropdown from './main-components/user-dropdown';
     import util from '@/libs/util.js';
     import http from '../libs/http';
     import siteChange from './site/select-site/site-change';
+    import nodeName from './node/node-name/node-name';
 
     export default {
         components: {
@@ -88,7 +77,9 @@
             lockScreen,
             messageTip,
             themeSwitch,
-            siteChange
+            siteChange,
+            userDropdown,
+            nodeName
         },
         data() {
             return {
@@ -97,7 +88,8 @@
                 isFullScreen: false,
                 openedSubmenuArr: this.$store.state.app.openedSubmenuArr,
                 // 只有最小的节点才能操作相关切换站点操作
-                showSiteChange: false
+                showSiteChange: false,
+                showComeName: false
             };
         },
         computed: {
@@ -152,10 +144,14 @@
                 if (parseInt(Cookies.get('type')) === 3) {
                     this.showSiteChange = true;
                 }
+                if (parseInt(Cookies.get('type')) === 2) {
+                    this.showComeName = true;
+                }
                 let messageCount = 3;
                 this.messageCount = messageCount.toString();
                 this.checkTag(this.$route.name);
                 this.$store.commit('setMessageCount', 3);
+                // 获取相关用户的信息
             },
             toggleClick() {
                 this.shrink = !this.shrink;

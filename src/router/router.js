@@ -65,7 +65,7 @@ export const nodeotherRouter = {
     component: Main,
     title: '管理后端',
     children: [
-        {path: 'node', title: {i18n: 'home'}, name: 'node_index', component: () => import('@/views/home/home.vue')},
+        {path: 'node', title: {i18n: 'home'}, name: 'node_index', component: () => import('@/views/node/home/home.vue')},
         {
             path: 'ownspace',
             title: '个人中心',
@@ -466,7 +466,7 @@ export const adminotherRouter = {
     title: '公司管理后台',
     component: Main,
     children: [
-        {path: 'admin', title: {i18n: 'home'}, name: 'admin_index', component: () => import('@/views/home/home.vue')},
+        {path: 'admin', title: {i18n: 'home'}, name: 'admin_index', component: () => import('@/views/admin/home/home.vue')},
         {
             path: 'ownspace',
             title: '个人中心',
@@ -726,7 +726,7 @@ export const siteotherRouter = {
     component: Main,
     title: '网站管理后台',
     children: [
-        {path: 'site', title: {i18n: 'home'}, name: 'site_index', component: () => import('@/views/home/home.vue')},
+        {path: 'site', title: {i18n: 'home'}, name: 'site_index', component: () => import('@/views/site/home/home.vue')},
         {
             path: 'ownspace',
             title: '个人中心',
