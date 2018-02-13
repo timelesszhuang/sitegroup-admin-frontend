@@ -25,8 +25,8 @@
             finalseries: function () {
                 let length = this.color.length;
                 let _this = this;
+                let random = Math.ceil(Math.random() * 100);
                 return this.countArr.map(function (count, index) {
-                    let random = Math.ceil(Math.random() * 100);
                     let colorIndex = (index + random) % length;
                     let color = _this.color[colorIndex];
                     let name = _this.nameArr[index] + '类关键词';
@@ -52,7 +52,7 @@
                 return {
                     tooltip: {
                         trigger: 'item',
-                        formatter: '{a} <br/>{b} : {c} ({d}%)'
+                        formatter: '{a} <br/>{b} : {c}个 ({d}%)'
                     },
                     legend: {
                         orient: 'vertical',

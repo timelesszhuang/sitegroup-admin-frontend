@@ -21,8 +21,8 @@
             finalseries: function () {
                 let length = this.color.length;
                 let _this = this;
+                let random = Math.ceil(Math.random() * 100);
                 return this.series.map(function (data, index) {
-                    let random = Math.ceil(Math.random() * 100);
                     let colorIndex = (index + random) % length;
                     let color = _this.color[colorIndex];
                     data['areaStyle'] = {

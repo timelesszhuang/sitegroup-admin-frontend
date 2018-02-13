@@ -52,7 +52,7 @@
                 count: {
                     article: 0,
                     pv: 0,
-                    shulu: 0,
+                    shoulu: 0,
                     useragent: 0,
                     // 甩单暂时去学校
                     shuaidan: 0
