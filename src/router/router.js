@@ -515,31 +515,31 @@ export const adminotherRouter = {
 }
 // 作为admin Main组件的子页面展示并且在左侧菜单显示的路由写在nodeappRouter里
 export const adminappRouter = [
-  // {
-  //
-  //   path: '/marketing',
-  //   icon: 'ios-navigate',
-  //   name: 'marketing',
-  //   title: '营销计划',
-  //   component: Main,
-  //   children: [
-  //     {
-  //       path: 'marketingmodel',
-  //       icon: 'ios-navigate',
-  //       title: '营销模式',
-  //       name: 'marketingmodel',
-  //       component: () => import('@/views/admin/marketmodel/index.vue')
-  //     },
-  //     {
-  //       path: 'casecenter',
-  //       icon: 'paper-airplane',
-  //       title: '案例中心',
-  //       name: 'casecenter',
-  //       component: () => import('@/views/admin/case/index.vue')
-  //     },
-  //
-  //   ]
-  // },
+  {
+
+    path: '/market',
+    icon: 'ios-navigate',
+    name: 'market',
+    title: '营销计划',
+    component: Main,
+    children: [
+      {
+        path: 'marketmodel',
+        icon: 'ios-navigate',
+        title: '营销模式',
+        name: 'marketmodel',
+        component: () => import('@/views/admin/marketmodel/index.vue')
+      },
+      {
+        path: 'case',
+        icon: 'paper-airplane',
+        title: '案例中心',
+        name: 'case',
+        component: () => import('@/views/admin/case/index.vue')
+      },
+
+    ]
+  },
   {
         path: '/access-test',
         icon: 'lock-combination',
