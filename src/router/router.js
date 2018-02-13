@@ -530,6 +530,7 @@ export const adminappRouter = [
         name: 'marketmodel',
         component: () => import('@/views/admin/marketmodel/index.vue')
       },
+
       {
         path: 'case',
         icon: 'paper-airplane',
