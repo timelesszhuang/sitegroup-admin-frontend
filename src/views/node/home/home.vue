@@ -8,35 +8,17 @@
             <Col :md="24" :lg="8">
             <Row class-name="home-page-row1" :gutter="10">
                 <Col :md="12" :lg="24" :style="{marginBottom: '10px'}">
+                <!--用户登陆之后展现的统计信息-->
                 <userLoginInfo></userLoginInfo>
                 </Col>
                 <Col :md="12" :lg="24" :style="{marginBottom: '10px'}">
                 <Card>
                     <p slot="title" class="card-title">
-                        <Icon type="android-checkbox-outline"></Icon>
-                        待办事项
+                        <Icon type="ios-pulse-strong"></Icon>
+                        关键词分布
                     </p>
-                    <a type="text" slot="extra" @click.prevent="addNewToDoItem">
-                        <Icon type="plus-round"></Icon>
-                    </a>
-                    <Modal
-                            v-model="showAddNewTodo"
-                            title="添加新的待办事项"
-                            @on-ok="addNew"
-                            @on-cancel="cancelAdd">
-                        <Row type="flex" justify="center">
-                            <Input v-model="newToDoItemValue" icon="compose" placeholder="请输入..." style="width: 300px"/>
-                        </Row>
-                        <Row slot="footer">
-                            <Button type="text" @click="cancelAdd">取消</Button>
-                            <Button type="primary" @click="addNew">确定</Button>
-                        </Row>
-                    </Modal>
-                    <div class="to-do-list-con">
-                        <div v-for="(item, index) in toDoList" :key="'todo-item' + (toDoList.length - index)"
-                             class="to-do-item">
-                            <to-do-list-item :content="item.title"></to-do-list-item>
-                        </div>
+                    <div class="data-source-row">
+                        <keyword-pie></keyword-pie>
                     </div>
                 </Card>
                 </Col>
@@ -45,21 +27,13 @@
             <Col :md="24" :lg="16">
             <fourStaticsInfo></fourStaticsInfo>
             <Row>
-                <Card :padding="0">
+                <Card>
                     <p slot="title" class="card-title">
-                        <Icon type="map"></Icon>
-                        今日服务调用地理分布
+                        <Icon type="ios-shuffle-strong"></Icon>
+                        爬虫爬取趋势
                     </p>
-                    <div class="map-con">
-                        <Col span="10">
-                        <map-data-table :cityData="cityData" height="281"
-                                        :style-obj="{margin: '12px 0 0 11px'}"></map-data-table>
-                        </Col>
-                        <Col span="14" class="map-incon">
-                        <Row type="flex" justify="center" align="middle">
-                            <home-map :city-data="cityData"></home-map>
-                        </Row>
-                        </Col>
+                    <div class="line-chart-con">
+                        <spider-trend></spider-trend>
                     </div>
                 </Card>
             </Row>
@@ -70,10 +44,10 @@
             <Card>
                 <p slot="title" class="card-title">
                     <Icon type="android-map"></Icon>
-                    上周每日来访量统计
+                    浏览量趋势
                 </p>
                 <div class="data-source-row">
-                    <visite-volume></visite-volume>
+                <pageview-trend></pageview-trend>
                 </div>
             </Card>
             </Col>
@@ -81,10 +55,9 @@
             <Card>
                 <p slot="title" class="card-title">
                     <Icon type="ios-pulse-strong"></Icon>
-                    数据来源统计
+                    营销模式
                 </p>
                 <div class="data-source-row">
-                    <data-source-pie></data-source-pie>
                 </div>
             </Card>
             </Col>
@@ -92,36 +65,23 @@
             <Card>
                 <p slot="title" class="card-title">
                     <Icon type="android-wifi"></Icon>
-                    各类用户服务调用变化统计
+                    案例中心
                 </p>
                 <div class="data-source-row">
-                    <user-flow></user-flow>
                 </div>
             </Card>
             </Col>
-        </Row>
-        <Row class="margin-top-10">
-            <Card>
-                <p slot="title" class="card-title">
-                    <Icon type="ios-shuffle-strong"></Icon>
-                    上周每日服务调用量(万)
-                </p>
-                <div class="line-chart-con">
-                    <service-requests></service-requests>
-                </div>
-            </Card>
         </Row>
     </div>
 </template>
 
 <script>
     import cityData from './map-data/get-city-value.js';
-    import homeMap from './components/map.vue';
-    import dataSourcePie from './components/dataSourcePie.vue';
+    import keywordPie from '../../Common/home_info/keyword-pie';
     import visiteVolume from './components/visiteVolume.vue';
-    import serviceRequests from './components/serviceRequests.vue';
+    import spiderTrend from '../../Common/home_info/spider-trend';
+    import pageviewTrend from '../../Common/home_info/pageview-trend';
     import userFlow from './components/userFlow.vue';
-    import countUp from './components/countUp.vue';
     import mapDataTable from './components/mapDataTable.vue';
     import toDoListItem from './components/toDoListItem.vue';
     import userLoginInfo from '../../Common/home_info/user-login-info';
@@ -130,17 +90,17 @@
     export default {
         name: 'home',
         components: {
-            homeMap,
-            dataSourcePie,
+            keywordPie,
             visiteVolume,
-            serviceRequests,
+            spiderTrend,
             userFlow,
             mapDataTable,
             toDoListItem,
             userLoginInfo,
-            fourStaticsInfo
+            fourStaticsInfo,
+            pageviewTrend
         },
-        data () {
+        data() {
             return {
                 toDoList: [
                     {
@@ -165,10 +125,10 @@
             };
         },
         methods: {
-            addNewToDoItem () {
+            addNewToDoItem() {
                 this.showAddNewTodo = true;
             },
-            addNew () {
+            addNew() {
                 if (this.newToDoItemValue.length !== 0) {
                     this.toDoList.unshift({
                         title: this.newToDoItemValue
@@ -181,7 +141,7 @@
                     this.$Message.error('请输入待办事项内容');
                 }
             },
-            cancelAdd () {
+            cancelAdd() {
                 this.showAddNewTodo = false;
                 this.newToDoItemValue = '';
             }

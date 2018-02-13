@@ -1,11 +1,7 @@
 <template>
+    <!--用户登陆信息-->
     <Card>
         <Row type="flex" class="user-infor">
-            <!--<Col span="8">-->
-            <!--<Row class-name="made-child-con-middle" type="flex" align="middle">-->
-                <!--<img class="avator-img" :src="avatorPath"/>-->
-            <!--</Row>-->
-            <!--</Col>-->
             <Col span="16" style="padding-left:6px;">
             <Row class-name="made-child-con-middle" type="flex" align="middle">
                 <div>

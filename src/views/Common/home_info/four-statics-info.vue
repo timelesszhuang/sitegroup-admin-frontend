@@ -1,5 +1,5 @@
 <template>
-    <!--四个统计信息-->
+    <!-- node 跟 user四个统计信息-->
     <Row :gutter="5">
         <Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
         <infor-card

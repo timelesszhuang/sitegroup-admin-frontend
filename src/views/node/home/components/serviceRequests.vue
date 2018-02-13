@@ -7,6 +7,7 @@ import echarts from 'echarts';
 export default {
     name: 'serviceRequests',
     mounted () {
+        // 加载数据库中数据
         const option = {
             tooltip: {
                 trigger: 'axis',
@@ -92,7 +93,6 @@ export default {
         };
         const serviceRequestCharts = echarts.init(document.getElementById('service_request_con'));
         serviceRequestCharts.setOption(option);
-
         window.addEventListener('resize', function () {
             serviceRequestCharts.resize();
         });
