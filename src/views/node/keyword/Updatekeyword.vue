@@ -1,7 +1,7 @@
 <template>
   <div>
     <Modal
-      v-model="modal">
+      v-model="modal" :mask-closable="false">
       <p slot="header" style="color:#f60;">
         <Icon type="information-circled"></Icon>
         <span>修改关键词</span>

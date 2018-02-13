@@ -1,4 +1,5 @@
 <template>
+    <card>
     <div>
         <Row>
             <Col span="24" style="padding: 10px;">
@@ -18,6 +19,7 @@
         :props="props"
         show-checkbox
         check-strictly
+        :expand-on-click-node="false"
         :load="loadNode"
         lazy
         node-key="id"
@@ -38,6 +40,7 @@
         <CkeywordAdd ref="ckeywordadd"></CkeywordAdd>
         <Updatekeyword ref="updatekeyword" :datas="form"></Updatekeyword>
     </div>
+    </card>
 </template>
 
 
@@ -74,7 +77,6 @@
           };
       },
       methods: {
-
           renderContent (h, { node, data, store }) {
               if (node.data.tag === 'C') {
                   return (
@@ -181,6 +183,9 @@
                       _this.apiPost('delete_keywords', data).then((res) => {
                           _this.handleAjaxResponse(res, (data, msg) => {
                               // 删除数据库中信息
+                              setTimeout(function () {
+                                  location.reload();
+                              }, 1);
                               _this.$Message.success(msg);
                           }, (data, msg) => {
                               _this.$Message.error(msg);
@@ -226,7 +231,7 @@
           addAkeyword (data) {
               // 添加A 类 关键词
               data.forEach((item) => {
-                  const newChild = {id: item.id, label: item.label, children: [] };
+                  const newChild = { id: item.id, label: item.label, children: [] };
                   // console.log(this.data);
                   this.data.push(newChild);
               });
@@ -236,14 +241,14 @@
           },
           addBkeyword () {
               let node = this.$refs.tree.getCheckedNodes();
-              if (node.length == 1) {
-                  if (node[0].tag == 'C') {
+              if (node.length === 1) {
+                  if (node[0].tag === 'C') {
                       this.$Message.info('不能选择C类关键词作为上级节点');
                       return;
                   }
                   this.checkedNodeId = node[0].id;
                   this.$refs.bkeywordadd.modal = true;
-              } else if (node.length == 0) {
+              } else if (node.length === 0) {
                   this.$Message.info('请至少选择一个关键词');
               } else {
                   this.$Message.info('只能选择一个节点作为上级关键词');

@@ -7,7 +7,7 @@
   <div>
 
     <Modal
-      v-model="modal">
+      v-model="modal" :mask-closable="false">
       <p slot="header" style="color:#f60;">
         <Icon type="information-circled"></Icon>
         <span>添加B/C类关键词</span>
@@ -58,9 +58,10 @@
                           this.handleAjaxResponse(res, (data, msg) => {
                               this.modal = false;
                               this.$emit('getkeybc', data);
+                              this.$refs.bkeywordadd.resetFields();
                               this.$Message.success(msg);
                               this.modal_loading = false;
-                              this.$refs.bkeywordadd.resetFields();
+
 
                           }, (data, msg) => {
                               this.modal_loading = false;
