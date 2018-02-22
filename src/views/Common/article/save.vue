@@ -62,9 +62,7 @@
                                     素材库图片
                                 </Button>
                             </Form-item>
-
                             </Col>
-
                             <Col span="12">
                             <div v-if="imgshow" style="margin:0 auto;max-width: 200px;margin-right: 300px">
                                 <img style="max-width: 200px;" :src=this.form.thumbnails alt=""></div>
