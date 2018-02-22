@@ -29,6 +29,7 @@ export const router = new VueRouter(RouterConfig);
 router.beforeEach((to, from, next) => {
     if (to.name === 'error-404' || to.name === 'error-403' || to.name === 'error-500') {
         next();
+        return;
     }
     // 需要处理下自动登陆的情况
     // iview 相关菜单加载时间操作
@@ -38,7 +39,12 @@ router.beforeEach((to, from, next) => {
     // 每次页面路由的时候执行
     let userType = Cookies.get('type');
     if (userType === '1') { // 判断当前是否是锁定状态
-        // 系统管理员调用部分
+        // 系统管理员调用部分 不能跳转倒其他管理员的部分
+        if (to.path === '/node' || to.path === '/site') {
+            next({
+                name: 'admin_index'
+            });
+        }
         if (!Cookies.get('user_id') && to.name !== 'login') { // 判断是否已经登录且前往的页面不是登录页
             next({
                 name: 'login'
@@ -70,6 +76,12 @@ router.beforeEach((to, from, next) => {
             }
         }
     } else if (userType === '2') {
+        // admin用户 不能跳转到其他的管理后台首页
+        if (to.path === '/admin' || to.path === '/site') {
+            next({
+                name: 'node_index'
+            });
+        }
         if (!Cookies.get('user_id') && to.name !== 'login') { // 判断是否已经登录且前往的页面不是登录页
             next({
                 name: 'login'
@@ -101,10 +113,12 @@ router.beforeEach((to, from, next) => {
             }
         }
     } else if (userType === '3') {
-        console.log(to.name);
-        console.log(Cookies.get('siteId'));
-        console.log(Cookies.get('user_id'));
-        // site用户
+        // site用户 不能跳转到其他的管理后台首页
+        if (to.path === '/admin' || to.path === '/node') {
+            next({
+                name: 'site_index'
+            });
+        }
         if (!Cookies.get('siteId') && Cookies.get('user_id')) {
             // 已经登陆过了 但是没有选择管理的站点
             if (to.name !== 'site_select') {
