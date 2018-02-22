@@ -65,7 +65,12 @@ export const nodeotherRouter = {
     component: Main,
     title: '管理后端',
     children: [
-        {path: 'node', title: {i18n: 'home'}, name: 'node_index', component: () => import('@/views/node/home/home.vue')},
+        {
+            path: 'node',
+            title: {i18n: 'home'},
+            name: 'node_index',
+            component: () => import('@/views/node/home/home.vue')
+        },
         {
             path: 'ownspace',
             title: '个人中心',
@@ -125,7 +130,7 @@ export const nodeappRouter = [
                 name: 'imglist',
                 component: () => import('@/views/node/imglist/index.vue')
             },
-          {
+            {
                 path: 'contentget',
                 title: '内容管理',
                 icon: 'ionic',
@@ -157,7 +162,7 @@ export const nodeappRouter = [
                 title: '新闻管理',
                 name: 'hotnews',
                 component: () => import('@/views/Common/news/tab.vue')
-            },   {
+            }, {
                 path: 'wechat',
                 icon: 'edit',
                 title: '公众号',
@@ -167,7 +172,7 @@ export const nodeappRouter = [
 
         ]
     },
-  {
+    {
         path: '/exclusive',
         icon: 'soup-can',
         name: 'exclusive',
@@ -181,7 +186,7 @@ export const nodeappRouter = [
                 name: 'exclusivearticle',
                 component: () => import('@/views/node/publicarticle/index.vue')
             },
-          {
+            {
                 path: 'exclusiveimg',
                 icon: 'image',
                 title: '专属图片',
@@ -191,7 +196,7 @@ export const nodeappRouter = [
 
         ]
     },
-  {
+    {
         path: '/keyword',
         icon: 'ios-navigate',
         name: 'keyword',
@@ -205,7 +210,7 @@ export const nodeappRouter = [
                 name: 'keywordmanage',
                 component: () => import('@/views/node/keyword/keyword.vue')
             },
-          {
+            {
                 path: 'exclusiveimg',
                 icon: 'image',
                 title: '专属图片',
@@ -215,7 +220,7 @@ export const nodeappRouter = [
 
         ]
     },
-  {
+    {
 
         path: '/marketing',
         icon: 'ios-navigate',
@@ -230,7 +235,7 @@ export const nodeappRouter = [
                 name: 'marketingmodel',
                 component: () => import('@/views/node/marketingmodel/index.vue')
             },
-          {
+            {
                 path: 'casecenter',
                 icon: 'paper-airplane',
                 title: '案例中心',
@@ -491,7 +496,12 @@ export const adminotherRouter = {
     title: '公司管理后台',
     component: Main,
     children: [
-        {path: 'admin', title: {i18n: 'home'}, name: 'admin_index', component: () => import('@/views/admin/home/home.vue')},
+        {
+            path: 'admin',
+            title: {i18n: 'home'},
+            name: 'admin_index',
+            component: () => import('@/views/admin/home/home.vue')
+        },
         {
             path: 'ownspace',
             title: '个人中心',
@@ -515,46 +525,59 @@ export const adminotherRouter = {
 }
 // 作为admin Main组件的子页面展示并且在左侧菜单显示的路由写在nodeappRouter里
 export const adminappRouter = [
-  {
+    {
 
-    path: '/market',
-    icon: 'ios-navigate',
-    name: 'market',
-    title: '营销计划',
-    component: Main,
-    children: [
-      {
-        path: 'marketmodel',
+        path: '/market',
         icon: 'ios-navigate',
-        title: '营销模式',
-        name: 'marketmodel',
-        component: () => import('@/views/admin/marketmodel/index.vue')
-      },
+        name: 'market',
+        title: '营销计划',
+        component: Main,
+        children: [
+            {
+                path: 'marketmodel',
+                icon: 'ios-navigate',
+                title: '营销模式',
+                name: 'marketmodel',
+                component: () => import('@/views/admin/marketmodel/index.vue')
+            },
 
-      {
-        path: 'case',
-        icon: 'paper-airplane',
-        title: '案例中心',
-        name: 'case',
-        component: () => import('@/views/admin/case/index.vue')
-      },
+            {
+                path: 'case',
+                icon: 'paper-airplane',
+                title: '案例中心',
+                name: 'case',
+                component: () => import('@/views/admin/case/index.vue')
+            },
 
-    ]
-  },
-  {
+        ]
+    },
+    {
         path: '/access-test',
         icon: 'lock-combination',
         title: '权限测试页',
         name: 'accesstest',
-        access: 0,
         component: Main,
         children: [
             {
                 path: 'index',
                 title: '权限测试页',
                 name: 'accesstest_index',
-                access: 0,
                 component: () => import('@/views/access/access-test.vue')
+            }
+        ]
+    },
+    {
+        path: '/message-send',
+        icon: 'paper-airplane',
+        title: '信息发布',
+        name: 'messagesend',
+        component: Main,
+        children: [
+            {
+                path: 'push',
+                title: '系统推送',
+                name: 'messagesend-push',
+                component: () => import('@/views/message/index.vue')
             }
         ]
     },
@@ -573,72 +596,72 @@ export const adminappRouter = [
             }
         ]
     },
-  {
-    path: '/component',
-    icon: 'social-buffer',
-    name: 'component',
-    title: '组件',
-    component: Main,
-    children: [
-      {
-        path: 'text-editor',
-        icon: 'compose',
-        name: 'text-editor',
-        title: '富文本编辑器',
-        component: () => import('@/views/my-components/text-editor/text-editor.vue')
-      },
-      {
-        path: 'md-editor',
-        icon: 'pound',
-        name: 'md-editor',
-        title: 'Markdown编辑器',
-        component: () => import('@/views/my-components/markdown-editor/markdown-editor.vue')
-      },
-      {
-        path: 'image-editor',
-        icon: 'crop',
-        name: 'image-editor',
-        title: '图片预览编辑',
-        component: () => import('@/views/my-components/image-editor/image-editor.vue')
-      },
-      {
-        path: 'draggable-list',
-        icon: 'arrow-move',
-        name: 'draggable-list',
-        title: '可拖拽列表',
-        component: () => import('@/views/my-components/draggable-list/draggable-list.vue')
-      },
-      {
-        path: 'area-linkage',
-        icon: 'ios-more',
-        name: 'area-linkage',
-        title: '城市级联',
-        component: () => import('@/views/my-components/area-linkage/area-linkage.vue')
-      },
-      {
-        path: 'file-upload',
-        icon: 'android-upload',
-        name: 'file-upload',
-        title: '文件上传',
-        component: () => import('@/views/my-components/file-upload/file-upload.vue')
-      },
-      {
-        path: 'count-to',
-        icon: 'arrow-graph-up-right',
-        name: 'count-to',
-        title: '数字渐变',
-        // component: () => import('@/views/my-components/count-to/count-to.vue')
-        component: () => import('@/views/my-components/count-to/count-to.vue')
-      },
-      {
-        path: 'split-pane-page',
-        icon: 'ios-pause',
-        name: 'split-pane-page',
-        title: 'split-pane',
-        component: () => import('@/views/my-components/split-pane/split-pane-page.vue')
-      }
-    ]
-  },
+    {
+        path: '/component',
+        icon: 'social-buffer',
+        name: 'component',
+        title: '组件',
+        component: Main,
+        children: [
+            {
+                path: 'text-editor',
+                icon: 'compose',
+                name: 'text-editor',
+                title: '富文本编辑器',
+                component: () => import('@/views/my-components/text-editor/text-editor.vue')
+            },
+            {
+                path: 'md-editor',
+                icon: 'pound',
+                name: 'md-editor',
+                title: 'Markdown编辑器',
+                component: () => import('@/views/my-components/markdown-editor/markdown-editor.vue')
+            },
+            {
+                path: 'image-editor',
+                icon: 'crop',
+                name: 'image-editor',
+                title: '图片预览编辑',
+                component: () => import('@/views/my-components/image-editor/image-editor.vue')
+            },
+            {
+                path: 'draggable-list',
+                icon: 'arrow-move',
+                name: 'draggable-list',
+                title: '可拖拽列表',
+                component: () => import('@/views/my-components/draggable-list/draggable-list.vue')
+            },
+            {
+                path: 'area-linkage',
+                icon: 'ios-more',
+                name: 'area-linkage',
+                title: '城市级联',
+                component: () => import('@/views/my-components/area-linkage/area-linkage.vue')
+            },
+            {
+                path: 'file-upload',
+                icon: 'android-upload',
+                name: 'file-upload',
+                title: '文件上传',
+                component: () => import('@/views/my-components/file-upload/file-upload.vue')
+            },
+            {
+                path: 'count-to',
+                icon: 'arrow-graph-up-right',
+                name: 'count-to',
+                title: '数字渐变',
+                // component: () => import('@/views/my-components/count-to/count-to.vue')
+                component: () => import('@/views/my-components/count-to/count-to.vue')
+            },
+            {
+                path: 'split-pane-page',
+                icon: 'ios-pause',
+                name: 'split-pane-page',
+                title: 'split-pane',
+                component: () => import('@/views/my-components/split-pane/split-pane-page.vue')
+            }
+        ]
+    },
     {
         path: '/form',
         icon: 'android-checkbox',
@@ -767,7 +790,12 @@ export const siteotherRouter = {
     component: Main,
     title: '网站管理后台',
     children: [
-        {path: 'site', title: {i18n: 'home'}, name: 'site_index', component: () => import('@/views/site/home/home.vue')},
+        {
+            path: 'site',
+            title: {i18n: 'home'},
+            name: 'site_index',
+            component: () => import('@/views/site/home/home.vue')
+        },
         {
             path: 'ownspace',
             title: '个人中心',
@@ -1076,7 +1104,7 @@ export const noderouters = [
     page404
 ]
 
-//公司总　管理员端的相关的路由信息
+//公司总管理员端的相关的路由信息
 export const adminrouters = [
     loginRouter,
     adminotherRouter,
@@ -1089,7 +1117,7 @@ export const adminrouters = [
     page404
 ]
 
-//公司总　管理员端的相关的路由信息
+//小站点的相关的路由信息
 export const siterouters = [
     loginRouter,
     siteotherRouter,

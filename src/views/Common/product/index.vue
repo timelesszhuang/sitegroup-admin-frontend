@@ -3,7 +3,7 @@
         <card>
             <div class="top">
                 分类名:
-                <Input v-model="name" placeholder="产品名" style="width:300px;"></Input>
+                <Input v-model="name" placeholder="产品名" style="width:300px;"/>
                 <Select v-model="type_id" style="width:200px;position: relative;z-index: 10000;"
                         label-in-value filterable clearable placeholder="根据分类查询">
                     <Option-group v-for="(item,index) in this.$store.state.commondata.productType" :label="index"
