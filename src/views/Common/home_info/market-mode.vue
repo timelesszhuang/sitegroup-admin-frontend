@@ -27,20 +27,20 @@
 
     export default {
         name: 'marketmode',
-        data() {
+        data () {
             return {
                 marketMode: []
             };
         },
         methods: {
-            more() {
+            more () {
                 // 需要执行跳转到营销模式页
                 alert('dsada');
             },
-            showMode(id) {
+            showMode (id) {
                 alert(id);
             },
-            getData() {
+            getData () {
                 this.apiGet('home_marketmode').then((data) => {
                     this.handleAjaxResponse(data, (data, msg) => {
                         this.marketMode = data;
