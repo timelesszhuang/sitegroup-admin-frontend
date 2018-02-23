@@ -22,7 +22,7 @@
     </div>
 </template>
 <script type="text/ecmascript-6">
-    import http from '../../libs/http';
+    import http from '../../../libs/http';
     import systempushadd from './add.vue';
     import systempushsave from './save.vue';
 
