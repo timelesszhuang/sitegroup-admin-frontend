@@ -753,7 +753,7 @@ export const adminappRouter = [
 // 作为Main组件的子页面展示但是不在左侧菜单显示的路由写在otherRouter里
 export const siteotherRouter = {
     path: '/',
-    name: 'otherRouter',
+    name: 'siteotherRouter',
     redirect: '/site',
     component: Main,
     title: '网站管理后台',

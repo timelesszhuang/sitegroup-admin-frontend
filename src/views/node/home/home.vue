@@ -1,5 +1,5 @@
 <style lang="less">
-    @import "./home.less";
+    @import "../../Common/home_info/home.less";
     @import "../../../styles/common.less";
 </style>
 <template>
@@ -43,33 +43,19 @@
             <Col :md="24" :lg="8" :style="{marginBottom: '10px'}">
             <Card>
                 <p slot="title" class="card-title">
-                    <Icon type="android-map"></Icon>
+                    <Icon type="ios-pulse-strong"></Icon>
                     浏览量趋势
                 </p>
                 <div class="data-source-row">
-                <pageview-trend></pageview-trend>
+                    <pageview-trend></pageview-trend>
                 </div>
             </Card>
             </Col>
             <Col :md="24" :lg="8" :style="{marginBottom: '10px'}">
-            <Card>
-                <p slot="title" class="card-title">
-                    <Icon type="ios-pulse-strong"></Icon>
-                    营销模式
-                </p>
-                <div class="data-source-row">
-                </div>
-            </Card>
+            <marketMode></marketMode>
             </Col>
             <Col :md="24" :lg="8">
-            <Card>
-                <p slot="title" class="card-title">
-                    <Icon type="android-wifi"></Icon>
-                    案例中心
-                </p>
-                <div class="data-source-row">
-                </div>
-            </Card>
+            <caseCenter></caseCenter>
             </Col>
         </Row>
     </div>
@@ -86,6 +72,8 @@
     import toDoListItem from './components/toDoListItem.vue';
     import userLoginInfo from '../../Common/home_info/user-login-info';
     import fourStaticsInfo from '../../Common/home_info/four-statics-info';
+    import marketMode from '../../Common/home_info/market-mode';
+    import caseCenter from '../../Common/home_info/case-center';
 
     export default {
         name: 'home',
@@ -98,7 +86,9 @@
             toDoListItem,
             userLoginInfo,
             fourStaticsInfo,
-            pageviewTrend
+            pageviewTrend,
+            marketMode,
+            caseCenter
         },
         data() {
             return {

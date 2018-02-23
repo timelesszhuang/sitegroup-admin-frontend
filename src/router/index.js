@@ -113,6 +113,7 @@ router.beforeEach((to, from, next) => {
             }
         }
     } else if (userType === '3') {
+        // 暂时有个问题不能完成更新
         // site用户 不能跳转到其他的管理后台首页
         if (to.path === '/admin' || to.path === '/node') {
             next({
