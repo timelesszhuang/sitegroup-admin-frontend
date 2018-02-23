@@ -263,23 +263,6 @@ export const nodeappRouter = [
         ]
     },
     {
-        path: '/access-test',
-        icon: 'lock-combination',
-        title: '权限测试页',
-        name: 'accesstest',
-        access: 1,
-        component: Main,
-        children: [
-            {
-                path: 'index',
-                title: '权限测试页',
-                name: 'accesstest_index',
-                access: 1,
-                component: () => import('@/views/access/access-test.vue')
-            }
-        ]
-    },
-    {
         path: '/international',
         icon: 'earth',
         title: {i18n: 'international'},
@@ -549,21 +532,6 @@ export const adminappRouter = [
                 component: () => import('@/views/admin/case/index.vue')
             },
 
-        ]
-    },
-    {
-        path: '/access-test',
-        icon: 'lock-combination',
-        title: '权限测试页',
-        name: 'accesstest',
-        component: Main,
-        children: [
-            {
-                path: 'index',
-                title: '权限测试页',
-                name: 'accesstest_index',
-                component: () => import('@/views/access/access-test.vue')
-            }
         ]
     },
     {
@@ -849,23 +817,6 @@ export const siteappRouter = [
                 title: "问答管理",
                 name: 'sitequestion',
                 component: () => import('@/views/Common/question/index.vue')
-            }
-        ]
-    },
-    {
-        path: '/access-test',
-        icon: 'lock-combination',
-        title: '权限测试页',
-        name: 'accesstest',
-        access: 0,
-        component: Main,
-        children: [
-            {
-                path: 'index',
-                title: '权限测试页',
-                name: 'accesstest_index',
-                access: 0,
-                component: () => import('@/views/access/access-test.vue')
             }
         ]
     },

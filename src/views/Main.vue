@@ -147,10 +147,7 @@
                 if (parseInt(Cookies.get('type')) === 2) {
                     this.showComeName = true;
                 }
-                let messageCount = 3;
-                this.messageCount = messageCount.toString();
                 this.checkTag(this.$route.name);
-                this.$store.commit('setMessageCount', 3);
                 // 获取相关用户的信息
             },
             toggleClick() {
