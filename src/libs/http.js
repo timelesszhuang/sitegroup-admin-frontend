@@ -95,12 +95,12 @@ const ajaxMethods = {
                 }
             } else if (res.status === 'noauth') {
                 this.$Notice.warning({
-                    title: res.msg === '' ? '操作异常，请售后再试' : res.msg,
+                    title: res.msg === '' ? '操作异常，请稍后再试' : res.msg,
                     desc: res.detail === undefined ? '' : res.detail
                 });
             } else {
                 this.$Notice.warning({
-                    title: res.msg === '' ? '返回值状态异常，请售后再试' : res.msg
+                    title: res.msg === '' ? '返回值状态异常，请稍后再试' : res.msg
                 });
             }
         },
