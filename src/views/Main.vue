@@ -35,7 +35,7 @@
                     <node-name v-if="showComeName"></node-name>
                     <full-screen v-model="isFullScreen" @on-change="fullscreenChange"></full-screen>
                     <lock-screen></lock-screen>
-                    <message-tip v-model="mesCount"></message-tip>
+                    <message-tip v-if="showNodeMessage" v-model="mesCount"></message-tip>
                     <theme-switch></theme-switch>
                     <user-dropdown></user-dropdown>
                 </div>
@@ -89,6 +89,7 @@
                 openedSubmenuArr: this.$store.state.app.openedSubmenuArr,
                 // 只有最小的节点才能操作相关切换站点操作
                 showSiteChange: false,
+                showNodeMessage: false,
                 showComeName: false
             };
         },
@@ -146,6 +147,7 @@
                 }
                 if (parseInt(Cookies.get('type')) === 2) {
                     this.showComeName = true;
+                    this.showNodeMessage = true;
                 }
                 this.checkTag(this.$route.name);
                 // 获取相关用户的信息

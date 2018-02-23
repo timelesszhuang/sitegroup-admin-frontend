@@ -15,7 +15,7 @@
     export default {
         mixins: [http],
         name: 'messageTip',
-        data () {
+        data() {
             return {
                 value: 0
             };
@@ -26,11 +26,9 @@
         },
         methods: {
             init: function () {
-                /* TODO 修改接口 */
-                this.apiGet('system_notice/').then((res) => {
+                this.apiGet('unreadnum').then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
-                        /* TODO 修改接口调用成功后的处理事件 */
-                        this.value = 10;
+                        this.value = data;
                     }, (data, msg) => {
                         this.$Message.error(msg);
                     });
@@ -39,7 +37,7 @@
                     this.$Message.error('网络异常，请稍后重试。');
                 });
             },
-            showMessage () {
+            showMessage() {
                 util.openNewPage(this, 'message_index');
                 this.$router.push({
                     name: 'message_index'
