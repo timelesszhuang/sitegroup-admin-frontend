@@ -282,10 +282,10 @@
                 // you can write ajax request here to get message content
                 let editid = index;
                 this.mes.content = '';
-                this.apiGet('system_notice/' + editid).then((res) => {
+                this.apiGet('readError/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.editinfo = data;
-                        this.mes.content = data.content;
+                        this.mes.content = data.msg;
                     }, (data, msg) => {
                         this.$Message.error(msg);
                     });
