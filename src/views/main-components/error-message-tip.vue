@@ -2,7 +2,7 @@
     <div @click="showMessage" class="message-con">
         <Tooltip :content="value > 0 ? '有' + value + '条未读消息' : '无未读消息'" placement="bottom">
             <Badge :count="value" dot>
-                <Icon type="ios-bell" :size="22"></Icon>
+                <Icon type="android-warning" :size="22"></Icon>
             </Badge>
         </Tooltip>
     </div>
@@ -14,7 +14,7 @@
 
     export default {
         mixins: [http],
-        name: 'messageTip',
+        name: 'errorMessageTip',
         data() {
             return {
                 value: 0
@@ -26,7 +26,7 @@
         },
         methods: {
             init: function () {
-                this.apiGet('unreadnum').then((res) => {
+                this.apiGet('getErrorStatus').then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.value = data;
                     }, (data, msg) => {
@@ -38,9 +38,9 @@
                 });
             },
             showMessage() {
-                util.openNewPage(this, 'message');
+                util.openNewPage(this, 'error-message');
                 this.$router.push({
-                    name: 'message'
+                    name: 'error-message'
                 });
             }
         }
