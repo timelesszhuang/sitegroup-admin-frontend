@@ -118,9 +118,6 @@ const app = {
             if (state.openedSubmenuArr.indexOf(name) > -1) {
                 hasThisName = true;
             }
-            // console.log(state.openedSubmenuArr);
-            // console.log(hasThisName);
-            // console.log(isEmpty);
             if (!hasThisName && !isEmpty) {
                 state.openedSubmenuArr.push(name);
             }

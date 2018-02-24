@@ -28,12 +28,12 @@
     </div>
 </template>
 <script>
-    import http from "../../../libs/http";
+    import http from '../../../libs/http';
     import Useradd from './useradd.vue';
     import Useredit from './useredit.vue';
 
     export default {
-        data() {
+        data () {
             return {
                 self: this,
                 border: true,
@@ -46,18 +46,18 @@
                 name: '',
                 userlist: [],
                 usertype: 'all',
-                edit_id: 0,
-            }
+                edit_id: 0
+            };
         },
         components: {Useradd, Useredit},
-        created() {
+        created () {
             this.getData();
         },
         methods: {
-            //获取数据
-            getData() {
+            // 获取数据
+            getData () {
                 let usertype = '';
-                if (this.usertype != 'all') {
+                if (this.usertype !== 'all') {
                     usertype = this.usertype;
                 }
                 let data = {
@@ -70,57 +70,38 @@
                 };
                 this.apiGet('User', data).then((data) => {
                     this.handleAjaxResponse(data, (data, msg) => {
-                        this.userlist = data.rows
+                        this.userlist = data.rows;
                         this.total = data.total;
                     }, (data, msg) => {
                         this.$Message.error(msg);
-                    })
+                    });
                 }, (data) => {
                     this.$Message.error('网络异常，请稍后重试');
-                })
+                });
             },
-            queryData() {
+            queryData () {
                 this.getData();
             },
-            changePage(page) {
+            changePage (page) {
                 this.current = page;
                 this.getData();
             },
-            changePageSize(pagesize) {
-                this.pagesize = pagesize
-                this.getData()
+            changePageSize (pagesize) {
+                this.pagesize = pagesize;
+                this.getData();
             },
-            add() {
-                this.$refs.add.modal = true
+            add () {
+                this.$refs.add.modal = true;
             },
-            edit(index) {
-                //　需要删除确认
-                //　获取资源信息
+            edit (index) {
                 let editid = this.userlist[index].id;
                 this.$refs.edit.init(editid);
-                // this.modal = false;
                 this.$refs.edit.modal = true;
-                // this.apiGet('user/' + editid).then((res) => {
-                //   this.handleAjaxResponse(res, (data, msg) => {
-                //     data.pwd = '';
-                //     data.pwd2 = '';
-                //     delete  data.create_time;
-                //     delete  data.update_time;
-                //     this.editinfo = data
-                //     this.modal = false;
-                //     this.$refs.edit.modal = true
-                //   }, (data, msg) => {
-                //     this.$Message.error(msg);
-                //   })
-                // }, (res) => {
-                //   //处理错误信息
-                //   this.$Message.error('网络异常，请稍后重试。');
-                // })
             },
-            remove(index) {
-                //需要删除确认
-                let id = this.userlist[index].id
-                let _this = this
+            remove (index) {
+                // 需要删除确认
+                let id = this.userlist[index].id;
+                let _this = this;
                 this.$Modal.confirm({
                     title: '确认删除',
                     content: '您确定删除该记录?',
@@ -129,40 +110,39 @@
                     onOk: (index) => {
                         _this.apiDelete('user/', id).then((res) => {
                             _this.handleAjaxResponse(res, (data, msg) => {
-                                _this.getData()
+                                _this.getData();
                                 _this.$Message.success(msg);
                             }, (data, msg) => {
                                 _this.$Message.error(msg);
-                            })
+                            });
                         }, (res) => {
-                            //处理错误信息
+                            // 处理错误信息
                             _this.$Message.error('网络异常，请稍后重试');
-                        })
+                        });
                     },
                     onCancel: () => {
-                        return false
+                        return false;
                     }
-                })
-            },
-        }
-        ,
+                });
+            }
+        },
         computed: {
-            tableColumns3() {
-                let _this = this
+            tableColumns3 () {
+                let _this = this;
                 let columns = [];
                 if (this.showCheckbox) {
                     columns.push({
                         type: 'selection',
                         width: 60,
                         align: 'center'
-                    })
+                    });
                 }
                 if (this.showIndex) {
                     columns.push({
                         type: 'index',
                         width: 60,
                         align: 'center'
-                    })
+                    });
                 }
                 columns.push({
                     title: '登录名',
@@ -188,42 +168,42 @@
                         }
                     ],
                     filterMultiple: false,
-                    filterMethod(value, row) {
+                    filterMethod (value, row) {
                         if (value === 1) {
-                            return row.type == 1;
+                            return parseInt(row.type) === 1;
                         } else if (value === 2) {
-                            return row.type == 2;
+                            return parseInt(row.type) === 2;
                         }
                     }
                 });
                 columns.push(
                     {
                         title: '联系人',
-                        key: 'contacts',
+                        key: 'contacts'
                     }
                 );
                 columns.push(
                     {
                         title: '手机号码',
-                        key: 'mobile',
+                        key: 'mobile'
                     }
                 );
                 columns.push(
                     {
                         title: '固话',
-                        key: 'tel',
+                        key: 'tel'
                     }
                 );
                 columns.push(
                     {
                         title: '微信号',
-                        key: 'wechat',
+                        key: 'wechat'
                     }
                 );
                 columns.push(
                     {
                         title: '邮箱',
-                        key: 'email',
+                        key: 'email'
                     }
                 );
                 columns.push({
@@ -237,7 +217,7 @@
                         width: 150,
                         align: 'center',
                         fixed: 'right',
-                        render(h, params) {
+                        render (h, params) {
                             return h('div', [
                                 h('Button', {
                                     props: {
@@ -251,7 +231,7 @@
                                     },
                                     on: {
                                         click: function () {
-                                            _this.edit(params.index)
+                                            _this.edit(params.index);
                                         }
                                     }
                                 }, '修改'),
@@ -264,18 +244,17 @@
                                     },
                                     on: {
                                         click: function () {
-                                            _this.remove(params.index)
+                                            _this.remove(params.index);
                                         }
                                     }
-                                }, '删除'),
+                                }, '删除')
                             ]);
-                        },
+                        }
                     }
                 );
                 return columns;
             }
-        }
-        ,
+        },
         mixins: [http]
-    }
+    };
 </script>

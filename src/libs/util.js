@@ -89,9 +89,6 @@ util.setCurrentPath = function (vm, name) {
     // 当前 路由名是 首页
     let homeIndex = vm.$store.state.app.homeIndex;
     let homePath = vm.$store.state.app.homePath;
-    // console.log(homePath);
-    // console.log(homeIndex);
-    // console.log(vm.$store.state.app.userType);
     if (name === homeIndex) {
         currentPathArr = [
             {
