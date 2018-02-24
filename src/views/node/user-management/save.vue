@@ -21,7 +21,7 @@
                             <Input type="text" v-model="form.mobile" placeholder="请输入手机"></Input>
                         </Form-item>
                         <Form-item label="密码" prop="pwd">
-                            <Input type="password" v-model="form.pwd" placeholder="请输入密码"></Input>
+                            <Input type="password" v-model="form.pwd" placeholder="请输入密码"/>
                         </Form-item>
                     </Form>
                 </div>
@@ -64,7 +64,7 @@
                         let data = this.form;
                         let id = data.id;
                         this.apiPut('siteuser/' + id, data).then((res) => {
-                            this.handelResponse(res, (data, msg) => {
+                            this.handleAjaxResponse(res, (data, msg) => {
                                 this.modal = false;
                                 this.$parent.getData();
                                 this.$Message.success(msg);

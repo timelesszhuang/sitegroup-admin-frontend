@@ -89,7 +89,7 @@
                         this.modal_loading = true;
                         let data = this.form;
                         this.apiPost('siteuser', data).then((res) => {
-                            this.handelResponse(res, (data, msg) => {
+                            this.handleAjaxResponse(res, (data, msg) => {
                                 this.modal = false;
                                 this.$parent.getData();
                                 this.$Message.success(msg);

@@ -22,6 +22,7 @@
         </div>
         <siteuseradd ref="add"/>
         <siteusersave ref="save" :form="editinfo"/>
+        <changePwd ref="changePwd"/>
     </div>
 </template>
 
@@ -29,6 +30,7 @@
     import http from "../../../libs/http";
     import siteuseradd from './add.vue';
     import siteusersave from './save.vue';
+    import changePwd from '../../Common/Account/Changepwd.vue';
 
     export default {
         data() {
@@ -48,7 +50,7 @@
                 editinfo: {}
             }
         },
-        components: {siteuseradd, siteusersave},
+        components: {siteuseradd, siteusersave,changePwd},
         created() {
             this.getData();
         },
@@ -63,10 +65,10 @@
                         rows: this.rows,
                         name: this.name
                     }
-                }
+                };
                 this.apiGet('siteuser', data).then((data) => {
                     this.handleAjaxResponse(data, (data, msg) => {
-                        this.datas = data.rows
+                        this.datas = data.rows;
                         this.total = data.total;
                     }, (data, msg) => {
                         this.$Message.error(msg);
@@ -90,10 +92,10 @@
                 this.$refs.add.modal = true
             },
             edit(index) {
-                let editid = this.datas[index].id
+                let editid = this.datas[index].id;
                 this.apiGet('siteuser/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
-                        this.editinfo = data
+                        this.editinfo = data;
                         this.modal = false;
                         this.$refs.save.modal = true
                     }, (data, msg) => {
@@ -106,20 +108,20 @@
             },
             changeStatus(index, is_on) {
                 //需要删除确认
-                let id = this.datas[index].id
-                let _this = this
+                let id = this.datas[index].id;
+                let _this = this;
                 let data = {
                     'is_on': is_on,
                     id: id
-                }
-                if (data.is_on == 20) {
+                };
+                if (data.is_on === "20") {
                     this.$Modal.confirm({
                         title: '确认禁用',
                         content: '您确定禁用该活动?',
                         okText: '禁用',
                         cancelText: '取消',
                         onOk: (index) => {
-                            _this.apiPut('siteuser/enable', data).then((res) => {
+                            _this.apiPut('siteuserEnable', data).then((res) => {
                                 _this.handleAjaxResponse(res, (data, msg) => {
                                     _this.getData();
                                     _this.$Message.success(msg);
@@ -135,14 +137,15 @@
                             return false
                         }
                     })
-                } else if (is_on == 10) {
+                } else if (is_on === "10") {
+                    console.log(id+1);
                     this.$Modal.confirm({
                         title: '确认启用',
                         content: '您确定启用该活动?',
                         okText: '启用',
                         cancelText: '取消',
                         onOk: (index) => {
-                            _this.apiPut('siteuser/enable', data).then((res) => {
+                            _this.apiPut('siteuserEnable', data).then((res) => {
                                 _this.handleAjaxResponse(res, (data, msg) => {
                                     _this.getData();
                                     _this.$Message.success(msg);
@@ -165,7 +168,7 @@
         },
         computed: {
             tableColumns() {
-                let _this = this
+                let _this = this;
                 let columns = [];
                 if (this.showCheckbox) {
                     columns.push({
@@ -202,7 +205,7 @@
                         align: 'center',
                         fixed: 'center',
                         render(h, params) {
-                            if (params.row.is_on == '10') {
+                            if (params.row.is_on === 10) {
                                 return h('div', [
                                     h('Icon', {
                                         props: {
@@ -238,7 +241,7 @@
                         fixed: 'right',
                         render(h, params) {
                             let onbutton = '';
-                            if (params.row.is_on == '20') {
+                            if (params.row.is_on === 20) {
                                 onbutton = h('Button', {
                                     props: {
                                         size: 'small'
