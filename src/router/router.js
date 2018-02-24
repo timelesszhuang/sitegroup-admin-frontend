@@ -89,7 +89,18 @@ export const nodeotherRouter = {
             name: 'nodeshopping',
             component: () => import('@/views/advanced-router/component/shopping-info.vue')
         }, // 用于展示带参路由
-        {path: 'message', title: '消息中心', name: 'message_index', component: () => import('@/views/Common/message/message.vue')}
+        {
+            path: 'message',
+            title: '消息中心',
+            name: 'message',
+            component: () => import('@/views/Common/message/message.vue')
+        },
+        {
+            path: 'error-message',
+            title: '错误中心',
+            name: 'error-message',
+            component: () => import('@/views/Common/error-message/error-message.vue')
+        }
     ]
 }
 
@@ -168,6 +179,44 @@ export const nodeappRouter = [
                 title: '公众号',
                 name: 'wechat',
                 component: () => import('@/views/node/articlemanage/tab.vue')
+            },
+
+        ]
+    },
+    {
+        path: '/sub-site',
+        icon: 'soup-can',
+        name: '子站点设置',
+        title: '子站点设置',
+        component: Main,
+        children: [
+            // {
+            //     path: 'column-management',
+            //     icon: 'ios-bookmarks',
+            //     title: '栏目管理',
+            //     name: 'column-management',
+            //     component: () => import('@/views/node/column-management/index.vue')
+            // },
+            // {
+            //     path: 'elements-set',
+            //     icon: 'image',
+            //     title: '网站元素设置',
+            //     name: 'elements-set',
+            //     component: () => import('@/views/node/elements-set/index.vue')
+            // },
+            // {
+            //     path: 'site-management',
+            //     icon: 'image',
+            //     title: '站点管理',
+            //     name: 'site-management',
+            //     component: () => import('@/views/node/site-management/index.vue')
+            // },
+            {
+                path: 'user-management',
+                icon: 'image',
+                title: '用户管理',
+                name: 'user-management',
+                component: () => import('@/views/node/user-management/siteuser.vue')
             },
 
         ]
@@ -252,119 +301,119 @@ export const nodeappRouter = [
             }
         ]
     },
-    {
-        path: '/international',
-        icon: 'earth',
-        title: {i18n: 'international'},
-        name: 'international',
-        component: Main,
-        children: [
-            {
-                path: 'index',
-                title: {i18n: 'international'},
-                name: 'international_index',
-                component: () => import('@/views/international/international.vue')
-            }
-        ]
-    },
-    {
-        path: '/component',
-        icon: 'social-buffer',
-        name: 'component',
-        title: '组件',
-        component: Main,
-        children: [
-            {
-                path: 'text-editor',
-                icon: 'compose',
-                name: 'text-editor',
-                title: '富文本编辑器',
-                component: () => import('@/views/my-components/text-editor/text-editor.vue')
-            },
-            {
-
-                path: 'test',
-                icon: 'compose',
-                name: 'test',
-                title: '编辑器',
-                component: () => import('@/views/my-components/test/index.vue')
-            },
-            {
-                path: 'md-editor',
-                icon: 'pound',
-                name: 'md-editor',
-                title: 'Markdown编辑器',
-                component: () => import('@/views/my-components/markdown-editor/markdown-editor.vue')
-            },
-            {
-                path: 'image-editor',
-                icon: 'crop',
-                name: 'image-editor',
-                title: '图片预览编辑',
-                component: () => import('@/views/my-components/image-editor/image-editor.vue')
-            },
-            {
-                path: 'draggable-list',
-                icon: 'arrow-move',
-                name: 'draggable-list',
-                title: '可拖拽列表',
-                component: () => import('@/views/my-components/draggable-list/draggable-list.vue')
-            },
-            {
-                path: 'area-linkage',
-                icon: 'ios-more',
-                name: 'area-linkage',
-                title: '城市级联',
-                component: () => import('@/views/my-components/area-linkage/area-linkage.vue')
-            },
-            {
-                path: 'file-upload',
-                icon: 'android-upload',
-                name: 'file-upload',
-                title: '文件上传',
-                component: () => import('@/views/my-components/file-upload/file-upload.vue')
-            },
-            {
-                path: 'count-to',
-                icon: 'arrow-graph-up-right',
-                name: 'count-to',
-                title: '数字渐变',
-                // component: () => import('@/views/my-components/count-to/count-to.vue')
-                component: () => import('@/views/my-components/count-to/count-to.vue')
-            },
-            {
-                path: 'split-pane-page',
-                icon: 'ios-pause',
-                name: 'split-pane-page',
-                title: 'split-pane',
-                component: () => import('@/views/my-components/split-pane/split-pane-page.vue')
-            }
-        ]
-    },
-    {
-        path: '/form',
-        icon: 'android-checkbox',
-        name: 'form',
-        title: '表单编辑',
-        component: Main,
-        children: [
-            {
-                path: 'artical-publish',
-                title: '文章发布',
-                name: 'artical-publish',
-                icon: 'compose',
-                component: () => import('@/views/form/article-publish/article-publish.vue')
-            },
-            {
-                path: 'workflow',
-                title: '工作流',
-                name: 'workflow',
-                icon: 'arrow-swap',
-                component: () => import('@/views/form/work-flow/work-flow.vue')
-            }
-
-        ]
-    },
+    // {
+    //     path: '/international',
+    //     icon: 'earth',
+    //     title: {i18n: 'international'},
+    //     name: 'international',
+    //     component: Main,
+    //     children: [
+    //         {
+    //             path: 'index',
+    //             title: {i18n: 'international'},
+    //             name: 'international_index',
+    //             component: () => import('@/views/international/international.vue')
+    //         }
+    //     ]
+    // },
+    // {
+    //     path: '/component',
+    //     icon: 'social-buffer',
+    //     name: 'component',
+    //     title: '组件',
+    //     component: Main,
+    //     children: [
+    //         {
+    //             path: 'text-editor',
+    //             icon: 'compose',
+    //             name: 'text-editor',
+    //             title: '富文本编辑器',
+    //             component: () => import('@/views/my-components/text-editor/text-editor.vue')
+    //         },
+    //         {
+    //
+    //             path: 'test',
+    //             icon: 'compose',
+    //             name: 'test',
+    //             title: '编辑器',
+    //             component: () => import('@/views/my-components/test/index.vue')
+    //         },
+    //         {
+    //             path: 'md-editor',
+    //             icon: 'pound',
+    //             name: 'md-editor',
+    //             title: 'Markdown编辑器',
+    //             component: () => import('@/views/my-components/markdown-editor/markdown-editor.vue')
+    //         },
+    //         {
+    //             path: 'image-editor',
+    //             icon: 'crop',
+    //             name: 'image-editor',
+    //             title: '图片预览编辑',
+    //             component: () => import('@/views/my-components/image-editor/image-editor.vue')
+    //         },
+    //         {
+    //             path: 'draggable-list',
+    //             icon: 'arrow-move',
+    //             name: 'draggable-list',
+    //             title: '可拖拽列表',
+    //             component: () => import('@/views/my-components/draggable-list/draggable-list.vue')
+    //         },
+    //         {
+    //             path: 'area-linkage',
+    //             icon: 'ios-more',
+    //             name: 'area-linkage',
+    //             title: '城市级联',
+    //             component: () => import('@/views/my-components/area-linkage/area-linkage.vue')
+    //         },
+    //         {
+    //             path: 'file-upload',
+    //             icon: 'android-upload',
+    //             name: 'file-upload',
+    //             title: '文件上传',
+    //             component: () => import('@/views/my-components/file-upload/file-upload.vue')
+    //         },
+    //         {
+    //             path: 'count-to',
+    //             icon: 'arrow-graph-up-right',
+    //             name: 'count-to',
+    //             title: '数字渐变',
+    //             // component: () => import('@/views/my-components/count-to/count-to.vue')
+    //             component: () => import('@/views/my-components/count-to/count-to.vue')
+    //         },
+    //         {
+    //             path: 'split-pane-page',
+    //             icon: 'ios-pause',
+    //             name: 'split-pane-page',
+    //             title: 'split-pane',
+    //             component: () => import('@/views/my-components/split-pane/split-pane-page.vue')
+    //         }
+    //     ]
+    // },
+    // {
+    //     path: '/form',
+    //     icon: 'android-checkbox',
+    //     name: 'form',
+    //     title: '表单编辑',
+    //     component: Main,
+    //     children: [
+    //         {
+    //             path: 'artical-publish',
+    //             title: '文章发布',
+    //             name: 'artical-publish',
+    //             icon: 'compose',
+    //             component: () => import('@/views/form/article-publish/article-publish.vue')
+    //         },
+    //         {
+    //             path: 'workflow',
+    //             title: '工作流',
+    //             name: 'workflow',
+    //             icon: 'arrow-swap',
+    //             component: () => import('@/views/form/work-flow/work-flow.vue')
+    //         }
+    //
+    //     ]
+    // },
     // {
     //     path: '/charts',
     //     icon: 'ios-analytics',
@@ -377,88 +426,88 @@ export const nodeappRouter = [
 
     //     ]
     // },
-    {
-        path: '/tables',
-        icon: 'ios-grid-view',
-        name: 'tables',
-        title: '表格',
-        component: Main,
-        children: [
-            {
-                path: 'dragableTable',
-                title: '可拖拽排序',
-                name: 'dragable-table',
-                icon: 'arrow-move',
-                component: () => import('@/views/tables/dragable-table.vue')
-            },
-            {
-                path: 'editableTable',
-                title: '可编辑表格',
-                name: 'editable-table',
-                icon: 'edit',
-                component: () => import('@/views/tables/editable-table.vue')
-            },
-            {
-                path: 'searchableTable',
-                title: '可搜索表格',
-                name: 'searchable-table',
-                icon: 'search',
-                component: () => import('@/views/tables/searchable-table.vue')
-            },
-            {
-                path: 'exportableTable',
-                title: '表格导出数据',
-                name: 'exportable-table',
-                icon: 'code-download',
-                component: () => import('@/views/tables/exportable-table.vue')
-            },
-            {
-                path: 'table2image',
-                title: '表格转图片',
-                name: 'table-to-image',
-                icon: 'images',
-                component: () => import('@/views/tables/table-to-image.vue')
-            }
-        ]
-    },
-    {
-        path: '/advanced-router',
-        icon: 'ios-infinite',
-        name: 'advanced-router',
-        title: '高级路由',
-        component: Main,
-        children: [
-            {
-                path: 'mutative-router',
-                title: '动态路由',
-                name: 'mutative-router',
-                icon: 'link',
-                component: () => import('@/views/advanced-router/mutative-router.vue')
-            },
-            {
-                path: 'argument-page',
-                title: '带参页面',
-                name: 'argument-page',
-                icon: 'android-send',
-                component: () => import('@/views/advanced-router/argument-page.vue')
-            }
-        ]
-    },
-    {
-        path: '/error-page',
-        icon: 'android-sad',
-        title: '错误页面',
-        name: 'errorpage',
-        component: Main,
-        children: [
-            {
-                path: 'index',
-                title: '错误页面',
-                name: 'errorpage_index',
-                component: () => import('@/views/error-page/error-page.vue')
-            }
-        ]
-    }
+    // {
+    //     path: '/tables',
+    //     icon: 'ios-grid-view',
+    //     name: 'tables',
+    //     title: '表格',
+    //     component: Main,
+    //     children: [
+    //         {
+    //             path: 'dragableTable',
+    //             title: '可拖拽排序',
+    //             name: 'dragable-table',
+    //             icon: 'arrow-move',
+    //             component: () => import('@/views/tables/dragable-table.vue')
+    //         },
+    //         {
+    //             path: 'editableTable',
+    //             title: '可编辑表格',
+    //             name: 'editable-table',
+    //             icon: 'edit',
+    //             component: () => import('@/views/tables/editable-table.vue')
+    //         },
+    //         {
+    //             path: 'searchableTable',
+    //             title: '可搜索表格',
+    //             name: 'searchable-table',
+    //             icon: 'search',
+    //             component: () => import('@/views/tables/searchable-table.vue')
+    //         },
+    //         {
+    //             path: 'exportableTable',
+    //             title: '表格导出数据',
+    //             name: 'exportable-table',
+    //             icon: 'code-download',
+    //             component: () => import('@/views/tables/exportable-table.vue')
+    //         },
+    //         {
+    //             path: 'table2image',
+    //             title: '表格转图片',
+    //             name: 'table-to-image',
+    //             icon: 'images',
+    //             component: () => import('@/views/tables/table-to-image.vue')
+    //         }
+    //     ]
+    // },
+    // {
+    //     path: '/advanced-router',
+    //     icon: 'ios-infinite',
+    //     name: 'advanced-router',
+    //     title: '高级路由',
+    //     component: Main,
+    //     children: [
+    //         {
+    //             path: 'mutative-router',
+    //             title: '动态路由',
+    //             name: 'mutative-router',
+    //             icon: 'link',
+    //             component: () => import('@/views/advanced-router/mutative-router.vue')
+    //         },
+    //         {
+    //             path: 'argument-page',
+    //             title: '带参页面',
+    //             name: 'argument-page',
+    //             icon: 'android-send',
+    //             component: () => import('@/views/advanced-router/argument-page.vue')
+    //         }
+    //     ]
+    // },
+    // {
+    //     path: '/error-page',
+    //     icon: 'android-sad',
+    //     title: '错误页面',
+    //     name: 'errorpage',
+    //     component: Main,
+    //     children: [
+    //         {
+    //             path: 'index',
+    //             title: '错误页面',
+    //             name: 'errorpage_index',
+    //             component: () => import('@/views/error-page/error-page.vue')
+    //         }
+    //     ]
+    // }
 ]
 
 // admin 的 作为Main组件的子页面展示但是不在左侧菜单显示的路由写在nodeotherRouter里
@@ -493,7 +542,12 @@ export const adminotherRouter = {
             name: 'nodeshopping',
             component: () => import('@/views/advanced-router/component/shopping-info.vue')
         }, // 用于展示带参路由
-        {path: 'message', title: '消息中心', name: 'message_index', component: () => import('@/views/Common/message/message.vue')}
+        {
+            path: 'message',
+            title: '消息中心',
+            name: 'message_index',
+            component: () => import('@/views/Common/message/message.vue')
+        }
     ]
 }
 // 作为admin Main组件的子页面展示并且在左侧菜单显示的路由写在nodeappRouter里
@@ -538,110 +592,130 @@ export const adminappRouter = [
         ]
     },
     {
-        path: '/international',
-        icon: 'earth',
-        title: {i18n: 'international'},
-        name: 'international',
+        path: '/node-user-management',
+        icon: 'paper-airplane',
+        title: '节点/用户管理',
         component: Main,
         children: [
             {
-                path: 'index',
-                title: {i18n: 'international'},
-                name: 'international_index',
-                component: () => import('@/views/international/international.vue')
-            }
+                path: 'root-user-management',
+                title: '用户管理',
+                name: 'root-user-management',
+                component: () => import('@/views/admin/user/user.vue')
+            },
+            // {
+            //     path: 'node-management',
+            //     title: '节点管理',
+            //     name: 'node-management',
+            //     component: () => import('@/views/admin/node/node.vue')
+            // }
         ]
     },
-    {
-        path: '/component',
-        icon: 'social-buffer',
-        name: 'component',
-        title: '组件',
-        component: Main,
-        children: [
-            {
-                path: 'text-editor',
-                icon: 'compose',
-                name: 'text-editor',
-                title: '富文本编辑器',
-                component: () => import('@/views/my-components/text-editor/text-editor.vue')
-            },
-            {
-                path: 'md-editor',
-                icon: 'pound',
-                name: 'md-editor',
-                title: 'Markdown编辑器',
-                component: () => import('@/views/my-components/markdown-editor/markdown-editor.vue')
-            },
-            {
-                path: 'image-editor',
-                icon: 'crop',
-                name: 'image-editor',
-                title: '图片预览编辑',
-                component: () => import('@/views/my-components/image-editor/image-editor.vue')
-            },
-            {
-                path: 'draggable-list',
-                icon: 'arrow-move',
-                name: 'draggable-list',
-                title: '可拖拽列表',
-                component: () => import('@/views/my-components/draggable-list/draggable-list.vue')
-            },
-            {
-                path: 'area-linkage',
-                icon: 'ios-more',
-                name: 'area-linkage',
-                title: '城市级联',
-                component: () => import('@/views/my-components/area-linkage/area-linkage.vue')
-            },
-            {
-                path: 'file-upload',
-                icon: 'android-upload',
-                name: 'file-upload',
-                title: '文件上传',
-                component: () => import('@/views/my-components/file-upload/file-upload.vue')
-            },
-            {
-                path: 'count-to',
-                icon: 'arrow-graph-up-right',
-                name: 'count-to',
-                title: '数字渐变',
-                // component: () => import('@/views/my-components/count-to/count-to.vue')
-                component: () => import('@/views/my-components/count-to/count-to.vue')
-            },
-            {
-                path: 'split-pane-page',
-                icon: 'ios-pause',
-                name: 'split-pane-page',
-                title: 'split-pane',
-                component: () => import('@/views/my-components/split-pane/split-pane-page.vue')
-            }
-        ]
-    },
-    {
-        path: '/form',
-        icon: 'android-checkbox',
-        name: 'form',
-        title: '表单编辑',
-        component: Main,
-        children: [
-            {
-                path: 'artical-publish',
-                title: '文章发布',
-                name: 'artical-publish',
-                icon: 'compose',
-                component: () => import('@/views/form/article-publish/article-publish.vue')
-            },
-            {
-                path: 'workflow',
-                title: '工作流',
-                name: 'workflow',
-                icon: 'arrow-swap',
-                component: () => import('@/views/form/work-flow/work-flow.vue')
-            }
-
-        ]
-    },
+    // {
+    //     path: '/international',
+    //     icon: 'earth',
+    //     title: {i18n: 'international'},
+    //     name: 'international',
+    //     component: Main,
+    //     children: [
+    //         {
+    //             path: 'index',
+    //             title: {i18n: 'international'},
+    //             name: 'international_index',
+    //             component: () => import('@/views/international/international.vue')
+    //         }
+    //     ]
+    // },
+    // {
+    //     path: '/component',
+    //     icon: 'social-buffer',
+    //     name: 'component',
+    //     title: '组件',
+    //     component: Main,
+    //     children: [
+    //         {
+    //             path: 'text-editor',
+    //             icon: 'compose',
+    //             name: 'text-editor',
+    //             title: '富文本编辑器',
+    //             component: () => import('@/views/my-components/text-editor/text-editor.vue')
+    //         },
+    //         {
+    //             path: 'md-editor',
+    //             icon: 'pound',
+    //             name: 'md-editor',
+    //             title: 'Markdown编辑器',
+    //             component: () => import('@/views/my-components/markdown-editor/markdown-editor.vue')
+    //         },
+    //         {
+    //             path: 'image-editor',
+    //             icon: 'crop',
+    //             name: 'image-editor',
+    //             title: '图片预览编辑',
+    //             component: () => import('@/views/my-components/image-editor/image-editor.vue')
+    //         },
+    //         {
+    //             path: 'draggable-list',
+    //             icon: 'arrow-move',
+    //             name: 'draggable-list',
+    //             title: '可拖拽列表',
+    //             component: () => import('@/views/my-components/draggable-list/draggable-list.vue')
+    //         },
+    //         {
+    //             path: 'area-linkage',
+    //             icon: 'ios-more',
+    //             name: 'area-linkage',
+    //             title: '城市级联',
+    //             component: () => import('@/views/my-components/area-linkage/area-linkage.vue')
+    //         },
+    //         {
+    //             path: 'file-upload',
+    //             icon: 'android-upload',
+    //             name: 'file-upload',
+    //             title: '文件上传',
+    //             component: () => import('@/views/my-components/file-upload/file-upload.vue')
+    //         },
+    //         {
+    //             path: 'count-to',
+    //             icon: 'arrow-graph-up-right',
+    //             name: 'count-to',
+    //             title: '数字渐变',
+    //             // component: () => import('@/views/my-components/count-to/count-to.vue')
+    //             component: () => import('@/views/my-components/count-to/count-to.vue')
+    //         },
+    //         {
+    //             path: 'split-pane-page',
+    //             icon: 'ios-pause',
+    //             name: 'split-pane-page',
+    //             title: 'split-pane',
+    //             component: () => import('@/views/my-components/split-pane/split-pane-page.vue')
+    //         }
+    //     ]
+    // },
+    // {
+    //     path: '/form',
+    //     icon: 'android-checkbox',
+    //     name: 'form',
+    //     title: '表单编辑',
+    //     component: Main,
+    //     children: [
+    //         {
+    //             path: 'artical-publish',
+    //             title: '文章发布',
+    //             name: 'artical-publish',
+    //             icon: 'compose',
+    //             component: () => import('@/views/form/article-publish/article-publish.vue')
+    //         },
+    //         {
+    //             path: 'workflow',
+    //             title: '工作流',
+    //             name: 'workflow',
+    //             icon: 'arrow-swap',
+    //             component: () => import('@/views/form/work-flow/work-flow.vue')
+    //         }
+    //
+    //     ]
+    // },
     // {
     //     path: '/charts',
     //     icon: 'ios-analytics',
@@ -654,88 +728,88 @@ export const adminappRouter = [
 
     //     ]
     // },
-    {
-        path: '/tables',
-        icon: 'ios-grid-view',
-        name: 'tables',
-        title: '表格',
-        component: Main,
-        children: [
-            {
-                path: 'dragableTable',
-                title: '可拖拽排序',
-                name: 'dragable-table',
-                icon: 'arrow-move',
-                component: () => import('@/views/tables/dragable-table.vue')
-            },
-            {
-                path: 'editableTable',
-                title: '可编辑表格',
-                name: 'editable-table',
-                icon: 'edit',
-                component: () => import('@/views/tables/editable-table.vue')
-            },
-            {
-                path: 'searchableTable',
-                title: '可搜索表格',
-                name: 'searchable-table',
-                icon: 'search',
-                component: () => import('@/views/tables/searchable-table.vue')
-            },
-            {
-                path: 'exportableTable',
-                title: '表格导出数据',
-                name: 'exportable-table',
-                icon: 'code-download',
-                component: () => import('@/views/tables/exportable-table.vue')
-            },
-            {
-                path: 'table2image',
-                title: '表格转图片',
-                name: 'table-to-image',
-                icon: 'images',
-                component: () => import('@/views/tables/table-to-image.vue')
-            }
-        ]
-    },
-    {
-        path: '/advanced-router',
-        icon: 'ios-infinite',
-        name: 'advanced-router',
-        title: '高级路由',
-        component: Main,
-        children: [
-            {
-                path: 'mutative-router',
-                title: '动态路由',
-                name: 'mutative-router',
-                icon: 'link',
-                component: () => import('@/views/advanced-router/mutative-router.vue')
-            },
-            {
-                path: 'argument-page',
-                title: '带参页面',
-                name: 'argument-page',
-                icon: 'android-send',
-                component: () => import('@/views/advanced-router/argument-page.vue')
-            }
-        ]
-    },
-    {
-        path: '/error-page',
-        icon: 'android-sad',
-        title: '错误页面',
-        name: 'errorpage',
-        component: Main,
-        children: [
-            {
-                path: 'index',
-                title: '错误页面',
-                name: 'errorpage_index',
-                component: () => import('@/views/error-page/error-page.vue')
-            }
-        ]
-    }
+    // {
+    //     path: '/tables',
+    //     icon: 'ios-grid-view',
+    //     name: 'tables',
+    //     title: '表格',
+    //     component: Main,
+    //     children: [
+    //         {
+    //             path: 'dragableTable',
+    //             title: '可拖拽排序',
+    //             name: 'dragable-table',
+    //             icon: 'arrow-move',
+    //             component: () => import('@/views/tables/dragable-table.vue')
+    //         },
+    //         {
+    //             path: 'editableTable',
+    //             title: '可编辑表格',
+    //             name: 'editable-table',
+    //             icon: 'edit',
+    //             component: () => import('@/views/tables/editable-table.vue')
+    //         },
+    //         {
+    //             path: 'searchableTable',
+    //             title: '可搜索表格',
+    //             name: 'searchable-table',
+    //             icon: 'search',
+    //             component: () => import('@/views/tables/searchable-table.vue')
+    //         },
+    //         {
+    //             path: 'exportableTable',
+    //             title: '表格导出数据',
+    //             name: 'exportable-table',
+    //             icon: 'code-download',
+    //             component: () => import('@/views/tables/exportable-table.vue')
+    //         },
+    //         {
+    //             path: 'table2image',
+    //             title: '表格转图片',
+    //             name: 'table-to-image',
+    //             icon: 'images',
+    //             component: () => import('@/views/tables/table-to-image.vue')
+    //         }
+    //     ]
+    // },
+    // {
+    //     path: '/advanced-router',
+    //     icon: 'ios-infinite',
+    //     name: 'advanced-router',
+    //     title: '高级路由',
+    //     component: Main,
+    //     children: [
+    //         {
+    //             path: 'mutative-router',
+    //             title: '动态路由',
+    //             name: 'mutative-router',
+    //             icon: 'link',
+    //             component: () => import('@/views/advanced-router/mutative-router.vue')
+    //         },
+    //         {
+    //             path: 'argument-page',
+    //             title: '带参页面',
+    //             name: 'argument-page',
+    //             icon: 'android-send',
+    //             component: () => import('@/views/advanced-router/argument-page.vue')
+    //         }
+    //     ]
+    // },
+    // {
+    //     path: '/error-page',
+    //     icon: 'android-sad',
+    //     title: '错误页面',
+    //     name: 'errorpage',
+    //     component: Main,
+    //     children: [
+    //         {
+    //             path: 'index',
+    //             title: '错误页面',
+    //             name: 'errorpage_index',
+    //             component: () => import('@/views/error-page/error-page.vue')
+    //         }
+    //     ]
+    // }
 ]
 
 // 作为Main组件的子页面展示但是不在左侧菜单显示的路由写在otherRouter里
@@ -770,7 +844,12 @@ export const siteotherRouter = {
             name: 'shopping',
             component: () => import('@/views/advanced-router/component/shopping-info.vue')
         }, // 用于展示带参路由
-        {path: 'message', title: '消息中心', name: 'message_index', component: () => import('@/views/Common/message/message.vue')}
+        {
+            path: 'message',
+            title: '消息中心',
+            name: 'message_index',
+            component: () => import('@/views/Common/message/message.vue')
+        }
     ]
 }
 
@@ -808,6 +887,111 @@ export const siteappRouter = [
             }
         ]
     },
+    // {
+    //     path: '/international',
+    //     icon: 'earth',
+    //     title: {i18n: 'international'},
+    //     name: 'international',
+    //     component: Main,
+    //     children: [
+    //         {
+    //             path: 'index',
+    //             title: {i18n: 'international'},
+    //             name: 'international_index',
+    //             component: () => import('@/views/international/international.vue')
+    //         }
+    //     ]
+    // },
+    // {
+    //     path: '/component',
+    //     icon: 'social-buffer',
+    //     name: 'component',
+    //     title: '组件',
+    //     component: Main,
+    //     children: [
+    //         {
+    //             path: 'text-editor',
+    //             icon: 'compose',
+    //             name: 'text-editor',
+    //             title: '富文本编辑器',
+    //             component: () => import('@/views/my-components/text-editor/text-editor.vue')
+    //         },
+    //         {
+    //             path: 'md-editor',
+    //             icon: 'pound',
+    //             name: 'md-editor',
+    //             title: 'Markdown编辑器',
+    //             component: () => import('@/views/my-components/markdown-editor/markdown-editor.vue')
+    //         },
+    //         {
+    //             path: 'image-editor',
+    //             icon: 'crop',
+    //             name: 'image-editor',
+    //             title: '图片预览编辑',
+    //             component: () => import('@/views/my-components/image-editor/image-editor.vue')
+    //         },
+    //         {
+    //             path: 'draggable-list',
+    //             icon: 'arrow-move',
+    //             name: 'draggable-list',
+    //             title: '可拖拽列表',
+    //             component: () => import('@/views/my-components/draggable-list/draggable-list.vue')
+    //         },
+    //         {
+    //             path: 'area-linkage',
+    //             icon: 'ios-more',
+    //             name: 'area-linkage',
+    //             title: '城市级联',
+    //             component: () => import('@/views/my-components/area-linkage/area-linkage.vue')
+    //         },
+    //         {
+    //             path: 'file-upload',
+    //             icon: 'android-upload',
+    //             name: 'file-upload',
+    //             title: '文件上传',
+    //             component: () => import('@/views/my-components/file-upload/file-upload.vue')
+    //         },
+    //         {
+    //             path: 'count-to',
+    //             icon: 'arrow-graph-up-right',
+    //             name: 'count-to',
+    //             title: '数字渐变',
+    //             // component: () => import('@/views/my-components/count-to/count-to.vue')
+    //             component: () => import('@/views/my-components/count-to/count-to.vue')
+    //         },
+    //         {
+    //             path: 'split-pane-page',
+    //             icon: 'ios-pause',
+    //             name: 'split-pane-page',
+    //             title: 'split-pane',
+    //             component: () => import('@/views/my-components/split-pane/split-pane-page.vue')
+    //         }
+    //     ]
+    // },
+    // {
+    //     path: '/form',
+    //     icon: 'android-checkbox',
+    //     name: 'form',
+    //     title: '表单编辑',
+    //     component: Main,
+    //     children: [
+    //         {
+    //             path: 'artical-publish',
+    //             title: '文章发布',
+    //             name: 'artical-publish',
+    //             icon: 'compose',
+    //             component: () => import('@/views/form/article-publish/article-publish.vue')
+    //         },
+    //         {
+    //             path: 'workflow',
+    //             title: '工作流',
+    //             name: 'workflow',
+    //             icon: 'arrow-swap',
+    //             component: () => import('@/views/form/work-flow/work-flow.vue')
+    //         }
+    //
+    //     ]
+    // },
     {
         path: '/marketing',
         icon: 'ios-navigate',
@@ -831,111 +1015,111 @@ export const siteappRouter = [
             },
         ]
     },
-    {
-        path: '/international',
-        icon: 'earth',
-        title: {i18n: 'international'},
-        name: 'international',
-        component: Main,
-        children: [
-            {
-                path: 'index',
-                title: {i18n: 'international'},
-                name: 'international_index',
-                component: () => import('@/views/international/international.vue')
-            }
-        ]
-    },
-    {
-        path: '/component',
-        icon: 'social-buffer',
-        name: 'component',
-        title: '组件',
-        component: Main,
-        children: [
-            {
-                path: 'text-editor',
-                icon: 'compose',
-                name: 'text-editor',
-                title: '富文本编辑器',
-                component: () => import('@/views/my-components/text-editor/text-editor.vue')
-            },
-            {
-                path: 'md-editor',
-                icon: 'pound',
-                name: 'md-editor',
-                title: 'Markdown编辑器',
-                component: () => import('@/views/my-components/markdown-editor/markdown-editor.vue')
-            },
-            {
-                path: 'image-editor',
-                icon: 'crop',
-                name: 'image-editor',
-                title: '图片预览编辑',
-                component: () => import('@/views/my-components/image-editor/image-editor.vue')
-            },
-            {
-                path: 'draggable-list',
-                icon: 'arrow-move',
-                name: 'draggable-list',
-                title: '可拖拽列表',
-                component: () => import('@/views/my-components/draggable-list/draggable-list.vue')
-            },
-            {
-                path: 'area-linkage',
-                icon: 'ios-more',
-                name: 'area-linkage',
-                title: '城市级联',
-                component: () => import('@/views/my-components/area-linkage/area-linkage.vue')
-            },
-            {
-                path: 'file-upload',
-                icon: 'android-upload',
-                name: 'file-upload',
-                title: '文件上传',
-                component: () => import('@/views/my-components/file-upload/file-upload.vue')
-            },
-            {
-                path: 'count-to',
-                icon: 'arrow-graph-up-right',
-                name: 'count-to',
-                title: '数字渐变',
-                // component: () => import('@/views/my-components/count-to/count-to.vue')
-                component: () => import('@/views/my-components/count-to/count-to.vue')
-            },
-            {
-                path: 'split-pane-page',
-                icon: 'ios-pause',
-                name: 'split-pane-page',
-                title: 'split-pane',
-                component: () => import('@/views/my-components/split-pane/split-pane-page.vue')
-            }
-        ]
-    },
-    {
-        path: '/form',
-        icon: 'android-checkbox',
-        name: 'form',
-        title: '表单编辑',
-        component: Main,
-        children: [
-            {
-                path: 'artical-publish',
-                title: '文章发布',
-                name: 'artical-publish',
-                icon: 'compose',
-                component: () => import('@/views/form/article-publish/article-publish.vue')
-            },
-            {
-                path: 'workflow',
-                title: '工作流',
-                name: 'workflow',
-                icon: 'arrow-swap',
-                component: () => import('@/views/form/work-flow/work-flow.vue')
-            }
-
-        ]
-    },
+    // {
+    //     path: '/international',
+    //     icon: 'earth',
+    //     title: {i18n: 'international'},
+    //     name: 'international',
+    //     component: Main,
+    //     children: [
+    //         {
+    //             path: 'index',
+    //             title: {i18n: 'international'},
+    //             name: 'international_index',
+    //             component: () => import('@/views/international/international.vue')
+    //         }
+    //     ]
+    // },
+    // {
+    //     path: '/component',
+    //     icon: 'social-buffer',
+    //     name: 'component',
+    //     title: '组件',
+    //     component: Main,
+    //     children: [
+    //         {
+    //             path: 'text-editor',
+    //             icon: 'compose',
+    //             name: 'text-editor',
+    //             title: '富文本编辑器',
+    //             component: () => import('@/views/my-components/text-editor/text-editor.vue')
+    //         },
+    //         {
+    //             path: 'md-editor',
+    //             icon: 'pound',
+    //             name: 'md-editor',
+    //             title: 'Markdown编辑器',
+    //             component: () => import('@/views/my-components/markdown-editor/markdown-editor.vue')
+    //         },
+    //         {
+    //             path: 'image-editor',
+    //             icon: 'crop',
+    //             name: 'image-editor',
+    //             title: '图片预览编辑',
+    //             component: () => import('@/views/my-components/image-editor/image-editor.vue')
+    //         },
+    //         {
+    //             path: 'draggable-list',
+    //             icon: 'arrow-move',
+    //             name: 'draggable-list',
+    //             title: '可拖拽列表',
+    //             component: () => import('@/views/my-components/draggable-list/draggable-list.vue')
+    //         },
+    //         {
+    //             path: 'area-linkage',
+    //             icon: 'ios-more',
+    //             name: 'area-linkage',
+    //             title: '城市级联',
+    //             component: () => import('@/views/my-components/area-linkage/area-linkage.vue')
+    //         },
+    //         {
+    //             path: 'file-upload',
+    //             icon: 'android-upload',
+    //             name: 'file-upload',
+    //             title: '文件上传',
+    //             component: () => import('@/views/my-components/file-upload/file-upload.vue')
+    //         },
+    //         {
+    //             path: 'count-to',
+    //             icon: 'arrow-graph-up-right',
+    //             name: 'count-to',
+    //             title: '数字渐变',
+    //             // component: () => import('@/views/my-components/count-to/count-to.vue')
+    //             component: () => import('@/views/my-components/count-to/count-to.vue')
+    //         },
+    //         {
+    //             path: 'split-pane-page',
+    //             icon: 'ios-pause',
+    //             name: 'split-pane-page',
+    //             title: 'split-pane',
+    //             component: () => import('@/views/my-components/split-pane/split-pane-page.vue')
+    //         }
+    //     ]
+    // },
+    // {
+    //     path: '/form',
+    //     icon: 'android-checkbox',
+    //     name: 'form',
+    //     title: '表单编辑',
+    //     component: Main,
+    //     children: [
+    //         {
+    //             path: 'artical-publish',
+    //             title: '文章发布',
+    //             name: 'artical-publish',
+    //             icon: 'compose',
+    //             component: () => import('@/views/form/article-publish/article-publish.vue')
+    //         },
+    //         {
+    //             path: 'workflow',
+    //             title: '工作流',
+    //             name: 'workflow',
+    //             icon: 'arrow-swap',
+    //             component: () => import('@/views/form/work-flow/work-flow.vue')
+    //         }
+    //
+    //     ]
+    // },
     // {
     //     path: '/charts',
     //     icon: 'ios-analytics',
@@ -948,88 +1132,88 @@ export const siteappRouter = [
 
     //     ]
     // },
-    {
-        path: '/tables',
-        icon: 'ios-grid-view',
-        name: 'tables',
-        title: '表格',
-        component: Main,
-        children: [
-            {
-                path: 'dragableTable',
-                title: '可拖拽排序',
-                name: 'dragable-table',
-                icon: 'arrow-move',
-                component: () => import('@/views/tables/dragable-table.vue')
-            },
-            {
-                path: 'editableTable',
-                title: '可编辑表格',
-                name: 'editable-table',
-                icon: 'edit',
-                component: () => import('@/views/tables/editable-table.vue')
-            },
-            {
-                path: 'searchableTable',
-                title: '可搜索表格',
-                name: 'searchable-table',
-                icon: 'search',
-                component: () => import('@/views/tables/searchable-table.vue')
-            },
-            {
-                path: 'exportableTable',
-                title: '表格导出数据',
-                name: 'exportable-table',
-                icon: 'code-download',
-                component: () => import('@/views/tables/exportable-table.vue')
-            },
-            {
-                path: 'table2image',
-                title: '表格转图片',
-                name: 'table-to-image',
-                icon: 'images',
-                component: () => import('@/views/tables/table-to-image.vue')
-            }
-        ]
-    },
-    {
-        path: '/advanced-router',
-        icon: 'ios-infinite',
-        name: 'advanced-router',
-        title: '高级路由',
-        component: Main,
-        children: [
-            {
-                path: 'mutative-router',
-                title: '动态路由',
-                name: 'mutative-router',
-                icon: 'link',
-                component: () => import('@/views/advanced-router/mutative-router.vue')
-            },
-            {
-                path: 'argument-page',
-                title: '带参页面',
-                name: 'argument-page',
-                icon: 'android-send',
-                component: () => import('@/views/advanced-router/argument-page.vue')
-            }
-        ]
-    },
-    {
-        path: '/error-page',
-        icon: 'android-sad',
-        title: '错误页面',
-        name: 'errorpage',
-        component: Main,
-        children: [
-            {
-                path: 'index',
-                title: '错误页面',
-                name: 'errorpage_index',
-                component: () => import('@/views/error-page/error-page.vue')
-            }
-        ]
-    }
+    // {
+    //     path: '/tables',
+    //     icon: 'ios-grid-view',
+    //     name: 'tables',
+    //     title: '表格',
+    //     component: Main,
+    //     children: [
+    //         {
+    //             path: 'dragableTable',
+    //             title: '可拖拽排序',
+    //             name: 'dragable-table',
+    //             icon: 'arrow-move',
+    //             component: () => import('@/views/tables/dragable-table.vue')
+    //         },
+    //         {
+    //             path: 'editableTable',
+    //             title: '可编辑表格',
+    //             name: 'editable-table',
+    //             icon: 'edit',
+    //             component: () => import('@/views/tables/editable-table.vue')
+    //         },
+    //         {
+    //             path: 'searchableTable',
+    //             title: '可搜索表格',
+    //             name: 'searchable-table',
+    //             icon: 'search',
+    //             component: () => import('@/views/tables/searchable-table.vue')
+    //         },
+    //         {
+    //             path: 'exportableTable',
+    //             title: '表格导出数据',
+    //             name: 'exportable-table',
+    //             icon: 'code-download',
+    //             component: () => import('@/views/tables/exportable-table.vue')
+    //         },
+    //         {
+    //             path: 'table2image',
+    //             title: '表格转图片',
+    //             name: 'table-to-image',
+    //             icon: 'images',
+    //             component: () => import('@/views/tables/table-to-image.vue')
+    //         }
+    //     ]
+    // },
+    // {
+    //     path: '/advanced-router',
+    //     icon: 'ios-infinite',
+    //     name: 'advanced-router',
+    //     title: '高级路由',
+    //     component: Main,
+    //     children: [
+    //         {
+    //             path: 'mutative-router',
+    //             title: '动态路由',
+    //             name: 'mutative-router',
+    //             icon: 'link',
+    //             component: () => import('@/views/advanced-router/mutative-router.vue')
+    //         },
+    //         {
+    //             path: 'argument-page',
+    //             title: '带参页面',
+    //             name: 'argument-page',
+    //             icon: 'android-send',
+    //             component: () => import('@/views/advanced-router/argument-page.vue')
+    //         }
+    //     ]
+    // },
+    // {
+    //     path: '/error-page',
+    //     icon: 'android-sad',
+    //     title: '错误页面',
+    //     name: 'errorpage',
+    //     component: Main,
+    //     children: [
+    //         {
+    //             path: 'index',
+    //             title: '错误页面',
+    //             name: 'errorpage_index',
+    //             component: () => import('@/views/error-page/error-page.vue')
+    //         }
+    //     ]
+    // }
 ]
 
 // 全部的路由信息
