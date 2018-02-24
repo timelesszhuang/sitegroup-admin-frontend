@@ -17,28 +17,36 @@
                 </li>
             </ul>
         </div>
+        <caseShow ref="caseCenter"></caseShow>
     </Card>
 </template>
 
 <script>
     import http from '../../../libs/http';
+    import caseShow from '../case/show';
+    import util from '../../../libs/util';
 
     export default {
         name: 'case-center',
-        data() {
+        components: {caseShow},
+        data () {
             return {
                 caseCenter: []
             };
         },
         methods: {
-            more() {
+            more () {
                 // 需要执行跳转到案例中心页
-                alert('dsada');
+                util.openNewPage(this, 'casecenter');
+                this.$router.push({
+                    name: 'casecenter'
+                });
             },
-            showCase(id) {
-                alert(id);
+            showCase (id) {
+                // alert(id);
+                this.$refs.caseCenter.show(id);
             },
-            getData() {
+            getData () {
                 this.apiGet('home_casecenter').then((data) => {
                     this.handleAjaxResponse(data, (data, msg) => {
                         this.caseCenter = data;
@@ -50,7 +58,7 @@
                 });
             }
         },
-        created() {
+        created () {
             this.getData();
         },
         mixins: [http]

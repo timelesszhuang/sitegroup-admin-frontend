@@ -210,18 +210,9 @@ export const nodeappRouter = [
                 name: 'keywordmanage',
                 component: () => import('@/views/node/keyword/keyword.vue')
             },
-            {
-                path: 'exclusiveimg',
-                icon: 'image',
-                title: '专属图片',
-                name: 'exclusiveimg',
-                component: () => import('@/views/node/publicimage/index.vue')
-            },
-
         ]
     },
     {
-
         path: '/marketing',
         icon: 'ios-navigate',
         name: 'marketing',
@@ -229,20 +220,19 @@ export const nodeappRouter = [
         component: Main,
         children: [
             {
-                path: 'marketingmodel',
+                path: 'marketingmode',
                 icon: 'ios-navigate',
                 title: '营销模式',
-                name: 'marketingmodel',
-                component: () => import('@/views/node/marketingmodel/index.vue')
+                name: 'marketingmode',
+                component: () => import('@/views/Common/marketingmode/index.vue')
             },
             {
                 path: 'casecenter',
                 icon: 'paper-airplane',
                 title: '案例中心',
                 name: 'casecenter',
-                component: () => import('@/views/node/case/index.vue')
+                component: () => import('@/views/Common/case/index.vue')
             },
-
         ]
     },
     {
@@ -517,13 +507,12 @@ export const adminappRouter = [
         component: Main,
         children: [
             {
-                path: 'marketmodel',
+                path: 'marketmode',
                 icon: 'ios-navigate',
                 title: '营销模式',
-                name: 'marketmodel',
-                component: () => import('@/views/admin/marketmodel/index.vue')
+                name: 'marketmode',
+                component: () => import('@/views/admin/marketmode/index.vue')
             },
-
             {
                 path: 'case',
                 icon: 'paper-airplane',
@@ -531,7 +520,6 @@ export const adminappRouter = [
                 name: 'case',
                 component: () => import('@/views/admin/case/index.vue')
             },
-
         ]
     },
     {
@@ -818,6 +806,29 @@ export const siteappRouter = [
                 name: 'sitequestion',
                 component: () => import('@/views/Common/question/index.vue')
             }
+        ]
+    },
+    {
+        path: '/marketing',
+        icon: 'ios-navigate',
+        name: 'marketing',
+        title: '营销计划',
+        component: Main,
+        children: [
+            {
+                path: 'marketingmode',
+                icon: 'ios-navigate',
+                title: '营销模式',
+                name: 'marketingmode',
+                component: () => import('@/views/Common/marketingmode/index.vue')
+            },
+            {
+                path: 'casecenter',
+                icon: 'paper-airplane',
+                title: '案例中心',
+                name: 'casecenter',
+                component: () => import('@/views/Common/case/index.vue')
+            },
         ]
     },
     {

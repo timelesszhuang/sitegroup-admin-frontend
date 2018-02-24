@@ -41,11 +41,12 @@
         <div style="float: right;">
           <Page :total="total" :current="current" @on-change="changePage" @on-page-size-change="changePageSize"
                 show-total
-                show-elevator></Page>
+                show-elevator>
+          </Page>
         </div>
       </div>
     </div>
-    <caseshow ref="show" :form="editinfo"></caseshow>
+    <caseshow ref="show"></caseshow>
   </div>
     </card>
 </template>
@@ -80,7 +81,6 @@
       created () {
           this.getData();
           this.getIndustry();
-          this.backgroundcolor();
       },
       methods: {
           choose_bgimg (index) {
@@ -123,18 +123,7 @@
           },
           show (index) {
               let editid = this.datas[index].id;
-              this.apiGet('case_center/' + editid).then((res) => {
-                  this.handleAjaxResponse(res, (data, msg) => {
-                      this.editinfo = data;
-                      this.modal = false;
-                      this.$refs.show.modal = true;
-                  }, (data, msg) => {
-                      this.$Message.error(msg);
-                  });
-              }, (res) => {
-                  // 处理错误信息
-                  this.$Message.error('网络异常，请稍后重试。');
-              });
+              this.$refs.show.show(editid);
           },
           changePage (page) {
               this.page = page;

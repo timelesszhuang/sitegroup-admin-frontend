@@ -62,14 +62,9 @@
 </template>
 
 <script>
-    import cityData from './map-data/get-city-value.js';
     import keywordPie from '../../Common/home_info/keyword-pie';
-    import visiteVolume from './components/visiteVolume.vue';
     import spiderTrend from '../../Common/home_info/spider-trend';
     import pageviewTrend from '../../Common/home_info/pageview-trend';
-    import userFlow from './components/userFlow.vue';
-    import mapDataTable from './components/mapDataTable.vue';
-    import toDoListItem from './components/toDoListItem.vue';
     import userLoginInfo from '../../Common/home_info/user-login-info';
     import fourStaticsInfo from '../../Common/home_info/four-statics-info';
     import marketMode from '../../Common/home_info/market-mode';
@@ -79,62 +74,13 @@
         name: 'home',
         components: {
             keywordPie,
-            visiteVolume,
             spiderTrend,
-            userFlow,
-            mapDataTable,
-            toDoListItem,
             userLoginInfo,
             fourStaticsInfo,
             pageviewTrend,
             marketMode,
             caseCenter
         },
-        data() {
-            return {
-                toDoList: [
-                    {
-                        title: '去iView官网学习完整的iView组件'
-                    },
-                    {
-                        title: '去iView官网学习完整的iView组件'
-                    },
-                    {
-                        title: '去iView官网学习完整的iView组件'
-                    },
-                    {
-                        title: '去iView官网学习完整的iView组件'
-                    },
-                    {
-                        title: '去iView官网学习完整的iView组件'
-                    }
-                ],
-                cityData: cityData,
-                showAddNewTodo: false,
-                newToDoItemValue: ''
-            };
-        },
-        methods: {
-            addNewToDoItem() {
-                this.showAddNewTodo = true;
-            },
-            addNew() {
-                if (this.newToDoItemValue.length !== 0) {
-                    this.toDoList.unshift({
-                        title: this.newToDoItemValue
-                    });
-                    setTimeout(() => {
-                        this.newToDoItemValue = '';
-                    }, 200);
-                    this.showAddNewTodo = false;
-                } else {
-                    this.$Message.error('请输入待办事项内容');
-                }
-            },
-            cancelAdd() {
-                this.showAddNewTodo = false;
-                this.newToDoItemValue = '';
-            }
-        }
+        methods: {}
     };
 </script>

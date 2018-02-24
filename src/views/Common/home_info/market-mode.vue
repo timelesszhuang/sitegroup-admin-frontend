@@ -19,14 +19,17 @@
                 </li>
             </ul>
         </div>
+        <show ref="show"></show>
     </Card>
 </template>
 
 <script>
     import http from '../../../libs/http';
-
+    import show from '../marketingmode/show';
+    import util from '../../../libs/util';
     export default {
         name: 'marketmode',
+        components: {show},
         data () {
             return {
                 marketMode: []
@@ -35,10 +38,13 @@
         methods: {
             more () {
                 // 需要执行跳转到营销模式页
-                alert('dsada');
+                util.openNewPage(this, 'marketingmode');
+                this.$router.push({
+                    name: 'marketingmode'
+                });
             },
             showMode (id) {
-                alert(id);
+                this.$refs.show.show(id);
             },
             getData () {
                 this.apiGet('home_marketmode').then((data) => {
@@ -52,7 +58,7 @@
                 });
             }
         },
-        created() {
+        created () {
             // 加载完成之后执行的操作
             this.getData();
         },
