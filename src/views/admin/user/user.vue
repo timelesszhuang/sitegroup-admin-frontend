@@ -1,31 +1,34 @@
 <template>
-    <div>
-        <div style="margin: 10px">
-            用户类型：
-            <Radio-group v-model="usertype" type="button">
-                <Radio label="all">全部</Radio>
-                <Radio label="1">系统管理员</Radio>
-                <Radio label="2">节点管理员</Radio>
-            </Radio-group>
-            公司名：
-            <Input v-model="name" placeholder="要查询的公司名" style="width: 300px"></Input>
-            <Button type="primary" icon="ios-search" @click="queryData">搜索</Button>
-            <Button type="success" shape="circle" icon="plus" @click="add">添加用户</Button>
-        </div>
-        <Table :context="self" :border="border" :stripe="stripe" :show-header="showheader"
-               :size="size" :data="userlist" :columns="tableColumns3" style="width: 100%">
-        </Table>
-        <div style="margin: 10px;overflow: hidden">
-            <div style="float: right;">
-                <Page :total="total" :current="current" @on-change="changePage" @on-page-size-change="changePageSize"
-                      show-total
-                      show-elevator></Page>
+    <card>
+        <div>
+            <div style="margin: 10px">
+                用户类型：
+                <Radio-group v-model="usertype" type="button">
+                    <Radio label="all">全部</Radio>
+                    <Radio label="1">系统管理员</Radio>
+                    <Radio label="2">节点管理员</Radio>
+                </Radio-group>
+                公司名：
+                <Input v-model="name" placeholder="要查询的公司名" style="width: 300px"/>
+                <Button type="primary" icon="ios-search" @click="queryData">搜索</Button>
+                <Button type="success" shape="circle" icon="plus" @click="add">添加用户</Button>
             </div>
+            <Table :context="self" :border="border" :stripe="stripe" :show-header="showheader"
+                   :size="size" :data="userlist" :columns="tableColumns3" style="width: 100%">
+            </Table>
+            <div style="margin: 10px;overflow: hidden">
+                <div style="float: right;">
+                    <Page :total="total" :current="current" @on-change="changePage"
+                          @on-page-size-change="changePageSize"
+                          show-total
+                          show-elevator></Page>
+                </div>
+            </div>
+            <!--用户添加操作-->
+            <Useradd ref="add"/>
+            <Useredit ref="edit"/>
         </div>
-        <!--用户添加操作-->
-        <Useradd ref="add"></Useradd>
-        <Useredit ref="edit"></Useredit>
-    </div>
+    </card>
 </template>
 <script>
     import http from '../../../libs/http';

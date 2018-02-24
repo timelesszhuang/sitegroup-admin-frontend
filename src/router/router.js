@@ -93,13 +93,13 @@ export const nodeotherRouter = {
             path: 'message',
             title: '消息中心',
             name: 'message',
-            component: () => import('@/views/Common/message/message.vue')
+            component: () => import('@/views/node/message/message.vue')
         },
         {
             path: 'error-message',
             title: '错误中心',
             name: 'error-message',
-            component: () => import('@/views/Common/error-message/error-message.vue')
+            component: () => import('@/views/node/error-message/error-message.vue')
         }
     ]
 }
@@ -587,7 +587,7 @@ export const adminappRouter = [
                 path: 'push',
                 title: '系统推送',
                 name: 'messagesend-push',
-                component: () => import('@/views/Common/message/index.vue')
+                component: () => import('@/views/admin/message/index.vue')
             }
         ]
     },
@@ -595,6 +595,7 @@ export const adminappRouter = [
         path: '/node-user-management',
         icon: 'paper-airplane',
         title: '节点/用户管理',
+        name: 'node-user-management',
         component: Main,
         children: [
             {

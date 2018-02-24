@@ -1,21 +1,23 @@
 <template>
-    <div>
-        <div style="margin: 10px">
-            <Button type="success" shape="circle" icon="plus" @click="add">添加节点</Button>
-        </div>
-        <Table :context="self" :border="border" :stripe="stripe" :show-header="showheader"
-               :size="size" :data="nodelist" :columns="tableColumns3" style="width: 100%">
-        </Table>
-        <div style="margin: 10px;overflow: hidden">
-            <div style="float: right;">
-                <Page :total="total" :current="current" @on-change="changePage" show-total
-                      show-elevator></Page>
+    <card>
+        <div>
+            <div style="margin: 10px">
+                <Button type="success" shape="circle" icon="plus" @click="add">添加节点</Button>
             </div>
+            <Table :context="self" :border="border" :stripe="stripe" :show-header="showheader"
+                   :size="size" :data="nodelist" :columns="tableColumns3" style="width: 100%">
+            </Table>
+            <div style="margin: 10px;overflow: hidden">
+                <div style="float: right;">
+                    <Page :total="total" :current="current" @on-change="changePage" show-total
+                          show-elevator></Page>
+                </div>
+            </div>
+            <!--用户添加操作-->
+            <Nodeadd ref="add"/>
+            <Nodeedit ref="edit"/>
         </div>
-        <!--用户添加操作-->
-        <Nodeadd ref="add"></Nodeadd>
-        <Nodeedit ref="edit"></Nodeedit>
-    </div>
+    </card>
 </template>
 <script>
     import http from "../../../libs/http";
@@ -58,7 +60,7 @@
                 this.apiGet('node', data).then((data) => {
                     this.handleAjaxResponse(data, (data, msg) => {
 //            console.log(data)
-                        this.nodelist = data.rows
+                        this.nodelist = data.rows;
                         this.total = data.total;
                     }, (data, msg) => {
                         this.$Message.error(msg);
@@ -75,7 +77,7 @@
                 this.getData();
             },
             changePageSize(pagesize) {
-                this.pagesize = pagesize
+                this.pagesize = pagesize;
                 this.getData()
             },
             add() {
@@ -84,15 +86,15 @@
             edit(index) {
                 //　需要删除确认
                 //　获取资源信息
-                let editid = this.nodelist[index].id
+                let editid = this.nodelist[index].id;
                 this.$refs.edit.init(editid);
                 // this.modal = false;
                 this.$refs.edit.modal = true;
             },
             on(index) {
                 //需要删除确认
-                let id = this.nodelist[index].id
-                let _this = this
+                let id = this.nodelist[index].id;
+                let _this = this;
                 let data = {
                     params: {
                         id: id,
@@ -107,7 +109,7 @@
                     onOk: (index) => {
                         _this.apiGet('node/status/', data).then((res) => {
                             _this.handleAjaxResponse(res, (data, msg) => {
-                                _this.getData()
+                                _this.getData();
                                 _this.$Message.success(msg);
                             }, (data, msg) => {
                                 _this.$Message.error(msg);
@@ -123,8 +125,8 @@
                 })
             },
             off(index) {
-                let id = this.nodelist[index].id
-                let _this = this
+                let id = this.nodelist[index].id;
+                let _this = this;
                 let data = {
                     params: {
                         id: id,
@@ -136,15 +138,15 @@
                     content: '您确定禁用该节点?',
                     okText: '禁用',
                     cancelText: '取消',
-                    onOk: (index) => {
+                    onOk: () => {
                         _this.apiGet('node/status/', data).then((res) => {
                             _this.handleAjaxResponse(res, (data, msg) => {
-                                _this.getData()
+                                _this.getData();
                                 _this.$Message.success(msg);
                             }, (data, msg) => {
                                 _this.$Message.error(msg);
                             })
-                        }, (res) => {
+                        }, () => {
                             //处理错误信息
                             _this.$Message.error('网络异常，请稍后重试');
                         })
@@ -157,7 +159,7 @@
         },
         computed: {
             tableColumns3() {
-                let _this = this
+                let _this = this;
                 let columns = [
                     {
                         type: 'index', width: 60, align: 'center'
@@ -185,7 +187,7 @@
                     key: 'title',
                     width: '100',
                     render(h, params) {
-                        if (params.row.status == 'on') {
+                        if (params.row.status === 'on') {
                             return h('div', [
                                 h('Icon', {
                                     props: {
@@ -220,7 +222,7 @@
                         fixed: 'right',
                         render(h, params) {
                             let statusbutton = '';
-                            if (params.row.status == 'off') {
+                            if (params.row.status === 'off') {
                                 //20 状态为禁用 应该启用
                                 statusbutton = h('Button', {
                                     props: {
