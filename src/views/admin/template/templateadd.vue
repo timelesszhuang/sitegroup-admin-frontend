@@ -1,0 +1,210 @@
+<template>
+    <div>
+        <div>
+            <Modal
+                    v-model="modal" width="600">
+                <p slot="header">
+                    <span>添加模板</span>
+                </p>
+                <div>
+                    <Upload
+                            ref="imgupload"
+                            with-credentials
+                            name="file"
+                            :format="['jpg','jpeg','png']"
+                            :on-success="getRes"
+                            :on-error="getError"
+                            :on-format-error="formatErr"
+                            :action="imgaction"
+                            style="margin: 0 auto;width: 100px">
+                        <Button type="ghost" icon="ios-cloud-upload-outline">上传缩略图</Button>
+                    </Upload>
+                    <div style="margin: 0 auto;width: 500px"><img style="max-width:300px;margin: 0 auto;display: block"
+                                                                  :src=imgPath()></div>
+                    <Upload
+                            ref="showpathup"
+                            type="drag"
+                            with-credentials
+                            name="file"
+                            :format="['zip']"
+                            :on-success="getRespon"
+                            :on-error="getE"
+                            :on-format-error="formatE"
+                            :action="beforeaction">
+                        <div style="padding: 20px 0">
+                            <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
+                            <p>点击或将原始模板文件拖拽到这里上传</p>
+                        </div>
+                    </Upload>
+                    <Upload
+                            ref="pathup"
+                            type="drag"
+                            with-credentials
+                            name="file"
+                            :format="['zip']"
+                            :on-success="getResponse"
+                            :on-error="getErrorInfo"
+                            :on-format-error="formatError"
+                            :action="action">
+                        <div style="padding: 20px 0">
+                            <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
+                            <p>点击或将php模板文件拖拽到这里上传</p>
+                        </div>
+                    </Upload>
+                    <Form ref="templateadd" :model="form" :label-width="90" :rules="AddRule" class="node-add-form">
+                        <Form-item label="模板名" prop="name">
+                            <Input type="text" v-model="form.name" placeholder="请输入模板名"/>
+                        </Form-item>
+                        <Form-item label="行业分类" prop="industry_id">
+                            <Select v-model="form.industry_id" style="width:150px;text-align: left"
+                                    label-in-value　@on-change="changeIndustry">
+                                <Option v-for="item in industry" :value="item.id" :label="item.name" :key="item.id">
+                                    {{ item.name }}
+                                </Option>
+                            </Select>
+                        </Form-item>
+                        <Form-item label="模板说明" prop="detail">
+                            <Input type="text" v-model="form.detail" placeholder="请输入模板说明（模板的相关信息）"/>
+                        </Form-item>
+                    </Form>
+                </div>
+                <div slot="footer">
+                    <Button type="success" size="large" :loading="modal_loading" @click="add">保存</Button>
+                </div>
+            </Modal>
+        </div>
+    </div>
+</template>
+
+<script type="text/ecmascript-6">
+    import http from '../../../libs/http';
+
+    export default {
+        data() {
+            return {
+                industry: {},
+                modal: false,
+                modal_loading: false,
+                action: HOST + 'uploadTemplate',
+                beforeaction: HOST + 'uploadOldtemplate',
+                imgaction: HOST + 'image_upload',
+                form: {
+                    name: "",
+                    detail: '',
+                    path: '',
+                    path_oss: '',
+                    thumbnails: '',
+                    show_path: '',
+                    industry_id: 0,
+                    industry_name: '',
+                },
+                AddRule: {
+                    name: [
+                        {required: true, message: '请填写模板名', trigger: 'blur'},
+                    ],
+                    detail: [
+                        {required: true, message: '请填写模板说明', trigger: 'blur'},
+                    ],
+                }
+            }
+        },
+        created() {
+            this.getIndustry();
+        },
+        methods: {
+            imgPath() {
+                return this.form.thumbnails;
+            },
+            changeIndustry(value) {
+                this.form.industry_name = value.label;
+                this.form.industry_id = value.value;
+            },
+            getResponse(response, file, filelist) {
+                this.form.path_oss = response.data.url;
+                this.$Message.success(response.msg);
+
+            },
+            getIndustry() {
+                this.apiGet('industries').then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.industry = data;
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    })
+                }, (res) => {
+                    //处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            },
+            getRes(respons, file, filelist) {
+                this.form.thumbnails = respons.data.url;
+                this.$Message.success(respons.msg);
+            },
+            getRespon(respon, file, filelist) {
+                this.form.show_path = respon.data.url;
+                this.form.show_path_href = respon.data.data;
+                if (respon.status === "failed") {
+                    this.$Message.error(respon.msg);
+                    this.$refs.showpathup.clearFiles()
+                } else {
+                    this.$Message.success(respon.msg);
+                }
+            },
+            getErrorInfo(error, file, filelist) {
+                this.$Message.error(error);
+            },
+            getError(error, file, filelist) {
+                this.$Message.error(error);
+            },
+            getE(error, file, filelist) {
+                this.$Message.error(error);
+            },
+            formatError() {
+                this.$Message.error('文件格式只支持 zip格式。');
+            },
+            formatErr() {
+                this.$Message.error('文件格式只支持 jpg,jpeg,png三种格式。');
+            },
+            formatE() {
+                this.$Message.error('文件格式只支持 zip格式。');
+            },
+
+            add() {
+                if (!this.form.show_path) {
+                    this.$Message.error('请首先上传原始模板文件。');
+                    return
+                }
+                if (!this.form.thumbnails) {
+                    this.$Message.error('请首先缩略图。');
+                    return
+                }
+                this.$refs.templateadd.validate((valid) => {
+                    if (valid) {
+                        this.modal_loading = true;
+                        let data = this.form;
+                        this.apiPost('addTemp', data).then((res) => {
+                            this.handleAjaxResponse(res, (data, msg) => {
+                                this.modal = false;
+                                this.$emit('getdata');
+                                this.$Message.success(msg);
+                                this.modal_loading = false;
+                                this.$refs.templateadd.resetFields();
+                                this.$refs.pathup.clearFiles();
+                                this.$refs.imgupload.clearFiles()
+                                this.$refs.showpathup.clearFiles()
+                            }, (data, msg) => {
+                                this.modal_loading = false;
+                                this.$Message.error(msg);
+                            })
+                        }, (res) => {
+                            //处理错误信息
+                            this.modal_loading = false;
+                            this.$Message.error('网络异常，请稍后重试。');
+                        })
+                    }
+                })
+            }
+        },
+        mixins: [http]
+    }
+</script>

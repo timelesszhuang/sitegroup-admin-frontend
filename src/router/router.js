@@ -542,12 +542,6 @@ export const adminotherRouter = {
             name: 'nodeshopping',
             component: () => import('@/views/advanced-router/component/shopping-info.vue')
         }, // 用于展示带参路由
-        {
-            path: 'message',
-            title: '消息中心',
-            name: 'message_index',
-            component: () => import('@/views/Common/message/message.vue')
-        }
     ]
 }
 // 作为admin Main组件的子页面展示并且在左侧菜单显示的路由写在nodeappRouter里
@@ -611,6 +605,22 @@ export const adminappRouter = [
                 component: () => import('@/views/admin/node/node.vue')
             }
         ]
+    },
+    {
+        path: '/template-management',
+        icon: 'paper-airplane',
+        title: '模板管理',
+        name: 'template-management',
+        component: Main,
+        children: [
+            {
+                path: '/template-list',
+                title: '模板管理',
+                name: 'template-list',
+                component: () => import('@/views/admin/template/template.vue')
+            }
+        ]
+
     },
     // {
     //     path: '/international',
@@ -845,12 +855,6 @@ export const siteotherRouter = {
             name: 'shopping',
             component: () => import('@/views/advanced-router/component/shopping-info.vue')
         }, // 用于展示带参路由
-        {
-            path: 'message',
-            title: '消息中心',
-            name: 'message_index',
-            component: () => import('@/views/Common/message/message.vue')
-        }
     ]
 }
 
