@@ -622,6 +622,38 @@ export const adminappRouter = [
         ]
 
     },
+    {
+        path: '/allies',
+        icon: 'paper-airplane',
+        title: '友商库',
+        name: 'allies',
+        component: Main,
+        children: [
+            {
+                path: '/allies-library',
+                title: '友商库',
+                name: 'allies-library',
+                component: () => import('@/views/admin/industry/tab.vue')
+            }
+        ]
+
+    },
+    {
+        path: '/voice-management',
+        icon: 'paper-airplane',
+        title: '录音管理',
+        name: 'voice-management',
+        component: Main,
+        children: [
+            {
+                path: '/voice-list',
+                title: '录音管理',
+                name: 'voice-list',
+                component: () => import('@/views/admin/voice/index.vue')
+            }
+        ]
+
+    },
     // {
     //     path: '/international',
     //     icon: 'earth',
