@@ -22,7 +22,7 @@
                     <Form-item label="公司" prop="com_id">
                         <Select v-model="form.com_id" style="text-align: left"
                                 label-in-value 　@on-change="changeCompany">
-                            <Option v-for="item in company" :value="item.id" :label="item.name" :key="item">
+                            <Option v-for="item in company" :value="item.id" :label="item.name" :key="item.id">
                                 {{ item.name }}
                             </Option>
                         </Select>
@@ -49,6 +49,13 @@
                 }
             };
             return {
+                company: {},
+                form: {
+                    name: '',
+                    detail: '',
+                    user_id: '',
+                    user_name: ''
+                },
                 modal: false,
                 modal_loading: false,
                 label_in_value: true,
@@ -65,7 +72,36 @@
                 },
             }
         },
+        mounted(){
+            this.getCompany();
+        },
         methods: {
+            init(editid) {
+                this.apiGet('node/' + editid).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        delete  data.create_time;
+                        delete  data.update_time;
+                        this.form = data
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    })
+                }, (res) => {
+                    //处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                })
+            },
+            getCompany() {
+                this.apiGet('getCompany').then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.company = data;
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    })
+                }, (res) => {
+                    //处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            },
             changeCompany(value) {
                 this.form.com_name = value.label;
                 this.form.com_id = value.value;
@@ -77,7 +113,7 @@
                         let data = this.form;
                         let id = data.id;
                         this.apiPut('node/' + id, data).then((res) => {
-                            this.handelResponse(res, (data, msg) => {
+                            this.handleAjaxResponse(res, (data, msg) => {
                                 this.modal = false;
                                 this.$parent.getData();
                                 this.$Message.success(msg);
@@ -98,19 +134,7 @@
                 })
             }
         },
-        props: {
-            company: {
-                default: []
-            },
-            form: {
-                default: {
-                    name: '',
-                    detail: '',
-                    user_id: '',
-                    user_name: ''
-                }
-            }
-        },
+        props: {},
         mixins: [http]
     }
 </script>

@@ -13,8 +13,8 @@
             </div>
         </div>
         <!--用户添加操作-->
-        <Nodeadd ref="add" :company="companylist" :user="userlist"></Nodeadd>
-        <Nodeedit ref="edit" :form="editinfo" :company="companylist" :user="userlist"></Nodeedit>
+        <Nodeadd ref="add"></Nodeadd>
+        <Nodeedit ref="edit"></Nodeedit>
     </div>
 </template>
 <script>
@@ -43,35 +43,8 @@
         components: {Nodeadd, Nodeedit},
         created() {
             this.getData();
-            this.getCompany();
-            this.getUser();
         },
         methods: {
-            getUser() {
-                this.apiGet('user/getAll').then((res) => {
-                    this.handelResponse(res, (data, msg) => {
-//            console.log(data)
-                        this.userlist = data;
-                    }, (data, msg) => {
-                        this.$Message.error(msg);
-                    })
-                }, (res) => {
-                    //处理错误信息
-                    this.$Message.error('网络异常，请稍后重试。');
-                });
-            },
-            getCompany() {
-                this.apiGet('company/getAll').then((res) => {
-                    this.handelResponse(res, (data, msg) => {
-                        this.companylist = data;
-                    }, (data, msg) => {
-                        this.$Message.error(msg);
-                    })
-                }, (res) => {
-                    //处理错误信息
-                    this.$Message.error('网络异常，请稍后重试。');
-                });
-            },
             //获取数据
             getData() {
                 let data = {
@@ -83,7 +56,7 @@
                     }
                 };
                 this.apiGet('node', data).then((data) => {
-                    this.handelResponse(data, (data, msg) => {
+                    this.handleAjaxResponse(data, (data, msg) => {
 //            console.log(data)
                         this.nodelist = data.rows
                         this.total = data.total;
@@ -112,20 +85,9 @@
                 //　需要删除确认
                 //　获取资源信息
                 let editid = this.nodelist[index].id
-                this.apiGet('node/' + editid).then((res) => {
-                    this.handelResponse(res, (data, msg) => {
-                        delete  data.create_time;
-                        delete  data.update_time;
-                        this.editinfo = data
-                        this.modal = false;
-                        this.$refs.edit.modal = true
-                    }, (data, msg) => {
-                        this.$Message.error(msg);
-                    })
-                }, (res) => {
-                    //处理错误信息
-                    this.$Message.error('网络异常，请稍后重试。');
-                })
+                this.$refs.edit.init(editid);
+                // this.modal = false;
+                this.$refs.edit.modal = true;
             },
             on(index) {
                 //需要删除确认
@@ -144,7 +106,7 @@
                     cancelText: '取消',
                     onOk: (index) => {
                         _this.apiGet('node/status/', data).then((res) => {
-                            _this.handelResponse(res, (data, msg) => {
+                            _this.handleAjaxResponse(res, (data, msg) => {
                                 _this.getData()
                                 _this.$Message.success(msg);
                             }, (data, msg) => {
@@ -176,7 +138,7 @@
                     cancelText: '取消',
                     onOk: (index) => {
                         _this.apiGet('node/status/', data).then((res) => {
-                            _this.handelResponse(res, (data, msg) => {
+                            _this.handleAjaxResponse(res, (data, msg) => {
                                 _this.getData()
                                 _this.$Message.success(msg);
                             }, (data, msg) => {

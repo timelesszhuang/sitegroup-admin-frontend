@@ -603,12 +603,12 @@ export const adminappRouter = [
                 name: 'root-user-management',
                 component: () => import('@/views/admin/user/user.vue')
             },
-            // {
-            //     path: 'node-management',
-            //     title: '节点管理',
-            //     name: 'node-management',
-            //     component: () => import('@/views/admin/node/node.vue')
-            // }
+            {
+                path: 'node-management',
+                title: '节点管理',
+                name: 'node-management',
+                component: () => import('@/views/admin/node/node.vue')
+            }
         ]
     },
     // {

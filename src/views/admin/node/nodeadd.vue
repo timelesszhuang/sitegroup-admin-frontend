@@ -22,7 +22,7 @@
                     <Form-item label="公司" prop="com_id">
                         <Select v-model="form.com_id" style="text-align: left"
                                 label-in-value filterable　@on-change="changeCompany">
-                            <Option v-for="item in company" :value="item.id" :label="item.name" :key="item">
+                            <Option v-for="item in company" :value="item.id" :label="item.name" :key="item.id">
                                 {{ item.name }}
                             </Option>
                         </Select>
@@ -30,7 +30,7 @@
                     <Form-item label="管理账号" prop="user_id">
                         <Select v-model="form.user_id" style="width:150px;text-align: left"
                                 label-in-value　filterable @on-change="changeUser">
-                            <Option v-for="item in user" :value="item.id" :label="item.name" :key="item">
+                            <Option v-for="item in user" :value="item.id" :label="item.name" :key="item.id">
                                 {{ item.name }}
                             </Option>
                         </Select>
@@ -63,6 +63,8 @@
                 }
             };
             return {
+                company: {},
+                user: {},
                 modal: false,
                 modal_loading: false,
                 label_in_value: true,
@@ -91,7 +93,35 @@
                 }
             }
         },
+        mounted(){
+            this.getUser();
+            this.getCompany();
+        },
         methods: {
+            getUser() {
+                this.apiGet('getUser').then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.user = data;
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    })
+                }, (res) => {
+                    //处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            },
+            getCompany() {
+                this.apiGet('getCompany').then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.company = data;
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    })
+                }, (res) => {
+                    //处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            },
             changeUser(value) {
                 this.form.user_name = value.label;
                 this.form.user_id = value.value;
@@ -114,7 +144,7 @@
                         this.modal_loading = true;
                         let data = this.form;
                         this.apiPost('node', data).then((res) => {
-                            this.handelResponse(res, (data, msg) => {
+                            this.handleAjaxResponse(res, (data, msg) => {
                                 this.modal = false;
                                 this.$parent.getData();
                                 this.$Message.success(msg);
@@ -135,14 +165,6 @@
                 })
             }
             ,
-        },
-        props: {
-            company: {
-                default: []
-            },
-            user: {
-                default: []
-            }
         },
         mixins: [http]
     }
