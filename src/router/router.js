@@ -186,7 +186,7 @@ export const nodeappRouter = [
     {
         path: '/sub-site',
         icon: 'soup-can',
-        name: '子站点设置',
+        name: 'sub-site',
         title: '子站点设置',
         component: Main,
         children: [
@@ -217,6 +217,13 @@ export const nodeappRouter = [
                 title: '用户管理',
                 name: 'user-management',
                 component: () => import('@/views/node/user-management/siteuser.vue')
+            },
+            {
+                path: 'siteelement',
+                icon: 'image',
+                title: '网站元素设置',
+                name: 'siteelement',
+                component: () => import('@/views/node/siteelement/index.vue')
             },
 
         ]
