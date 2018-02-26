@@ -106,8 +106,8 @@
                     this.tinymceInit(this, height, 'tinymceEditerSaveDetails');
                 });
             },
-            edit(){
-                tinymce.get('tinymceEditerSaveDetails').setContent(this.detail.content);
+            edit(content){
+                tinymce.get('tinymceEditerSaveDetails').setContent(content);
             },
             changeArticletype(value) {
                 this.form.p_id = value.value;
