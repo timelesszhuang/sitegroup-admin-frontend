@@ -107,11 +107,13 @@
     import sort from './sort.vue';
 
     export default {
-        data () {
+        data() {
             return {
                 pidtype: [],
                 datas: [],
-                editinfo: {},
+                editinfo: {
+                    content: ''
+                },
                 info: {},
                 articletypelist: [],
                 questiontypelist: [],
@@ -158,20 +160,20 @@
             articlesave,
             sort
         },
-        created () {
+        created() {
             this.getData();
             this.getmenutype();
         },
-        mounted () {
+        mounted() {
             this.getProductType();
             this.getArticleType();
             this.getQuestionType();
         },
         methods: {
-            changeNavtype (value) {
+            changeNavtype(value) {
                 this.tag_id = value.value;
             },
-            getData () {
+            getData() {
                 let data = {
                     params: {
                         name: this.name,
@@ -191,10 +193,10 @@
                     this.$Message.error('网络异常，请稍后重试');
                 });
             },
-            queryData () {
+            queryData() {
                 this.getData();
             },
-            getpidtype (flag, id) {
+            getpidtype(flag, id) {
                 this.apiGet('upMenu/' + flag + '/' + id).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.pidtype = data;
@@ -206,7 +208,7 @@
                     this.$Message.error('网络异常，请稍后重试。');
                 });
             },
-            getmenutype (func) {
+            getmenutype(func) {
                 this.apiGet('menutagList').then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.navtype = data;
@@ -218,26 +220,26 @@
                     this.$Message.error('网络异常，请稍后重试。');
                 });
             },
-            adddetails () {
+            adddetails() {
                 this.getpidtype(1, 0);
                 this.$refs.adddetails.modal = true;
             },
-            addquestion () {
+            addquestion() {
                 this.getpidtype(2, 0);
                 this.$refs.addquestion.modal = true;
             },
-            addarticle () {
+            addarticle() {
                 this.getpidtype(3, 0);
                 this.$refs.addarticle.modal = true;
             },
-            addtitle () {
+            addtitle() {
                 this.$refs.addtitle.modal = true;
             },
-            addproduct () {
+            addproduct() {
                 this.getpidtype(5, 0);
                 this.$refs.addproduct.modal = true;
             },
-            modify (params) {
+            modify(params) {
                 let editid = params;
                 this.apiGet('menu/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
@@ -252,12 +254,12 @@
                     this.$Message.error('网络异常，请稍后重试。');
                 });
             },
-            edit (params) {
+            edit(params) {
                 let editid = params;
                 this.apiGet('menu/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.editinfo = data;
-                        if (this.editinfo.content == null) {
+                        if (this.editinfo.content === null) {
                             this.editinfo.content = '';
                         }
                         let ArticleAar = [];
@@ -270,6 +272,7 @@
                         this.modal = false;
                         if (data.flag == 1) {
                             this.getpidtype(data.flag, editid);
+                            this.$refs.savedetails.edit();
                             this.$refs.savedetails.modal = true;
                         } else if (data.flag == 2) {
                             this.getpidtype(data.flag, editid);
@@ -291,7 +294,7 @@
                     this.$Message.error('网络异常，请稍后重试。');
                 });
             },
-            remove (index) {
+            remove(index) {
                 // 需要删除确认
                 let id = this.datas[index].id;
                 let _this = this;
@@ -318,7 +321,7 @@
                     }
                 });
             },
-            update () {
+            update() {
                 this.getmenutype((data) => {
                     this.navtype = data;
                 });
