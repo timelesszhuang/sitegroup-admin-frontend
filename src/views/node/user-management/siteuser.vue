@@ -21,8 +21,8 @@
             </div>
         </div>
         <siteuseradd ref="add"/>
-        <siteusersave ref="save" :form="editinfo"/>
-        <changePwd ref="changePwd"/>
+        <siteusersave ref="save" :form="editinfo" v-on:getdata="getData"/>
+        <changePwd ref="changePwd" v-on:getdata="getData"/>
     </div>
 </template>
 
@@ -50,7 +50,7 @@
                 editinfo: {}
             }
         },
-        components: {siteuseradd, siteusersave,changePwd},
+        components: {siteuseradd, siteusersave, changePwd},
         created() {
             this.getData();
         },
@@ -138,7 +138,7 @@
                         }
                     })
                 } else if (is_on === "10") {
-                    console.log(id+1);
+                    console.log(id + 1);
                     this.$Modal.confirm({
                         title: '确认启用',
                         content: '您确定启用该活动?',

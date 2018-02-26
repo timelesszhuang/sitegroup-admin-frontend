@@ -1,0 +1,87 @@
+<template>
+    <div>
+        <div>
+            <Modal
+                    v-model="modal" width="400">
+                <p slot="header">
+                    <span>修改分类</span>
+                </p>
+                <div>
+                    <Form ref="menusave" :model="form" :label-width="90" :rules="AddRule" class="node-add-form">
+                        <Form-item label="分类名称" prop="name">
+                            <Input type="text" v-model="form.name" placeholder="请输入节点名"></Input>
+                        </Form-item>
+                        <Form-item label="详情" prop="detail">
+                            <Input type="text" v-model="form.detail" placeholder="请输入节点相关信息"></Input>
+                        </Form-item>
+                    </Form>
+                </div>
+                <div slot="footer">
+                    <Button type="success" size="large" :loading="modal_loading" @click="add">保存</Button>
+                </div>
+            </Modal>
+        </div>
+    </div>
+
+</template>
+
+<script type="text/ecmascript-6">
+    import http from '../../../libs/http';
+
+    export default {
+        data() {
+            return {
+                modal: false,
+                modal_loading: false,
+                AddRule: {
+                    name: [
+                        {required: true, message: '请填写文章分类', trigger: 'blur'},
+                    ],
+                    detail: [
+                        {required: true, message: '请填写文章详情', trigger: 'blur'},
+                    ],
+                }
+            }
+        },
+        methods: {
+            add() {
+                this.$refs.menusave.validate((valid) => {
+                    if (valid) {
+                        this.modal_loading = true;
+                        let data = this.form;
+                        let id = data.id;
+                        this.apiPut('admin/menutag/' + id, data).then((res) => {
+                            this.handleAjaxResponse(res, (data, msg) => {
+                                this.modal = false;
+                                if (this.gpd) {
+                                    this.$emit('getdata');
+                                }
+                                this.$Message.success(msg);
+                                this.modal_loading = false;
+                                this.$refs.menusave.resetFields();
+                            }, (data, msg) => {
+                                this.modal_loading = false;
+                                this.$Message.error(msg);
+                            })
+                        }, (res) => {
+                            //处理错误信息
+                            this.modal_loading = false;
+                            this.$Message.error('网络异常，请稍后重试。');
+                        })
+                    }
+                })
+            }
+        },
+        props: {
+            gpd: {default: 1},
+            form: {
+                default: {
+                    name: '',
+                    detail: '',
+                    tag: ''
+                }
+            }
+        },
+        mixins: [http]
+    }
+</script>

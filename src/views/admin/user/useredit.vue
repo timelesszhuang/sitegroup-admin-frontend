@@ -134,7 +134,9 @@
                         this.apiPut('user/' + id, data).then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {
                                 this.modal = false;
-                                this.$parent.getData();
+                                if (this.gpd) {
+                                    this.$emit('getdata');
+                                }
                                 this.$Message.success(msg);
                                 this.modal_loading = false;
                                 this.$refs.useredit.resetFields();
@@ -155,6 +157,8 @@
                 this.userEditRule.pwd2[0].required = false;
                 this.userEditRule.pwd[0].required = false;
             }
+        }, props: {
+            gpd: {default: 1},
         },
         mixins: [http]
     }

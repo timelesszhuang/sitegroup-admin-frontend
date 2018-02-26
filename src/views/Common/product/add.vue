@@ -318,7 +318,9 @@
                         this.apiPost('product', data).then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {
                                 this.modal = false;
-                                this.$parent.getData();
+                                if (this.gpd) {
+                                    this.$emit('getdata');
+                                }
                                 this.$Message.success(msg);
                                 this.modal_loading = false;
                                 this.imgshow = false;
@@ -341,6 +343,8 @@
         destroyed() {
             tinymce.get('tinymceEditerAddProduct').destroy();
             tinymce.get('tinymceEditerAddProductField4').destroy();
+        }, props: {
+            gpd: {default: 1},
         },
         mixins: [http, common, tinymceInit]
     };

@@ -25,8 +25,8 @@
                 </div>
             </div>
             <!--用户添加操作-->
-            <Useradd ref="add"/>
-            <Useredit ref="edit"/>
+            <Useradd ref="add" v-on:getdata="getData"/>
+            <Useredit ref="edit" v-on:getdata="getData"/>
         </div>
     </card>
 </template>
@@ -36,7 +36,7 @@
     import Useredit from './useredit.vue';
 
     export default {
-        data () {
+        data() {
             return {
                 self: this,
                 border: true,
@@ -53,12 +53,12 @@
             };
         },
         components: {Useradd, Useredit},
-        created () {
+        created() {
             this.getData();
         },
         methods: {
             // 获取数据
-            getData () {
+            getData() {
                 let usertype = '';
                 if (this.usertype !== 'all') {
                     usertype = this.usertype;
@@ -82,26 +82,26 @@
                     this.$Message.error('网络异常，请稍后重试');
                 });
             },
-            queryData () {
+            queryData() {
                 this.getData();
             },
-            changePage (page) {
+            changePage(page) {
                 this.current = page;
                 this.getData();
             },
-            changePageSize (pagesize) {
+            changePageSize(pagesize) {
                 this.pagesize = pagesize;
                 this.getData();
             },
-            add () {
+            add() {
                 this.$refs.add.modal = true;
             },
-            edit (index) {
+            edit(index) {
                 let editid = this.userlist[index].id;
                 this.$refs.edit.init(editid);
                 this.$refs.edit.modal = true;
             },
-            remove (index) {
+            remove(index) {
                 // 需要删除确认
                 let id = this.userlist[index].id;
                 let _this = this;
@@ -130,7 +130,7 @@
             }
         },
         computed: {
-            tableColumns3 () {
+            tableColumns3() {
                 let _this = this;
                 let columns = [];
                 if (this.showCheckbox) {
@@ -171,7 +171,7 @@
                         }
                     ],
                     filterMultiple: false,
-                    filterMethod (value, row) {
+                    filterMethod(value, row) {
                         if (value === 1) {
                             return parseInt(row.type) === 1;
                         } else if (value === 2) {
@@ -220,7 +220,7 @@
                         width: 150,
                         align: 'center',
                         fixed: 'right',
-                        render (h, params) {
+                        render(h, params) {
                             return h('div', [
                                 h('Button', {
                                     props: {

@@ -186,7 +186,9 @@
                         this.apiPost('question', data).then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {
                                 this.modal = false;
-                                this.$emit('getdata');
+                                if (this.gpd) {
+                                    this.$emit('getdata');
+                                }
                                 this.$Message.success(msg);
                                 this.modal_loading = false;
                                 this.$refs.questionadd.resetFields();
@@ -208,6 +210,8 @@
         },
         destroyed() {
             tinymce.get('tinymceEditer').destroy();
+        }, props: {
+            gpd: {default: 1},
         },
         mixins: [http, common, tinymceInit]
     };

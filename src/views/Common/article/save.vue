@@ -164,7 +164,7 @@
 
     export default {
         components: {materialimg, tinymceInit},
-        data () {
+        data() {
             const checkarticletype = (rule, value, callback) => {
                 if (!value) {
                     callback(new Error('请选择文章分类'));
@@ -232,7 +232,7 @@
             };
         },
         methods: {
-            addexclusive (editid) {
+            addexclusive(editid) {
                 this.apiGet('public_article/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         data.readcount = 0;
@@ -256,7 +256,7 @@
                     this.$Message.error('网络异常，请稍后重试。');
                 });
             },
-            addqq (editid) {
+            addqq(editid) {
                 this.apiGet('qicq/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         data.thumbnails = '';
@@ -279,7 +279,7 @@
                     this.$Message.error('网络异常，请稍后重试。');
                 });
             },
-            addhots (editid) {
+            addhots(editid) {
                 this.apiGet('hot_news/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         data.readcount = 0;
@@ -303,7 +303,7 @@
                     this.$Message.error('网络异常，请稍后重试。');
                 });
             },
-            addsouhu (editid) {
+            addsouhu(editid) {
                 this.apiGet('souhu/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         data.readcount = 0;
@@ -326,7 +326,7 @@
                     this.$Message.error('网络异常，请稍后重试。');
                 });
             },
-            add163 (editid) {
+            add163(editid) {
                 this.apiGet('wangyi/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         data.readcount = 0;
@@ -348,7 +348,7 @@
                     this.$Message.error('网络异常，请稍后重试。');
                 });
             },
-            edit (editid) {
+            edit(editid) {
                 this.apiGet('article/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.form = data;
@@ -376,7 +376,7 @@
                     this.tinymceInit(vm, height, this.editImgId);
                 });
             },
-            change (status) {
+            change(status) {
                 if (status) {
                     this.tag_name = true;
                     this.$Message.info('切换到下拉选择');
@@ -385,10 +385,10 @@
                     this.$Message.info('切换到添加标签');
                 }
             },
-            changeTagtype (value) {
+            changeTagtype(value) {
                 this.form.tag_id = value.value;
             },
-            addmaterial (src) {
+            addmaterial(src) {
                 if (this.img === 'content') {
                     let imgsrc = '<img src=' + src + '>';
                     tinymce.get(this.editImgId).insertContent(imgsrc);
@@ -396,12 +396,12 @@
                     this.form.thumbnails = src;
                 }
             },
-            addimg (img) {
+            addimg(img) {
                 this.img = img;
                 this.$refs.addmaterial.getData();
                 this.$refs.addmaterial.modal = true;
             },
-            addtags () {
+            addtags() {
                 let data = {
                     type: 'article',
                     name: this.tags
@@ -422,7 +422,7 @@
                 });
             },
             // 缩略图上传回调
-            getResponse (response, file, filelist) {
+            getResponse(response, file, filelist) {
                 this.form.thumbnails = response.url;
                 if (response.status) {
                     this.$Message.success(response.msg);
@@ -433,20 +433,20 @@
                 }
                 this.$refs.upImg.clearFiles();
             },
-            getErrorInfo (error, file, filelist) {
+            getErrorInfo(error, file, filelist) {
                 this.$Message.error(error);
             },
-            formatError () {
+            formatError() {
                 this.$Message.error('文件格式只支持 jpg,jpeg,png三种格式。');
             },
-            updateData (data) {
+            updateData(data) {
                 this.form.content = data;
             },
-            changeArticletype (value) {
+            changeArticletype(value) {
                 this.form.articletype_name = value.label;
                 this.form.articletype_id = value.value;
             },
-            save () {
+            save() {
                 this.$refs.save.validate((valid) => {
                     if (valid) {
                         this.modal_loading = true;
@@ -459,7 +459,9 @@
                         this.apiPut('article/' + id, data).then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {
                                 this.modal = false;
-                                this.$emit('getdata');
+                                if (this.gpd) {
+                                    this.$emit('getdata');
+                                }
                                 this.$Message.success(msg);
                                 this.modal_loading = false;
                                 this.$refs.save.resetFields();
@@ -475,7 +477,7 @@
                     }
                 });
             },
-            add () {
+            add() {
                 this.$refs.save.validate((valid) => {
                     if (valid) {
                         this.modal_loading = true;
@@ -499,7 +501,9 @@
                         this.apiPost('article', data).then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {
                                 this.modal = false;
-                                this.$emit('getdata');
+                                if (this.gpd) {
+                                    this.$emit('getdata');
+                                }
                                 this.$Message.success(msg);
                                 this.modal_loading = false;
                                 this.$refs.save.resetFields();
@@ -516,17 +520,18 @@
                 });
             }
         },
-        created () {
+        created() {
             this.editImgId = this.editImgId + this.randomWord(true, 3, 32);
         },
-        mounted () {
+        mounted() {
             this.init();
         },
-        destroyed () {
+        destroyed() {
             tinymce.get(this.editImgId).destroy();
         },
         mixins: [http, common, tinymceInit],
         props: {
+            gpd: {default: 1},
             //
             // tagname: {
             //     default: {}

@@ -300,7 +300,9 @@
                         this.apiPost('article', data).then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {
                                 this.modal = false;
-                                this.$emit('getdata');
+                                if (this.gpd) {
+                                    this.$emit('getdata');
+                                }
                                 this.$Message.success(msg);
                                 this.modal_loading = false;
                                 this.imgshow = false;
@@ -327,7 +329,8 @@
         },
         mixins: [http, common, tinymceInit],
         props: {
-            imgsrc: {}
+            imgsrc: {},
+            gpd: {default: 1},
         }
     }
 </script>

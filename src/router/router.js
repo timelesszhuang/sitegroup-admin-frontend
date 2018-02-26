@@ -190,13 +190,13 @@ export const nodeappRouter = [
         title: '子站点设置',
         component: Main,
         children: [
-            // {
-            //     path: 'column-management',
-            //     icon: 'ios-bookmarks',
-            //     title: '栏目管理',
-            //     name: 'column-management',
-            //     component: () => import('@/views/node/column-management/index.vue')
-            // },
+            {
+                path: 'column-management',
+                icon: 'ios-bookmarks',
+                title: '栏目管理',
+                name: 'column-management',
+                component: () => import('@/views/node/nav/tab.vue')
+            },
             // {
             //     path: 'elements-set',
             //     icon: 'image',

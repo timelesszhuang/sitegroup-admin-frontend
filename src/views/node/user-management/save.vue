@@ -66,7 +66,9 @@
                         this.apiPut('siteuser/' + id, data).then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {
                                 this.modal = false;
-                                this.$parent.getData();
+                                if (this.gpd) {
+                                    this.$emit('getdata');
+                                }
                                 this.$Message.success(msg);
                                 this.modal_loading = false;
                             }, (data, msg) => {
@@ -83,6 +85,7 @@
             }
         },
         props: {
+            gpd: {default: 1},
             form: {
                 default: {
                     name: '',

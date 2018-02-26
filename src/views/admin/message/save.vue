@@ -58,10 +58,10 @@
                 }
             };
         },
-        mounted () {
+        mounted() {
             this.init();
         },
-        destroyed () {
+        destroyed() {
             tinymce.get('tinymceEditerSave').destroy();
         },
         methods: {
@@ -92,7 +92,9 @@
                         this.apiPut('system_notice/' + id, data).then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {
                                 this.modal = false;
-                                this.$parent.getData();
+                                if (this.gpd) {
+                                    this.$emit('getdata');
+                                }
                                 this.$Message.success(msg);
                                 this.modal_loading = false;
                                 this.$refs.systempushsave.resetFields();
@@ -110,6 +112,7 @@
             }
         },
         props: {
+            gpd: {default: 1},
             form: {
                 default: {
                     node_ids: []

@@ -14,8 +14,8 @@
                 </div>
             </div>
             <!--用户添加操作-->
-            <Nodeadd ref="add"/>
-            <Nodeedit ref="edit"/>
+            <Nodeadd ref="add" v-on:getdata="getData"/>
+            <Nodeedit ref="edit" v-on:getdata="getData"/>
         </div>
     </card>
 </template>

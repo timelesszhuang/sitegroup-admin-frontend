@@ -72,7 +72,7 @@
                 },
             }
         },
-        mounted(){
+        mounted() {
             this.getCompany();
         },
         methods: {
@@ -115,7 +115,9 @@
                         this.apiPut('node/' + id, data).then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {
                                 this.modal = false;
-                                this.$parent.getData();
+                                if (this.gpd) {
+                                    this.$emit('getdata');
+                                }
                                 this.$Message.success(msg);
                                 this.modal_loading = false;
                                 this.$refs.nodeedit.resetFields();
@@ -134,7 +136,10 @@
                 })
             }
         },
-        props: {},
+        props: {
+            gpd: {default: 1},
+
+        },
         mixins: [http]
     }
 </script>

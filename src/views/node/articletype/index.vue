@@ -33,8 +33,8 @@
                 </div>
             </div>
         </div>
-        <articleadd ref="add"></articleadd>
-        <articlesave ref="save"></articlesave>
+        <articleadd ref="add" v-on:getdata="getData"/>
+        <articlesave ref="save" v-on:getdata="getData"/>
     </div>
 </template>
 

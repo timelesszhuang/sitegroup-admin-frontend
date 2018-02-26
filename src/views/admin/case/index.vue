@@ -28,8 +28,8 @@
                     </div>
                 </div>
             </div>
-            <caseadd ref="add" :industry="industry"></caseadd>
-            <casesave ref="save" :industry="industry"></casesave>
+            <caseadd ref="add" :industry="industry" v-on:getdata="getData"></caseadd>
+            <casesave ref="save" :industry="industry" v-on:getdata="getData"></casesave>
         </div>
     </card>
 </template>

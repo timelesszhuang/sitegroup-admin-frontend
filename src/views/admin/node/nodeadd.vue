@@ -93,7 +93,7 @@
                 }
             }
         },
-        mounted(){
+        mounted() {
             this.getUser();
             this.getCompany();
         },
@@ -146,7 +146,9 @@
                         this.apiPost('node', data).then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {
                                 this.modal = false;
-                                this.$parent.getData();
+                                if (this.gpd) {
+                                    this.$emit('getdata');
+                                }
                                 this.$Message.success(msg);
                                 this.modal_loading = false;
                                 this.$refs.nodeadd.resetFields();
@@ -165,6 +167,8 @@
                 })
             }
             ,
+        }, props: {
+            gpd: {default: 1},
         },
         mixins: [http]
     }

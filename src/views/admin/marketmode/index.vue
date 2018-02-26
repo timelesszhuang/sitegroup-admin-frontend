@@ -28,10 +28,10 @@
                     </div>
                 </div>
             </div>
-            <marketingadd ref="add" :industry="industry"></marketingadd>
+            <marketingadd ref="add" :industry="industry" v-on:getdata="getData"></marketingadd>
             //
-            <marketingsave ref="save" :industry="industry"></marketingsave>
-            <eventshow ref="show" :form="editinfo"></eventshow>
+            <marketingsave ref="save" :industry="industry" v-on:getdata="getData"></marketingsave>
+            <eventshow ref="show" :form="editinfo" v-on:getdata="getData"></eventshow>
         </div>
     </card>
 </template>

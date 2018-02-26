@@ -17,8 +17,8 @@
                 </div>
             </div>
         </div>
-        <systempushadd ref="add" :nodeids="nodeids"/>
-        <systempushsave ref="save" :nodeids="nodeids" :form="editinfo"/>
+        <systempushadd ref="add" :nodeids="nodeids" v-on:getdata="getData"/>
+        <systempushsave ref="save" :nodeids="nodeids" :form="editinfo" v-on:getdata="getData"/>
     </div>
 </template>
 <script type="text/ecmascript-6">

@@ -25,7 +25,9 @@
                     </Form-item>
                     <Form-item label="账号类型" prop="type">
                         <Select v-model="form.type" style="width:150px;text-align: left">
-                            <Option v-for="(item, index) in user_type" :value="item.value" :key="index">{{ item.label }}</Option>
+                            <Option v-for="(item, index) in user_type" :value="item.value" :key="index">{{ item.label
+                                }}
+                            </Option>
                         </Select>
                     </Form-item>
                     <Form-item label="公司" prop="name">
@@ -125,7 +127,9 @@
                         this.apiPost('user', data).then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {
                                 this.modal = false;
-                                this.$parent.getData();
+                                if (this.gpd) {
+                                    this.$emit('getdata');
+                                }
                                 this.$Message.success(msg);
                                 this.modal_loading = false;
                                 this.$refs.useradd.resetFields();
@@ -145,7 +149,9 @@
             }
             ,
         }
-        ,
+        , props: {
+            gpd: {default: 1},
+        },
         mixins: [http]
     }
 </script>

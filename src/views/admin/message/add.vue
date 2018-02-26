@@ -46,7 +46,7 @@
     import tinymce from 'tinymce';
 
     export default {
-        data () {
+        data() {
             return {
                 modal: false,
                 spinShow: false,
@@ -63,10 +63,10 @@
                 }
             };
         },
-        mounted () {
+        mounted() {
             this.init();
         },
-        destroyed () {
+        destroyed() {
             tinymce.get('tinymceEditer').destroy();
         },
         methods: {
@@ -76,14 +76,14 @@
                     this.tinymceInit(this, height, 'tinymceEditer');
                 });
             },
-            updateData (data) {
+            updateData(data) {
                 this.form.content = data;
             },
-            changeIndustry (value) {
+            changeIndustry(value) {
                 this.form.industry_name = value.label;
                 this.form.industry_id = value.value;
             },
-            add () {
+            add() {
                 this.$refs.marketingadd.validate((valid) => {
                     if (valid) {
                         this.modal_loading = true;
@@ -96,7 +96,9 @@
                         this.apiPost('system_notice', data).then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {
                                 this.modal = false;
-                                this.$parent.getData();
+                                if (this.gpd) {
+                                    this.$emit('getdata');
+                                }
                                 this.$Message.success(msg);
                                 this.modal_loading = false;
                                 this.$refs.marketingadd.resetFields();
@@ -114,6 +116,7 @@
             }
         },
         props: {
+            gpd: {default: 1},
             nodeids: {
                 default: []
             }

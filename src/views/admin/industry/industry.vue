@@ -17,8 +17,8 @@
             </div>
         </div>
         <!--用户添加操作-->
-        <Industryadd ref="add"></Industryadd>
-        <Industryedit ref="edit" :form="editinfo"></Industryedit>
+        <Industryadd ref="add" v-on:getdata="getData"></Industryadd>
+        <Industryedit ref="edit" :form="editinfo" v-on:getdata="getData"></Industryedit>
     </div>
 </template>
 <script>

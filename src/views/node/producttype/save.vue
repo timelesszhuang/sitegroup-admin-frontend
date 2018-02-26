@@ -105,7 +105,9 @@
                         this.apiPut('type/' + id, data).then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {
                                 this.modal = false;
-                                this.$emit('getdata');
+                                if (this.gpd) {
+                                    this.$emit('getdata');
+                                }
                                 this.$Message.success(msg);
                                 this.modal_loading = false;
                                 this.$refs.ptypesave.resetFields();
@@ -139,6 +141,8 @@
                     this.$Message.error('网络异常，请稍后重试。');
                 });
             },
+        }, props: {
+            gpd: {default: 1},
         },
         mixins: [http]
     };
