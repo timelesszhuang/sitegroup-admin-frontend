@@ -38,14 +38,14 @@
                     <Form-item label="封面模板" prop="covertemplate">
                         <Input type="text" v-model="detail.covertemplate" placeholder="请填写详情页面的封面模板名(加.html)"></Input>
                     </Form-item>
-                        <Form-item label="内容" prop="content">
-                            <Card shadow>
-                                <textarea class='tinymce-textarea' id="tinymceEditerSaveDetails"></textarea>
-                            </Card>
-                            <Spin fix v-if="spinShow">
-                                <Icon type="load-c" size=18 class="demo-spin-icon-load"></Icon>
-                                <div>加载组件中...</div>
-                            </Spin>
+                    <Form-item label="内容" prop="content">
+                        <Card shadow>
+                            <textarea class='tinymce-textarea' id="tinymceEditerSaveDetails"></textarea>
+                        </Card>
+                        <Spin fix v-if="spinShow">
+                            <Icon type="load-c" size=18 class="demo-spin-icon-load"></Icon>
+                            <div>加载组件中...</div>
+                        </Spin>
                     </Form-item>
                 </Form>
             </div>
@@ -79,22 +79,25 @@
                 id: 0,
                 AddRule: {
                     name: [
-                        {required: true, message: '请填写菜单名字', trigger: 'blur'},
+                        {required: true, message: '请填写菜单名字', trigger: 'blur'}
                     ],
                     title: [
-                        {required: true, message: '请填写栏目的详情', trigger: 'blur'},
+                        {required: true, message: '请填写栏目的详情', trigger: 'blur'}
                     ],
                     generate_name: [
                         {required: true, message: '请填写生成的文件名', trigger: 'blur'}
                     ],
                     tag_name: [
                         {required: true, validator: checkNavtype, trigger: 'blur'}
-                    ],
+                    ]
                 }
-            }
+            };
         },
-        mounted() {
+        created() {
             this.init();
+        },
+        updated() {
+            tinymce.get('tinymceEditerSaveDetails').setContent(this.detail.content);
         },
         destroyed() {
             tinymce.get('tinymceEditerSaveDetails').destroy();
@@ -106,22 +109,18 @@
                     this.tinymceInit(this, height, 'tinymceEditerSaveDetails');
                 });
             },
-            edit(){
-                console.log(this.detail)
-                tinymce.get('tinymceEditerSaveDetails').setContent(this.detail.content);
-            },
             changeArticletype(value) {
-                this.form.p_id = value.value
+                this.form.p_id = value.value;
             },
             changeNavtype(value) {
-                this.detail.tag_name = value.label
-                this.detail.tag_id = value.value
+                this.detail.tag_name = value.label;
+                this.detail.tag_id = value.value;
             },
             changeArticletype(value) {
-                this.detail.p_id = value.value
+                this.detail.p_id = value.value;
             },
             updateData(data) {
-                this.detail.content = data
+                this.detail.content = data;
             },
             savedetails() {
                 this.$refs.detailadd.validate((valid) => {
@@ -145,14 +144,14 @@
                             }, (data, msg) => {
                                 this.modal_loading = false;
                                 this.$Message.error(msg);
-                            })
+                            });
                         }, (res) => {
-                            //处理错误信息
+                            // 处理错误信息
                             this.modal_loading = false;
                             this.$Message.error('网络异常，请稍后重试。');
-                        })
+                        });
                     }
-                })
+                });
             }
         },
         mixins: [http, common, tinymceInit, tinymce],
@@ -160,7 +159,7 @@
             gpd: {default: 1},
             detail: {
                 default: {
-                    name: "",
+                    name: '',
                     title: '',
                     content: '',
                     generate_name: ''
@@ -171,9 +170,9 @@
             },
             pidtype: {
                 default: []
-            },
+            }
         }
-    }
+    };
 </script>
 <style>
     .ql-container .ql-editor {
