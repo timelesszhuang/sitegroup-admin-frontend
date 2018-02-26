@@ -107,7 +107,7 @@
     import sort from './sort.vue';
 
     export default {
-        data() {
+        data () {
             return {
                 pidtype: [],
                 datas: [],
@@ -143,9 +143,9 @@
                     {
                         value: '5',
                         label: '产品型'
-                    },
-                ],
-            }
+                    }
+                ]
+            };
         },
         components: {
             productadd,
@@ -156,11 +156,11 @@
             detailssave,
             questionsave,
             articlesave,
-            sort,
+            sort
         },
-        created() {
-            this.getData()
-            this.getmenutype()
+        created () {
+            this.getData();
+            this.getmenutype();
         },
         mounted () {
             this.getProductType();
@@ -168,134 +168,133 @@
             this.getQuestionType();
         },
         methods: {
-            changeNavtype(value) {
-                this.tag_id = value.value
+            changeNavtype (value) {
+                this.tag_id = value.value;
             },
-            getData() {
+            getData () {
                 let data = {
                     params: {
                         name: this.name,
                         flag: this.flag,
                         tag_id: this.tag_id,
                         article_type: this.article_type,
-                        question_type: this.question_type,
+                        question_type: this.question_type
                     }
-                }
+                };
                 this.apiGet('menu', data).then((data) => {
                     this.handleAjaxResponse(data, (data, msg) => {
-                        this.data = data
+                        this.data = data;
                     }, (data, msg) => {
                         this.$Message.error(msg);
-                    })
+                    });
                 }, (data) => {
                     this.$Message.error('网络异常，请稍后重试');
-                })
+                });
             },
-            queryData() {
-                this.getData()
+            queryData () {
+                this.getData();
             },
-            getpidtype(flag, id) {
-                this.apiGet('upMenu/' + flag + "/" + id).then((res) => {
+            getpidtype (flag, id) {
+                this.apiGet('upMenu/' + flag + '/' + id).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
-                        this.pidtype = data
+                        this.pidtype = data;
                     }, (data, msg) => {
                         this.$Message.error(msg);
-                    })
+                    });
                 }, (res) => {
-                    //处理错误信息
+                    // 处理错误信息
                     this.$Message.error('网络异常，请稍后重试。');
                 });
             },
-            getmenutype(func) {
+            getmenutype (func) {
                 this.apiGet('menutagList').then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
-                        this.navtype = data
+                        this.navtype = data;
                     }, (data, msg) => {
                         this.$Message.error(msg);
-                    })
+                    });
                 }, (res) => {
-                    //处理错误信息
+                    // 处理错误信息
                     this.$Message.error('网络异常，请稍后重试。');
                 });
             },
-            adddetails() {
-                this.getpidtype(1, 0)
-                this.$refs.adddetails.modal = true
+            adddetails () {
+                this.getpidtype(1, 0);
+                this.$refs.adddetails.modal = true;
             },
-            addquestion() {
-                this.getpidtype(2, 0)
-                this.$refs.addquestion.modal = true
+            addquestion () {
+                this.getpidtype(2, 0);
+                this.$refs.addquestion.modal = true;
             },
-            addarticle() {
-                this.getpidtype(3, 0)
-                this.$refs.addarticle.modal = true
+            addarticle () {
+                this.getpidtype(3, 0);
+                this.$refs.addarticle.modal = true;
             },
-            addtitle() {
-                this.$refs.addtitle.modal = true
+            addtitle () {
+                this.$refs.addtitle.modal = true;
             },
-            addproduct() {
-                this.getpidtype(5, 0)
-                this.$refs.addproduct.modal = true
+            addproduct () {
+                this.getpidtype(5, 0);
+                this.$refs.addproduct.modal = true;
             },
-            modify(params) {
-                let editid = params
+            modify (params) {
+                let editid = params;
                 this.apiGet('menu/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
-                        this.info = data
+                        this.info = data;
                         this.modal = false;
-                        this.$refs.sort.modal = true
+                        this.$refs.sort.modal = true;
                     }, (data, msg) => {
                         this.$Message.error(msg);
-                    })
+                    });
                 }, (res) => {
-                    //处理错误信息
+                    // 处理错误信息
                     this.$Message.error('网络异常，请稍后重试。');
-                })
+                });
             },
-            edit(params) {
-                let editid = params
+            edit (params) {
+                let editid = params;
                 this.apiGet('menu/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
-                        this.editinfo = data
+                        this.editinfo = data;
                         if (this.editinfo.content == null) {
                             this.editinfo.content = '';
                         }
                         let ArticleAar = [];
-                        if (this.editinfo.type_id !== "") {
-                            this.editinfo.type_id.split(",").map(function (key) {
-                                ArticleAar.push(Number(key))
-                            })
+                        if (this.editinfo.type_id !== '') {
+                            this.editinfo.type_id.split(',').map(function (key) {
+                                ArticleAar.push(Number(key));
+                            });
                         }
-                        this.editinfo.type_id = ArticleAar
+                        this.editinfo.type_id = ArticleAar;
                         this.modal = false;
                         if (data.flag == 1) {
-                            this.getpidtype(data.flag, editid)
-                            this.$refs.savedetails.edit()
-                            this.$refs.savedetails.modal = true
+                            this.getpidtype(data.flag, editid);
+                            this.$refs.savedetails.modal = true;
                         } else if (data.flag == 2) {
-                            this.getpidtype(data.flag, editid)
-                            this.$refs.savequestion.modal = true
+                            this.getpidtype(data.flag, editid);
+                            this.$refs.savequestion.modal = true;
                         } else if (data.flag == 3) {
-                            this.getpidtype(data.flag, editid)
-                            this.$refs.savearticle.modal = true
+                            this.getpidtype(data.flag, editid);
+                            this.$refs.savearticle.modal = true;
                         } else if (data.flag == 4) {
-                            this.$refs.savetitle.modal = true
+                            this.$refs.savetitle.modal = true;
                         } else if (data.flag == 5) {
-                            this.getpidtype(data.flag, editid)
-                            this.$refs.saveproduct.modal = true
+                            this.getpidtype(data.flag, editid);
+                            this.$refs.saveproduct.modal = true;
                         }
                     }, (data, msg) => {
                         this.$Message.error(msg);
-                    })
+                    });
                 }, (res) => {
-                    //处理错误信息
+                    // 处理错误信息
                     this.$Message.error('网络异常，请稍后重试。');
-                })
+                });
             },
-            remove(index) {
-                //需要删除确认
-                let id = this.datas[index].id
-                let _this = this
+            remove (index) {
+                // 需要删除确认
+                let id = this.datas[index].id;
+                let _this = this;
                 this.$Modal.confirm({
                     title: '确认删除',
                     content: '您确定删除该记录?',
@@ -304,29 +303,29 @@
                     onOk: (index) => {
                         _this.apiDelete('articletype/', id).then((res) => {
                             _this.handleAjaxResponse(res, (data, msg) => {
-                                _this.getData()
+                                _this.getData();
                                 _this.$Message.success(msg);
                             }, (data, msg) => {
                                 _this.$Message.error(msg);
-                            })
+                            });
                         }, (res) => {
-                            //处理错误信息
+                            // 处理错误信息
                             _this.$Message.error('网络异常，请稍后重试');
-                        })
+                        });
                     },
                     onCancel: () => {
-                        return false
+                        return false;
                     }
-                })
+                });
             },
-            update() {
+            update () {
                 this.getmenutype((data) => {
-                    this.navtype = data
+                    this.navtype = data;
                 });
             }
         },
-        mixins: [http, common],
-    }
+        mixins: [http, common]
+    };
 </script>
 <style>
     .menutree {
