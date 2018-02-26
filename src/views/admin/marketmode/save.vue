@@ -181,7 +181,7 @@
                         let data = this.form;
                         let id = data.id;
                         this.apiPut('marketing_mode/' + id, data).then((res) => {
-                            this.handelResponse(res, (data, msg) => {
+                            this.handleAjaxResponse(res, (data, msg) => {
                                 this.modal = false;
                                 if (this.gpd) {
                                     this.$emit('getdata');

@@ -120,7 +120,7 @@
                   cancelText: '取消',
                   onOk: () => {
                       _this.apiPost('admin/deleAll', data).then((res) => {
-                          _this.handelResponse(res, (data, msg) => {
+                          _this.handleAjaxResponse(res, (data, msg) => {
                               setTimeout(function () {
                                   location.reload();
                               }, 1000);
@@ -175,7 +175,7 @@
                   };
               }
               this.apiGet('keyword', data).then((res) => {
-                  this.handelResponse(res, (childdata, msg) => {
+                  this.handleAjaxResponse(res, (childdata, msg) => {
                       func(childdata);
                   }, (data, msg) => {
                       this.$Message.error(msg);

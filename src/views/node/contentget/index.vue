@@ -101,7 +101,7 @@
                   cancelText: '取消',
                   onOk: (index) => {
                       _this.apiDelete('content_get/', id).then((res) => {
-                          _this.handelResponse(res, (data, msg) => {
+                          _this.handleAjaxResponse(res, (data, msg) => {
                               _this.getData();
                               _this.$Message.success(msg);
                           }, (data, msg) => {

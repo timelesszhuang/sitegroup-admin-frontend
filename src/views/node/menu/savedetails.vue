@@ -38,9 +38,14 @@
                     <Form-item label="封面模板" prop="covertemplate">
                         <Input type="text" v-model="detail.covertemplate" placeholder="请填写详情页面的封面模板名(加.html)"></Input>
                     </Form-item>
-                    <Form-item label="内容" prop="content" style="height:100%;">
-                        <editor @change="updateData" :content="detail.content" :height="300"
-                                :auto-height="false"></editor>
+                        <Form-item label="内容" prop="content">
+                            <Card shadow>
+                                <textarea class='tinymce-textarea' id="tinymceEditerSaveDetails"></textarea>
+                            </Card>
+                            <Spin fix v-if="spinShow">
+                                <Icon type="load-c" size=18 class="demo-spin-icon-load"></Icon>
+                                <div>加载组件中...</div>
+                            </Spin>
                     </Form-item>
                 </Form>
             </div>
@@ -67,6 +72,7 @@
                 }
             };
             return {
+                spinShow: false,
                 modal: false,
                 modal_loading: false,
                 content: '',
@@ -87,7 +93,26 @@
                 }
             }
         },
+        mounted() {
+            this.init();
+        },
+        destroyed() {
+            tinymce.get('tinymceEditerSaveDetails').destroy();
+        },
         methods: {
+            init: function () {
+                this.$nextTick(() => {
+                    let height = document.body.offsetHeight - 500;
+                    this.tinymceInit(this, height, 'tinymceEditerSaveDetails');
+                });
+            },
+            edit(){
+                console.log(this.detail)
+                tinymce.get('tinymceEditerSaveDetails').setContent(this.detail.content);
+            },
+            changeArticletype(value) {
+                this.form.p_id = value.value
+            },
             changeNavtype(value) {
                 this.detail.tag_name = value.label
                 this.detail.tag_id = value.value
@@ -102,6 +127,10 @@
                 this.$refs.detailadd.validate((valid) => {
                     if (valid) {
                         this.modal_loading = true;
+                        let activeEditor = tinymce.activeEditor;
+                        let editBody = activeEditor.getBody();
+                        activeEditor.selection.select(editBody);
+                        this.detail.content = activeEditor.selection.getContent({'format': 'html'});
                         let data = this.detail;
                         let id = data.id;
                         this.apiPut('menu/' + id, data).then((res) => {

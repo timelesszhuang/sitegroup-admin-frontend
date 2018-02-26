@@ -23,8 +23,8 @@
                             <Select ref="select" :clearable="selects" v-model="form.type_id"
                                     style="width:200px;position: relative;z-index: 10000"
                                     multiple>
-                                <Option-group v-for="(item,index) in articletype" :label="index" :key="item">
-                                    <Option v-for="items in item" :value="items.id" :label="items.name" :key="index">{{
+                                <Option-group v-for="(item,index) in this.$store.state.commondata.articleType" :label="index" :key="item.id">
+                                    <Option v-for="items in item" :value="items.id" :label="items.name" :key="items.id">{{
                                         items.name }}
                                     </Option>
                                 </Option-group>
@@ -34,7 +34,7 @@
                             <Select v-model="form.tag_id" ref="select" :clearable="selects"
                                     style="text-align: left;width:200px;"
                                     label-in-value filterable 　@on-change="changeNavtype">
-                                <Option v-for="item in navtype" :value="item.id" :label="item.text" :key="item">
+                                <Option v-for="item in navtype" :value="item.id" :label="item.text" :key="item.id">
                                     {{ item.text }}
                                 </Option>
                             </Select>
@@ -42,7 +42,7 @@
                         <Form-item label="上级分类" prop="p_id">
                             <Select ref="select" :clearable="selects" style="text-align: left;width:250px;"
                                     label-in-value filterable @on-change="changeArticletype">
-                                <Option v-for="item in pidtype" :value="item.id" :label="item.name" :key="item">
+                                <Option v-for="item in pidtype" :value="item.id" :label="item.name" :key="item.id">
                                     {{ item.text }}
                                 </Option>
                             </Select>
@@ -140,9 +140,13 @@
                 this.$refs.articleadd.validate((valid) => {
                     if (valid) {
                         this.modal_loading = true;
+                        let activeEditor = tinymce.activeEditor;
+                        let editBody = activeEditor.getBody();
+                        activeEditor.selection.select(editBody);
+                        this.form.content = activeEditor.selection.getContent({'format': 'html'});
                         let data = this.form;
                         this.apiPost('menu', data).then((res) => {
-                            this.handelResponse(res, (data, msg) => {
+                            this.handleAjaxResponse(res, (data, msg) => {
                                 this.modal = false;
                                 if (this.gpd) {
                                     this.$emit('getdata');

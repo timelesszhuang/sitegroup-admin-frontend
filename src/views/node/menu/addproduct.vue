@@ -21,8 +21,8 @@
                         <Form-item label="产品分类" prop="type_name">
                             <Select ref="select" v-model="form.type_id" style="width:200px"
                                     multiple>
-                                <Option-group v-for="(item,index) in ptype" :label="index" :key="item.id">
-                                    <Option v-for="items in item" :value="items.id" :label="items.name" :key="index">{{
+                                <Option-group v-for="(item,index) in this.$store.state.commondata.productType" :label="index" :key="item.id">
+                                    <Option v-for="items in item" :value="items.id" :label="items.name" :key="index.id">{{
                                         items.name }}
                                     </Option>
                                 </Option-group>
@@ -133,7 +133,7 @@
                         this.modal_loading = true;
                         let data = this.form;
                         this.apiPost('menu', data).then((res) => {
-                            this.handelResponse(res, (data, msg) => {
+                            this.handleAjaxResponse(res, (data, msg) => {
                                 this.modal = false;
                                 if (this.gpd) {
                                     this.$emit('getdata');

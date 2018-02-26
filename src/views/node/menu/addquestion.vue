@@ -22,8 +22,8 @@
                             <Select v-model="form.type_id" ref="select" :clearable="selects"
                                     style="width:200px;position: relative;z-index: 10000;"
                                     multiple>
-                                <Option-group v-for="(item,index) in questiontype" :label="index" :key="item.id">
-                                    <Option v-for="items in item" :value="items.id" :label="items.name" :key="index">{{
+                                <Option-group v-for="(item,index) in this.$store.state.commondata.questionType" :label="index" :key="item.id">
+                                    <Option v-for="items in item" :value="items.id" :label="items.name" :key="items.id">{{
                                         items.name }}
                                     </Option>
                                 </Option-group>

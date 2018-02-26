@@ -63,7 +63,7 @@
                         name: this.name
                     }
                 }
-                this.apiGet('admin/menutag', data).then((data) => {
+                this.apiGet('menuTag', data).then((data) => {
                     this.handleAjaxResponse(data, (data, msg) => {
                         this.datas = data.rows
                         this.total = data.total;
@@ -91,7 +91,7 @@
             },
             edit(params) {
                 let editid = params.row.id
-                this.apiGet('admin/menutag/' + editid).then((res) => {
+                this.apiGet('menuTag/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.editinfo = data
                         this.modal = false;

@@ -74,7 +74,7 @@
     methods: {
       getKeyword(func) {
         this.apiGet('scrapy/getlist').then((res) => {
-          this.handelResponse(res, (data, msg) => {
+          this.handleAjaxResponse(res, (data, msg) => {
             func(data)
           }, (data, msg) => {
             this.$Message.error(msg);
@@ -94,7 +94,7 @@
           }
         }
         this.apiGet('wechat/article', data).then((data) => {
-          this.handelResponse(data, (data, msg) => {
+          this.handleAjaxResponse(data, (data, msg) => {
             this.datas = data.rows
             this.total = data.total;
             this.pageSize = 10
@@ -110,7 +110,7 @@
           type: "article",
         }
         this.apiPost('admin/gettags', data).then((res) => {
-          this.handelResponse(res, (data, msg) => {
+          this.handleAjaxResponse(res, (data, msg) => {
             this.tagname = data
             this.modal = false;
           }, (data, msg) => {
@@ -148,7 +148,7 @@
       getArticle(index) {
         let editid = this.datas[index].id
         this.apiGet('wechat/getOneArticle/' + editid).then((res) => {
-          this.handelResponse(res, (data, msg) => {
+          this.handleAjaxResponse(res, (data, msg) => {
             data.thumbnails = '';
             data.title_color = '';
             data.is_collection = 20

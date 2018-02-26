@@ -72,7 +72,7 @@
         methods: {
             edit(editid) {
                 this.apiGet('content_get/' + editid).then((res) => {
-                    this.handelResponse(res, (data, msg) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
                         this.editinfo = data;
                         this.modal = false;
                         this.$refs.save.modal = true;
@@ -110,7 +110,7 @@
                         let data = this.form;
                         let id = data.id;
                         this.apiPut('content_get/' + id, data).then((res) => {
-                            this.handelResponse(res, (data, msg) => {
+                            this.handleAjaxResponse(res, (data, msg) => {
                                 this.modal = false;
                                 if (this.gpd) {
                                     this.$emit('getdata');

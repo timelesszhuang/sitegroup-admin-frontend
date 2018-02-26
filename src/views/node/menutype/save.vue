@@ -50,7 +50,7 @@
                         this.modal_loading = true;
                         let data = this.form;
                         let id = data.id;
-                        this.apiPut('admin/menutag/' + id, data).then((res) => {
+                        this.apiPut('menuTag/' + id, data).then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {
                                 this.modal = false;
                                 if (this.gpd) {

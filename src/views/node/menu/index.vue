@@ -161,17 +161,12 @@
         created() {
             this.getData()
             this.getmenutype()
-            this.getArticleType((data) => {
-                this.articletypelist = data
-            });
-            this.getQuestionType((data) => {
-                this.questiontypelist = data
-            });
-            this.getproducttype((data) => {
-                this.ptype = data
-            });
         },
-
+        mounted () {
+            this.getProductType();
+            this.getArticleType();
+            this.getQuestionType();
+        },
         methods: {
             changeNavtype(value) {
                 this.tag_id = value.value
@@ -199,20 +194,8 @@
             queryData() {
                 this.getData()
             },
-            getproducttype(func) {
-                this.apiGet('admin/getProductType').then((res) => {
-                    this.handleAjaxResponse(res, (data, msg) => {
-                        func(data)
-                    }, (data, msg) => {
-                        this.$Message.error(msg);
-                    })
-                }, (res) => {
-                    //处理错误信息
-                    this.$Message.error('网络异常，请稍后重试。');
-                });
-            },
             getpidtype(flag, id) {
-                this.apiGet('menu/upmenu/' + flag + "/" + id).then((res) => {
+                this.apiGet('upMenu/' + flag + "/" + id).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.pidtype = data
                     }, (data, msg) => {
@@ -224,7 +207,7 @@
                 });
             },
             getmenutype(func) {
-                this.apiGet('admin/menutag/list').then((res) => {
+                this.apiGet('menutagList').then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.navtype = data
                     }, (data, msg) => {
@@ -287,6 +270,7 @@
                         this.modal = false;
                         if (data.flag == 1) {
                             this.getpidtype(data.flag, editid)
+                            this.$refs.savedetails.edit()
                             this.$refs.savedetails.modal = true
                         } else if (data.flag == 2) {
                             this.getpidtype(data.flag, editid)

@@ -21,7 +21,7 @@
                             <Select v-model="form.tag_id" ref="select" :clearable="selects"
                                     style="text-align: left;width:200px;position: relative;z-index: 10002"
                                     label-in-value filterable　@on-change="changeNavtype">
-                                <Option v-for="item in navtype" :value="item.id" :label="item.text" :key="item">
+                                <Option v-for="item in navtype" :value="item.id" :label="item.text" :key="item.id">
                                     {{ item.text }}
                                 </Option>
                             </Select>
@@ -29,7 +29,7 @@
                         <Form-item label="上级分类" prop="p_id">
                             <Select style="width:200px;position: relative;z-index: 10001"
                                     label-in-value filterable @on-change="changeArticletype">
-                                <Option v-for="item in pidtype" :value="item.id" :label="item.name" :key="item">
+                                <Option v-for="item in pidtype" :value="item.id" :label="item.name" :key="item.id">
                                     {{ item.text }}
                                 </Option>
                             </Select>
@@ -125,7 +125,6 @@
                 this.form.p_id = value.value
             },
             changeNavtype(value) {
-                console.log(value)
                 this.form.tag_name = value.label
                 this.form.tag_id = value.value
             },

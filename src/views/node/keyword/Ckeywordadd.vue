@@ -49,7 +49,7 @@
             this.modal_loading = true;
             let data = this.form;
             this.apiPost('keyword/insertA', data).then((res) => {
-              this.handelResponse(res, (data, msg) => {
+              this.handleAjaxResponse(res, (data, msg) => {
                 this.modal = false;
                 this.$Message.success(msg);
                 this.modal_loading = false;

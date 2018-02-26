@@ -53,7 +53,7 @@
                     if (valid) {
                         this.modal_loading = true;
                         let data = this.form;
-                        this.apiPost('admin/menutag', data).then((res) => {
+                        this.apiPost('menuTag', data).then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {
                                 this.modal = false;
                                 if (this.gpd) {
