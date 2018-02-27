@@ -197,20 +197,13 @@ export const nodeappRouter = [
                 name: 'column-management',
                 component: () => import('@/views/node/nav/tab.vue')
             },
-            // {
-            //     path: 'elements-set',
-            //     icon: 'image',
-            //     title: '网站元素设置',
-            //     name: 'elements-set',
-            //     component: () => import('@/views/node/elements-set/index.vue')
-            // },
-            // {
-            //     path: 'site-management',
-            //     icon: 'image',
-            //     title: '站点管理',
-            //     name: 'site-management',
-            //     component: () => import('@/views/node/site-management/index.vue')
-            // },
+            {
+                path: 'site-management',
+                icon: 'image',
+                title: '站点管理',
+                name: 'site-management',
+                component: () => import('@/views/node/sitemanage/index.vue')
+            },
             {
                 path: 'user-management',
                 icon: 'image',

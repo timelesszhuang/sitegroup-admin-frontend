@@ -44,7 +44,7 @@
 
 <script type="text/ecmascript-6">
     import http from '../../../libs/http';
-
+    import common from '../../../libs/common';
     export default {
         data() {
             return {
@@ -86,6 +86,7 @@
                                 if (this.gpd) {
                                     this.$emit('getdata');
                                 }
+                                this.getTemplate(true);
                                 this.$Message.success(msg);
                                 this.modal_loading = false;
                                 this.$refs.templatesave.resetFields();
@@ -113,6 +114,6 @@
                 }
             }
         },
-        mixins: [http]
+        mixins: [http,common]
     }
 </script>

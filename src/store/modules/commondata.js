@@ -8,6 +8,16 @@ const commondata = {
         productTag: [],
         Tag: [],
         TagType: [],
+        SiteUser : [],
+        SiteType : [],
+        Ico : [],
+        Logo : [],
+        WaterImage : [],
+        Template : [],
+        ContentWay : [],
+        Domain : [],
+        FriendLink : [],
+        PublicCode : [],
         backgroundcolor: [
             'background-image:url(static/sitebackimg/flower.jpg);background-size: 100% 100%',
             'background-image:linear-gradient(45deg, rgb(252, 54, 253) 0%, rgb(93, 63, 218) 100%)',
@@ -83,6 +93,16 @@ const commondata = {
             state.Tag = [];
             state.TagType = [];
             state.backgroundcolor = [];
+            state.SiteUser = [];
+            state.SiteType = [];
+            state.Ico = [];
+            state.Logo = [];
+            state.WaterImage = [];
+            state.Template = [];
+            state.ContentWay = [];
+            state.Domain = [];
+            state.FriendLink = [];
+            state.PublicCode = [];
         }
     }
 };
