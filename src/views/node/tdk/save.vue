@@ -45,7 +45,7 @@
             {required: true, message: '请输入url', trigger: 'blur'},
           ],
           detail: [
-            {required: true, message: '请输入详情', trigger: 'blur'},
+            { message: '请输入详情', trigger: 'blur'}
           ],
         }
       }

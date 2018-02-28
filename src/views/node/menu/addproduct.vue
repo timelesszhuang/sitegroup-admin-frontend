@@ -107,13 +107,13 @@
                         {required: true, message: '请填写菜单名字', trigger: 'blur'},
                     ],
                     title: [
-                        {required: true, message: '请填写栏目的详情', trigger: 'blur'},
+                        { message: '请填写栏目的详情', trigger: 'blur'}
                     ],
                     generate_name: [
                         {required: true, message: '请填写生成的文件名', trigger: 'blur'}
                     ],
                     tag_name: [
-                        {required: true, validator: checkNavtype, trigger: 'blur'}
+                        {validator: checkNavtype, trigger: 'blur'}
                     ],
                 }
             }

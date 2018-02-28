@@ -45,7 +45,7 @@
                         {required: true, message: '请填写行业名', trigger: 'blur'},
                     ],
                     detail: [
-                        {required: true, message: '请填写描述或行业详情', trigger: 'blur'},
+                        { message: '请填写描述或行业详情', trigger: 'blur'}
                     ]
                 },
             }

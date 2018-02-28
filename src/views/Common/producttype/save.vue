@@ -69,7 +69,7 @@
                         {required: true, message: '请填写分类', trigger: 'blur'}
                     ],
                     detail: [
-                        {required: true, message: '请填写详情', trigger: 'blur'}
+                        { message: '请填写详情', trigger: 'blur'}
                     ]
                 }
             };

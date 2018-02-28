@@ -38,7 +38,7 @@
                         {required: true, message: '请填写文章分类', trigger: 'blur'},
                     ],
                     detail: [
-                        {required: true, message: '请填写文章详情', trigger: 'blur'},
+                        { message: '请填写文章详情', trigger: 'blur'}
                     ],
                 }
             }

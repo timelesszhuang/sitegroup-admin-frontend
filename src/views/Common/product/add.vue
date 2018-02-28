@@ -195,7 +195,7 @@
                         {required: true, message: '请填写产品或其他名称', trigger: 'blur'}
                     ],
                     detail: [
-                        {required: true, message: '请填写产品详情', trigger: 'blur'}
+                        {message: '请填写产品详情', trigger: 'blur'}
                     ],
                     summary: [
                         {required: true, message: '请输入产品摘要', trigger: 'blur'}

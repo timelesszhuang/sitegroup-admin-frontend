@@ -111,7 +111,7 @@
                         {required: true, message: '请填写菜单名字', trigger: 'blur'},
                     ],
                     title: [
-                        {required: true, message: '请填写栏目的详情', trigger: 'blur'},
+                        { message: '请填写栏目的详情', trigger: 'blur'}
                     ],
                     type_name: [
                         {required: true, message: '请选择文章分类', trigger: 'blur'},

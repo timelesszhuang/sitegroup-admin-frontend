@@ -53,7 +53,7 @@
                         {required: true, message: '请输入链接', trigger: 'blur'},
                     ],
                     detail: [
-                        {required: true, message: '请输入详情', trigger: 'blur'},
+                        { message: '请输入详情', trigger: 'blur'}
                     ],
                 }
             }

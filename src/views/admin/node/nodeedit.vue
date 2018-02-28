@@ -64,7 +64,7 @@
                         {required: true, message: '请填写节点名', trigger: 'blur'},
                     ],
                     detail: [
-                        {required: true, message: '请填写节点详情', trigger: 'blur'},
+                        { message: '请填写节点详情', trigger: 'blur'},
                     ],
                     com_id: [
                         {required: true, validator: checkcomtype, trigger: "blur"}
