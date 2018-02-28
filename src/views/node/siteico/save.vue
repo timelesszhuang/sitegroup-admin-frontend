@@ -17,7 +17,7 @@
                                     ref="upImg"
                                     with-credentials
                                     name="file"
-                                    :format="['jpg','jpeg','png','gif']"
+                                    :format="['ico']"
                                     :on-success="getResponse"
                                     :on-error="getErrorInfo"
                                     :on-format-error="formatError"
@@ -95,7 +95,7 @@
                 this.$Message.error(error);
             },
             formatError() {
-                this.$Message.error('文件格式只支持 jpg,jpeg,png三种格式。');
+                this.$Message.error('文件格式只支持 ico三种格式。');
             },
             add() {
                 this.$refs.icosave.validate((valid) => {
