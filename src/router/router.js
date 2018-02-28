@@ -72,10 +72,10 @@ export const nodeotherRouter = {
             component: () => import('@/views/node/home/home.vue')
         },
         {
-            path: 'ownspace',
+            path: 'nodeownspace',
             title: '个人中心',
-            name: 'nodeownspace_index',
-            component: () => import('@/views/own-space/own-space.vue')
+            name: 'nodeownspace',
+            component: () => import('@/views/node/own-space/tab.vue')
         },
         {
             path: 'order/:order_id',
@@ -525,9 +525,9 @@ export const adminotherRouter = {
             component: () => import('@/views/admin/home/home.vue')
         },
         {
-            path: 'ownspace',
+            path: 'adminownspace',
             title: '个人中心',
-            name: 'nodeownspace_index',
+            name: 'nodeownspace',
             component: () => import('@/views/own-space/own-space.vue')
         },
         {
@@ -870,9 +870,9 @@ export const siteotherRouter = {
             component: () => import('@/views/site/home/home.vue')
         },
         {
-            path: 'ownspace',
+            path: 'siteownspace',
             title: '个人中心',
-            name: 'ownspace_index',
+            name: 'siteownspace',
             component: () => import('@/views/own-space/own-space.vue')
         },
         {

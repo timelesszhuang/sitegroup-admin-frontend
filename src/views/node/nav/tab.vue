@@ -10,21 +10,21 @@
 </template>
 <script>
     import http from '../../../libs/http';
-    import Menutype from '../menutype/index.vue'
-    import naviga from '../menu/index.vue'
+    import Menutype from '../menutype/index.vue';
+    import naviga from '../menu/index.vue';
 
     export default {
         components: {Menutype, naviga},
         methods: {
-            getdata(name) {
-                if (name === "Menutype") {
-                    this.$refs.menutype.getData()
+            getdata (name) {
+                if (name === 'Menutype') {
+                    this.$refs.menutype.getData();
                 } else if (name === 'menu') {
-                    this.$refs.menu.getmenutype()
-                    this.$refs.menu.getData()
+                    this.$refs.menu.getmenutype();
+                    this.$refs.menu.getData();
                 }
             }
         },
         mixins: [http]
-    }
+    };
 </script>
