@@ -53,6 +53,7 @@
 
 <script type="text/ecmascript-6">
     import http from '../../../libs/http';
+    import common from '../../../libs/common';
 
     export default {
         data() {
@@ -108,6 +109,7 @@
                                 if (this.gpd) {
                                     this.$emit('getdata');
                                 }
+                                this.getTagType(true);
                                 this.$Message.success(msg);
                                 this.modal_loading = false;
                                 this.$refs.ptypesave.resetFields();
@@ -144,6 +146,6 @@
         }, props: {
             gpd: {default: 1},
         },
-        mixins: [http]
+        mixins: [http,common]
     };
 </script>

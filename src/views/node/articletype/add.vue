@@ -111,6 +111,7 @@
                                 if (this.gpd) {
                                     this.$emit('getdata');
                                 }
+                                this.getTagType(true);
                                 this.$Message.success(msg);
                                 this.modal_loading = false;
                                 this.$refs.articleadd.resetFields();
