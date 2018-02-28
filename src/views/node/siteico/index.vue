@@ -1,5 +1,6 @@
 <template>
     <div>
+        <card>
         <div class="top" style="padding-left: 10px">
             <Button type="success" @click="add">添加</Button>
         </div>
@@ -19,6 +20,7 @@
         </div>
         <icoadd ref="add" v-on:getdata="getData"></icoadd>
         <icosave ref="save" :form="editinfo" v-on:getdata="getData"></icosave>
+        </card>
     </div>
 </template>
 
