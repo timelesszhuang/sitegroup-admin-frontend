@@ -60,7 +60,7 @@
                         {required: true, message: '请输入名称', trigger: 'blur'},
                     ],
                     detail: [
-                        {required: true, message: '请输入描述', trigger: 'blur'},
+                        { message: '请输入描述', trigger: 'blur'}
 
                     ],
                     chain_type: [
