@@ -53,6 +53,7 @@
                 <Button type="success" size="large" :loading="modal_loading" @click="savedetails">保存</Button>
             </div>
         </Modal>
+        <materialimg ref="addmaterial" v-on:addmaterial="addmaterial"></materialimg>
     </div>
 </template>
 
@@ -61,8 +62,9 @@
     import common from '../../../libs/common';
     import tinymceInit from '../../../libs/tinymceInit';
     import tinymce from 'tinymce';
-
+    import materialimg from '../../Common/article/materialimg.vue';
     export default {
+        components: {materialimg},
         data() {
             const checkNavtype = (rule, value, callback) => {
                 if (!value) {
@@ -100,6 +102,14 @@
             tinymce.get('tinymceEditerSaveDetails').destroy();
         },
         methods: {
+            addmaterial(src) {
+                if (this.img === 'content') {
+                    let imgsrc = '<img src=' + src + '>';
+                    tinymce.get('tinymceEditerSaveDetails').insertContent(imgsrc);
+                } else if (this.img === 'suolue') {
+                    this.form.thumbnails = src;
+                }
+            },
             init: function () {
                 this.$nextTick(() => {
                     let height = document.body.offsetHeight - 500;
