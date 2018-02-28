@@ -30,7 +30,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import http from '../../../assets/js/http.js'
+  import http from '../../../libs/http';
   import common from '../../../assets/js/common.js'
   import wechatarticlesave from '../article/save.vue'
 

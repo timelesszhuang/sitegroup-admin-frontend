@@ -17,25 +17,10 @@
                             </Select>
                         </Form-item>
                         <Form-item label="生成起始时间" prop="time">
-                            <el-time-select
-                                    placeholder="起始时间"
-                                    v-model="form.starttime"
-                                    :picker-options="{
-                  start: '08:00',
-                  step: '00:30',
-                  end: '23:00'
-                  }">
-                            </el-time-select>
-                            <el-time-select
-                                    placeholder="结束时间"
-                                    v-model="form.stoptime"
-                                    :picker-options="{
-                  start: '08:30',
-                  step: '00:30',
-                  end: '23:30',
-                  minTime: form.starttime
-                }">
-                            </el-time-select>
+                            <TimePicker @on-change="starthandleChange" format="HH:mm" :steps="[1, 30 ,60]"
+                                        placeholder="Select time" style="width: 112px"/>
+                            <TimePicker @on-change="endhandleChange" format="HH:mm" :steps="[1, 30 ,60]"
+                                        placeholder="Select time" style="width: 112px"/>
                         </Form-item>
                         <Form-item label="允许发布的数量" prop="staticcount">
                             <InputNumber :min="1" v-model="form.staticcount" placeholder="请输入数量"></InputNumber>
@@ -95,6 +80,13 @@
             }
         },
         methods: {
+            starthandleChange(time) {
+                console.log(time);
+                this.form.starttime = time
+            },
+            endhandleChange(time) {
+                this.form.stoptime = time
+            },
             changeSite(value) {
                 this.form.site_name = value.label
                 this.form.site_id = value.value
@@ -112,7 +104,9 @@
                         this.apiPost('Staticconfig', data).then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {
                                 this.modal = false;
-                                if (this.gpd) {this.$emit('getdata');}
+                                if (this.gpd) {
+                                    this.$emit('getdata');
+                                }
                                 this.$Message.success(msg);
                                 this.modal_loading = false;
                                 this.$refs.staticconfig.resetFields();

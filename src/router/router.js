@@ -259,6 +259,13 @@ export const nodeappRouter = [
                 name: 'keywordmanage',
                 component: () => import('@/views/node/keyword/keyword.vue')
             },
+            {
+                path: 'keywordtable',
+                icon: 'ios-navigate',
+                title: '关键词推荐与追踪',
+                name: 'keywordtable',
+                component: () => import('@/views/node/keywordtab/tab.vue')
+            },
         ]
     },
     {
