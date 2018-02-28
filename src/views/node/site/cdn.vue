@@ -1,5 +1,5 @@
 <template>
-  <Modal v-model="modal" title="ftp信息" style="position:relative;z-index: 11000">
+  <Modal v-model="modal" :mask-closable="false" title="ftp信息" style="position:relative;z-index: 11000">
     <Form ref="cdn" :model="form" :label-width="90" :rules="AddRule" class="node-add-form">
       <Form-item label="cdn品牌" prop="cdn_type">
         <Input type="text" v-model="form.cdn_type" placeholder="请输入cdn品牌"></Input>

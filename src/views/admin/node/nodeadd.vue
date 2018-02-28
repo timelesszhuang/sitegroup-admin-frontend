@@ -6,7 +6,7 @@
 <template>
     <div>
         <Modal
-                v-model="modal" width="600">
+                v-model="modal" :mask-closable="false" width="600">
             <p slot="header">
                 <!--<Icon type="person-add"></Icon>-->
                 <span>添加节点信息</span>

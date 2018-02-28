@@ -6,7 +6,7 @@
 <template>
   <div>
     <Modal
-      v-model="modal" width="600"
+      v-model="modal" width="600" :mask-closable="false"
       title="企业信息">
       <p slot="header" style="color:#f60;text-align:center">
         <Icon type="information-circled"></Icon>

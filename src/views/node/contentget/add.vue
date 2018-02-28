@@ -2,7 +2,7 @@
     <div>
         <div>
             <Modal
-                    v-model="modal" width="800">
+                    v-model="modal" width="800" :mask-closable="false">
                 <p slot="header">
                     <span>添加内容</span>
                 </p>

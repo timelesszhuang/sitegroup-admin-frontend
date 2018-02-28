@@ -2,7 +2,7 @@
     <div>
         <div>
             <Modal
-                    v-model="modal" width="1000" style="height:auto">
+                    v-model="modal" width="1000" style="height:auto" :mask-closable="false">
                 <p slot="header">
                     <span>添加配置</span>
                 </p>

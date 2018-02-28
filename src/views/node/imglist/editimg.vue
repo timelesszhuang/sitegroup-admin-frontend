@@ -1,7 +1,7 @@
 <template>
     <div>
         <div>
-            <Modal v-model="modal" width="900" :styles="{top: '20px'}">
+            <Modal v-model="modal" width="900" :styles="{top: '20px'}" :mask-closable="false">
                 <p slot="header">
                     <span>轮播图集管理</span>
                 </p>

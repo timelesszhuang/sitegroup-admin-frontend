@@ -4,7 +4,7 @@
             <Modal
                     v-model="modal"
                     width="900"
-                    :styles="{top: '20px'}"
+                    :styles="{top: '20px'}" :mask-closable="false"
             >
                 <p slot="header">
                     <span>添加站点</span>

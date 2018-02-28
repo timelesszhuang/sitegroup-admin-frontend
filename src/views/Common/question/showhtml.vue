@@ -1,7 +1,7 @@
 <template>
   <div>
     <Modal
-      v-model="modal" width="300">
+      v-model="modal" width="300" :mask-closable="false">
       <p slot="header">
         <span>预览</span>
       </p>

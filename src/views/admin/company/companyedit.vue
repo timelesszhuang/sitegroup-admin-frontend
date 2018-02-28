@@ -6,7 +6,7 @@
 <template>
     <div>
         <Modal
-                v-model="modal"
+                v-model="modal" :mask-closable="false"
                 title="修改账号信息">
             <p slot="header">
                 <!--<Icon type="information-circled"></Icon>-->

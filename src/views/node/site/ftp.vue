@@ -1,5 +1,5 @@
 <template>
-  <Modal v-model="modal" title="ftp信息">
+  <Modal v-model="modal" :mask-closable="false" title="ftp信息">
     <Form ref="ftp" :model="form"  :label-width="90" :rules="AddRule" class="node-add-form">
       <Form-item label="ftp平台" prop="ftp_place">
         <Input type="text" v-model="form.ftp_place"  placeholder="请输入ftp平台"></Input>
