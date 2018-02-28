@@ -28,12 +28,16 @@
         data() {
             return {
                 dropdown: [
-                    {'name': 'ownSpace', 'text': '个人中心'},
+                    {'name': 'adminownSpace', 'text': '个人中心'},
+                    {'name': 'loginout', 'text': '退出系统'}
+                ],
+                nodedropdown: [
+                    {'name': 'nodeownSpace', 'text': '个人中心'},
                     {'name': 'companyinfo', 'text': '企业信息'},
                     {'name': 'loginout', 'text': '退出系统'}
                 ],
                 userdropdown: [
-                    {'name': 'ownSpace', 'text': '个人中心'},
+                    {'name': 'userownSpace', 'text': '个人中心'},
                     {'name': 'loginout', 'text': '退出系统'}
                 ]
             };
@@ -41,11 +45,23 @@
         methods: {
             // 获取相关用户的信息
             handleClickUserDropdown(name) {
-                if (name === 'ownSpace') {
-                    // 个人信息
-                    util.openNewPage(this, 'ownspace_index');
+                if (name === 'nodeownSpace') {
+                    // node企业的个人信息相关信息
+                    util.openNewPage(this, 'nodeownspace');
                     this.$router.push({
-                        name: 'ownspace_index'
+                        name: 'nodeownspace'
+                    });
+                } else if (name === 'adminownSpace') {
+                    // 管理员的个人中心
+                    util.openNewPage(this, 'adminownspace');
+                    this.$router.push({
+                        name: 'adminownspace'
+                    });
+                } else if (name === 'userownSpace') {
+                    // 用户的个人中心
+                    util.openNewPage(this, 'userownspace');
+                    this.$router.push({
+                        name: 'userownspace'
                     });
                 } else if (name === 'loginout') {
                     // 退出登录
@@ -92,6 +108,8 @@
         created() {
             if (parseInt(Cookies.get('type')) === 3) {
                 this.dropdown = this.userdropdown;
+            } else if (parseInt(Cookies.get('type')) === 2) {
+                this.dropdown = this.nodedropdown;
             }
             this.getUserInfo();
         }

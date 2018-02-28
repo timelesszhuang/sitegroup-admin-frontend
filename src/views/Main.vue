@@ -84,7 +84,7 @@
             userDropdown,
             nodeName
         },
-        data() {
+        data () {
             return {
                 shrink: false,
                 userName: '测试啊啊啊',
@@ -97,28 +97,28 @@
             };
         },
         computed: {
-            menuList() {
+            menuList () {
                 return this.$store.state.app.menuList;
             },
-            pageTagsList() {
+            pageTagsList () {
                 return this.$store.state.app.pageOpenedList; // 打开的页面的页面对象
             },
-            currentPath() {
+            currentPath () {
                 return this.$store.state.app.currentPath; // 当前面包屑数组
             },
-            avatorPath() {
+            avatorPath () {
                 return localStorage.avatorImgPath;
             },
-            cachePage() {
+            cachePage () {
                 return this.$store.state.app.cachePage;
             },
-            lang() {
+            lang () {
                 return this.$store.state.app.lang;
             },
-            menuTheme() {
+            menuTheme () {
                 return this.$store.state.app.menuTheme;
             },
-            mesCount() {
+            mesCount () {
                 return this.$store.state.app.messageCount;
             }
             /* showAddCompanyInfo() {
@@ -132,7 +132,7 @@
             } */
         },
         methods: {
-            init() {
+            init () {
                 // 设置已经打开的页面
                 this.$store.commit('setOpenedList');
                 this.$store.commit('setInitRouter');
@@ -155,31 +155,10 @@
                 this.checkTag(this.$route.name);
                 // 获取相关用户的信息
             },
-            toggleClick() {
+            toggleClick () {
                 this.shrink = !this.shrink;
             },
-            handleClickUserDropdown(name) {
-                if (name === 'ownSpace') {
-                    util.openNewPage(this, 'ownspace_index');
-                    this.$router.push({
-                        name: 'ownspace_index'
-                    });
-                } else if (name === 'loginout') {
-                    // 退出登录
-                    this.apiGet('logout').then((res) => {
-                        this.handleAjaxResponse(res, (data) => {
-                            this.$store.commit('logout', this);
-                            this.$store.commit('clearOpenedSubmenu');
-                            this.$router.push({
-                                name: 'login'
-                            });
-                        });
-                    }, (res) => {
-                        // 出错的处理方法
-                    });
-                }
-            },
-            checkTag(name) {
+            checkTag (name) {
                 let openpageHasTag = this.pageTagsList.some(item => {
                     if (item.name === name) {
                         return true;
@@ -189,25 +168,19 @@
                     util.openNewPage(this, name, this.$route.params || {}, this.$route.query || {});
                 }
             },
-            handleSubmenuChange(val) {
+            handleSubmenuChange (val) {
                 // console.log(val)
             },
-            beforePush(name) {
-                // if (name === 'accesstest_index') {
-                //     return false;
-                // } else {
-                //     return true;
-                // }
+            beforePush (name) {
                 return true;
             },
-            fullscreenChange(isFullScreen) {
+            fullscreenChange (isFullScreen) {
                 // console.log(isFullScreen);
             }
         },
         watch: {
-            '$route'(to) {
+            '$route' (to) {
                 this.$store.commit('setCurrentPageName', to.name);
-                console.log(to)
                 let pathArr = util.setCurrentPath(this, to.name);
                 if (pathArr.length > 2) {
                     this.$store.commit('addOpenSubmenu', pathArr[1].name);
@@ -215,14 +188,14 @@
                 this.checkTag(to.name);
                 localStorage.currentPageName = to.name;
             },
-            lang() {
+            lang () {
                 util.setCurrentPath(this, this.$route.name); // 在切换语言时用于刷新面包屑
             }
         },
-        mounted() {
+        mounted () {
             this.init();
         },
-        created() {
+        created () {
             // 显示打开的页面的列表
             this.$store.commit('setOpenedList');
         },
