@@ -6,7 +6,7 @@
             <Input v-model="url" placeholder="url" style="width:200px;"></Input>
             <Select v-model="site_type_id" style="width:200px;" placeholder="根据站点分类查询" label-in-value filterable
                     clearable>
-                <Option v-for="item in sitetype" :value="item.id" :label="item.text" :key="item.id">
+                <Option v-for="item in this.$store.state.commondata.SiteType" :value="item.id" :label="item.text" :key="item.id">
                     {{ item.text }}
                 </Option>
             </Select>
