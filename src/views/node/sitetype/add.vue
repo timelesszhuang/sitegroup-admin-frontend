@@ -2,26 +2,23 @@
     <div>
         <div>
             <Modal
-                    v-model="modal" width="600">
+                    v-model="modal" width="500">
                 <p slot="header">
-                    <span>修改用户</span>
+                    <span>添加站点分类</span>
                 </p>
                 <div>
-                    <Form ref="siteusersave" :model="form" :label-width="90" :rules="AddRule" class="node-add-form">
-                        <Form-item label="姓名" prop="name">
-                            <Input type="text" v-model="form.name" placeholder="请输入姓名"></Input>
+                    <Form ref="sitetypeadd" :model="form" :label-width="90" :rules="AddRule" class="node-add-form">
+                        <Form-item label="分类名称" prop="name">
+                            <Input type="text" v-model="form.name" placeholder="请输入名称"></Input>
                         </Form-item>
-                        <Form-item label="账号" prop="account">
-                            <Input type="text" v-model="form.account" placeholder="请输入账号"></Input>
+                        <Form-item label="描述" prop="detail">
+                            <Input type="text" v-model="form.detail" placeholder="请输入描述"></Input>
                         </Form-item>
-                        <Form-item label="邮箱" prop="email">
-                            <Input type="text" v-model="form.email" placeholder="请输入邮箱"></Input>
-                        </Form-item>
-                        <Form-item label="手机" prop="mobile">
-                            <Input type="text" v-model="form.mobile" placeholder="请输入手机"></Input>
-                        </Form-item>
-                        <Form-item label="密码" prop="pwd">
-                            <Input type="password" v-model="form.pwd" placeholder="请输入密码"/>
+                        <Form-item label="链轮类型" prop="chain_type">
+                            <Select v-model="form.chain_type" style="text-align: left;width:200px;">
+                                <Option v-for="item in chain_type" :value="item.value" :key="item.id">{{ item.label }}
+                                </Option>
+                            </Select>
                         </Form-item>
                     </Form>
                 </div>
@@ -35,22 +32,39 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import http from "../../../libs/http";
+    import http from '../../../libs/http';
     import common from '../../../libs/common';
+
     export default {
         data() {
             return {
                 modal: false,
                 modal_loading: false,
+                form: {
+                    name: "",
+                    detail: "",
+                    chain_type: ""
+                },
+                chain_type: [
+                    {
+                        value: '10',
+                        label: '循环'
+                    },
+                    {
+                        value: '20',
+                        label: '金字塔'
+                    }
+                ],
                 AddRule: {
                     name: [
                         {required: true, message: '请输入名称', trigger: 'blur'},
                     ],
-                    account: [
-                        {required: true, message: '请输入姓名', trigger: 'blur'},
+                    detail: [
+                        {required: true, message: '请输入描述', trigger: 'blur'},
+
                     ],
-                    mobile: [
-                        {required: true, message: '请输入手机号', trigger: 'blur'}
+                    chain_type: [
+                        {required: true, message: '请输入链轮类型', trigger: 'blur'},
                     ],
 
                 }
@@ -58,20 +72,20 @@
         },
         methods: {
             add() {
-                this.$refs.siteusersave.validate((valid) => {
+                this.$refs.sitetypeadd.validate((valid) => {
                     if (valid) {
                         this.modal_loading = true;
                         let data = this.form;
-                        let id = data.id;
-                        this.apiPut('siteuser/' + id, data).then((res) => {
+                        this.apiPost('sitetype', data).then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {
                                 this.modal = false;
                                 if (this.gpd) {
                                     this.$emit('getdata');
                                 }
-                                this.getSiteUser(true);
+                                this.getSiteType(true);
                                 this.$Message.success(msg);
                                 this.modal_loading = false;
+                                this.$refs.sitetypeadd.resetFields();
                             }, (data, msg) => {
                                 this.modal_loading = false;
                                 this.$Message.error(msg);
@@ -83,17 +97,6 @@
                         })
                     }
                 })
-            }
-        },
-        props: {
-            gpd: {default: 1},
-            form: {
-                default: {
-                    name: '',
-                    pwd: '',
-                    account: '',
-                    mobile: ''
-                }
             }
         },
         mixins: [http,common]

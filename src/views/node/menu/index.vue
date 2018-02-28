@@ -272,7 +272,7 @@
                         this.modal = false;
                         if (data.flag == 1) {
                             this.getpidtype(data.flag, editid);
-                            this.$refs.savedetails.edit();
+                            this.$refs.savedetails.edit(this.editinfo.content);
                             this.$refs.savedetails.modal = true;
                         } else if (data.flag == 2) {
                             this.getpidtype(data.flag, editid);

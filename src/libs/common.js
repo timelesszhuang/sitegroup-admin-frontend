@@ -164,6 +164,186 @@ const common = {
                 });
             }
         },
+        getSiteUser(reset = false) {
+            let SiteUser = this.$store.state.commondata.SiteUser;
+            if (SiteUser.length === 0 || reset) {
+                let data = {
+                    params: {}
+                };
+                this.apiGet('commonType').then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.$store.state.commondata.SiteUser = data.userlist;
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    })
+                }, (res) => {
+                    // 处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            }
+        },
+        getSiteType(reset = false) {
+            let SiteType = this.$store.state.commondata.SiteType;
+            if (SiteType.length === 0 || reset) {
+                let data = {
+                    params: {}
+                };
+                this.apiGet('commonType').then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.$store.state.commondata.SiteType = data.sitetype;
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    })
+                }, (res) => {
+                    // 处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            }
+        },
+        getIco(reset = false) {
+            let Ico = this.$store.state.commondata.Ico;
+            if (Ico.length === 0 || reset) {
+                let data = {
+                    params: {}
+                };
+                this.apiGet('getsiteicolist', data).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.$store.state.commondata.Ico = data;
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            }
+        },
+        getLogo(reset = false) {
+            let Logo = this.$store.state.commondata.Logo;
+            if (Logo.length === 0 || reset) {
+                let data = {
+                    params: {}
+                };
+                this.apiGet('getsitelogolist', data).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.$store.state.commondata.Logo = data;
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            }
+        },
+        getWaterImage(reset = false) {
+            let WaterImage = this.$store.state.commondata.WaterImage;
+            if (WaterImage.length === 0 || reset) {
+                let data = {
+                    params: {}
+                };
+                this.apiGet('getsitewaterimagelist', data).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.$store.state.commondata.WaterImage = data;
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            }
+        },
+        getTemplate(reset = false) {
+            let Template = this.$store.state.commondata.Template;
+            if (Template.length === 0 || reset) {
+                let data = {
+                    params: {}
+                };
+                this.apiGet('commonType', data).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.$store.state.commondata.Template = data.temptype;
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            }
+        },
+        getContentWay(reset = false) {
+            let ContentWay = this.$store.state.commondata.ContentWay;
+            if (ContentWay.length === 0 || reset) {
+                let data = {
+                    params: {}
+                };
+                this.apiGet('commonType', data).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.$store.state.commondata.ContentWay = data.hotline;
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            }
+        },
+        getDomain(reset = false) {
+            let Domain = this.$store.state.commondata.Domain;
+            if (Domain.length === 0 || reset) {
+                let data = {
+                    params: {}
+                };
+                this.apiGet('commonType', data).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.$store.state.commondata.Domain = data.domainlist;
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            }
+        },
+        getFriendLink(reset = false) {
+            let FriendLink = this.$store.state.commondata.FriendLink;
+            if (FriendLink.length === 0 || reset) {
+                let data = {
+                    params: {}
+                };
+                this.apiGet('commonType', data).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.$store.state.commondata.FriendLink = data.link;
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            }
+        },
+        getPublicCode(reset = false) {
+            let PublicCode = this.$store.state.commondata.PublicCode;
+            if (PublicCode.length === 0 || reset) {
+                let data = {
+                    params: {}
+                };
+                this.apiGet('commonType', data).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.$store.state.commondata.PublicCode = data.code;
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            }
+        },
         randomWord(randomFlag, min, max) {
             let str = '';
             let range = min;

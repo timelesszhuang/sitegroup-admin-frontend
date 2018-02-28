@@ -186,7 +186,7 @@ export const nodeappRouter = [
     {
         path: '/sub-site',
         icon: 'soup-can',
-        name: '子站点设置',
+        name: 'sub-site',
         title: '子站点设置',
         component: Main,
         children: [
@@ -197,26 +197,26 @@ export const nodeappRouter = [
                 name: 'column-management',
                 component: () => import('@/views/node/nav/tab.vue')
             },
-            // {
-            //     path: 'elements-set',
-            //     icon: 'image',
-            //     title: '网站元素设置',
-            //     name: 'elements-set',
-            //     component: () => import('@/views/node/elements-set/index.vue')
-            // },
-            // {
-            //     path: 'site-management',
-            //     icon: 'image',
-            //     title: '站点管理',
-            //     name: 'site-management',
-            //     component: () => import('@/views/node/site-management/index.vue')
-            // },
+            {
+                path: 'site-management',
+                icon: 'image',
+                title: '站点管理',
+                name: 'site-management',
+                component: () => import('@/views/node/sitemanage/index.vue')
+            },
             {
                 path: 'user-management',
                 icon: 'image',
                 title: '用户管理',
                 name: 'user-management',
                 component: () => import('@/views/node/user-management/siteuser.vue')
+            },
+            {
+                path: 'siteelement',
+                icon: 'image',
+                title: '网站元素设置',
+                name: 'siteelement',
+                component: () => import('@/views/node/siteelement/index.vue')
             },
 
         ]

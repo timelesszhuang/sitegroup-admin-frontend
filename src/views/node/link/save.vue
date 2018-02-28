@@ -4,24 +4,20 @@
             <Modal
                     v-model="modal" width="600">
                 <p slot="header">
-                    <span>修改用户</span>
+                    <span>修改</span>
                 </p>
                 <div>
-                    <Form ref="siteusersave" :model="form" :label-width="90" :rules="AddRule" class="node-add-form">
-                        <Form-item label="姓名" prop="name">
-                            <Input type="text" v-model="form.name" placeholder="请输入姓名"></Input>
+                    <Form ref="linksave" :model="form" :label-width="90" :rules="AddRule" class="node-add-form">
+                        <Form-item label="名称" prop="name">
+                            <Input type="text" v-model="form.name" placeholder="请输入名称"></Input>
                         </Form-item>
-                        <Form-item label="账号" prop="account">
-                            <Input type="text" v-model="form.account" placeholder="请输入账号"></Input>
+                        <Form-item label="链接" prop="domain">
+                            <Input type="text" v-model="form.domain" placeholder="请输入域名"></Input>
                         </Form-item>
-                        <Form-item label="邮箱" prop="email">
-                            <Input type="text" v-model="form.email" placeholder="请输入邮箱"></Input>
-                        </Form-item>
-                        <Form-item label="手机" prop="mobile">
-                            <Input type="text" v-model="form.mobile" placeholder="请输入手机"></Input>
-                        </Form-item>
-                        <Form-item label="密码" prop="pwd">
-                            <Input type="password" v-model="form.pwd" placeholder="请输入密码"/>
+                        <Form-item label="详情" prop="detail">
+                            <Input v-model="form.detail" type="textarea" :autosize="{minRows: 2,maxRows: 20}"
+                                   placeholder="请输入详情">
+                            </Input>
                         </Form-item>
                     </Form>
                 </div>
@@ -35,7 +31,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import http from "../../../libs/http";
+    import http from '../../../libs/http';
     import common from '../../../libs/common';
     export default {
         data() {
@@ -46,32 +42,32 @@
                     name: [
                         {required: true, message: '请输入名称', trigger: 'blur'},
                     ],
-                    account: [
-                        {required: true, message: '请输入姓名', trigger: 'blur'},
+                    domain: [
+                        {required: true, message: '请输入链接', trigger: 'blur'},
                     ],
-                    mobile: [
-                        {required: true, message: '请输入手机号', trigger: 'blur'}
+                    detail: [
+                        {required: true, message: '请输入详情', trigger: 'blur'},
                     ],
-
                 }
             }
         },
         methods: {
             add() {
-                this.$refs.siteusersave.validate((valid) => {
+                this.$refs.linksave.validate((valid) => {
                     if (valid) {
                         this.modal_loading = true;
                         let data = this.form;
                         let id = data.id;
-                        this.apiPut('siteuser/' + id, data).then((res) => {
+                        this.apiPut('links/' + id, data).then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {
                                 this.modal = false;
                                 if (this.gpd) {
                                     this.$emit('getdata');
                                 }
-                                this.getSiteUser(true);
+                                this.getFriendLink(true);
                                 this.$Message.success(msg);
                                 this.modal_loading = false;
+                                this.$refs.linksave.resetFields();
                             }, (data, msg) => {
                                 this.modal_loading = false;
                                 this.$Message.error(msg);
@@ -90,9 +86,8 @@
             form: {
                 default: {
                     name: '',
-                    pwd: '',
-                    account: '',
-                    mobile: ''
+                    detail: '',
+                    domain: ''
                 }
             }
         },
