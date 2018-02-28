@@ -197,7 +197,7 @@
     import http from '../../../libs/http';
     import common from '../../../libs/common';
     import SiteUser from '../user-management/add.vue';
-    import SiteType from '../user-management/add.vue';
+    import SiteType from '../sitetype/add.vue';
     import Ico from '../siteico/add.vue';
     import Logo from '../sitelogo/add.vue';
     import WaterImage from '../imgwatermark/add.vue';
