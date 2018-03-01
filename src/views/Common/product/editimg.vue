@@ -2,7 +2,7 @@
     <div>
         <div>
             <Modal
-                    v-model="modal"
+                    v-model="modal" :mask-closable="false"
                     width="900"
                     :styles="{top: '20px'}"
             >

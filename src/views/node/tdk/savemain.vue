@@ -1,7 +1,7 @@
 <template>
   <div>
       <Modal
-        v-model="modal" width="350">
+        v-model="modal" width="350" :mask-closable="false">
         <p slot="header">
           <span>选择主关键词</span>
         </p>

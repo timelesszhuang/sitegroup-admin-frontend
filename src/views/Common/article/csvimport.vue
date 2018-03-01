@@ -1,7 +1,7 @@
 <template>
     <div>
         <Modal
-                v-model="modal"
+                v-model="modal" :mask-closable="false"
                 width="600"
                 :styles="{top: '20px'}"
         >

@@ -8,7 +8,9 @@
         <Modal
                 v-model="modal"
                 title="重置密码"
-                ok-text="保存">
+                ok-text="保存"
+                :mask-closable="false">
+
             <p slot="header" style="color:#f60;text-align:center">
                 <Icon type="information-circled"></Icon>
                 <span>修改密码</span>

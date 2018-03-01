@@ -59,148 +59,147 @@
   import templatesave from './temlatesave.vue';
 
   export default {
-    data() {
-      return {
-        self: this,
-        border: true,
-        stripe: true,
-        showheader: true,
-        showIndex: true,
-        size: 'small',
-        current: 1,
-        total: 0,
-        page: 1,
-        rows: 12,
-        name: '',
-        datas: [],
-        editinfo: {}
-      }
-    },
-    components: {templateadd, templatesave},
-    created() {
-      this.getData();
-    },
-    methods: {
-      init() {
-        this.getData();
+      data () {
+          return {
+              self: this,
+              border: true,
+              stripe: true,
+              showheader: true,
+              showIndex: true,
+              size: 'small',
+              current: 1,
+              total: 0,
+              page: 1,
+              rows: 12,
+              name: '',
+              datas: [],
+              editinfo: {}
+          };
       },
-      showhtml(index){
-        let showdata= this.datas[index]
-        let showurl = ROOTHOST + showdata['show_path_href'];
-//        console.log(dataimg)
-        window.open(showurl);
+      components: {templateadd, templatesave},
+      created () {
+          this.getData();
       },
-      choose_bgimg(index) {
-        let dataimg = this.datas[index]
-        let background = this.$store.state.commondata.backgroundcolor;
-        index = index % background.length
-        if (dataimg['node_id'] == 0) {
-          var bgurl =  dataimg['thumbnails']
-          return "background-image:url(" + bgurl + ");background-size: 100% 100%"
-        }
-        else {
-          return background[index]
-        }
-      },
-      getData() {
-        let data = {
-          params: {
-            page: this.page,
-            rows: this.rows,
-            name: this.name
+      methods: {
+          init () {
+              this.getData();
+          },
+          showhtml (index) {
+              let showdata = this.datas[index];
+              let showurl = window.HOST + showdata['show_path_href'];
+              //        console.log(dataimg)
+              window.open(showurl);
+          },
+          choose_bgimg (index) {
+              let dataimg = this.datas[index];
+              let background = this.$store.state.commondata.backgroundcolor;
+              index = index % background.length;
+              if (dataimg['node_id'] === 0) {
+                  var bgurl = dataimg['thumbnails'];
+                  return 'background-image:url(' + bgurl + ');background-size: 100% 100%';
+              } else {
+                  return background[index];
+              }
+          },
+          getData () {
+              let data = {
+                  params: {
+                      page: this.page,
+                      rows: this.rows,
+                      name: this.name
+                  }
+              };
+              this.apiGet('template', data).then((data) => {
+                  this.handleAjaxResponse(data, (data, msg) => {
+                      this.datas = data.rows;
+                      this.total = data.total;
+                  }, (data, msg) => {
+                      this.$Message.error(msg);
+                  });
+              }, (data) => {
+                  this.$Message.error('网络异常，请稍后重试');
+              });
+          },
+          changePage (page) {
+              this.page = page;
+              this.getData();
+          },
+          changePageSize (pagesize) {
+              this.rows = pagesize;
+              this.getData();
+          },
+          queryData () {
+              this.getData();
+          },
+          add () {
+              this.$refs.add.modal = true;
+          },
+          edit (index) {
+              let editid = this.datas[index].id;
+              this.apiGet('template/' + editid).then((res) => {
+                  this.handleAjaxResponse(res, (data, msg) => {
+                      this.editinfo = data;
+                      this.modal = false;
+                      this.$refs.save.modal = true;
+                  }, (data, msg) => {
+                      this.$Message.error(msg);
+                  });
+              }, (res) => {
+                  // 处理错误信息
+                  this.$Message.error('网络异常，请稍后重试。');
+              });
           }
-        }
-        this.apiGet('template', data).then((data) => {
-          this.handleAjaxResponse(data, (data, msg) => {
-            this.datas = data.rows
-            this.total = data.total;
-          }, (data, msg) => {
-            this.$Message.error(msg);
-          })
-        }, (data) => {
-          this.$Message.error('网络异常，请稍后重试');
-        })
       },
-      changePage(page) {
-        this.page = page;
-        this.getData();
-      },
-      changePageSize(pagesize) {
-        this.rows = pagesize;
-        this.getData();
-      },
-      queryData() {
-        this.getData();
-      },
-      add() {
-        this.$refs.add.modal = true
-      },
-      edit(index) {
-        let editid = this.datas[index].id
-        this.apiGet('template/' + editid).then((res) => {
-          this.handleAjaxResponse(res, (data, msg) => {
-            this.editinfo = data
-            this.modal = false;
-            this.$refs.save.modal = true
-          }, (data, msg) => {
-            this.$Message.error(msg);
-          })
-        }, (res) => {
-          //处理错误信息
-          this.$Message.error('网络异常，请稍后重试。');
-        })
-      },
-    },
-    computed: {
-      tableColumns() {
-        let columns = [];
-        if (this.showCheckbox) {
-          columns.push({
-            type: 'selection',
-            width: 60,
-            align: 'center'
-          })
-        }
-        if (this.showIndex) {
-          columns.push({
-            type: 'index',
-            width: 60,
-            align: 'center'
-          })
-        }
-        columns.push({
-          title: '模板名',
-          key: 'name',
-          sortable: true
-        });
-        columns.push({
-          title: '详情',
-          key: 'detail',
-          sortable: true
-        });
-        columns.push({
-          title: '创建时间',
-          key: 'create_time',
-          sortable: true
-        });
-        columns.push(
-          {
-            title: '操作',
-            key: 'action',
-            width: 150,
-            align: 'center',
-            fixed: 'right',
-            render(row, column, index) {
-              var btn = `<i-button type="primary" size="small" @click="edit(${index})">修改</i-button>`;
-              return btn;
-            }
+      computed: {
+          tableColumns () {
+              let columns = [];
+              if (this.showCheckbox) {
+                  columns.push({
+                      type: 'selection',
+                      width: 60,
+                      align: 'center'
+                  });
+              }
+              if (this.showIndex) {
+                  columns.push({
+                      type: 'index',
+                      width: 60,
+                      align: 'center'
+                  });
+              }
+              columns.push({
+                  title: '模板名',
+                  key: 'name',
+                  sortable: true
+              });
+              columns.push({
+                  title: '详情',
+                  key: 'detail',
+                  sortable: true
+              });
+              columns.push({
+                  title: '创建时间',
+                  key: 'create_time',
+                  sortable: true
+              });
+              columns.push(
+                  {
+                      title: '操作',
+                      key: 'action',
+                      width: 150,
+                      align: 'center',
+                      fixed: 'right',
+                      render (row, column, index) {
+                          var btn = `<i-button type="primary" size="small" @click="edit(${index})">修改</i-button>`;
+                          return btn;
+                      }
+                  }
+              );
+              return columns;
           }
-        );
-        return columns;
-      }
-    },
-    mixins: [http]
-  }
+      },
+      mixins: [http]
+  };
 </script>
 <style>
   .siteborder {

@@ -1,5 +1,5 @@
 <template>
-  <Modal v-model="modal" title="主动推送地址" style="position:relative;z-index: 10000">
+  <Modal v-model="modal" :mask-closable="false" title="主动推送地址" style="position:relative;z-index: 10000">
 
     <Form ref="ping" :model="form" :label-width="90" :rules="AddRule" class="node-add-form">
       <Form-item label="链接地址" prop="cdn_type">

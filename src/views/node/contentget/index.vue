@@ -1,5 +1,6 @@
 <template>
   <div>
+      <card>
     <div class="top" style="padding-left: 10px">
      内容管理:
       <Input v-model="name" placeholder="内容名称" style="width:300px;"></Input>
@@ -21,6 +22,7 @@
     </div>
     <contentadd ref="add"  v-on:getdata="getData"></contentadd>
     <contentsave ref="save" v-on:getdata="getData"></contentsave>
+      </card>
   </div>
 </template>
 

@@ -6,7 +6,7 @@
 <template>
     <div>
         <Modal
-                v-model="modal"
+                v-model="modal" :mask-closable="false"
                 ok-text="保存" width="600">
             <p slot="header">
                 <Icon type="person-add"></Icon>

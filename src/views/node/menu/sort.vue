@@ -1,7 +1,7 @@
 <template>
     <div>
         <Modal
-                v-model="modal" width="250">
+                v-model="modal" width="250" :mask-closable="false">
             <p slot="header">
                 <span>修改排序</span>
             </p>

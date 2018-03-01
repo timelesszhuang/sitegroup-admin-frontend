@@ -7,7 +7,7 @@
     <div>
         <Modal
                 v-model="modal"
-                title="修改行业">
+                title="修改行业" :mask-closable="false">
             <p slot="header">
                 <Icon type="information-circled"></Icon>
                 <span>修改行业</span>

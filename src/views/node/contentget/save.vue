@@ -2,7 +2,7 @@
     <div>
         <div>
             <Modal
-                    v-model="modal" width="800">
+                    v-model="modal" width="800" :mask-closable="false">
                 <p slot="header">
                     <span>修改</span>
                 </p>
@@ -73,9 +73,9 @@
             edit(editid) {
                 this.apiGet('content_get/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
-                        this.editinfo = data;
-                        this.modal = false;
-                        this.$refs.save.modal = true;
+                        this.form = data;
+                        tinymce.get('tinymceEditerSaveContent').setContent(this.form.content);
+                        this.modal = true;
                     }, (data, msg) => {
                         this.$Message.error(msg);
                     });
