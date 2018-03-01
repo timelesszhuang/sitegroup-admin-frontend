@@ -153,7 +153,7 @@ export const nodeappRouter = [
                 icon: 'images',
                 title: '活动创意管理',
                 name: 'access_index',
-                component: () => import('@/views/access/access.vue')
+                component: () => import('@/views/node/activity/index.vue')
             },
             // {path: 'index', title: '场景秀', name: 'access_index', component: () => import('@/views/access/access.vue')},
             // {path: 'index', title: '案例中心', name: 'access_index', component: () => import('@/views/access/access.vue')},
