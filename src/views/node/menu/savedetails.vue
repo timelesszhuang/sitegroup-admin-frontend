@@ -19,7 +19,7 @@
                     </Form-item>
                     <Form-item label="分类" prop="tag_name">
                         <Select v-model="detail.tag_id"
-                                style="text-align: left;width:200px;position: relative;z-index: 10002"
+                                style="text-align: left;width:200px;position: relative;"
                                 label-in-value 　@on-change="changeNavtype">
                             <Option v-for="item in navtype" :value="item.id" :label="item.text" :key="item.id">
                                 {{ item.text }}
@@ -28,7 +28,7 @@
                     </Form-item>
                     <Form-item label="上级分类" prop="p_id">
                         <Select v-model="detail.p_id"
-                                style="text-align: left;width:200px;position: relative;z-index: 10001"
+                                style="text-align: left;width:200px;position: relative;"
                                 label-in-value filterable @on-change="changeArticletype">
                             <Option v-for="item in pidtype" :value="item.id" :label="item.name" :key="item.id">
                                 {{ item.text }}
