@@ -1,5 +1,6 @@
 <template>
   <div>
+    <card>
     <div class="top">
       <Input v-model="title" @on-change="changeTitle" placeholder="标题查询" style="width:300px;"></Input>
       <Button type="primary" @click="queryData">查询</Button>
@@ -19,6 +20,7 @@
     <!--<articleadd ref="add" :tagname="tagname"></articleadd>-->
     <!--<articlesave ref="save" :tagname="tagname" :form="editinfo"></articlesave>-->
     <publicarticlesave ref="save" :form="editinfo" :tagname="tagname" :articletype="articletypelist"></publicarticlesave>
+    </card>
   </div>
 </template>
 

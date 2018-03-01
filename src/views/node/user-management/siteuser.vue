@@ -1,5 +1,6 @@
 <template>
     <div>
+        <card>
         <div class="top">
             用户管理:
             <Input v-model="name" placeholder="" style="width:300px;"/>
@@ -23,6 +24,7 @@
         <siteuseradd ref="add"/>
         <siteusersave ref="save" :form="editinfo" v-on:getdata="getData"/>
         <changePwd ref="changePwd" v-on:getdata="getData"/>
+        </card>
     </div>
 </template>
 

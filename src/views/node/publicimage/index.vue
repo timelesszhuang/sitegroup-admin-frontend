@@ -1,5 +1,6 @@
 <template>
     <div>
+        <card>
         <div class="top">
             分类:
             <Select v-model="type" style="width:200px"
@@ -44,6 +45,7 @@
         </div>
         <publicarticlesave ref="save" v-on:getdata="getData"></publicarticlesave>
         <add ref="add" v-on:getdata="getData"></add>
+        </card>
     </div>
 </template>
 

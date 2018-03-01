@@ -1,22 +1,34 @@
 <template>
     <div>
+        <card>
         <Tabs value="site" @on-click="tabClick">
             <TabPane label="站点列表" name="site">
+                <card>
                 <site ref="site"/>
+                </card>
             </TabPane>
             <TabPane label="站点分类" name="sitetype">
+                <card>
                 <sitetype ref="sitetype"/>
+                </card>
             </TabPane>
             <TabPane label="模板管理" name="templatemanage">
+                <card>
                 <templatemanage ref="templatemanage"/>
+                </card>
             </TabPane>
             <TabPane label="搜索引擎优化管理" name="seo">
+                <card>
                 <seo ref="seo"/>
+                </card>
             </TabPane>
             <TabPane label="站点静态化配置" name="staticconfig">
+                <card>
                 <staticconfig ref="staticconfig"/>
+                </card>
             </TabPane>
         </Tabs>
+        </card>
     </div>
 </template>
 
