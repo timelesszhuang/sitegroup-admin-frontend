@@ -29,7 +29,7 @@
                         fixed="right"
                         label="操作"
                         width="100">
-                    <template>
+                    <template scope="scope">
                         <el-button type="text" size="small" @click="editTemplate(scope.row)">编辑</el-button>
                     </template>
                 </el-table-column>
@@ -119,6 +119,7 @@
         },
         computed: {
             tableColumns() {
+                let _this = this;
                 let columns = [];
                 if (this.showCheckbox) {
                     columns.push({
