@@ -900,35 +900,108 @@ export const siteotherRouter = {
 // 作为Main组件的子页面展示并且在左侧菜单显示的路由写在appRouter里
 export const siteappRouter = [
     {
-        path: '/sitearticle',
-        icon: 'earth',
-        title: "文章管理",
-        name: 'sitearticlemanage',
+        path: '/resource',
+        icon: 'soup-can',
+        name: 'resource',
+        title: '资源聚合',
         component: Main,
         children: [
             {
-                path: 'index',
+                path: 'hotnews',
+                icon: 'pricetag',
+                title: '新闻管理',
+                name: 'hotnews',
+                component: () => import('@/views/Common/news/tab.vue')
+            }, {
+                path: 'wechat',
                 icon: 'edit',
-                title: "文章管理",
-                name: 'sitearticle',
-                component: () => import('@/views/Common/article/index.vue')
-            }
+                title: '公众号',
+                name: 'wechat',
+                component: () => import('@/views/node/articlemanage/tab.vue')
+            },
+
         ]
     },
     {
-        path: '/sitequestion',
-        icon: 'ios-help',
-        title: "问答管理",
-        name: 'sitequestionmanage',
+        path: '/infosite',
+        icon: 'earth',
+        title: "内容管理",
+        name: 'infosite',
         component: Main,
         children: [
             {
-                path: 'index',
+                path: '/sitearticle',
+                icon: 'earth',
+                title: "文章管理",
+                name: 'sitearticlemanage',
+                component: Main,
+                children: [
+                    {
+                        path: 'index',
+                        icon: 'edit',
+                        title: "文章管理",
+                        name: 'sitearticle',
+                        component: () => import('@/views/Common/article/index.vue')
+                    }
+                ]
+            },
+            {
+                path: '/sitequestion',
                 icon: 'ios-help',
                 title: "问答管理",
-                name: 'sitequestion',
-                component: () => import('@/views/Common/question/index.vue')
-            }
+                name: 'sitequestionmanage',
+                component: Main,
+                children: [
+                    {
+                        path: 'index',
+                        icon: 'ios-help',
+                        title: "问答管理",
+                        name: 'sitequestion',
+                        component: () => import('@/views/Common/question/index.vue')
+                    }
+                ]
+            },
+        ]
+    },
+    {
+        path: '/keywordsoperation',
+        icon: 'earth',
+        title: "关键词管理",
+        name: 'keywordsoperation',
+        component: Main,
+        children: [
+            {
+                path: '/sitearticle',
+                icon: 'earth',
+                title: "文章管理",
+                name: 'sitearticlemanage',
+                component: Main,
+                children: [
+                    {
+                        path: 'index',
+                        icon: 'edit',
+                        title: "文章管理",
+                        name: 'sitearticle',
+                        component: () => import('@/views/Common/article/index.vue')
+                    }
+                ]
+            },
+            {
+                path: '/sitequestion',
+                icon: 'ios-help',
+                title: "问答管理",
+                name: 'sitequestionmanage',
+                component: Main,
+                children: [
+                    {
+                        path: 'index',
+                        icon: 'ios-help',
+                        title: "问答管理",
+                        name: 'sitequestion',
+                        component: () => import('@/views/Common/question/index.vue')
+                    }
+                ]
+            },
         ]
     },
     // {
@@ -1036,29 +1109,29 @@ export const siteappRouter = [
     //
     //     ]
     // },
-    {
-        path: '/marketing',
-        icon: 'ios-navigate',
-        name: 'marketing',
-        title: '营销计划',
-        component: Main,
-        children: [
-            {
-                path: 'marketingmode',
-                icon: 'ios-navigate',
-                title: '营销模式',
-                name: 'marketingmode',
-                component: () => import('@/views/Common/marketingmode/index.vue')
-            },
-            {
-                path: 'casecenter',
-                icon: 'paper-airplane',
-                title: '案例中心',
-                name: 'casecenter',
-                component: () => import('@/views/Common/case/index.vue')
-            },
-        ]
-    },
+    // {
+    //     path: '/marketing',
+    //     icon: 'ios-navigate',
+    //     name: 'marketing',
+    //     title: '营销计划',
+    //     component: Main,
+    //     children: [
+    //         {
+    //             path: 'marketingmode',
+    //             icon: 'ios-navigate',
+    //             title: '营销模式',
+    //             name: 'marketingmode',
+    //             component: () => import('@/views/Common/marketingmode/index.vue')
+    //         },
+    //         {
+    //             path: 'casecenter',
+    //             icon: 'paper-airplane',
+    //             title: '案例中心',
+    //             name: 'casecenter',
+    //             component: () => import('@/views/Common/case/index.vue')
+    //         },
+    //     ]
+    // },
     // {
     //     path: '/international',
     //     icon: 'earth',
@@ -1173,7 +1246,6 @@ export const siteappRouter = [
     //     children: [
     //         { path: 'pie', title: '饼状图', name: 'pie', icon: 'ios-pie', component: resolve => { require('@/views/access/access.vue') },
     //         { path: 'histogram', title: '柱状图', name: 'histogram', icon: 'stats-bars', component: resolve => { require('@/views/access/access.vue') }
-
     //     ]
     // },
     // {
