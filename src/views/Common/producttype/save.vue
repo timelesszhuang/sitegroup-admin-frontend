@@ -103,6 +103,8 @@
                                 this.modal_loading = false;
                                 this.$refs.ptypesave.resetFields();
                                 this.$refs.select.clearSingleSelect();
+                                this.getProductType(true);
+                                this.getTagType(true);
                             }, (data, msg) => {
                                 this.modal_loading = false;
                                 this.$Message.error(msg);

@@ -121,11 +121,12 @@
                                 if (this.gpd) {
                                     this.$emit('getdata');
                                 }
-                                this.getTagType(true);
                                 this.$Message.success(msg);
                                 this.modal_loading = false;
                                 this.$refs.articlesave.resetFields();
                                 this.$refs.select.clearSingleSelect();
+                                this.getTagType(true);
+                                this.getQuestionType(true);
                             }, (data, msg) => {
                                 this.modal_loading = false;
                                 this.$Message.error(msg);
