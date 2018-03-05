@@ -1,5 +1,6 @@
 <template>
     <div>
+        <card>
         <Tabs value="pv" @on-click="tabClick">
             <TabPane label="浏览量统计" name="pv">
                 <pv ref="pv"></pv>
@@ -16,7 +17,8 @@
             <!--<TabPane label="其他统计" name="other">-->
                 <!--<other ref="other"></other>-->
             <!--</TabPane>-->
-        </Tabs>
+
+        </Tabs> </card>
     </div>
 </template>
 

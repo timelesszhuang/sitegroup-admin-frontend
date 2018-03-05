@@ -150,6 +150,9 @@
               // 延迟加载
               this.getData();
           });
+          this.getSite((data) => {
+              this.site = data;
+          });
       },
       mixins: [http]
   };

@@ -153,6 +153,9 @@
           this.init();
           // 加载获取数据库中数据
           this.getData();
+          this.getSite((data) => {
+              this.site = data;
+          });
       },
       mixins: [http]
   };
