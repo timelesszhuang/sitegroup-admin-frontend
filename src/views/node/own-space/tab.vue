@@ -16,7 +16,7 @@
     import loginlog from './login-log';
 
     export default {
-        components: {ownspace,loginlog},
+        components: {ownspace, loginlog},
         methods: {
             getdata(name) {
                 if (name === 'ownspace') {
