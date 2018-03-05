@@ -292,20 +292,41 @@ export const nodeappRouter = [
         ]
     },
     {
-        path: '/access',
-        icon: 'key',
-        name: 'access',
-        title: '权限管理',
-        access: 1,
+        path: '/marketfeedbackanalysis',
+        icon: 'ios-navigate',
+        name: 'marketfeedbackanalysis',
+        title: '市场反馈分析',
         component: Main,
         children: [
             {
-                path: 'index',
-                access: 1,
-                title: '权限管理',
-                name: 'access_index',
-                component: () => import('@/views/access/access.vue')
-            }
+                path: 'positionranking',
+                icon: 'ios-navigate',
+                title: '位置排名',
+                name: 'positionranking',
+                component: () => import('@/views/node/mainkeyword/index.vue')
+            },
+            {
+                path: 'clue',
+                icon: 'ios-navigate',
+                title: '线索',
+                name: 'clue',
+                component: () => import('@/views/node/rejection/index.vue')
+            },
+            {
+                path: 'trafficanalysis',
+                icon: 'ios-navigate',
+                title: '流量分析',
+                name: 'trafficanalysis',
+                component: () => import('@/views/Common/pv/pv.vue')
+            },
+            {
+                path: 'recordinganalysis',
+                icon: 'ios-navigate',
+                title: '录音分析',
+                name: 'recordinganalysis',
+                component: () => import('@/views/node/video/index.vue')
+            },
+
         ]
     },
     // {

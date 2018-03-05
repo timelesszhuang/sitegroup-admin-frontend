@@ -29,7 +29,7 @@
                         fixed="right"
                         label="操作"
                         width="100">
-                    <template scope="scope">
+                    <template slot-scope="scope">
                         <el-button type="text" size="small" @click="editTemplate(scope.row)">编辑</el-button>
                     </template>
                 </el-table-column>

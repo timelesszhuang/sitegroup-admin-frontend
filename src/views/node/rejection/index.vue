@@ -1,0 +1,241 @@
+<template>
+  <div>
+    <div class="top">
+      <Input v-model="search" placeholder="内容包含查询" style="width:160px;"></Input>
+      <Select v-model="detail" style="width:300px;" label-in-value filterable clearable placeholder="请选择自定表单配置">
+        <Option v-for="item in userdefine" :value="item.id" :label="item.detail" :key="item">
+          {{ item.detail }}
+        </Option>
+      </Select>
+      <Select v-model="site_id" style="width:300px;" label-in-value filterable clearable placeholder="请选择站点">
+        <Option v-for="item in site" :value="item.id" :label="item.text" :key="item">
+          {{ item.text }}
+        </Option>
+      </Select>
+      <Button type="primary" @click="queryData">查询</Button>
+    </div>
+    <div class="content" style="margin-top:10px;">
+      <Table :context="self" :border="border" :stripe="stripe" :show-header="showheader"
+             :size="size" :data="datas" :columns="tableColumns" style="width: 100%">
+      </Table>
+      <div style="margin: 10px;overflow: hidden">
+        <div style="float: right;">
+          <Page :total="total" :current="current" @on-change="changePage" @on-page-size-change="changePageSize"
+                show-total
+                show-elevator></Page>
+        </div>
+      </div>
+    </div>
+    <info ref="info" :field1="field1" :field2="field2" :field3="field3" :field4="field4"></info>
+  </div>
+</template>
+
+<script type="text/ecmascript-6">
+  import http from '../../../libs/http';
+  import info from './info.vue';
+
+  export default {
+    data() {
+      return {
+        self: this,
+        border: true,
+        stripe: true,
+        showheader: true,
+        showIndex: true,
+        size: 'small',
+        current: 1,
+        total: 0,
+        page: 1,
+        rows: 10,
+        name: '',
+        datas: [],
+        site: [],
+        site_id: "",
+        field1: '',
+        field2: '',
+        field3: '',
+        field4: '',
+        userdefine: [],
+        search: '',
+        detail: ''
+      }
+    },
+    components: {
+      info
+    },
+    created() {
+      this.getData();
+      this.getSite((data) => {
+        this.site = data
+      });
+      this.getuserdefine((data) => {
+        this.userdefine = data
+        console.log(this.userdefine)
+      });
+    },
+    methods: {
+      getSite() {
+        this.apiGet('getSites').then((res) => {
+          this.handleAjaxResponse(res, (data, msg) => {
+            this.site = data
+          }, (data, msg) => {
+            this.$Message.error(msg);
+          })
+        }, (res) => {
+          //处理错误信息
+          this.$Message.error('网络异常，请稍后重试。');
+        })
+      },
+      getuserdefine() {
+        this.apiGet('userdefine').then((res) => {
+          this.handleAjaxResponse(res, (data, msg) => {
+            this.userdefine = data
+          }, (data, msg) => {
+            this.$Message.error(msg);
+          })
+        }, (res) => {
+          //处理错误信息
+          this.$Message.error('网络异常，请稍后重试。');
+        })
+      },
+      getData() {
+        let data = {
+          params: {
+            page: this.page,
+            rows: this.rows,
+            site_id: this.site_id,
+            detail: this.detail,
+            search: this.search
+          }
+        }
+        this.apiGet('Rejection', data).then((data) => {
+          this.handleAjaxResponse(data, (data, msg) => {
+            this.datas = data.rows
+            this.total = data.total;
+          }, (data, msg) => {
+          }, (data, msg) => {
+            this.$Message.error(msg);
+          })
+        }, (data) => {
+          this.$Message.error('网络异常，请稍后重试');
+        })
+      },
+      changePage(page) {
+        this.page = page;
+        this.getData();
+      },
+      changePageSize(pagesize) {
+        this.rows = pagesize;
+        this.getData();
+      },
+      queryData() {
+        this.getData();
+      },
+      showCheck(index) {
+        this.field1 = this.datas[index].field1;
+        this.field2 = this.datas[index].field2;
+        this.field3 = this.datas[index].field3;
+        this.field4 = this.datas[index].field4;
+        this.$refs.info.modal = true;
+      }
+    },
+    computed: {
+      tableColumns() {
+        let _this = this
+        let columns = [];
+        if (this.showCheckbox) {
+          columns.push({
+            type: 'selection',
+            width: 60,
+            align: 'center'
+          })
+        }
+        if (this.showIndex) {
+          columns.push({
+            type: 'index',
+            width: 60,
+            align: 'center'
+          })
+        }
+        columns.push({
+          title: '字段一',
+          key: 'field1',
+          sortable: true
+        });
+        columns.push({
+          title: '字段二',
+          key: 'field2',
+          sortable: true
+        });
+        columns.push({
+          title: '字段三',
+          key: 'field3',
+          sortable: true
+        });
+        columns.push({
+          title: '字段四',
+          key: 'field4',
+          sortable: true
+        });
+        columns.push({
+          title: '省市',
+          key: 'Provincecities',
+          sortable: true
+        });
+        columns.push({
+          title: 'IP地址',
+          key: 'ip',
+          sortable: true
+        });
+        columns.push({
+          title: '来源页',
+          key: 'referer',
+          sortable: true,
+          render(h, params) {
+            return h('div', [
+              h('a', {
+                attrs: {
+                  href: params.row.referer,
+                  target:'_blank'
+                },
+              },params.row.referer)
+            ]);
+          }
+        });
+        columns.push({
+          title: '时间',
+          key: 'create_time',
+          sortable: true
+        });
+        columns.push(
+          {
+            title: '操作',
+            key: 'action',
+            align: 'center',
+            fixed: 'right',
+            render(h, params) {
+              return h('div', [
+                h('Button', {
+                  props: {
+                    size: 'small'
+                  },
+                  attrs: {
+                    type: 'info'
+                  },
+                  on: {
+                    click: function () {
+                      //不知道为什么这个地方不是我需要的this
+                      _this.showCheck(params.index)
+                    }
+                  }
+                }, '查看')
+              ]);
+            }
+          }
+        );
+        return columns;
+      }
+    },
+    mixins: [http]
+  }
+</script>
