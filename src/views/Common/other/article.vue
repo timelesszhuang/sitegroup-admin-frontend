@@ -1,11 +1,11 @@
 <template>
-  <!--浏览量趋势-->
-  <div style="
+    <!--浏览量趋势-->
+    <div style="
     width:100%;
     height: 500px;
     float: left;
     padding-bottom: 50px;
-  " id="question_count"></div>
+  " id="article_count"></div>
 </template>
 
 <script>
@@ -36,7 +36,7 @@
                       }
                   },
                   title: {
-                      text: '问答统计',
+                      text: '文章统计',
                       left: 'center',
                       top: 10
                   },
@@ -78,7 +78,7 @@
       methods: {
           getData () {
               // 获取相关统计信息
-              this.apiGet('questionCount').then((res) => {
+              this.apiGet('articlecount').then((res) => {
                   this.handleAjaxResponse(res, (data, msg) => {
                       this.series = data.count;
                       this.xAxisData = data.name;
@@ -87,7 +87,7 @@
               });
           },
           init () {
-              this.spiderTrendCharts = echarts.init(document.getElementById('question_count'));
+              this.spiderTrendCharts = echarts.init(document.getElementById('article_count'));
               // 页面resize 的时候触发
               let _this = this;
               window.addEventListener('resize', function () {

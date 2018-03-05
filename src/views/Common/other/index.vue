@@ -4,31 +4,29 @@
       <keyword ref="keyword"></keyword>
       <articletype ref="articletype"></articletype>
       <questiontype ref="questiontype"></questiontype>
-      <scarrered ref="scarrered"></scarrered>
+
     </Row>
   </div>
 </template>
 <script type="text/babel">
-  import articletype from './count.vue';
+  import articletype from './article.vue';
   import questiontype from './questioncount.vue';
   import keyword from './keyword.vue';
-  import scarrered from './scattered.vue';
 
   export default {
-    name: 'view',
-    components: {
+      name: 'view',
+      components: {
       articletype,
       questiontype,
-      keyword,
-      scarrered
-    },
-    methods:{
-      init(){
-        this.$refs.keyword.init();
-        this.$refs.articletype.init();
-        this.$refs.questiontype.init();
-        this.$refs.scarrered.init();
+          keyword
+
+      },
+      methods: {
+          init () {
+              this.$refs.keyword.init();
+              this.$refs.articletype.init();
+              this.$refs.questiontype.init();
+          }
       }
-    }
   };
 </script>

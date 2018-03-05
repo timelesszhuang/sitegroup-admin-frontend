@@ -45,6 +45,7 @@
               let _this = this;
               let random = Math.ceil(Math.random() * 100);
               return this.series.map(function (data, index) {
+                console.log(data)
                   let colorIndex = (index + random) % length;
                   let color = _this.color[colorIndex];
                   data['areaStyle'] = {
@@ -124,6 +125,7 @@
               };
               this.apiGet('pvStatistic', data).then((res) => {
                   this.handleAjaxResponse(res, (data, msg) => {
+                    console.log(data.type)
                       this.series = data.type;
                       this.xAxisData = data.time;
                       this.spiderTrendCharts.setOption(this.option);
