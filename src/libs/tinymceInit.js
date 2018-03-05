@@ -12,6 +12,7 @@ const tinymceInit = {
                 language: 'zh_CN.GB2312',
                 menubar: 'edit insert view format table tools',
                 plugins: [
+                    'fontsizeselect',
                     'fullscreen',
                     'wordcount',
                     'advlist autolink lists link image charmap print preview hr anchor pagebreak imagetools',
@@ -19,7 +20,7 @@ const tinymceInit = {
                     'insertdatetime media nonbreaking save table contextmenu directionality',
                     'emoticons paste textcolor colorpicker textpattern imagetools codesample'
                 ],
-                toolbar1: ' newnote print preview | undo redo | insert | styleselect | forecolor backcolor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image emoticons media codesample | mybutton | fullscreen |',
+                toolbar1: ' newnote print preview | undo redo | insert | styleselect | forecolor  fontsizeselect  backcolor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image emoticons media codesample | mybutton | fullscreen |',
                 autosave_interval: '5s',
                 image_advtab: true,
                 automatic_uploads: true,
