@@ -79,7 +79,6 @@
             },
             //缩略图上传回调
             getResponse(response, file, filelist) {
-                console.log(response);
                 this.form.oss_logo_path = response.data.url;
                 if (response.status) {
                     this.$Message.success(response.msg);

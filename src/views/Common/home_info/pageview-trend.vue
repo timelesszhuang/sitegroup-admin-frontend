@@ -73,7 +73,6 @@
                 // 获取相关统计信息
                 this.apiGet('pv_show').then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
-                        console.log(data);
                         this.series = data.type;
                         this.xAxisData = data.time;
                         this.spiderTrendCharts.setOption(this.option);
