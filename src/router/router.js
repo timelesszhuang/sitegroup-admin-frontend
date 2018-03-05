@@ -955,32 +955,14 @@ export const siteappRouter = [
                 icon: 'earth',
                 title: "文章管理",
                 name: 'sitearticlemanage',
-                component: Main,
-                children: [
-                    {
-                        path: 'index',
-                        icon: 'edit',
-                        title: "文章管理",
-                        name: 'sitearticle',
-                        component: () => import('@/views/Common/article/index.vue')
-                    }
-                ]
+                component: () => import('@/views/Common/article/index.vue')
             },
             {
                 path: '/sitequestion',
                 icon: 'ios-help',
                 title: "问答管理",
                 name: 'sitequestionmanage',
-                component: Main,
-                children: [
-                    {
-                        path: 'index',
-                        icon: 'ios-help',
-                        title: "问答管理",
-                        name: 'sitequestion',
-                        component: () => import('@/views/Common/question/index.vue')
-                    }
-                ]
+                component: () => import('@/views/Common/question/index.vue')
             },
         ]
     },
@@ -992,36 +974,25 @@ export const siteappRouter = [
         component: Main,
         children: [
             {
-                path: '/sitearticle',
+                path: '/href',
                 icon: 'earth',
-                title: "文章管理",
-                name: 'sitearticlemanage',
-                component: Main,
-                children: [
-                    {
-                        path: 'index',
-                        icon: 'edit',
-                        title: "文章管理",
-                        name: 'sitearticle',
-                        component: () => import('@/views/Common/article/index.vue')
-                    }
-                ]
+                title: "文章插入链接",
+                name: 'href',
+                component: () => import('@/views/site/href/index.vue')
             },
             {
-                path: '/sitequestion',
-                icon: 'ios-help',
-                title: "问答管理",
-                name: 'sitequestionmanage',
-                component: Main,
-                children: [
-                    {
-                        path: 'index',
-                        icon: 'ios-help',
-                        title: "问答管理",
-                        name: 'sitequestion',
-                        component: () => import('@/views/Common/question/index.vue')
-                    }
-                ]
+                path: '/hrefreplace',
+                icon: 'earth',
+                title: "关键词链接替换",
+                name: 'hrefreplace',
+                component: () => import('@/views/site/hrefreplace/index.vue')
+            },
+            {
+                path: '/substitution',
+                icon: 'earth',
+                title: "文章关键词替换",
+                name: 'substitution',
+                component: () => import('@/views/site/substitution/index.vue')
             },
         ]
     },

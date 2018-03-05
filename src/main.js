@@ -20,7 +20,7 @@ Vue.use(ElementUI);
 let domain = 'salesman.cc';
 
 const ajaxUrl = env === 'development'
-    ? 'http://local.sitegroup.com/index.php/'
+    ? 'http://bn.sjy/'
     // ? 'http://bn.sjy/index.php/'
     : env === 'production'
         ? 'http://api.' + domain + '/index.php/'
