@@ -955,32 +955,14 @@ export const siteappRouter = [
                 icon: 'earth',
                 title: "文章管理",
                 name: 'sitearticlemanage',
-                component: Main,
-                children: [
-                    {
-                        path: 'index',
-                        icon: 'edit',
-                        title: "文章管理",
-                        name: 'sitearticle',
-                        component: () => import('@/views/Common/article/index.vue')
-                    }
-                ]
+                component: () => import('@/views/Common/article/index.vue')
             },
             {
                 path: '/sitequestion',
                 icon: 'ios-help',
                 title: "问答管理",
                 name: 'sitequestionmanage',
-                component: Main,
-                children: [
-                    {
-                        path: 'index',
-                        icon: 'ios-help',
-                        title: "问答管理",
-                        name: 'sitequestion',
-                        component: () => import('@/views/Common/question/index.vue')
-                    }
-                ]
+                component: () => import('@/views/Common/question/index.vue')
             },
         ]
     },
@@ -992,39 +974,109 @@ export const siteappRouter = [
         component: Main,
         children: [
             {
-                path: '/sitearticle',
+                path: '/href',
                 icon: 'earth',
-                title: "文章管理",
-                name: 'sitearticlemanage',
-                component: Main,
-                children: [
-                    {
-                        path: 'index',
-                        icon: 'edit',
-                        title: "文章管理",
-                        name: 'sitearticle',
-                        component: () => import('@/views/Common/article/index.vue')
-                    }
-                ]
+                title: "文章插入链接",
+                name: 'href',
+                component: () => import('@/views/site/href/index.vue')
             },
             {
-                path: '/sitequestion',
-                icon: 'ios-help',
-                title: "问答管理",
-                name: 'sitequestionmanage',
-                component: Main,
-                children: [
-                    {
-                        path: 'index',
-                        icon: 'ios-help',
-                        title: "问答管理",
-                        name: 'sitequestion',
-                        component: () => import('@/views/Common/question/index.vue')
-                    }
-                ]
+                path: '/hrefreplace',
+                icon: 'earth',
+                title: "关键词链接替换",
+                name: 'hrefreplace',
+                component: () => import('@/views/site/hrefreplace/index.vue')
+            },
+            {
+                path: '/substitution',
+                icon: 'earth',
+                title: "文章关键词替换",
+                name: 'substitution',
+                component: () => import('@/views/site/substitution/index.vue')
             },
         ]
     },
+    {
+        path: '/sitemanagement',
+        icon: 'earth',
+        title: "站点管理",
+        name: 'sitemanagement',
+        component: Main,
+        children: [
+            {
+                path: '/operation',
+                icon: 'earth',
+                title: "页面生成",
+                name: 'operation',
+                component: () => import('@/views/site/operation/operation.vue')
+            },
+            {
+                path: '/tdkall',
+                icon: 'earth',
+                title: "搜索引擎优化管理",
+                name: 'tdkall',
+                component: () => import('@/views/site/tdkall/tab.vue')
+            },
+            {
+                path: '/staticconfig',
+                icon: 'earth',
+                title: "静态化配置",
+                name: 'staticconfig',
+                component: () => import('@/views/site/staticconfig/index.vue')
+            },
+            {
+                path: '/sitecontact',
+                icon: 'earth',
+                title: "联系方式",
+                name: 'sitecontact',
+                component: () => import('@/views/site/operation/sitecontact.vue')
+            },
+        ]
+    },
+    // {
+    //     path: '/count',
+    //     icon: 'earth',
+    //     title: "统计",
+    //     name: 'count',
+    //     component: Main,
+    //     children: [
+    //         {
+    //             path: '/keyword',
+    //             icon: 'earth',
+    //             title: "关键词占比统计",
+    //             name: 'keyword',
+    //             component: () => import('@/views/site/keyword/index.vue')
+    //         },
+    //         {
+    //             path: '/pv',
+    //             icon: 'earth',
+    //             title: "浏览量统计",
+    //             name: 'pv',
+    //             component: () => import('@/views/site/pv/pv.vue')
+    //         },
+    //         {
+    //             path: '/show',
+    //             icon: 'earth',
+    //             title: "浏览量展示",
+    //             name: 'show',
+    //             component: () => import('@/views/site/show/index.vue')
+    //         },
+    //         {
+    //             path: '/crawler',
+    //             icon: 'earth',
+    //             title: "爬虫统计",
+    //             name: 'crawler',
+    //             component: () => import('@/views/site/crawler/crawler.vue')
+    //         },
+    //         {
+    //             path: '/flow',
+    //             icon: 'earth',
+    //             title: "搜索引擎占比",
+    //             name: 'flow',
+    //             component: () => import('@/views/site/flow/index.vue')
+    //         },
+    //     ]
+    // },
     // {
     //     path: '/international',
     //     icon: 'earth',
