@@ -14,11 +14,11 @@
             <TabPane label="搜索引擎关键词统计" name="countkeyword">
                 <countkeyword ref="countkeyword"></countkeyword>
             </TabPane>
-            <!--<TabPane label="其他统计" name="other">-->
-                <!--<other ref="other"></other>-->
-            <!--</TabPane>-->
-
-        </Tabs> </card>
+            <TabPane label="其他统计" name="other">
+                <other ref="other"></other>
+            </TabPane>
+        </Tabs>
+        </card>
     </div>
 </template>
 
@@ -26,8 +26,8 @@
     import pv from '../../Common/pv/pv.vue';
     import show from '../../Common/show/index.vue';
     import crawler from '../../Common/crawler/crawler.vue';
-    import countkeyword from '../../Common/countkeyword/index.vue'
-    // import other from '../../Common/other/index.vue'
+    import countkeyword from '../../Common/countkeyword/index.vue';
+    import other from '../../Common/other/index.vue';
 
     export default {
         data () {
@@ -41,8 +41,7 @@
             }
         },
         components: {
-            pv, show, crawler, countkeyword
-            //  , other
+            pv, show, crawler, countkeyword, other
         }
     };
 </script>

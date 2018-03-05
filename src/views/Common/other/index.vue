@@ -1,34 +1,32 @@
 <template>
   <div class="echarts"style="overflow: scroll;height:480px;width: auto">
     <Row>
-      <keyword ref="keyword"></keyword>
+      <!--<keyword ref="keyword"></keyword>-->
       <articletype ref="articletype"></articletype>
-      <questiontype ref="questiontype"></questiontype>
-      <scarrered ref="scarrered"></scarrered>
+      <!--<questiontype ref="questiontype"></questiontype>-->
+
     </Row>
   </div>
 </template>
 <script type="text/babel">
   import articletype from './count.vue';
-  import questiontype from './questioncount.vue';
-  import keyword from './keyword.vue';
-  import scarrered from './scattered.vue';
+  // import questiontype from './questioncount.vue';
+  // import keyword from './keyword.vue';
 
   export default {
-    name: 'view',
-    components: {
+      name: 'view',
+      components: {
       articletype,
-      questiontype,
-      keyword,
-      scarrered
-    },
-    methods:{
-      init(){
-        this.$refs.keyword.init();
-        this.$refs.articletype.init();
-        this.$refs.questiontype.init();
-        this.$refs.scarrered.init();
+      // questiontype,
+      //     keyword
+
+      },
+      methods: {
+          init () {
+              // this.$refs.keyword.init();
+              this.$refs.articletype.init();
+              // this.$refs.questiontype.init();
+          }
       }
-    }
   };
 </script>
