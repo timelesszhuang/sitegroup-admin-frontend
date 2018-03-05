@@ -23,7 +23,7 @@
     export default {
         name: 'login-log',
         mixins: [http],
-        data () {
+        data() {
             return {
                 self: this,
                 border: true,
@@ -43,14 +43,14 @@
             };
         },
         methods: {
-            getData () {
+            getData() {
                 let data = {
                     params: {
                         page: this.page,
                         rows: this.rows
                     }
                 };
-                this.apiGet('userLoginLog',data).then((data) => {
+                this.apiGet('userLoginLog', data).then((data) => {
                     this.handleAjaxResponse(data, (data, msg) => {
                         this.datas = data.rows;
                         this.total = data.total;
@@ -61,20 +61,20 @@
 
                 });
             },
-            changePage (page) {
+            changePage(page) {
                 this.page = page;
                 this.getData();
             },
-            changePageSize (pagesize) {
+            changePageSize(pagesize) {
                 this.rows = pagesize;
                 this.getData();
             }
         },
-        created () {
+        created() {
             this.getData();
         },
         computed: {
-            tableColumns () {
+            tableColumns() {
                 let columns = [];
                 let _this = this;
                 if (this.showCheckbox) {
@@ -111,7 +111,7 @@
                         key: 'action',
                         align: 'center',
                         fixed: 'right',
-                        render (h, params) {
+                        render(h, params) {
                             return h('div', [
                                 h('Button', {
                                     props: {

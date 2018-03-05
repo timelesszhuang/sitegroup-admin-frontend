@@ -67,15 +67,18 @@ module.exports = merge(webpackBaseConfig, {
                 from: 'src/views/main-components/theme-switch/theme'
             },
             {
-                from: 'src/views/my-components/text-editor/tinymce'
-            }
+                from: 'src/views/main-components/tinymce'
+            },
+            {
+                from: 'static'
+            },
         ], {
             ignore: [
                 'text-editor.vue'
             ]
         }),
         new HtmlWebpackPlugin({
-            title: 'iView admin v' + package.version,
+            title: '乐销易营销系统',
             favicon: './td_icon.ico',
             filename: '../index.html',
             template: '!!ejs-loader!./src/template/index.ejs',
