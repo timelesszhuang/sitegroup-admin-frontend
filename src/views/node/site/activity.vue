@@ -81,7 +81,7 @@
     },
     methods: {
       sendTemp(id) {
-        this.apiGet('Site/ignoreFrontend/' + id + '/' + this.sid + "/activity").then((res) => {
+        this.apiGet('ignoreFrontend/' + id + '/' + this.sid + "/activity").then((res) => {
           this.handleAjaxResponse(res, (data, msg) => {
             this.modal = false;
             this.modal_loading = false;

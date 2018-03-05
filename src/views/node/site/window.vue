@@ -33,7 +33,7 @@
           cancelText: '取消',
           onOk: (index) => {
             let id = this.genaraterId;
-            this.apiGet('Site/siteGetCurl/' + id + '/aKeyGeneration').then((res) => {
+            this.apiGet('siteGetCurl/' + id + '/oneKeyGenerate').then((res) => {
               this.handleAjaxResponse(res, (data, msg) => {
                 this.modal = false;
                 this.modal_loading = false;
@@ -61,7 +61,7 @@
           cancelText: '取消',
           onOk: (index) => {
             let id = this.genaraterId;
-            this.apiGet('Site/siteGetCurl/' + id + '/generatIndex').then((res) => {
+            this.apiGet('siteGetCurl/' + id + '/generatIndex').then((res) => {
               this.handleAjaxResponse(res, (data, msg) => {
                 this.modal = false;
                 this.modal_loading = false;
@@ -89,7 +89,7 @@
           cancelText: '取消',
           onOk: (index) => {
             let id = this.genaraterId;
-            this.apiGet('Site/siteGetCurl/' + id + '/generatArticle').then((res) => {
+            this.apiGet('siteGetCurl/' + id + '/generatArticle').then((res) => {
               this.handleAjaxResponse(res, (data, msg) => {
                 this.modal = false;
                 this.modal_loading = false;
@@ -117,7 +117,7 @@
           cancelText: '取消',
           onOk: (index) => {
             let id = this.genaraterId;
-            this.apiGet('Site/siteGetCurl/' + id + '/generatMenu').then((res) => {
+            this.apiGet('siteGetCurl/' + id + '/generatMenu').then((res) => {
               this.handleAjaxResponse(res, (data, msg) => {
                 this.modal = false;
                 this.modal_loading = false;

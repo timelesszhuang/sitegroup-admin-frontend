@@ -174,7 +174,7 @@
                     okText: '确认',
                     cancelText: '取消',
                     onOk: () => {
-                        _this.apiGet('Site/ignoreFrontend/1' + "/" + index + "/template").then((res) => {
+                        _this.apiGet('ignoreFrontend/1' + "/" + index + "/template").then((res) => {
                             _this.handleAjaxResponse(res, (data, msg) => {
                                 _this.getData();
                                 _this.$Message.success(msg);
@@ -194,7 +194,7 @@
             },
             removeCache(index) {
                 let linkid = index.id;
-                this.apiGet('Site/siteGetCurl/' + linkid + "/clearCache").then((res) => {
+                this.apiGet('siteGetCurl/' + linkid + "/clearCache").then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.getData();
                         this.$Message.success(msg);

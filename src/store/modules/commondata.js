@@ -60,7 +60,6 @@ const commondata = {
             '#a29b7c',
             '#30dff3',
             '#be002f',
-            '#fffbf0',
             '#C936F2',
             '#edd1d8',
             '#0099ff',
