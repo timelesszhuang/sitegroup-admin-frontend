@@ -3,16 +3,16 @@ import tinymce from 'tinymce';
 const tinymceInit = {
     methods: {
         // content 表示所偶略图的tag 相关添加素材库的时候添加到的地方。
-        tinymceInit(vm, height, id, content = 'content') {
+        tinymceInit (vm, height, id, content = 'content') {
             tinymce.init({
                 selector: '#' + id,
                 branding: false,
+                fontsize_formats: "8px 10px 12px 14px 18px 24px 36px",
                 elementpath: false,
                 height: height,
                 language: 'zh_CN.GB2312',
                 menubar: 'edit insert view format table tools',
                 plugins: [
-                    'fontsizeselect',
                     'fullscreen',
                     'wordcount',
                     'advlist autolink lists link image charmap print preview hr anchor pagebreak imagetools',
@@ -20,7 +20,7 @@ const tinymceInit = {
                     'insertdatetime media nonbreaking save table contextmenu directionality',
                     'emoticons paste textcolor colorpicker textpattern imagetools codesample'
                 ],
-                toolbar1: ' newnote print preview | undo redo | insert | styleselect | forecolor  fontsizeselect  backcolor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image emoticons media codesample | mybutton | fullscreen |',
+                toolbar1: ' newnote print preview | undo redo | insert | styleselect | forecolor fontsizeselect backcolor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image emoticons media codesample | mybutton | fullscreen |',
                 autosave_interval: '5s',
                 image_advtab: true,
                 automatic_uploads: true,
