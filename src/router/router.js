@@ -317,7 +317,7 @@ export const nodeappRouter = [
                 icon: 'ios-navigate',
                 title: '流量分析',
                 name: 'trafficanalysis',
-                component: () => import('@/views/Common/pv/pv.vue')
+                component: () => import('@/views/node/pageview/index.vue')
             },
             {
                 path: 'recordinganalysis',
