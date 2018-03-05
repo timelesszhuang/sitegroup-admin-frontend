@@ -58,6 +58,11 @@
           },
           option: function () {
               return {
+                  title: {
+                      text: '浏览量统计',
+                      left: 'center',
+                      top: 10
+                  },
                   tooltip: {
                       trigger: 'axis',
                       axisPointer: {
@@ -68,7 +73,7 @@
                       }
                   },
                   grid: {
-                      top: '3%',
+                      top: '10%',
                       left: '1.2%',
                       right: '1%',
                       bottom: '1%',
