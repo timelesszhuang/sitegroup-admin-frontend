@@ -996,6 +996,87 @@ export const siteappRouter = [
             },
         ]
     },
+    {
+        path: '/sitemanagement',
+        icon: 'earth',
+        title: "站点管理",
+        name: 'sitemanagement',
+        component: Main,
+        children: [
+            {
+                path: '/operation',
+                icon: 'earth',
+                title: "页面生成",
+                name: 'operation',
+                component: () => import('@/views/site/operation/operation.vue')
+            },
+            {
+                path: '/tdkall',
+                icon: 'earth',
+                title: "搜索引擎优化管理",
+                name: 'tdkall',
+                component: () => import('@/views/site/tdkall/tab.vue')
+            },
+            {
+                path: '/staticconfig',
+                icon: 'earth',
+                title: "静态化配置",
+                name: 'staticconfig',
+                component: () => import('@/views/site/staticconfig/index.vue')
+            },
+            {
+                path: '/sitecontact',
+                icon: 'earth',
+                title: "联系方式",
+                name: 'sitecontact',
+                component: () => import('@/views/site/operation/sitecontact.vue')
+            },
+        ]
+    },
+    {
+        path: '/count',
+        icon: 'earth',
+        title: "统计",
+        name: 'count',
+        component: Main,
+        children: [
+            {
+                path: '/keyword',
+                icon: 'earth',
+                title: "关键词占比统计",
+                name: 'keyword',
+                component: () => import('@/views/site/keyword/index.vue')
+            },
+            {
+                path: '/pv',
+                icon: 'earth',
+                title: "浏览量统计",
+                name: 'pv',
+                component: () => import('@/views/site/pv/pv.vue')
+            },
+            {
+                path: '/show',
+                icon: 'earth',
+                title: "浏览量展示",
+                name: 'show',
+                component: () => import('@/views/site/show/index.vue')
+            },
+            {
+                path: '/crawler',
+                icon: 'earth',
+                title: "爬虫统计",
+                name: 'crawler',
+                component: () => import('@/views/site/crawler/crawler.vue')
+            },
+            {
+                path: '/flow',
+                icon: 'earth',
+                title: "搜索引擎占比",
+                name: 'flow',
+                component: () => import('@/views/site/flow/index.vue')
+            },
+        ]
+    },
     // {
     //     path: '/international',
     //     icon: 'earth',
