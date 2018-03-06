@@ -98,7 +98,6 @@ const commondata = {
             state.productTag = [];
             state.Tag = [];
             state.TagType = [];
-            state.backgroundcolor = [];
             state.SiteUser = [];
             state.SiteType = [];
             state.Ico = [];
