@@ -39,10 +39,10 @@
                             </Select>
                         </Form-item>
                         <Form-item label="上级分类" prop="p_id">
-                            <Select ref="select" :clearable="selects" style="text-align: left;width:250px;"
+                            <Select ref="select" :clearable="selects" style="width:250px;"
                                     label-in-value filterable @on-change="changeArticletype">
-                                <Option v-for="item in pidtype" :value="item.id" :label="item.name" :key="item.id">
-                                    {{ item.text }}
+                                <Option v-for="item in pidtype" :value="item.id" :label="item.text" :key="item.id">
+                                    {{item.text}}
                                 </Option>
                             </Select>
                         </Form-item>

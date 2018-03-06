@@ -76,17 +76,20 @@
                             </Col>
                         </Row>
                         <Row>
+
+
                             <Col span="12">
                             <Form-item label="文章分类" prop="articletype_id">
-                                <Select ref="select" :clearable="selects" v-model="form.articletype_id"
+                                <Select ref="select" :clearable="true" v-model="form.articletype_id"
                                         style="width:200px;position: relative;z-index: 10000"
-                                        label-in-value filterable clearable 　@on-change="changeArticletype">
+                                        label-in-value filterable  @on-change="changeArticletype">
                                     <Option-group v-for="(item,index) in this.$store.state.commondata.articleType"
                                                   :label="index" :key="index">
                                         <Option v-for="(peritem ,perindex) in item" :value="peritem.id"
                                                 :label="peritem.name"
                                                 :key="perindex">{{ peritem.name }}
                                         </Option>
+
                                     </Option-group>
                                 </Select>
                             </Form-item>
@@ -122,7 +125,7 @@
                             <Col span="21">
                             <Form-item v-if="tag_name" label="文章标签" prop="tag_id"
                                        style="position: relative;z-index: 10">
-                                <Select ref="select" :clearable="selects" v-model="form.tag_id"
+                                <Select  v-model="form.tag_id"
                                         style="text-align: left;width:350px;"
                                         label-in-value multiple filterable　>
                                     <Option v-for="(item,index) in this.$store.state.commondata.articleTag"
@@ -170,14 +173,14 @@
 
     export default {
         components: {materialimg},
-        data() {
+        data () {
             const checkarticletype = (rule, value, callback) => {
                 if (!value) {
                     callback(new Error('请选择文章分类'));
                 } else {
                     callback();
                 }
-            }
+            };
             return {
                 spinShow: true,
                 switch1: true,
@@ -231,7 +234,7 @@
                     this.tinymceInit(this, height, 'tinymceEditerAddArticle');
                 });
             },
-            change(status) {
+            change (status) {
                 if (status) {
                     this.tag_name = true;
                     this.$Message.info('切换到下拉选择');
@@ -240,10 +243,10 @@
                     this.$Message.info('切换到添加标签');
                 }
             },
-            changeTagtype(value) {
+            changeTagtype (value) {
                 this.form.tag_id = value.value;
             },
-            addmaterial(src) {
+            addmaterial (src) {
                 if (this.img === 'content') {
                     let imgsrc = '<img src=' + src + '>';
                     tinymce.get('tinymceEditerAddArticle').insertContent(imgsrc);
@@ -251,16 +254,16 @@
                     this.form.thumbnails = src;
                 }
             },
-            addimg(img) {
+            addimg (img) {
                 this.img = img;
                 this.$refs.addmaterial.getData();
                 this.$refs.addmaterial.modal = true;
             },
-            addtags() {
+            addtags () {
                 let data = {
                     type: 'article',
                     name: this.tags
-                }
+                };
                 this.apiPost('tags', data).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         let tempN = this.form.tag_id;
@@ -277,7 +280,7 @@
                     // 处理错误信息
                 });
             },
-            getResponse(response, file, filelist) {
+            getResponse (response, file, filelist) {
                 this.form.thumbnails = response.data.url;
                 if (response.status) {
                     this.$Message.success('上传成功');
@@ -288,17 +291,17 @@
                 }
                 this.$refs.upImg.clearFiles();
             },
-            getErrorInfo(error, file, filelist) {
+            getErrorInfo (error, file, filelist) {
                 this.$Message.error(error);
             },
-            formatError() {
+            formatError () {
                 this.$Message.error('文件格式只支持 jpg,jpeg,png三种格式。');
             },
-            changeArticletype(value) {
+            changeArticletype (value) {
                 this.form.articletype_name = value.label;
                 this.form.articletype_id = value.value;
             },
-            add() {
+            add () {
                 this.$refs.add.validate((valid) => {
                     if (valid) {
                         this.modal_loading = true;
@@ -310,16 +313,18 @@
                         let data = this.form;
                         this.apiPost('article', data).then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {
+                                this.modal_loading = false;
+                                this.imgshow = false;
+                                this.form.thumbnails = '';
+                                this.form.articletype_id = 0;
+                                this.$refs.add.resetFields();
+                                this.$refs.select.clearSingleSelect();
+                                tinymce.get('tinymceEditerAddArticle').setContent('');
                                 this.modal = false;
                                 if (this.gpd) {
                                     this.$emit('getdata');
                                 }
                                 this.$Message.success(msg);
-                                this.modal_loading = false;
-                                this.imgshow = false;
-                                this.form.thumbnails = '';
-                                this.$refs.add.resetFields();
-                                this.$refs.select.clearSingleSelect();
                             }, (data, msg) => {
                                 this.modal_loading = false;
                                 this.$Message.error(msg);
@@ -332,18 +337,18 @@
                 });
             }
         },
-        mounted() {
+        mounted () {
             this.init();
         },
-        destroyed() {
+        destroyed () {
             tinymce.get('tinymceEditerAddArticle').destroy();
         },
         mixins: [http, common, tinymceInit],
         props: {
             imgsrc: {},
-            gpd: {default: 1},
+            gpd: {default: 1}
         }
-    }
+    };
 </script>
 <style>
     .ql-container .ql-editor {

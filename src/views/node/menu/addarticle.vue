@@ -42,7 +42,7 @@
                         <Form-item label="上级分类" prop="p_id">
                             <Select ref="select" :clearable="selects" style="text-align: left;width:250px;"
                                     label-in-value filterable @on-change="changeArticletype">
-                                <Option v-for="item in pidtype" :value="item.id" :label="item.name" :key="item.id">
+                                <Option v-for="item in pidtype" :value="item.id" :label="item.text" :key="item.id">
                                     {{ item.text }}
                                 </Option>
                             </Select>
@@ -75,7 +75,7 @@
     import http from '../../../libs/http';
 
     export default {
-        data() {
+        data () {
             const checkNavtype = (rule, value, callback) => {
                 if (!value) {
                     callback(new Error('请选择栏目分类'));
@@ -99,22 +99,22 @@
                     listtemplate: '',
                     p_id: '',
                     type_id: [],
-                    name: "",
-                    title: "",
-                    flag: "3",
-                    flag_name: "文章型",
+                    name: '',
+                    title: '',
+                    flag: '3',
+                    flag_name: '文章型',
                     generate_name: ''
                 },
                 selects: true,
                 AddRule: {
                     name: [
-                        {required: true, message: '请填写菜单名字', trigger: 'blur'},
+                        {required: true, message: '请填写菜单名字', trigger: 'blur'}
                     ],
                     title: [
                         { message: '请填写栏目的详情', trigger: 'blur'}
                     ],
                     type_name: [
-                        {required: true, message: '请选择文章分类', trigger: 'blur'},
+                        {required: true, message: '请选择文章分类', trigger: 'blur'}
                     ],
                     type_id: [
                         {required: true, validator: checkarticletype, trigger: 'blur'}
@@ -124,19 +124,19 @@
                     ],
                     tag_name: [
                         {required: true, validator: checkNavtype, trigger: 'blur'}
-                    ],
+                    ]
                 }
-            }
+            };
         },
         methods: {
-            changeNavtype(value) {
-                this.form.tag_name = value.label
-                this.form.tag_id = value.value
+            changeNavtype (value) {
+                this.form.tag_name = value.label;
+                this.form.tag_id = value.value;
             },
-            changeArticletype(value) {
-                this.form.p_id = value.value
+            changeArticletype (value) {
+                this.form.p_id = value.value;
             },
-            addarticle() {
+            addarticle () {
                 this.$refs.articleadd.validate((valid) => {
                     if (valid) {
                         this.modal_loading = true;
@@ -154,18 +154,18 @@
                                 this.$Message.success(msg);
                                 this.modal_loading = false;
                                 this.$refs.articleadd.resetFields();
-                                this.$refs.select.clearSingleSelect()
+                                this.$refs.select.clearSingleSelect();
                             }, (data, msg) => {
                                 this.modal_loading = false;
                                 this.$Message.error(msg);
-                            })
+                            });
                         }, (res) => {
-                            //处理错误信息
+                            // 处理错误信息
                             this.modal_loading = false;
                             this.$Message.error('网络异常，请稍后重试。');
-                        })
+                        });
                     }
-                })
+                });
             }
         },
         mixins: [http],
@@ -179,7 +179,7 @@
             },
             pidtype: {
                 default: []
-            },
+            }
         }
-    }
+    };
 </script>

@@ -30,7 +30,7 @@ module.exports = merge(webpackBaseConfig, {
             minChunks: Infinity
         }),
         new HtmlWebpackPlugin({
-            title: 'iView admin v' + package.version,
+            title: '乐销易营销系统',
             filename: '../index.html',
             inject: false
         }),
