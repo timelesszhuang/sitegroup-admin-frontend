@@ -137,6 +137,20 @@
                             </i-switch>
                             </Col>
                         </Row>
+                        <Row>
+                            <Cor span="21">
+                                <Form-item label="标记" prop="flag"
+                                           style="position: relative;z-index: 10">
+                                    <CheckboxGroup v-model="form.flag">
+                                        <Checkbox label="h">头条</Checkbox>
+                                        <Checkbox label="c">推荐</Checkbox>
+                                        <Checkbox label="b">加粗</Checkbox>
+                                        <Checkbox label="a">特荐</Checkbox>
+                                        <Checkbox label="f">幻灯</Checkbox>
+                                    </CheckboxGroup>
+                                </Form-item>
+                            </Cor>
+                        </Row>
                     </Form>
                 </Card>
                 <Alert style="font-size:15px;font-weight: bold;text-align:center;" type="warning">
@@ -192,7 +206,8 @@
                     articletype_name: '',
                     content: '',
                     title_color: '',
-                    tag_id: []
+                    tag_id: [],
+                    flag: []
                 },
                 tags: '',
                 tagname: {},
