@@ -21,12 +21,12 @@
                             <TabPane :label=nodeName name="name1">
                                 <Form ref="loginform" :model="loginform" :rules="loginRule">
                                     <Form-item prop="user_name">
-                                        <Input type="text" v-model="loginform.user_name" size="large" placeholder="用户名">
+                                        <Input type="text" v-model="loginform.user_name" @keyup.enter.native="handleSubmit('loginform')" size="large" placeholder="用户名">
                                         <Icon type="ios-person-outline" slot="prepend"></Icon>
                                         </Input>
                                     </Form-item>
                                     <Form-item prop="password">
-                                        <Input type="password" v-model="loginform.password" size="large"
+                                        <Input type="password" v-model="loginform.password" @keyup.enter.native="handleSubmit('loginform')" size="large"
                                                placeholder="密码">
                                         <Icon type="ios-locked-outline" slot="prepend"></Icon>
                                         </Input>
@@ -34,7 +34,7 @@
                                     <Form-item prop="verify_code">
                                         <Row>
                                             <Col span="8">
-                                            <Input type="text" v-model="loginform.verify_code" size="large"
+                                            <Input type="text" v-model="loginform.verify_code" @keyup.enter.native="handleSubmit('loginform')" size="large"
                                                    placeholder="验证码">
                                             <Icon type="images" slot="prepend"></Icon>
                                             </Input>
@@ -58,13 +58,13 @@
                             <TabPane :label=siteName name="name2">
                                 <Form ref="siteloginform" :model="siteloginform" :rules="loginRule">
                                     <Form-item prop="user_name">
-                                        <Input type="text" v-model="siteloginform.user_name" size="large"
+                                        <Input type="text" v-model="siteloginform.user_name" @keyup.enter.native="handleSubmit('siteloginform')" size="large"
                                                placeholder="用户名">
                                         <Icon type="ios-person-outline" slot="prepend"></Icon>
                                         </Input>
                                     </Form-item>
                                     <Form-item prop="password">
-                                        <Input type="password" v-model="siteloginform.password" size="large"
+                                        <Input type="password" v-model="siteloginform.password" @keyup.enter.native="handleSubmit('siteloginform')" size="large"
                                                placeholder="密码">
                                         <Icon type="ios-locked-outline" slot="prepend"></Icon>
                                         </Input>
@@ -72,7 +72,7 @@
                                     <Form-item prop="verify_code">
                                         <Row>
                                             <Col span="8">
-                                            <Input type="text" v-model="siteloginform.verify_code" size="large"
+                                            <Input type="text" v-model="siteloginform.verify_code" @keyup.enter.native="handleSubmit('siteloginform')" size="large"
                                                    placeholder="验证码">
                                             <Icon type="images" slot="prepend"></Icon>
                                             </Input>
