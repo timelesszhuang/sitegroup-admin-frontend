@@ -11,6 +11,14 @@
                             <Form-item label="名称" prop="name">
                                 <Input type="text" v-model="form.name" placeholder="请输入产品名称 （或其他名称）"></Input>
                             </Form-item>
+                            <Form-item label="标记" prop="flag"
+                                       style="position: relative;z-index: 10">
+                                <CheckboxGroup v-model="form.flag">
+                                    <Checkbox v-for="(item,index) in this.$store.state.commondata.FlagList" :key="index" :label=item[0]>
+                                        {{item[1]}}
+                                    </Checkbox>
+                                </CheckboxGroup>
+                            </Form-item>
                             <Form-item label="产品缩略图" prop="name">
                                 <Upload
                                         type="select"
@@ -187,7 +195,8 @@
                     field3: '',
                     field4: '',
                     description: '',
-                    tag_id: []
+                    tag_id: [],
+                    flag: []
                 },
                 tags: '',
                 AddRule: {

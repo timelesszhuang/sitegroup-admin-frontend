@@ -10,6 +10,14 @@
                         <Form-item label="问题名" prop="question">
                             <Input type="text" v-model="form.question" placeholder="请填写问题"></Input>
                         </Form-item>
+                        <Form-item label="标记" prop="flag"
+                                   style="position: relative;z-index: 10">
+                            <CheckboxGroup v-model="form.flag">
+                                <Checkbox v-for="(item,index) in this.$store.state.commondata.FlagList" :key="index" :label=item[0]>
+                                    {{item[1]}}
+                                </Checkbox>
+                            </CheckboxGroup>
+                        </Form-item>
                         <Form-item label="问答分类" prop="type_id">
                             <Select v-model="form.type_id" ref="select" :clearable="selects" style="width:200px;"
                                     label-in-value filterable clearable @on-change="changeQuestiontype">
@@ -106,7 +114,8 @@
                     content_paragraph: '',
                     type_id: 0,
                     type_name: '',
-                    tag_id: []
+                    tag_id: [],
+                    flag: []
                 },
                 tags: '',
                 selects: true,

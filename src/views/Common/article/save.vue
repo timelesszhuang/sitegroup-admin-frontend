@@ -21,6 +21,16 @@
                             </Col>
                         </Row>
                         <Row>
+                            <Col span="21">
+                            <Form-item label="标记" prop="flag"
+                                       style="position: relative;z-index: 10">
+                                <CheckboxGroup v-model="form.flag">
+                                    <Checkbox v-for="(item,index) in this.$store.state.commondata.FlagList" :key="index" :label=item[0]>{{item[1]}}</Checkbox>
+                                </CheckboxGroup>
+                            </Form-item>
+                            </Col>
+                        </Row>
+                        <Row>
                             <Col span="8">
                             <Form-item label="简略标题" prop="shorttitle">
                                 <Input type="text" v-model="form.shorttitle" placeholder="请输入简略标题"></Input>
@@ -189,7 +199,8 @@
                     keywords: '',
                     shorttitle: '',
                     is_collection: '',
-                    tag_id: []
+                    tag_id: [],
+                    flag: []
                 },
                 tags: '',
                 imgcontent: '',
@@ -247,6 +258,7 @@
                         tinymce.get(this.editImgId).setContent(this.form.content);
                         let tempNUmber = [];
                         this.form.tag_id = tempNUmber;
+                        this.form.flag = tempNUmber;
                         this.modal = true;
                     }, (data, msg) => {
                         this.$Message.error(msg);
@@ -270,6 +282,7 @@
                         tinymce.get(this.editImgId).setContent(this.form.content);
                         let tempNUmber = [];
                         this.form.tag_id = tempNUmber;
+                        this.form.flag = tempNUmber;
                         this.modal = true;
                     }, (data, msg) => {
                         this.$Message.error(msg);
@@ -294,6 +307,7 @@
                         tinymce.get(this.editImgId).setContent(this.form.content);
                         let tempNUmber = [];
                         this.form.tag_id = tempNUmber;
+                        this.form.flag = tempNUmber;
                         this.modal = true;
                     }, (data, msg) => {
                         this.$Message.error(msg);
@@ -317,6 +331,7 @@
                         tinymce.get(this.editImgId).setContent(this.form.content);
                         let tempNUmber = [];
                         this.form.tag_id = tempNUmber;
+                        this.form.flag = tempNUmber;
                         this.modal = true;
                     }, (data, msg) => {
                         this.$Message.error(msg);
@@ -339,6 +354,7 @@
                         tinymce.get(this.editImgId).setContent(this.form.content);
                         let tempNUmber = [];
                         this.form.tag_id = tempNUmber;
+                        this.form.flag = tempNUmber;
                         this.modal = true;
                     }, (data, msg) => {
                         this.$Message.error(msg);
@@ -362,6 +378,15 @@
                         delete this.form.tags;
                         this.form.tag_id = tempNUmber;
                         this.tags = '';
+                        let flag = [];
+                        if (this.form.flag !== '') {
+                            this.form.flag.split(',').map(function (key) {
+                                flag.push(key);
+                                console.log(flag);
+                            });
+                        }
+                        this.form.flag = flag;
+                        this.flags = '';
                     }, (data, msg) => {
                         this.$Message.error(msg);
                     });
@@ -450,11 +475,11 @@
                 this.$refs.save.validate((valid) => {
                     if (valid) {
                         this.modal_loading = true;
-                        let data = this.form;
                         let activeEditor = tinymce.get(this.editImgId);
                         activeEditor.selection.select(activeEditor.getBody());
                         let text = activeEditor.selection.getContent({'format': 'html'});
                         this.form.content = text;
+                        let data = this.form;
                         let id = data.id;
                         this.apiPut('article/' + id, data).then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {

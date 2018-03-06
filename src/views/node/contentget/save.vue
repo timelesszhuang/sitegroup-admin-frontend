@@ -107,6 +107,9 @@
                 this.$refs.contentsave.validate((valid) => {
                     if (valid) {
                         this.modal_loading = true;
+                        var activeEditor = tinymce.get('tinymceEditerSaveContent');
+                        activeEditor.selection.select(activeEditor.getBody());
+                        this.form.content = activeEditor.selection.getContent({'format': 'html'});
                         let data = this.form;
                         let id = data.id;
                         this.apiPut('content_get/' + id, data).then((res) => {

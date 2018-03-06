@@ -9,7 +9,7 @@ export const loginRouter = {
         title: '乐销易营销平台 - 登录'
     },
     component: () => import('@/views/Common/login/login.vue')
-}
+};
 
 export const page404 = {
     path: '/404',
@@ -18,7 +18,7 @@ export const page404 = {
         title: '404-页面不存在'
     },
     component: () => import('@/views/Common/error-page/404.vue')
-}
+};
 
 export const page403 = {
     path: '/403',
@@ -27,7 +27,7 @@ export const page403 = {
     },
     name: 'error-403',
     component: () => import('@/views/Common/error-page/403.vue')
-}
+};
 
 export const page500 = {
     path: '/500',
@@ -36,26 +36,26 @@ export const page500 = {
     },
     name: 'error-500',
     component: () => import('@/views/Common/error-page/500.vue')
-}
+};
 
 export const preview = {
     path: '/preview',
     name: 'preview',
     component: () => import('@/views/form/article-publish/preview.vue')
-}
+};
 
 export const locking = {
     path: '/locking',
     name: 'locking',
     component: () => import('@/views/main-components/lockscreen/components/locking-page.vue')
-}
+};
 
 export const selectsite = {
     path: '/site_select',
     title: '管理站点选择',
     name: 'site_select',
     component: () => import('@/views/site/select-site/select-site.vue')
-}
+};
 
 // node 的 作为Main组件的子页面展示但是不在左侧菜单显示的路由写在nodeotherRouter里
 export const nodeotherRouter = {
@@ -102,34 +102,118 @@ export const nodeotherRouter = {
             component: () => import('@/views/node/error-message/error-message.vue')
         }
     ]
-}
+};
 
 // 作为node Main组件的子页面展示并且在左侧菜单显示的路由写在nodeappRouter里
 export const nodeappRouter = [
     {
+        path: '/marketing',
+        icon: 'folder',
+        name: 'marketing',
+        title: '营销计划',
+        component: Main,
+        children: [
+            {
+                path: 'marketingmode',
+                icon: 'flag',
+                title: '营销模式',
+                name: 'marketingmode',
+                component: () => import('@/views/Common/marketingmode/index.vue')
+            },
+            {
+                path: 'casecenter',
+                icon: 'paper-airplane',
+                title: '案例中心',
+                name: 'casecenter',
+                component: () => import('@/views/Common/case/index.vue')
+            },
+        ]
+    },
+    {
+        path: '/keyword',
+        icon: 'ios-navigate',
+        name: 'keyword',
+        title: '站点关键词',
+        component: Main,
+        children: [
+            {
+                path: 'keywordmanage',
+                icon: 'key',
+                title: '关键词管理',
+                name: 'keywordmanage',
+                component: () => import('@/views/node/keyword/keyword.vue')
+            },
+            {
+                path: 'keywordtable',
+                icon: 'ios-list-outline',
+                title: '关键词推荐与追踪',
+                name: 'keywordtable',
+                component: () => import('@/views/node/keywordtab/tab.vue')
+            },
+        ]
+    },
+    {
+        path: '/sub-site',
+        icon: 'soup-can',
+        name: 'sub-site',
+        title: '子站点设置',
+        component: Main,
+        children: [
+            {
+                path: 'column-management',
+                icon: 'ios-bookmarks',
+                title: '栏目管理',
+                name: 'column-management',
+                component: () => import('@/views/node/nav/tab.vue')
+            },
+            {
+                path: 'siteelement',
+                icon: 'settings',
+                title: '网站元素设置',
+                name: 'siteelement',
+                component: () => import('@/views/node/siteelement/index.vue')
+            },
+            {
+                path: 'site-management',
+                icon: 'android-cloud-circle',
+                title: '站点管理',
+                name: 'site-management',
+                component: () => import('@/views/node/sitemanage/index.vue')
+            },
+            {
+                path: 'user-management',
+                icon: 'person',
+                title: '用户管理',
+                name: 'user-management',
+                component: () => import('@/views/node/user-management/siteuser.vue')
+            },
+
+        ]
+    },
+    {
         path: '/content',
-        icon: 'key',
+        icon: 'ios-copy',
         name: 'content',
         title: '内容管理',
         component: Main,
         children: [
             {
                 path: 'articlemanage',
-                icon: 'edit',
+                icon: 'document',
                 title: '文章管理',
                 name: 'articlemanage',
                 component: () => import('@/views/node/articlemanage/tab.vue')
             },
             {
                 path: 'question',
-                icon: 'ios-help',
+                icon: 'ios-help-outline',
                 title: '问答管理',
                 name: 'question',
                 component: () => import('@/views/node/questionmanage/tab.vue')
             },
             {
                 path: 'product',
-                icon: 'ios-briefcase',
+                icon: 'ios-briefcase-outline',
                 title: '产品管理',
                 name: 'product',
                 component: () => import('@/views/node/productmanage/tab.vue')
@@ -144,13 +228,13 @@ export const nodeappRouter = [
             {
                 path: 'contentget',
                 title: '内容管理',
-                icon: 'ionic',
+                icon: 'document-text',
                 name: 'contentget',
                 component: () => import('@/views/node/contentget/index.vue')
             },
             {
                 path: 'index',
-                icon: 'images',
+                icon: 'lightbulb',
                 title: '活动创意管理',
                 name: 'access_index',
                 component: () => import('@/views/node/activity/index.vue')
@@ -161,7 +245,7 @@ export const nodeappRouter = [
     },
     {
         path: '/resource',
-        icon: 'soup-can',
+        icon: 'ios-list',
         name: 'resource',
         title: '资源聚合',
         component: Main,
@@ -184,46 +268,8 @@ export const nodeappRouter = [
         ]
     },
     {
-        path: '/sub-site',
-        icon: 'soup-can',
-        name: 'sub-site',
-        title: '子站点设置',
-        component: Main,
-        children: [
-            {
-                path: 'column-management',
-                icon: 'ios-bookmarks',
-                title: '栏目管理',
-                name: 'column-management',
-                component: () => import('@/views/node/nav/tab.vue')
-            },
-            {
-                path: 'site-management',
-                icon: 'image',
-                title: '站点管理',
-                name: 'site-management',
-                component: () => import('@/views/node/sitemanage/index.vue')
-            },
-            {
-                path: 'user-management',
-                icon: 'image',
-                title: '用户管理',
-                name: 'user-management',
-                component: () => import('@/views/node/user-management/siteuser.vue')
-            },
-            {
-                path: 'siteelement',
-                icon: 'image',
-                title: '网站元素设置',
-                name: 'siteelement',
-                component: () => import('@/views/node/siteelement/index.vue')
-            },
-
-        ]
-    },
-    {
         path: '/exclusive',
-        icon: 'soup-can',
+        icon: 'social-dropbox',
         name: 'exclusive',
         title: '素材库',
         component: Main,
@@ -246,82 +292,36 @@ export const nodeappRouter = [
         ]
     },
     {
-        path: '/keyword',
-        icon: 'ios-navigate',
-        name: 'keyword',
-        title: '站点关键词',
-        component: Main,
-        children: [
-            {
-                path: 'keywordmanage',
-                icon: 'ios-navigate',
-                title: '关键词管理',
-                name: 'keywordmanage',
-                component: () => import('@/views/node/keyword/keyword.vue')
-            },
-            {
-                path: 'keywordtable',
-                icon: 'ios-navigate',
-                title: '关键词推荐与追踪',
-                name: 'keywordtable',
-                component: () => import('@/views/node/keywordtab/tab.vue')
-            },
-        ]
-    },
-    {
-        path: '/marketing',
-        icon: 'ios-navigate',
-        name: 'marketing',
-        title: '营销计划',
-        component: Main,
-        children: [
-            {
-                path: 'marketingmode',
-                icon: 'ios-navigate',
-                title: '营销模式',
-                name: 'marketingmode',
-                component: () => import('@/views/Common/marketingmode/index.vue')
-            },
-            {
-                path: 'casecenter',
-                icon: 'paper-airplane',
-                title: '案例中心',
-                name: 'casecenter',
-                component: () => import('@/views/Common/case/index.vue')
-            },
-        ]
-    },
-    {
         path: '/marketfeedbackanalysis',
-        icon: 'ios-navigate',
+        icon: 'ios-flower',
         name: 'marketfeedbackanalysis',
         title: '市场反馈分析',
         component: Main,
         children: [
             {
                 path: 'positionranking',
-                icon: 'ios-navigate',
+                icon: 'location',
                 title: '位置排名',
                 name: 'positionranking',
                 component: () => import('@/views/node/mainkeyword/index.vue')
             },
             {
                 path: 'clue',
-                icon: 'ios-navigate',
+                icon: 'ios-shuffle-strong',
                 title: '线索',
                 name: 'clue',
                 component: () => import('@/views/node/rejection/index.vue')
             },
             {
                 path: 'trafficanalysis',
-                icon: 'ios-navigate',
+                icon: 'ios-pulse-strong',
                 title: '流量分析',
                 name: 'trafficanalysis',
                 component: () => import('@/views/node/pageview/index.vue')
             },
             {
                 path: 'recordinganalysis',
-                icon: 'ios-navigate',
+                icon: 'ios-recording',
                 title: '录音分析',
                 name: 'recordinganalysis',
                 component: () => import('@/views/node/video/index.vue')
@@ -536,7 +536,7 @@ export const nodeappRouter = [
     //         }
     //     ]
     // }
-]
+];
 
 // admin 的 作为Main组件的子页面展示但是不在左侧菜单显示的路由写在nodeotherRouter里
 export const adminotherRouter = {
@@ -571,20 +571,20 @@ export const adminotherRouter = {
             component: () => import('@/views/advanced-router/component/shopping-info.vue')
         }, // 用于展示带参路由
     ]
-}
+};
 // 作为admin Main组件的子页面展示并且在左侧菜单显示的路由写在nodeappRouter里
 export const adminappRouter = [
     {
 
         path: '/market',
-        icon: 'ios-navigate',
+        icon: 'folder',
         name: 'market',
         title: '营销计划',
         component: Main,
         children: [
             {
                 path: 'marketmode',
-                icon: 'ios-navigate',
+                icon: 'flag',
                 title: '营销模式',
                 name: 'marketmode',
                 component: () => import('@/views/admin/marketmode/index.vue')
@@ -600,7 +600,7 @@ export const adminappRouter = [
     },
     {
         path: '/message-send',
-        icon: 'paper-airplane',
+        icon: 'ios-upload',
         title: '信息发布',
         name: 'messagesend',
         component: Main,
@@ -615,19 +615,21 @@ export const adminappRouter = [
     },
     {
         path: '/node-user-management',
-        icon: 'paper-airplane',
+        icon: 'person-stalker',
         title: '节点/用户管理',
         name: 'node-user-management',
         component: Main,
         children: [
             {
                 path: 'root-user-management',
+                icon: 'person',
                 title: '用户管理',
                 name: 'root-user-management',
                 component: () => import('@/views/admin/user/user.vue')
             },
             {
                 path: 'node-management',
+                icon: 'ios-cloud',
                 title: '节点管理',
                 name: 'node-management',
                 component: () => import('@/views/admin/node/node.vue')
@@ -636,7 +638,7 @@ export const adminappRouter = [
     },
     {
         path: '/template-management',
-        icon: 'paper-airplane',
+        icon: 'ios-grid-view',
         title: '模板管理',
         name: 'template-management',
         component: Main,
@@ -652,7 +654,7 @@ export const adminappRouter = [
     },
     {
         path: '/allies',
-        icon: 'paper-airplane',
+        icon: 'ios-people',
         title: '友商库',
         name: 'allies',
         component: Main,
@@ -668,7 +670,7 @@ export const adminappRouter = [
     },
     {
         path: '/voice-management',
-        icon: 'paper-airplane',
+        icon: 'ios-recording',
         title: '录音管理',
         name: 'voice-management',
         component: Main,
@@ -881,7 +883,7 @@ export const adminappRouter = [
     //         }
     //     ]
     // }
-]
+];
 
 // 作为Main组件的子页面展示但是不在左侧菜单显示的路由写在otherRouter里
 export const siteotherRouter = {
@@ -916,7 +918,7 @@ export const siteotherRouter = {
             component: () => import('@/views/advanced-router/component/shopping-info.vue')
         }, // 用于展示带参路由
     ]
-}
+};
 
 // 作为Main组件的子页面展示并且在左侧菜单显示的路由写在appRouter里
 export const siteappRouter = [
@@ -1403,7 +1405,7 @@ export const siteappRouter = [
     //         }
     //     ]
     // }
-]
+];
 
 // 全部的路由信息
 export const routers = [
@@ -1424,7 +1426,7 @@ export const routers = [
     page500,
     page403,
     page404
-]
+];
 
 //节点相关的路由信息
 export const noderouters = [
@@ -1437,7 +1439,7 @@ export const noderouters = [
     page500,
     page403,
     page404
-]
+];
 
 //公司总管理员端的相关的路由信息
 export const adminrouters = [
@@ -1450,7 +1452,7 @@ export const adminrouters = [
     page500,
     page403,
     page404
-]
+];
 
 //小站点的相关的路由信息
 export const siterouters = [
@@ -1463,6 +1465,6 @@ export const siterouters = [
     page500,
     page403,
     page404
-]
+];
 
 

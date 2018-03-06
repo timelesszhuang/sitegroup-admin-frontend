@@ -11,6 +11,14 @@
                             <Form-item label="名称" prop="name">
                                 <Input type="text" v-model="form.name" placeholder="请输入产品名称 （或其他名称）"></Input>
                             </Form-item>
+                            <Form-item label="标记" prop="flag"
+                                       style="position: relative;z-index: 10">
+                                <CheckboxGroup v-model="form.flag">
+                                    <Checkbox v-for="(item,index) in this.$store.state.commondata.FlagList" :key="index" :label=item[0]>
+                                        {{item[1]}}
+                                    </Checkbox>
+                                </CheckboxGroup>
+                            </Form-item>
                             <Form-item label="缩略图" prop="image">
                                 <Upload
                                         type="select"
@@ -178,7 +186,8 @@
                         field2: '',
                         field3: '',
                         field4: '',
-                        content: ''
+                        content: '',
+                        flag: '',
                     }
                 },
                 tags: '',
@@ -335,6 +344,14 @@
                             });
                         }
                         delete this.form.tags;
+                        let flag = [];
+                        if (this.form.flag !== '') {
+                            this.form.flag.split(',').map(function (key) {
+                                flag.push(key);
+                                console.log(flag);
+                            });
+                        }
+                        this.form.flag = flag;
                         this.form.tag_id = tempNUmber;
                         this.tags = '';
                     }, (data, msg) => {
