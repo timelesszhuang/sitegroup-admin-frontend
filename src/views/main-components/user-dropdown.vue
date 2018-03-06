@@ -69,6 +69,7 @@
                         this.handleAjaxResponse(res, (data) => {
                             this.$store.commit('logout', this);
                             this.$store.commit('clearOpenedSubmenu');
+                            this.$store.commit('resetCommonData');
                             this.$router.push({
                                 name: 'login'
                             });
