@@ -70,7 +70,7 @@
           });
           this.getuserdefine((data) => {
               this.userdefine = data;
-              console.log(this.userdefine);
+              //console.log(this.userdefine);
           });
       },
       methods: {

@@ -140,7 +140,7 @@
                         }
                     })
                 } else if (is_on === "10") {
-                    console.log(id + 1);
+                    //console.log(id + 1);
                     this.$Modal.confirm({
                         title: '确认启用',
                         content: '您确定启用该活动?',

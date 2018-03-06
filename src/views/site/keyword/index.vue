@@ -84,10 +84,10 @@
 //        that.loading = !that.loading;
       },
       onReady(instance) {
-        console.log(instance);
+        //console.log(instance);
       },
       onClick(event, instance, echarts) {
-        console.log(arguments);
+        //console.log(arguments);
       }
     },
     mixins: [http]

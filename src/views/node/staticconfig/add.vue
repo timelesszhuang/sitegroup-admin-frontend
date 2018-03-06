@@ -81,7 +81,7 @@
         },
         methods: {
             starthandleChange(time) {
-                console.log(time);
+                //console.log(time);
                 this.form.starttime = time
             },
             endhandleChange(time) {

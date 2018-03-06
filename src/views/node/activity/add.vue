@@ -177,7 +177,7 @@
                     tinymce.get('tinymceEditerAddinfo').insertContent(imgsrc);
                 } else if (this.img === 'thumbnail') {
                     this.form.image = src;
-                    console.log(this.form.image)
+                    //console.log(this.form.image)
                 }
             },
             init: function () {
@@ -253,7 +253,7 @@
                         var activeEditor2 = tinymce.get('tinymceEditerAddinfo');
                         activeEditor2.selection.select(activeEditor2.getBody());
                         this.form.content = activeEditor2.selection.getContent({'format': 'html'});
-                        console.log(this.form);
+                        //console.log(this.form);
                         let data = this.form;
                         this.apiPost('activityabout', data).then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {

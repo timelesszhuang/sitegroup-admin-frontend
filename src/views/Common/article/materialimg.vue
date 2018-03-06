@@ -88,7 +88,7 @@
             dan: function () {
                 clearTimeout(this.clickTimeId);
                 this.clickTimeId = setTimeout(function () {
-                    console.log('鼠标单击');
+                    //console.log('鼠标单击');
                 }, 250);
             },
             shuang: function () {

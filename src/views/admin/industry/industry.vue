@@ -182,7 +182,7 @@
                                     },
                                     on: {
                                         click: function () {
-                                            console.log(params);
+                                            //console.log(params);
                                             _this.remove(params.index)
                                         }
                                     }

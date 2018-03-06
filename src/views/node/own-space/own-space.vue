@@ -158,7 +158,7 @@
                 this.apiGet('getUserInfo').then((data) => {
                     this.handleAjaxResponse(data, (data, msg) => {
                         this.data = data;
-                        console.log(data);
+                        //console.log(data);
                     }, (data, msg) => {
                         this.$Message.error(msg);
                     });

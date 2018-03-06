@@ -195,7 +195,7 @@
                         if (this.form.flag !== '') {
                             this.form.flag.split(',').map(function (key) {
                                 flag.push(key);
-                                console.log(flag);
+                                //console.log(flag);
                             });
                         }
                         this.form.flag = flag;

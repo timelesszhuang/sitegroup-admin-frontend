@@ -175,7 +175,7 @@
                     tinymce.get('tinymceEditerSaveinfo').insertContent(imgsrc);
                 } else if (this.img === 'thumbnail') {
                     this.form.image = src;
-                    console.log(this.form.image)
+                    //console.log(this.form.image)
                 }
             },
             init: function () {

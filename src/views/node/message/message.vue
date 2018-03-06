@@ -279,7 +279,7 @@
                 this.apiGet('system_notice/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.editinfo = data;
-                        console.log(data);
+                        //console.log(data);
                         this.mes.content = data.content;
                     }, (data, msg) => {
                         this.$Message.error(msg);
