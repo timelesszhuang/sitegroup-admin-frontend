@@ -7,7 +7,7 @@ const tinymceInit = {
             tinymce.init({
                 selector: '#' + id,
                 branding: false,
-                fontsize_formats: "8px 10px 12px 14px 18px 24px 36px",
+                fontsize_formats: '8px 10px 12px 14px 18px 24px 36px',
                 elementpath: false,
                 height: height,
                 language: 'zh_CN.GB2312',
