@@ -36,11 +36,11 @@ const commondata = {
             'background-image:linear-gradient(45deg, #98F898 0%, #7FFF00 100%)'
         ],
         FlagList: [
-            ['h',"头条"],
-            ['c',"推荐"],
-            ['b',"加粗"],
-            ['a',"特荐"],
-            ['f',"幻灯"],
+            ['c', '推荐'],
+            ['h', '头条'],
+            ['b', '加粗'],
+            ['a', '特荐'],
+            ['f', '幻灯']
         ],
         // 相关统计报表的color
         color: [
@@ -88,7 +88,7 @@ const commondata = {
         ]
     },
     mutations: {
-        changeSite(state) {
+        resetCommonData (state) {
             // 切换网站之后相关的 vuex 中的信息需要重置
             state.articleType = [];
             state.productType = [];

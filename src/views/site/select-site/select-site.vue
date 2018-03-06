@@ -76,7 +76,7 @@
                             'siteName': siteName,
                             'siteUrl': siteUrl
                         });
-                        this.$store.commit('changeSite');
+                        this.$store.commit('resetCommonData');
                         this.$router.push({
                             name: 'site_index'
                         });
