@@ -10,6 +10,14 @@
                         <Form-item label="问题名称" prop="question">
                             <Input type="text" v-model="form.question" placeholder="请填写问答分类"></Input>
                         </Form-item>
+                        <Form-item label="标记" prop="flag"
+                                   style="position: relative;z-index: 10">
+                            <CheckboxGroup v-model="form.flag">
+                                <Checkbox v-for="(item) in this.$store.state.commondata.FlagList" :label=item[0]>
+                                    {{item[1]}}
+                                </Checkbox>
+                            </CheckboxGroup>
+                        </Form-item>
                         <Form-item label="问答分类" prop="type_id">
                             <Select v-model="form.type_id" ref="select" :clearable="selects" style="width:200px;"
                                     label-in-value filterable clearable @on-change="changeArticletype">
@@ -105,7 +113,8 @@
                     content_paragraph: '',
                     type_id: 0,
                     type_name: '',
-                    tag_id: []
+                    tag_id: [],
+                    flag: []
                 },
                 tags: '',
                 AddRule: {
@@ -182,6 +191,14 @@
                             });
                         }
                         delete this.form.tags;
+                        let flag = [];
+                        if (this.form.flag !== '') {
+                            this.form.flag.split(',').map(function (key) {
+                                flag.push(key);
+                                console.log(flag);
+                            });
+                        }
+                        this.form.flag = flag;
                         this.form.tag_id = tempNUmber;
                     }, (data, msg) => {
                         this.$Message.error(msg);
