@@ -577,14 +577,14 @@ export const adminappRouter = [
     {
 
         path: '/market',
-        icon: 'ios-navigate',
+        icon: 'folder',
         name: 'market',
         title: '营销计划',
         component: Main,
         children: [
             {
                 path: 'marketmode',
-                icon: 'ios-navigate',
+                icon: 'flag',
                 title: '营销模式',
                 name: 'marketmode',
                 component: () => import('@/views/admin/marketmode/index.vue')
@@ -600,7 +600,7 @@ export const adminappRouter = [
     },
     {
         path: '/message-send',
-        icon: 'paper-airplane',
+        icon: 'ios-upload',
         title: '信息发布',
         name: 'messagesend',
         component: Main,
@@ -615,19 +615,21 @@ export const adminappRouter = [
     },
     {
         path: '/node-user-management',
-        icon: 'paper-airplane',
+        icon: 'person-stalker',
         title: '节点/用户管理',
         name: 'node-user-management',
         component: Main,
         children: [
             {
                 path: 'root-user-management',
+                icon: 'person',
                 title: '用户管理',
                 name: 'root-user-management',
                 component: () => import('@/views/admin/user/user.vue')
             },
             {
                 path: 'node-management',
+                icon: 'ios-cloud',
                 title: '节点管理',
                 name: 'node-management',
                 component: () => import('@/views/admin/node/node.vue')
@@ -636,7 +638,7 @@ export const adminappRouter = [
     },
     {
         path: '/template-management',
-        icon: 'paper-airplane',
+        icon: 'ios-grid-view',
         title: '模板管理',
         name: 'template-management',
         component: Main,
@@ -652,7 +654,7 @@ export const adminappRouter = [
     },
     {
         path: '/allies',
-        icon: 'paper-airplane',
+        icon: 'ios-people',
         title: '友商库',
         name: 'allies',
         component: Main,
@@ -668,7 +670,7 @@ export const adminappRouter = [
     },
     {
         path: '/voice-management',
-        icon: 'paper-airplane',
+        icon: 'ios-recording',
         title: '录音管理',
         name: 'voice-management',
         component: Main,
