@@ -18,6 +18,16 @@
                             </Col>
                         </Row>
                         <Row>
+                            <Col span="21">
+                            <Form-item label="标记" prop="flag"
+                                       style="position: relative;z-index: 10">
+                                <CheckboxGroup v-model="form.flag">
+                                    <Checkbox v-for="(item) in this.$store.state.commondata.FlagList" :label=item[0]>{{item[1]}}</Checkbox>
+                                </CheckboxGroup>
+                            </Form-item>
+                            </Col>
+                        </Row>
+                        <Row>
                             <Col span="8">
                             <Form-item label="简略标题" prop="shorttitle">
                                 <Input type="text" v-model="form.shorttitle" placeholder="请输入简略标题"></Input>
@@ -136,20 +146,6 @@
                                 <span slot="close">填写</span>
                             </i-switch>
                             </Col>
-                        </Row>
-                        <Row>
-                            <Cor span="21">
-                                <Form-item label="标记" prop="flag"
-                                           style="position: relative;z-index: 10">
-                                    <CheckboxGroup v-model="form.flag">
-                                        <Checkbox label="h">头条</Checkbox>
-                                        <Checkbox label="c">推荐</Checkbox>
-                                        <Checkbox label="b">加粗</Checkbox>
-                                        <Checkbox label="a">特荐</Checkbox>
-                                        <Checkbox label="f">幻灯</Checkbox>
-                                    </CheckboxGroup>
-                                </Form-item>
-                            </Cor>
                         </Row>
                     </Form>
                 </Card>

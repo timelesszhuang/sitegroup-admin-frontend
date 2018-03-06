@@ -36,11 +36,11 @@ const commondata = {
             'background-image:linear-gradient(45deg, #98F898 0%, #7FFF00 100%)'
         ],
         FlagList: [
-            {'h':"头条"},
-            {'c':"推荐"},
-            {'b':"加粗"},
-            {'a':"特荐"},
-            {'f':"幻灯"},
+            ['h',"头条"],
+            ['c',"推荐"],
+            ['b',"加粗"],
+            ['a',"特荐"],
+            ['f',"幻灯"],
         ],
         // 相关统计报表的color
         color: [
