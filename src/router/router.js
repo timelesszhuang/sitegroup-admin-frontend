@@ -9,7 +9,7 @@ export const loginRouter = {
         title: '乐销易营销平台 - 登录'
     },
     component: () => import('@/views/Common/login/login.vue')
-}
+};
 
 export const page404 = {
     path: '/404',
@@ -18,7 +18,7 @@ export const page404 = {
         title: '404-页面不存在'
     },
     component: () => import('@/views/Common/error-page/404.vue')
-}
+};
 
 export const page403 = {
     path: '/403',
@@ -27,7 +27,7 @@ export const page403 = {
     },
     name: 'error-403',
     component: () => import('@/views/Common/error-page/403.vue')
-}
+};
 
 export const page500 = {
     path: '/500',
@@ -36,26 +36,26 @@ export const page500 = {
     },
     name: 'error-500',
     component: () => import('@/views/Common/error-page/500.vue')
-}
+};
 
 export const preview = {
     path: '/preview',
     name: 'preview',
     component: () => import('@/views/form/article-publish/preview.vue')
-}
+};
 
 export const locking = {
     path: '/locking',
     name: 'locking',
     component: () => import('@/views/main-components/lockscreen/components/locking-page.vue')
-}
+};
 
 export const selectsite = {
     path: '/site_select',
     title: '管理站点选择',
     name: 'site_select',
     component: () => import('@/views/site/select-site/select-site.vue')
-}
+};
 
 // node 的 作为Main组件的子页面展示但是不在左侧菜单显示的路由写在nodeotherRouter里
 export const nodeotherRouter = {
@@ -102,7 +102,7 @@ export const nodeotherRouter = {
             component: () => import('@/views/node/error-message/error-message.vue')
         }
     ]
-}
+};
 
 // 作为node Main组件的子页面展示并且在左侧菜单显示的路由写在nodeappRouter里
 export const nodeappRouter = [
@@ -536,7 +536,7 @@ export const nodeappRouter = [
     //         }
     //     ]
     // }
-]
+];
 
 // admin 的 作为Main组件的子页面展示但是不在左侧菜单显示的路由写在nodeotherRouter里
 export const adminotherRouter = {
@@ -571,7 +571,7 @@ export const adminotherRouter = {
             component: () => import('@/views/advanced-router/component/shopping-info.vue')
         }, // 用于展示带参路由
     ]
-}
+};
 // 作为admin Main组件的子页面展示并且在左侧菜单显示的路由写在nodeappRouter里
 export const adminappRouter = [
     {
@@ -881,7 +881,7 @@ export const adminappRouter = [
     //         }
     //     ]
     // }
-]
+];
 
 // 作为Main组件的子页面展示但是不在左侧菜单显示的路由写在otherRouter里
 export const siteotherRouter = {
@@ -916,7 +916,7 @@ export const siteotherRouter = {
             component: () => import('@/views/advanced-router/component/shopping-info.vue')
         }, // 用于展示带参路由
     ]
-}
+};
 
 // 作为Main组件的子页面展示并且在左侧菜单显示的路由写在appRouter里
 export const siteappRouter = [
@@ -1403,7 +1403,7 @@ export const siteappRouter = [
     //         }
     //     ]
     // }
-]
+];
 
 // 全部的路由信息
 export const routers = [
@@ -1424,7 +1424,7 @@ export const routers = [
     page500,
     page403,
     page404
-]
+];
 
 //节点相关的路由信息
 export const noderouters = [
@@ -1437,7 +1437,7 @@ export const noderouters = [
     page500,
     page403,
     page404
-]
+];
 
 //公司总管理员端的相关的路由信息
 export const adminrouters = [
@@ -1450,7 +1450,7 @@ export const adminrouters = [
     page500,
     page403,
     page404
-]
+];
 
 //小站点的相关的路由信息
 export const siterouters = [
@@ -1463,6 +1463,6 @@ export const siterouters = [
     page500,
     page403,
     page404
-]
+];
 
 
