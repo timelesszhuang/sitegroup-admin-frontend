@@ -13,7 +13,7 @@
                         <Form-item label="标记" prop="flag"
                                    style="position: relative;z-index: 10">
                             <CheckboxGroup v-model="form.flag">
-                                <Checkbox v-for="(item) in this.$store.state.commondata.FlagList" :label=item[0]>
+                                <Checkbox v-for="(item,index) in this.$store.state.commondata.FlagList" :key="index" :label=item[0]>
                                     {{item[1]}}
                                 </Checkbox>
                             </CheckboxGroup>
