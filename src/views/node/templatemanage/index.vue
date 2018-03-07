@@ -4,39 +4,16 @@
         <Select v-model="site_type_id" style="width:300px" label-in-value filterable clearable>
             <Option v-for="item in sitetype" :value="item.id" :label="item.text" :key="item.id">{{ item.text}}</Option>
         </Select>
-        <Button type="primary" @click="getInfo">查询</Button>
-        <Button type="info" @click="addTemplate">添加模板</Button>
+        <Select v-model="file_type" style="width:80px" label-in-value filterable clearable @on-change="changeFileType">
+            <Option v-for="(item,index) in this.$store.state.commondata.FileType" :value="item[0]" :label="item[1]"
+                    :key="index">{{item[1]}}
+            </Option>
+        </Select>
+        <Button type="info" @click="addTemplate">添加{{file_type_name}}文件</Button>
         <div class="content" style="margin-top:10px;margin-left: 5px;margin-right: 5px">
-            <el-table
-                    :data="datas"
-                    stripe
-                    style="width: 100%">
-                <el-table-column
-                        prop="name"
-                        label="文件名称"
-                        width="250">
-                </el-table-column>
-                <el-table-column
-                        prop="size"
-                        label="大小"
-                        width="180">
-                </el-table-column>
-                <el-table-column
-                        prop="filemtime"
-                        label="创建时间">
-                </el-table-column>
-                <el-table-column
-                        fixed="right"
-                        label="操作"
-                        width="100">
-                    <template slot-scope="scope">
-                        <el-button type="text" size="small" @click="editTemplate(scope.row)">编辑</el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-            <!--<Table ref="table"  :context="self" :border="border" :stripe="stripe" :show-header="showheader"-->
-            <!--:size="size" :data="datas" :columns="tableColumns" style="width: 100%">-->
-            <!--</Table>-->
+            <Table ref="table" :context="self" :border="border" :stripe="stripe" :show-header="showheader"
+                   :size="size" :data="datas" :columns="tableColumns" style="width: 100%">
+            </Table>
         </div>
         <Save ref="save" :content="content" :filename="filename" :site_id="site_id"></Save>
         <Add ref="add" :site_id="site_id"></Add>
@@ -53,6 +30,8 @@
             return {
                 sitetype: [],
                 site_type_id: '',
+                file_type: 'html',
+                file_type_name: '模板',
                 self: this,
                 border: true,
                 stripe: true,
@@ -73,7 +52,7 @@
         methods: {
             addTemplate() {
                 if (this.site_id > 0) {
-                    this.$refs.add.modal1 = true
+                    this.$refs.add.init(this.site_id,this.file_type_name)
                 } else {
                     this.$Message.error('请先选择站点->点击查询!');
                 }
@@ -81,10 +60,13 @@
             init() {
                 this.getSiteType()
             },
+            changeFileType(value){
+                this.file_type_name = value.label;
+            },
             editTemplate(row) {
                 let name = row.name;
                 if (this.site_id > 0) {
-                    this.$refs.save.init(name,this.site_id);
+                    this.$refs.save.init(name, this.site_id,this.file_type_name);
                 } else {
                     this.$Message.error('请先选择站点->点击查询!');
                 }
@@ -92,7 +74,7 @@
             getInfo() {
                 this.site_id = this.site_type_id;
                 if (this.site_id > 0) {
-                    this.apiGet('/templateList/' + this.site_id).then((res) => {
+                    this.apiGet('/templateList/' + this.site_id + '/' + this.file_type).then((res) => {
                         this.handleAjaxResponse(res, (data, msg) => {
                             this.datas = data
                         }, (data, msg) => {
@@ -115,6 +97,14 @@
                     //处理错误信息
                     this.$Message.error('网络异常，请稍后重试。');
                 });
+            }
+        },
+        watch: {
+            site_type_id: function () {
+                this.getInfo()
+            },
+            file_type: function () {
+                this.getInfo()
             }
         },
         computed: {
@@ -150,8 +140,27 @@
                         width: 100,
                         align: 'center',
                         fixed: 'right',
-                        render(row, column, index) {
-                            return `<i-button type="info" size="big" @click="editTemplate(${index})">修改</i-button>`;
+                        render(h, params) {
+                            if(params.row.name.slice(-4) === 'html'){
+                                return h('div', [
+                                    h('Button', {
+                                        props: {
+                                            size: 'small'
+                                        },
+                                        style: {
+                                            marginRight: '5px'
+                                        },
+                                        attrs: {
+                                            type: 'primary'
+                                        },
+                                        on: {
+                                            click: function () {
+                                                _this.editTemplate(params.row);
+                                            }
+                                        }
+                                    }, '修改')
+                                ]);
+                            }
                         }
                     }
                 );

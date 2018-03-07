@@ -1,8 +1,18 @@
 <template>
-    <Modal v-model="modal1" title="修改模板" @on-ok="ok" width="700">
+    <Modal v-model="modal1" :title="model_name" @on-ok="ok" width="700">
         <div style="font-size: 25px;">当前修改模板{{this.filename}}.html
         </div>
         <Input ref="con" v-model="content" type="textarea" :rows="30"></Input>
+        <Upload
+                type="select"
+                ref="replace_file"
+                with-credentials
+                name="file"
+                :format="['jpg','jpeg','png','gif']"
+                :action="action"
+                >
+            <Button type="ghost" icon="ios-cloud-upload-outline">替换</Button>
+        </Upload>
     </Modal>
 </template>
 
@@ -14,13 +24,16 @@
             return {
                 content: '',
                 filename: '',
+                model_name: '',
                 site_id: '',
                 modal1: false,
+                action: window.HOST + 'upload_img_list_imgser'
             }
         },
         methods: {
-            init(name,site_id){
+            init(name, site_id, model_name) {
                 this.site_id = site_id;
+                this.model_name = '修改' + model_name + "文件";
                 this.apiGet('/templateRead/' + site_id + "/" + name).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.content = data.content;
@@ -46,8 +59,7 @@
                 });
             }
         },
-        props: {
-        },
+        props: {},
         mixins: [http]
     }
 </script>

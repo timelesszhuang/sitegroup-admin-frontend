@@ -42,6 +42,13 @@ const commondata = {
             ['a', '特荐'],
             ['f', '幻灯']
         ],
+        FileType: [
+            ['html', '模板'],
+            ['css', '样式'],
+            ['js', '脚本'],
+            ['image', '图片'],
+            ['other', '其他'],
+        ],
         // 相关统计报表的color
         color: [
             '#511CFC',
@@ -88,7 +95,7 @@ const commondata = {
         ]
     },
     mutations: {
-        resetCommonData (state) {
+        resetCommonData(state) {
             // 切换网站之后相关的 vuex 中的信息需要重置
             state.articleType = [];
             state.productType = [];
