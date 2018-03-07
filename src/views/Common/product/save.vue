@@ -278,7 +278,7 @@
             },
             // 缩略图上传回调
             getResponse(response, file, filelist) {
-                this.form.image = response.url;
+                this.form.image = response.data.url;
                 if (response.status) {
                     this.$Message.success(response.msg);
                 } else {
