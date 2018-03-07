@@ -205,11 +205,11 @@
                     this.addform.link = '';
                     this.img = '';
                     this.$refs.addimage.resetFields();
-                    this.$refs.addImg.clearFiles();
                 } else {
                     this.$Message.error(response.msg);
                     this.$refs.addimage.resetFields();
                 }
+                this.$refs.addImg.clearFiles();
                 this.$refs.addimage.resetFields();
             },
             getEditResponse(response) {
@@ -223,12 +223,12 @@
                     this.form.link = '';
                     this.img = '';
                     this.$refs.editimg.resetFields();
-                    this.$refs.upImg.clearFiles();
                     this.$refs.imgselect.clearSingleSelect();
                 } else {
                     this.$Message.error(response.msg);
                     this.$refs.addimage.resetFields();
                 }
+                this.$refs.upImg.clearFiles();
                 this.$refs.addimage.resetFields();
             },
             // 上传图片失败的问题
