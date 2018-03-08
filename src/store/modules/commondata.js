@@ -43,11 +43,8 @@ const commondata = {
             ['f', '幻灯']
         ],
         FileType: [
-            ['html', '模板'],
-            ['css', '样式'],
-            ['js', '脚本'],
-            ['image', '图片'],
-            ['other', '其他'],
+            ['html', '模板文件'],
+            ['static', '静态文件'],
         ],
         // 相关统计报表的color
         color: [

@@ -1,18 +1,45 @@
 <template>
-    <Modal v-model="modal1" :title="model_name" @on-ok="ok" width="700">
-        <div style="font-size: 25px;">当前修改模板{{this.filename}}.html
+    <Modal v-model="modal1" :title="model_name" width="700">
+        <Form ref="formInline" :model="form" :rules="ruleInline">
+            <Form-item prop="filename">
+                <Row>
+                    <Col span="3">
+                    文件名:</Col>
+                    <Col span="11">
+                    <Input v-model="form.filename" @on-change="filenamechange" placeholder="请输入..."
+                           style="width: 300px"/>
+                    </Col>
+                    <Col span="9">
+                    <Upload
+                            type="select"
+                            ref="updateimg"
+                            with-credentials
+                            name="file"
+                            :on-success="uploadsuccess"
+                            :on-error="uploaderror"
+                            :format="format"
+                            :accept="accept"
+                            :action="action"
+                            :data="uploaddata">
+                        <Button type="ghost" icon="ios-cloud-upload-outline" style="display: inline-block;">上传文件
+                        </Button>
+                    </Upload>
+                    </Col>
+                </Row>
+            </Form-item>
+            <Form-item prop="content" v-if="canedit">
+                <Row>
+                    <Col span="3">
+                    内容:</Col>
+                    <Col span="21">
+                    <Input v-model="form.content" type="textarea" :rows="7"/>
+                    </Col>
+                </Row>
+            </Form-item>
+        </Form>
+        <div slot="footer">
+            <Button type="success" size="large" :disabled="!canedit" :loading="modal_loading" @click="ok">保存</Button>
         </div>
-        <Input ref="con" v-model="content" type="textarea" :rows="30"></Input>
-        <Upload
-                type="select"
-                ref="replace_file"
-                with-credentials
-                name="file"
-                :format="['jpg','jpeg','png','gif']"
-                :action="action"
-                >
-            <Button type="ghost" icon="ios-cloud-upload-outline">替换</Button>
-        </Upload>
     </Modal>
 </template>
 
@@ -22,22 +49,76 @@
     export default {
         data() {
             return {
-                content: '',
-                filename: '',
+                format: [],
+                accept: '',
+                modal1: false,
+                action: window.HOST + 'uploadtemplatestatic',
+                canedit: true,
+                modal_loading: false,
+                form: {
+                    filename: '',
+                    content: ''
+                },
                 model_name: '',
                 site_id: '',
-                modal1: false,
-                action: window.HOST + 'upload_img_list_imgser'
+                file_type: '',
+                ruleInline: {}
             }
         },
+        computed: {
+            uploaddata: function () {
+                return {
+                    'site_id': this.site_id,
+                    'file_type': this.file_type,
+                    'flag': 'add',
+                    'filename': this.form.filename,
+                };
+            },
+        },
         methods: {
-            init(name, site_id, model_name) {
+            uploadsuccess(response) {
+                if (response.status === 'success') {
+                    this.$refs.formInline.resetFields();
+                    this.$Message.success(response.msg);
+                    this.modal1 = false;
+                } else {
+                    this.$Message.error(response.msg);
+                }
+                this.$refs.updateimg.clearFiles();
+            },
+            uploaderror(error) {
+                this.$Message.error(error);
+            },
+            filenamechange() {
+                let index1 = this.form.filename.lastIndexOf(".");
+                let index2 = this.form.filename.length;
+                this.format = [];
+                this.accept = '';
+                if (this.file_type === 'html') {
+                    this.format = [html];
+                    this.accept = '.html';
+                }
+                if (index1 >= 0) {
+                    let postf = this.form.filename.substring(index1 + 1, index2);
+                    this.format = [postf];
+                    this.accept = "." + postf;
+                }
+                this.canedit = ((this.file_type === 'html' && this.form.filename.slice(-'html'.length) === 'html') || (this.file_type === 'static' && this.form.filename.slice(-'css'.length) === 'css' || this.form.filename.slice(-'js'.length) === 'js'));
+            },
+            init(name, site_id, file_type, model_name) {
+                this.$refs.formInline.resetFields();
+                if (file_type === 'html') {
+                    this.format = ['html'];
+                    this.accept = '.html';
+                } else {
+                    this.canedit = false
+                }
                 this.site_id = site_id;
-                this.model_name = '修改' + model_name + "文件";
-                this.apiGet('/templateRead/' + site_id + "/" + name).then((res) => {
+                this.file_type = file_type;
+                this.model_name = '修改' + model_name;
+                this.apiPost('templateRead', {site_id: site_id, name: name, file_type: this.file_type}).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
-                        this.content = data.content;
-                        this.filename = data.filename;
+                        this.form = data;
                         this.modal1 = true;
                     }, (data, msg) => {
                         this.$Message.error(msg);
@@ -45,21 +126,35 @@
                 });
             },
             ok() {
-                this.apiPost('templateSave/' + this.site_id + '/' + this.filename, {content: this.$refs.con.$refs.textarea.value}).then((res) => {
-                    this.handleAjaxResponse(res, (data, msg) => {
-                        this.$Message.success(msg);
-                        this.$parent.getInfo();
-                        this.modal1 = false
-                    }, (data, msg) => {
-                        this.$Message.error(msg);
-                    })
-                }, (res) => {
-                    //处理错误信息
-                    this.$Message.error('网络异常，请稍后重试。');
-                });
+                this.$refs.formInline.validate((valid) => {
+                    if (valid) {
+                        this.apiPost('templateSave', {
+                            content: this.form.content,
+                            site_id: this.site_id,
+                            flag: 'add',
+                            filename: this.form.filename,
+                            file_type: this.file_type
+                        }).then((res) => {
+                            this.handleAjaxResponse(res, (data, msg) => {
+                                this.modal1 = false;
+                                this.$Message.success(msg);
+                                this.$emit('getdata');
+                                this.$refs.updateimg.clearFiles();
+                                this.$refs.formInline.resetFields();
+                            }, (data, msg) => {
+                                this.$Message.error(msg);
+                            })
+                        }, (res) => {
+                            //处理错误信息
+                            this.$Message.error('网络异常，请稍后重试。');
+                        });
+                    } else {
+
+                    }
+                })
+
             }
         },
-        props: {},
         mixins: [http]
     }
 </script>

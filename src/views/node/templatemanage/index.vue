@@ -1,22 +1,43 @@
 <template>
     <div style="padding-left: 5px;padding-right: 5px">
+        <Col>
         站点选择:
         <Select v-model="site_type_id" style="width:300px" label-in-value filterable clearable>
             <Option v-for="item in sitetype" :value="item.id" :label="item.text" :key="item.id">{{ item.text}}</Option>
         </Select>
-        <Select v-model="file_type" style="width:80px" label-in-value filterable clearable @on-change="changeFileType">
+        <Select v-model="file_type" style="width:90px" label-in-value filterable clearable @on-change="changeFileType">
             <Option v-for="(item,index) in this.$store.state.commondata.FileType" :value="item[0]" :label="item[1]"
                     :key="index">{{item[1]}}
             </Option>
         </Select>
-        <Button type="info" @click="addTemplate">添加{{file_type_name}}文件</Button>
+        <Button type="primary" @click="getInfo">查询</Button>
+        <Button type="info" @click="addTemplate">添加{{file_type_name}}</Button>
+        </Col>
+        <Col>
+        <CheckboxGroup v-model="social">
+            <ButtonGroup>
+            <Checkbox label="twitter">
+                <span>Twitter</span>
+            </Checkbox>
+            <Checkbox label="facebook">
+                <span>Facebook</span>
+            </Checkbox>
+            <Checkbox label="github">
+                <span>Github</span>
+            </Checkbox>
+            <Checkbox label="snapchat">
+                <span>Snapchat</span>
+            </Checkbox>
+            </ButtonGroup>
+        </CheckboxGroup>
+        </Col>
         <div class="content" style="margin-top:10px;margin-left: 5px;margin-right: 5px">
             <Table ref="table" :context="self" :border="border" :stripe="stripe" :show-header="showheader"
                    :size="size" :data="datas" :columns="tableColumns" style="width: 100%">
             </Table>
         </div>
-        <Save ref="save" :content="content" :filename="filename" :site_id="site_id"></Save>
-        <Add ref="add" :site_id="site_id"></Add>
+        <Save ref="save" v-on:getdata="getInfo"/>
+        <Add ref="add" v-on:getdata="getInfo"/>
     </div>
 </template>
 
@@ -52,7 +73,7 @@
         methods: {
             addTemplate() {
                 if (this.site_id > 0) {
-                    this.$refs.add.init(this.site_id,this.file_type_name)
+                    this.$refs.add.init(this.site_id, this.file_type, this.file_type_name)
                 } else {
                     this.$Message.error('请先选择站点->点击查询!');
                 }
@@ -60,13 +81,13 @@
             init() {
                 this.getSiteType()
             },
-            changeFileType(value){
+            changeFileType(value) {
                 this.file_type_name = value.label;
             },
             editTemplate(row) {
                 let name = row.name;
                 if (this.site_id > 0) {
-                    this.$refs.save.init(name, this.site_id,this.file_type_name);
+                    this.$refs.save.init(name, this.site_id, this.file_type, this.file_type_name);
                 } else {
                     this.$Message.error('请先选择站点->点击查询!');
                 }
@@ -141,26 +162,24 @@
                         align: 'center',
                         fixed: 'right',
                         render(h, params) {
-                            if(params.row.name.slice(-4) === 'html'){
-                                return h('div', [
-                                    h('Button', {
-                                        props: {
-                                            size: 'small'
-                                        },
-                                        style: {
-                                            marginRight: '5px'
-                                        },
-                                        attrs: {
-                                            type: 'primary'
-                                        },
-                                        on: {
-                                            click: function () {
-                                                _this.editTemplate(params.row);
-                                            }
+                            return h('div', [
+                                h('Button', {
+                                    props: {
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        marginRight: '5px'
+                                    },
+                                    attrs: {
+                                        type: 'primary'
+                                    },
+                                    on: {
+                                        click: function () {
+                                            _this.editTemplate(params.row);
                                         }
-                                    }, '修改')
-                                ]);
-                            }
+                                    }
+                                }, '修改')
+                            ]);
                         }
                     }
                 );

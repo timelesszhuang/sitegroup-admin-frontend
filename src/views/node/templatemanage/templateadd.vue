@@ -5,12 +5,29 @@
                 <Row>
                     <Col span="3">
                     文件名:</Col>
-                    <Col span="20">
-                    <Input v-model="form.filename" placeholder="请输入..." style="width: 300px"/>
+                    <Col span="11">
+                    <Input v-model="form.filename" @on-change="filenamechange" placeholder="请输入..."
+                           style="width: 300px"/>
+                    </Col>
+                    <Col span="9">
+                    <Upload
+                            type="select"
+                            ref="updateimg"
+                            with-credentials
+                            name="file"
+                            :on-success="uploadsuccess"
+                            :on-error="uploaderror"
+                            :format="format"
+                            :accept="accept"
+                            :action="action"
+                            :data="uploaddata">
+                        <Button type="ghost" icon="ios-cloud-upload-outline" style="display: inline-block;">上传文件
+                        </Button>
+                    </Upload>
                     </Col>
                 </Row>
             </Form-item>
-            <Form-item prop="content">
+            <Form-item prop="content" v-if="canedit">
                 <Row>
                     <Col span="3">
                     内容:</Col>
@@ -21,7 +38,7 @@
             </Form-item>
         </Form>
         <div slot="footer">
-            <Button type="success" size="large" :loading="modal_loading" @click="ok">保存</Button>
+            <Button type="success" size="large" :disabled="!canedit" :loading="modal_loading" @click="ok">保存</Button>
         </div>
     </Modal>
 
@@ -33,37 +50,90 @@
     export default {
         data() {
             return {
+                format: [],
+                accept: '',
                 modal1: false,
+                action: window.HOST + 'uploadtemplatestatic',
+                canedit: true,
                 modal_loading: false,
                 form: {
                     filename: '',
                     content: ''
                 },
                 model_name: '',
-                ruleInline: {
-                    filename: [
-                        {required: true, message: '请填写文件名称', trigger: 'blur'},
-                    ],
-                    content: [
-                        {required: true, message: '请填写内容', trigger: 'blur'},
-                    ]
-                }
+                site_id: '',
+                file_type: '',
+                ruleInline: {}
             }
         },
+        computed: {
+            uploaddata: function () {
+                return {
+                    'site_id': this.site_id,
+                    'file_type': this.file_type,
+                    'flag': 'add',
+                    'filename': this.form.filename,
+                };
+            },
+        },
         methods: {
-            init(site_id, model_name) {
+            uploadsuccess(response) {
+                if (response.status === 'success') {
+                    this.$refs.formInline.resetFields();
+                    this.$Message.success(response.msg);
+                    this.modal1=false;
+                } else {
+                    this.$Message.error(response.msg);
+                }
+                this.$refs.updateimg.clearFiles();
+            },
+            uploaderror(error) {
+                this.$Message.error(error);
+            },
+            filenamechange() {
+                let index1 = this.form.filename.lastIndexOf(".");
+                let index2 = this.form.filename.length;
+                this.format = [];
+                this.accept = '';
+                if (this.file_type === 'html') {
+                    this.format = [html];
+                    this.accept = '.html';
+                }
+                if (index1 >= 0) {
+                    let postf = this.form.filename.substring(index1 + 1, index2);
+                    this.format = [postf];
+                    this.accept = "." + postf;
+                }
+                this.canedit = ((this.file_type === 'html' && this.form.filename.slice(-'html'.length) === 'html') || (this.file_type === 'static' && this.form.filename.slice(-'css'.length) === 'css' || this.form.filename.slice(-'js'.length) === 'js'));
+            },
+            init(site_id, file_type, model_name) {
+                this.$refs.formInline.resetFields();
+                if (file_type === 'html') {
+                    this.format = ['html'];
+                    this.accept = '.html';
+                } else {
+                    this.canedit = false
+                }
                 this.site_id = site_id;
-                this.model_name = "添加"+model_name+"文件";
+                this.file_type = file_type;
+                this.model_name = "添加" + model_name;
                 this.modal1 = true;
             },
             ok() {
                 this.$refs.formInline.validate((valid) => {
                     if (valid) {
-                        this.apiPost('templateAdd/' + this.site_id + '/' + this.form.filename, {content: this.form.content}).then((res) => {
+                        this.apiPost('templateAdd', {
+                            content: this.form.content,
+                            site_id: this.site_id,
+                            flag: 'add',
+                            filename: this.form.filename,
+                            file_type: this.file_type
+                        }).then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {
                                 this.modal1 = false;
                                 this.$Message.success(msg);
-                                this.$parent.getInfo();
+                                this.$emit('getdata');
+                                this.$refs.updateimg.clearFiles();
                                 this.$refs.formInline.resetFields();
                             }, (data, msg) => {
                                 this.$Message.error(msg);
