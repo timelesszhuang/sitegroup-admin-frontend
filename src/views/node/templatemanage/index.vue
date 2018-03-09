@@ -14,20 +14,20 @@
         <Button type="info" @click="addTemplate">添加{{file_type_name}}</Button>
         </Col>
         <Col>
-        <CheckboxGroup v-model="social">
+        <CheckboxGroup>
             <ButtonGroup>
-            <Checkbox label="twitter">
-                <span>Twitter</span>
-            </Checkbox>
-            <Checkbox label="facebook">
-                <span>Facebook</span>
-            </Checkbox>
-            <Checkbox label="github">
-                <span>Github</span>
-            </Checkbox>
-            <Checkbox label="snapchat">
-                <span>Snapchat</span>
-            </Checkbox>
+                <Checkbox label="twitter">
+                    <span>Twitter</span>
+                </Checkbox>
+                <Checkbox label="facebook">
+                    <span>Facebook</span>
+                </Checkbox>
+                <Checkbox label="github">
+                    <span>Github</span>
+                </Checkbox>
+                <Checkbox label="snapchat">
+                    <span>Snapchat</span>
+                </Checkbox>
             </ButtonGroup>
         </CheckboxGroup>
         </Col>
@@ -49,6 +49,7 @@
     export default {
         data() {
             return {
+                select: [],
                 sitetype: [],
                 site_type_id: '',
                 file_type: 'html',
@@ -121,12 +122,12 @@
             }
         },
         watch: {
-            site_type_id: function () {
-                this.getInfo()
-            },
-            file_type: function () {
-                this.getInfo()
-            }
+            // site_type_id: function () {
+            //     this.getInfo()
+            // },
+            // file_type: function () {
+            //     this.getInfo()
+            // }
         },
         computed: {
             tableColumns() {
@@ -150,6 +151,10 @@
                     key: 'size',
                 });
                 columns.push({
+                    title: 'type',
+                    key: 'type',
+                });
+                columns.push({
                     title: '创建时间',
                     key: 'filemtime',
                     sortable: true
@@ -162,6 +167,16 @@
                         align: 'center',
                         fixed: 'right',
                         render(h, params) {
+                            let button_name = '';
+                            switch (params.row.type){
+                                case 'html':
+                                case 'css':
+                                case 'js':
+                                    button_name = '修改';
+                                    break;
+                                default:
+                                    button_name = '替换';
+                            }
                             return h('div', [
                                 h('Button', {
                                     props: {
@@ -178,7 +193,7 @@
                                             _this.editTemplate(params.row);
                                         }
                                     }
-                                }, '修改')
+                                }, button_name)
                             ]);
                         }
                     }

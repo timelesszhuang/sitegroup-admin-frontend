@@ -1,41 +1,45 @@
 <template>
-    <Modal v-model="modal1" :title="model_name" width="700">
+    <Modal v-model="modal1" width="700">
+        <p slot="header">
+            <Icon type="information-circled"></Icon>
+            <span>{{model_name}}</span>
+        </p>
         <Form ref="formInline" :model="form" :rules="ruleInline">
-            <Form-item prop="filename">
-                <Row>
-                    <Col span="3">
-                    文件名:</Col>
-                    <Col span="11">
-                    <Input v-model="form.filename" @on-change="filenamechange" placeholder="请输入..."
-                           style="width: 300px"/>
-                    </Col>
-                    <Col span="9">
-                    <Upload
-                            type="select"
-                            ref="updateimg"
-                            with-credentials
-                            name="file"
-                            :on-success="uploadsuccess"
-                            :on-error="uploaderror"
-                            :format="format"
-                            :accept="accept"
-                            :action="action"
-                            :data="uploaddata">
-                        <Button type="ghost" icon="ios-cloud-upload-outline" style="display: inline-block;">上传文件
-                        </Button>
-                    </Upload>
-                    </Col>
-                </Row>
-            </Form-item>
-            <Form-item prop="content" v-if="canedit">
-                <Row>
-                    <Col span="3">
-                    内容:</Col>
-                    <Col span="21">
-                    <Input v-model="form.content" type="textarea" :rows="7"/>
-                    </Col>
-                </Row>
-            </Form-item>
+            <Row>
+                <Col span="9">
+                <Upload
+                        type="select"
+                        ref="updateimg"
+                        with-credentials
+                        name="file"
+                        :on-success="uploadsuccess"
+                        :on-error="uploaderror"
+                        :format="format"
+                        :accept="accept"
+                        :action="action"
+                        :data="uploaddata">
+                    <Button type="ghost" icon="ios-cloud-upload-outline" style="display: inline-block;">直接上传文件
+                    </Button>
+                </Upload>
+                </Col>
+            </Row>
+            <Row>
+                <Col span="3">
+                文件名:</Col>
+            </Row>
+            <Row>
+                <Col span="11">
+                <Input v-model="form.filename" @on-change="filenamechange" placeholder="请输入..."
+                       style="width: 300px"/>
+                </Col>
+            </Row>
+            <Row v-if="canedit">
+                <Col span="3">
+                内容:</Col>
+            </Row>
+            <Row v-if="canedit">
+                <Input v-model="form.content" type="textarea" :rows="30"/>
+            </Row>
         </Form>
         <div slot="footer">
             <Button type="success" size="large" :disabled="!canedit" :loading="modal_loading" @click="ok">保存</Button>
@@ -72,7 +76,6 @@
                     'site_id': this.site_id,
                     'file_type': this.file_type,
                     'flag': 'add',
-                    'filename': this.form.filename,
                 };
             },
         },
@@ -81,7 +84,8 @@
                 if (response.status === 'success') {
                     this.$refs.formInline.resetFields();
                     this.$Message.success(response.msg);
-                    this.modal1=false;
+                    this.$emit('getdata');
+                    this.modal1 = false;
                 } else {
                     this.$Message.error(response.msg);
                 }
