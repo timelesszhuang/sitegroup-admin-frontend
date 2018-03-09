@@ -2,19 +2,26 @@
     <Modal v-model="modal1" :title="model_name" width="700">
         <p slot="header">
             <Icon type="information-circled"></Icon>
-            <span>当前修改文件:<a href="https://www.baidu.com">{{form.filename}}</a></span>
+            <span>当前替换文件:<a href="https://www.baidu.com">{{form.filename}}</a></span>
         </p>
-        <Form ref="formInline" :model="form" :rules="ruleInline">
-            <Row v-if="canedit">
-                <Col span="3">
-                内容:</Col>
-            </Row>
-            <Row v-if="canedit">
-                <Input ref="con" v-model="form.content" type="textarea" :rows="30"/>
-            </Row>
-        </Form>
+        <Row>
+            <Upload
+                    type="select"
+                    ref="updateimg"
+                    with-credentials
+                    name="file"
+                    :on-success="uploadsuccess"
+                    :on-error="uploaderror"
+                    :format="format"
+                    :accept="accept"
+                    :action="action"
+                    :data="uploaddata">
+                <Button type="ghost" icon="ios-cloud-upload-outline" style="display: inline-block;">直接替换文件
+                </Button>
+            </Upload>
+        </Row>
         <div slot="footer">
-            <Button type="success" size="large" :disabled="!canedit" :loading="modal_loading" @click="ok">保存</Button>
+            <Button size="large" @click="exit">取消</Button>
         </div>
     </Modal>
 </template>
@@ -54,7 +61,6 @@
         methods: {
             uploadsuccess(response) {
                 if (response.status === 'success') {
-                    this.$refs.formInline.resetFields();
                     this.$Message.success(response.msg);
                     this.$emit('getdata');
                     this.modal1 = false;
@@ -83,7 +89,6 @@
                 this.canedit = ((this.file_type === 'html' && this.form.filename.slice(-'html'.length) === 'html') || (this.file_type === 'static' && this.form.filename.slice(-'css'.length) === 'css' || this.form.filename.slice(-'js'.length) === 'js'));
             },
             init(name, site_id, file_type, model_name) {
-                this.$refs.formInline.resetFields();
                 if (file_type === 'html') {
                     this.format = ['html'];
                     this.accept = '.html';
@@ -92,7 +97,7 @@
                 }
                 this.site_id = site_id;
                 this.file_type = file_type;
-                this.model_name = '修改' + model_name + '<a href="www.baidu.com"></a>';
+                this.model_name = '替换' + model_name + '<a href="www.baidu.com"></a>';
                 this.apiPost('templateRead', {site_id: site_id, name: name, file_type: this.file_type}).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.form = data;
@@ -102,6 +107,9 @@
                         this.$Message.error(msg);
                     })
                 });
+            },
+            exit(){
+                this.modal1 = false;
             },
             ok() {
                 this.apiPost('templateSave', {
@@ -115,8 +123,6 @@
                         this.modal1 = false;
                         this.$Message.success(msg);
                         this.$emit('getdata');
-                        this.$refs.updateimg.clearFiles();
-                        this.$refs.formInline.resetFields();
                     }, (data, msg) => {
                         this.$Message.error(msg);
                     })

@@ -38,6 +38,7 @@
         </div>
         <Save ref="save" v-on:getdata="getInfo"/>
         <Add ref="add" v-on:getdata="getInfo"/>
+        <Reply ref="reply" v-on:getdata="getInfo"/>
     </div>
 </template>
 
@@ -45,6 +46,7 @@
     import http from '../../../libs/http';
     import Save from './templatesave.vue';
     import Add from './templateadd.vue'
+    import Reply from './templatereply.vue'
 
     export default {
         data() {
@@ -66,7 +68,7 @@
             }
         },
         components: {
-            Save, Add
+            Save, Add, Reply
         },
         created() {
             this.getSiteType()
@@ -89,6 +91,14 @@
                 let name = row.name;
                 if (this.site_id > 0) {
                     this.$refs.save.init(name, this.site_id, this.file_type, this.file_type_name);
+                } else {
+                    this.$Message.error('请先选择站点->点击查询!');
+                }
+            },
+            replyTemplate(row) {
+                let name = row.name;
+                if (this.site_id > 0) {
+                    this.$refs.reply.init(name, this.site_id, this.file_type, this.file_type_name);
                 } else {
                     this.$Message.error('请先选择站点->点击查询!');
                 }
@@ -167,34 +177,49 @@
                         align: 'center',
                         fixed: 'right',
                         render(h, params) {
+                            let button_list = [];
                             let button_name = '';
-                            switch (params.row.type){
+                            switch (params.row.type) {
                                 case 'html':
                                 case 'css':
                                 case 'js':
-                                    button_name = '修改';
+                                    button_list.push(h('Button', {
+                                        props: {
+                                            size: 'small'
+                                        },
+                                        style: {
+                                            marginRight: '5px'
+                                        },
+                                        attrs: {
+                                            type: 'primary'
+                                        },
+                                        on: {
+                                            click: function () {
+                                                _this.editTemplate(params.row);
+                                            }
+                                        }
+                                    }, '修改'));
                                     break;
                                 default:
-                                    button_name = '替换';
+                                    break;
                             }
-                            return h('div', [
-                                h('Button', {
-                                    props: {
-                                        size: 'small'
-                                    },
-                                    style: {
-                                        marginRight: '5px'
-                                    },
-                                    attrs: {
-                                        type: 'primary'
-                                    },
-                                    on: {
-                                        click: function () {
-                                            _this.editTemplate(params.row);
-                                        }
+                            button_list.push(h('Button', {
+                                props: {
+                                    size: 'small'
+                                },
+                                style: {
+                                    marginRight: '5px'
+                                },
+                                attrs: {
+                                    type: 'primary'
+                                },
+                                on: {
+                                    click: function () {
+                                        _this.replyTemplate(params.row);
                                     }
-                                }, button_name)
-                            ]);
+                                }
+                            }, '替换'));
+                            return button_list;
                         }
                     }
                 );

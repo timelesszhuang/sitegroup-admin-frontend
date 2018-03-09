@@ -100,7 +100,7 @@
                 this.format = [];
                 this.accept = '';
                 if (this.file_type === 'html') {
-                    this.format = [html];
+                    this.format = ['html'];
                     this.accept = '.html';
                 }
                 if (index1 >= 0) {
@@ -124,33 +124,26 @@
                 this.modal1 = true;
             },
             ok() {
-                this.$refs.formInline.validate((valid) => {
-                    if (valid) {
-                        this.apiPost('templateAdd', {
-                            content: this.form.content,
-                            site_id: this.site_id,
-                            flag: 'add',
-                            filename: this.form.filename,
-                            file_type: this.file_type
-                        }).then((res) => {
-                            this.handleAjaxResponse(res, (data, msg) => {
-                                this.modal1 = false;
-                                this.$Message.success(msg);
-                                this.$emit('getdata');
-                                this.$refs.updateimg.clearFiles();
-                                this.$refs.formInline.resetFields();
-                            }, (data, msg) => {
-                                this.$Message.error(msg);
-                            })
-                        }, (res) => {
-                            //处理错误信息
-                            this.$Message.error('网络异常，请稍后重试。');
-                        });
-                    } else {
-
-                    }
-                })
-
+                this.apiPost('templateAdd', {
+                    content: this.form.content,
+                    site_id: this.site_id,
+                    flag: 'add',
+                    filename: this.form.filename,
+                    file_type: this.file_type
+                }).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.modal1 = false;
+                        this.$Message.success(msg);
+                        this.$emit('getdata');
+                        this.$refs.updateimg.clearFiles();
+                        this.$refs.formInline.resetFields();
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    })
+                }, (res) => {
+                    //处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
             }
         },
         mixins: [http]
