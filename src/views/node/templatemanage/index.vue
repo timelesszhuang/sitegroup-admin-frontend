@@ -14,20 +14,20 @@
         <Button type="info" @click="addTemplate">添加{{file_type_name}}</Button>
         </Col>
         <Col>
-        <CheckboxGroup>
+        <CheckboxGroup v-model="checkAllGroup" @on-change="checkAllGroupChange">
             <ButtonGroup>
-                <Checkbox label="twitter">
-                    <span>Twitter</span>
-                </Checkbox>
-                <Checkbox label="facebook">
-                    <span>Facebook</span>
-                </Checkbox>
-                <Checkbox label="github">
-                    <span>Github</span>
-                </Checkbox>
-                <Checkbox label="snapchat">
-                    <span>Snapchat</span>
-                </Checkbox>
+                <Button type="primary">
+                    <Checkbox
+                            :indeterminate="indeterminate"
+                            :value="checkAll"
+                            @click.prevent.native="handleCheckAll">全选
+                    </Checkbox>
+                </Button>
+                <Button type="primary" v-for="type in typeList" :key="type">
+                    <Checkbox :label="type">
+                        <span>{{type}}</span>
+                    </Checkbox>
+                </Button>
             </ButtonGroup>
         </CheckboxGroup>
         </Col>
@@ -51,7 +51,10 @@
     export default {
         data() {
             return {
-                select: [],
+                indeterminate: true,
+                checkAll: false,
+                checkAllGroup: [],
+                typeList: [],
                 sitetype: [],
                 site_type_id: '',
                 file_type: 'html',
@@ -74,6 +77,32 @@
             this.getSiteType()
         },
         methods: {
+            handleCheckAll() {
+                if (this.indeterminate) {
+                    this.checkAll = false;
+                } else {
+                    this.checkAll = !this.checkAll;
+                }
+                this.indeterminate = false;
+
+                if (this.checkAll) {
+                    this.checkAllGroup = this.typeList;
+                } else {
+                    this.checkAllGroup = [];
+                }
+            },
+            checkAllGroupChange(data) {
+                if (data.length === 3) {
+                    this.indeterminate = false;
+                    this.checkAll = true;
+                } else if (data.length > 0) {
+                    this.indeterminate = true;
+                    this.checkAll = false;
+                } else {
+                    this.indeterminate = false;
+                    this.checkAll = false;
+                }
+            },
             addTemplate() {
                 if (this.site_id > 0) {
                     this.$refs.add.init(this.site_id, this.file_type, this.file_type_name)
@@ -108,7 +137,15 @@
                 if (this.site_id > 0) {
                     this.apiGet('/templateList/' + this.site_id + '/' + this.file_type).then((res) => {
                         this.handleAjaxResponse(res, (data, msg) => {
-                            this.datas = data
+                            this.datas = data;
+                            let list = [];
+                            data.map(function (val) {
+                                list[val.type] = 1
+                            });
+                            this.typeList = [];
+                            for (let key in list) {
+                                this.typeList.push(key);
+                            }
                         }, (data, msg) => {
                             this.$Message.error(msg);
                         })
@@ -153,16 +190,43 @@
                 columns.push({
                     title: '文件名称',
                     key: 'name',
-                    sortable: true
+                    sortable: true,
+                    render(h, params) {
+                        let button_list = [];
+                        button_list.push(h('a', {
+                            style: {
+                                marginRight: '5px'
+                            },
+                            attrs: {
+                                href: params.row.downloadpath,
+                                alt: "点击下载",
+                            },
+                        }, params.row.name));
+                        return button_list;
+                    }
                 });
-
+                columns.push({
+                    title: '预览',
+                    key: 'path',
+                    sortable: true,
+                    render(h, params) {
+                        let button_list = [];
+                        if (params.row.type === 'image')
+                        button_list.push(h('img', {
+                            style: {
+                                'max-height': '40px',
+                                'max-width': '120px'
+                            },
+                            attrs: {
+                                src: params.row.path,
+                            },
+                        }));
+                        return button_list;
+                    }
+                });
                 columns.push({
                     title: '大小',
                     key: 'size',
-                });
-                columns.push({
-                    title: 'type',
-                    key: 'type',
                 });
                 columns.push({
                     title: '创建时间',
@@ -173,12 +237,11 @@
                     {
                         title: '操作',
                         key: 'action',
-                        width: 100,
+                        width: 150,
                         align: 'center',
                         fixed: 'right',
                         render(h, params) {
                             let button_list = [];
-                            let button_name = '';
                             switch (params.row.type) {
                                 case 'html':
                                 case 'css':

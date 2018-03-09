@@ -2,7 +2,7 @@
     <Modal v-model="modal1" :title="model_name" width="700">
         <p slot="header">
             <Icon type="information-circled"></Icon>
-            <span>当前替换文件:<a href="https://www.baidu.com">{{form.filename}}</a></span>
+            <span>当前替换文件:{{form.filename}}</span>
         </p>
         <Row>
             <Upload
