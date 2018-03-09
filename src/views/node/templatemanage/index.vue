@@ -15,20 +15,14 @@
         </Col>
         <Col>
         <CheckboxGroup v-model="checkAllGroup" @on-change="checkAllGroupChange">
-            <ButtonGroup>
-                <Button type="primary">
-                    <Checkbox
-                            :indeterminate="indeterminate"
-                            :value="checkAll"
-                            @click.prevent.native="handleCheckAll">全选
-                    </Checkbox>
-                </Button>
-                <Button type="primary" v-for="type in typeList" :key="type">
-                    <Checkbox :label="type">
-                        <span>{{type}}</span>
-                    </Checkbox>
-                </Button>
-            </ButtonGroup>
+            <Checkbox
+                    :indeterminate="indeterminate"
+                    :value="checkAll"
+                    @click.prevent.native="handleCheckAll">全选
+            </Checkbox>
+            <Checkbox :label="type" v-for="type in typeList" :key="type">
+                <span>{{type}}</span>
+            </Checkbox>
         </CheckboxGroup>
         </Col>
         <div class="content" style="margin-top:10px;margin-left: 5px;margin-right: 5px">
@@ -51,7 +45,7 @@
     export default {
         data() {
             return {
-                indeterminate: true,
+                indeterminate: false,
                 checkAll: false,
                 checkAllGroup: [],
                 typeList: [],
@@ -65,6 +59,7 @@
                 showheader: true,
                 size: 'small',
                 datas: [],
+                shows_datas: [],
                 site_id: 0,
                 content: '',
                 filename: ''
@@ -90,15 +85,22 @@
                 } else {
                     this.checkAllGroup = [];
                 }
+                this.checkAllGroupChange(this.checkAllGroup)
             },
             checkAllGroupChange(data) {
-                if (data.length === 3) {
+                if (data.length === this.typeList.length) {
+                    this.datas = this.big_datas;
                     this.indeterminate = false;
                     this.checkAll = true;
                 } else if (data.length > 0) {
                     this.indeterminate = true;
                     this.checkAll = false;
+                    this.datas = this.big_datas.filter(function (val) {
+                        if (data.indexOf(val.type)>=0)
+                            return true
+                    });
                 } else {
+                    this.datas = this.big_datas;
                     this.indeterminate = false;
                     this.checkAll = false;
                 }
@@ -137,7 +139,7 @@
                 if (this.site_id > 0) {
                     this.apiGet('/templateList/' + this.site_id + '/' + this.file_type).then((res) => {
                         this.handleAjaxResponse(res, (data, msg) => {
-                            this.datas = data;
+                            this.big_datas = data;
                             let list = [];
                             data.map(function (val) {
                                 list[val.type] = 1
@@ -146,6 +148,7 @@
                             for (let key in list) {
                                 this.typeList.push(key);
                             }
+                            this.checkAllGroupChange(this.checkAllGroup);
                         }, (data, msg) => {
                             this.$Message.error(msg);
                         })
@@ -208,25 +211,41 @@
                 columns.push({
                     title: '预览',
                     key: 'path',
-                    sortable: true,
                     render(h, params) {
                         let button_list = [];
                         if (params.row.type === 'image')
-                        button_list.push(h('img', {
-                            style: {
-                                'max-height': '40px',
-                                'max-width': '120px'
-                            },
-                            attrs: {
-                                src: params.row.path,
-                            },
-                        }));
+                            button_list.push(h('img', {
+                                style: {
+                                    'max-height': '40px',
+                                    'max-width': '120px'
+                                },
+                                attrs: {
+                                    src: params.row.path,
+                                },
+                            }));
                         return button_list;
                     }
                 });
                 columns.push({
                     title: '大小',
                     key: 'size',
+                });
+                columns.push({
+                    title: '大小',
+                    key: 'size',
+                    filters: [
+                        {
+                            label: 'Greater than 25',
+                            value: 'html'
+                        },
+                        {
+                            label: 'Less than 25',
+                            value: 'other'
+                        }
+                    ],
+                    filterMethod(value, row) {
+                        return row.type === value;
+                    }
                 });
                 columns.push({
                     title: '创建时间',
