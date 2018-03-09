@@ -88,6 +88,11 @@
                 this.checkAllGroupChange(this.checkAllGroup)
             },
             checkAllGroupChange(data) {
+                let typeList = this.typeList;
+                data = data.filter(function (val) {
+                    if (typeList.indexOf(val)>=0)
+                        return true
+                });
                 if (data.length === this.typeList.length) {
                     this.datas = this.big_datas;
                     this.indeterminate = false;
@@ -202,7 +207,7 @@
                             },
                             attrs: {
                                 href: params.row.downloadpath,
-                                alt: "点击下载",
+                                title: "点击下载",
                             },
                         }, params.row.name));
                         return button_list;
@@ -221,6 +226,7 @@
                                 },
                                 attrs: {
                                     src: params.row.path,
+                                    alt: params.row.name,
                                 },
                             }));
                         return button_list;
@@ -293,7 +299,7 @@
                                     marginRight: '5px'
                                 },
                                 attrs: {
-                                    type: 'primary'
+                                    type: 'warning'
                                 },
                                 on: {
                                     click: function () {

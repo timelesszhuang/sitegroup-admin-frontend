@@ -51,7 +51,8 @@
         methods: {
             uploadsuccess(response) {
                 if (response.status === 'success') {
-                    this.$refs.formInline.resetFields();
+                    this.form.content='';
+                    this.form.filename='';
                     this.$Message.success(response.msg);
                     this.$emit('getdata');
                     this.modal1 = false;
@@ -80,7 +81,8 @@
                 this.canedit = ((this.info.type === 'html') || (this.file_type === 'static' && this.info.type === 'css' || this.info.type === 'js'));
             },
             init(name, site_id, file_type, model_name,info) {
-                this.$refs.formInline.resetFields();
+                this.form.content='';
+                this.form.filename='';
                 if (file_type === 'html') {
                     this.format = ['html'];
                     this.accept = '.html';
@@ -113,8 +115,8 @@
                         this.modal1 = false;
                         this.$Message.success(msg);
                         this.$emit('getdata');
-                        this.$refs.updateimg.clearFiles();
-                        this.$refs.formInline.resetFields();
+                        this.form.content='';
+                        this.form.filename='';
                     }, (data, msg) => {
                         this.$Message.error(msg);
                     })

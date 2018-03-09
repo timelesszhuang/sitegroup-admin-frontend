@@ -82,7 +82,8 @@
         methods: {
             uploadsuccess(response) {
                 if (response.status === 'success') {
-                    this.$refs.formInline.resetFields();
+                    this.form.content='';
+                    this.form.filename='';
                     this.$Message.success(response.msg);
                     this.$emit('getdata');
                     this.modal1 = false;
@@ -108,10 +109,11 @@
                     this.format = [postf];
                     this.accept = "." + postf;
                 }
-                this.canedit = ((this.file_type === 'html' && this.form.filename.slice(-'html'.length) === 'html') || (this.file_type === 'static' && this.form.filename.slice(-'css'.length) === 'css' || this.form.filename.slice(-'js'.length) === 'js'));
+                this.canedit = ((this.info.type === 'html') || (this.file_type === 'static' && this.info.type === 'css' || this.info.type === 'js'));
             },
             init(site_id, file_type, model_name) {
-                this.$refs.formInline.resetFields();
+                this.form.content='';
+                this.form.filename='';
                 if (file_type === 'html') {
                     this.format = ['html'];
                     this.accept = '.html';
@@ -135,8 +137,8 @@
                         this.modal1 = false;
                         this.$Message.success(msg);
                         this.$emit('getdata');
-                        this.$refs.updateimg.clearFiles();
-                        this.$refs.formInline.resetFields();
+                        this.form.content='';
+                        this.form.filename='';
                     }, (data, msg) => {
                         this.$Message.error(msg);
                     })

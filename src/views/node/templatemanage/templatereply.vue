@@ -62,6 +62,8 @@
         methods: {
             uploadsuccess(response) {
                 if (response.status === 'success') {
+                    this.form.content='';
+                    this.form.filename='';
                     this.$Message.success(response.msg);
                     this.$emit('getdata');
                     this.modal1 = false;
@@ -125,6 +127,8 @@
                         this.modal1 = false;
                         this.$Message.success(msg);
                         this.$emit('getdata');
+                        this.form.content='';
+                        this.form.filename='';
                     }, (data, msg) => {
                         this.$Message.error(msg);
                     })
