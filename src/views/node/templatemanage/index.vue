@@ -90,7 +90,7 @@
             editTemplate(row) {
                 let name = row.name;
                 if (this.site_id > 0) {
-                    this.$refs.save.init(name, this.site_id, this.file_type, this.file_type_name);
+                    this.$refs.save.init(name, this.site_id, this.file_type, this.file_type_name, row);
                 } else {
                     this.$Message.error('请先选择站点->点击查询!');
                 }
@@ -98,7 +98,7 @@
             replyTemplate(row) {
                 let name = row.name;
                 if (this.site_id > 0) {
-                    this.$refs.reply.init(name, this.site_id, this.file_type, this.file_type_name);
+                    this.$refs.reply.init(name, this.site_id, this.file_type, this.file_type_name, row);
                 } else {
                     this.$Message.error('请先选择站点->点击查询!');
                 }

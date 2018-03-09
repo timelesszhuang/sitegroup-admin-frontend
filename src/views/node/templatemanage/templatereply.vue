@@ -44,6 +44,7 @@
                 },
                 model_name: '',
                 site_id: '',
+                info: '',
                 file_type: '',
                 ruleInline: {}
             }
@@ -86,9 +87,9 @@
                     this.format = [postf];
                     this.accept = "." + postf;
                 }
-                this.canedit = ((this.file_type === 'html' && this.form.filename.slice(-'html'.length) === 'html') || (this.file_type === 'static' && this.form.filename.slice(-'css'.length) === 'css' || this.form.filename.slice(-'js'.length) === 'js'));
+                this.canedit = ((this.info.type === 'html') || (this.file_type === 'static' && this.info.type === 'css' || this.info.type === 'js'));
             },
-            init(name, site_id, file_type, model_name) {
+            init(name, site_id, file_type, model_name,info) {
                 if (file_type === 'html') {
                     this.format = ['html'];
                     this.accept = '.html';
@@ -96,6 +97,7 @@
                     this.canedit = false
                 }
                 this.site_id = site_id;
+                this.info = info;
                 this.file_type = file_type;
                 this.model_name = '替换' + model_name + '<a href="www.baidu.com"></a>';
                 this.apiPost('templateRead', {site_id: site_id, name: name, file_type: this.file_type}).then((res) => {

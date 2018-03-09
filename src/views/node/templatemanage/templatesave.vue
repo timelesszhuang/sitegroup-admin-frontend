@@ -6,10 +6,6 @@
         </p>
         <Form ref="formInline" :model="form" :rules="ruleInline">
             <Row v-if="canedit">
-                <Col span="3">
-                内容:</Col>
-            </Row>
-            <Row v-if="canedit">
                 <Input ref="con" v-model="form.content" type="textarea" :rows="30"/>
             </Row>
         </Form>
@@ -37,6 +33,7 @@
                 },
                 model_name: '',
                 site_id: '',
+                info: '',
                 file_type: '',
                 ruleInline: {}
             }
@@ -80,9 +77,9 @@
                     this.format = [postf];
                     this.accept = "." + postf;
                 }
-                this.canedit = ((this.file_type === 'html' && this.form.filename.slice(-'html'.length) === 'html') || (this.file_type === 'static' && this.form.filename.slice(-'css'.length) === 'css' || this.form.filename.slice(-'js'.length) === 'js'));
+                this.canedit = ((this.info.type === 'html') || (this.file_type === 'static' && this.info.type === 'css' || this.info.type === 'js'));
             },
-            init(name, site_id, file_type, model_name) {
+            init(name, site_id, file_type, model_name,info) {
                 this.$refs.formInline.resetFields();
                 if (file_type === 'html') {
                     this.format = ['html'];
@@ -90,6 +87,7 @@
                 } else {
                     this.canedit = false
                 }
+                this.info = info;
                 this.site_id = site_id;
                 this.file_type = file_type;
                 this.model_name = '修改' + model_name + '<a href="www.baidu.com"></a>';
