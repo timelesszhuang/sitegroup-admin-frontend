@@ -101,7 +101,7 @@
                 this.site_id = site_id;
                 this.info = info;
                 this.file_type = file_type;
-                this.model_name = '替换' + model_name + '<a href="www.baidu.com"></a>';
+                this.model_name = '替换' + model_name;
                 this.apiPost('templateRead', {site_id: site_id, name: name, file_type: this.file_type}).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.form = data;

@@ -33,6 +33,7 @@
         <Save ref="save" v-on:getdata="getInfo"/>
         <Add ref="add" v-on:getdata="getInfo"/>
         <Reply ref="reply" v-on:getdata="getInfo"/>
+        <Rename ref="rename" v-on:getdata="getInfo"/>
     </div>
 </template>
 
@@ -41,6 +42,7 @@
     import Save from './templatesave.vue';
     import Add from './templateadd.vue'
     import Reply from './templatereply.vue'
+    import Rename from './templaterename.vue'
 
     export default {
         data() {
@@ -66,7 +68,7 @@
             }
         },
         components: {
-            Save, Add, Reply
+            Save, Add, Reply,Rename
         },
         created() {
             this.getSiteType()
@@ -135,6 +137,14 @@
                 let name = row.name;
                 if (this.site_id > 0) {
                     this.$refs.reply.init(name, this.site_id, this.file_type, this.file_type_name, row);
+                } else {
+                    this.$Message.error('请先选择站点->点击查询!');
+                }
+            },
+            renameTemplate(row) {
+                let name = row.name;
+                if (this.site_id > 0) {
+                    this.$refs.rename.init(name, this.site_id, this.file_type, this.file_type_name, row);
                 } else {
                     this.$Message.error('请先选择站点->点击查询!');
                 }
@@ -307,6 +317,22 @@
                                     }
                                 }
                             }, '替换'));
+                            button_list.push(h('Button', {
+                                props: {
+                                    size: 'small'
+                                },
+                                style: {
+                                    marginRight: '5px'
+                                },
+                                attrs: {
+                                    type: 'success'
+                                },
+                                on: {
+                                    click: function () {
+                                        _this.renameTemplate(params.row);
+                                    }
+                                }
+                            }, '重命名'));
                             return button_list;
                         }
                     }
