@@ -406,6 +406,7 @@
                     []
             },
             mobileSite: {},
+            gpd: {default: 1},
             form: {
                 default: {
                     site_name: "",

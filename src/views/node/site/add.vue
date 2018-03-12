@@ -429,7 +429,8 @@
                         []
                 },
                 mobileSite:
-                    {}
+                    {},
+                gpd: {default: 1},
             }
     }
 </script>
