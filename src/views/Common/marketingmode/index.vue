@@ -89,7 +89,7 @@
         },
         methods: {
             formatter_str (str) {
-                return window.HOST + str;
+                return str;
             },
             getData () {
                 let data = {
