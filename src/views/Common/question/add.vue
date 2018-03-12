@@ -94,7 +94,7 @@
 
     export default {
         components: {materialimg},
-        data() {
+        data () {
             const checkquestiontype = (rule, value, callback) => {
                 if (!value) {
                     callback(new Error('请选择问答分类'));
@@ -123,9 +123,6 @@
                     question: [
                         {required: true, message: '请填写问题名', trigger: 'blur'}
                     ],
-                    content_paragraph: [
-                        {required: true, message: '请填写答案', trigger: 'blur'}
-                    ],
                     type_id: [
                         {required: true, validator: checkquestiontype, trigger: 'blur'}
                     ]
@@ -133,7 +130,7 @@
             };
         },
         methods: {
-            change(status) {
+            change (status) {
                 if (status) {
                     this.tag_name = true;
                     this.$Message.info('切换到下拉选择');
@@ -144,13 +141,13 @@
             },
             init: function () {
                 this.$nextTick(() => {
-                    this.tinymceInit(this, document.body.offsetHeight - 500, 'tinymceEditer')
+                    this.tinymceInit(this, document.body.offsetHeight - 500, 'tinymceEditer');
                 });
             },
-            changeTagtype(value) {
+            changeTagtype (value) {
                 this.form.tag_id = value.value;
             },
-            addmaterial(src) {
+            addmaterial (src) {
                 if (this.img === 'content') {
                     let imgsrc = '<img src=' + src + '>';
                     tinymce.get('tinymceEditer').insertContent(imgsrc);
@@ -158,10 +155,10 @@
                     this.form.thumbnails = src;
                 }
             },
-            changeQuestiontype(type) {
+            changeQuestiontype (type) {
                 this.form.type_name = type.label;
             },
-            addtags() {
+            addtags () {
                 let data = {
                     type: 'question',
                     name: this.tags
@@ -214,13 +211,14 @@
                 });
             }
         },
-        mounted() {
+        mounted () {
             this.init();
         },
-        destroyed() {
+        destroyed () {
             tinymce.get('tinymceEditer').destroy();
-        }, props: {
-            gpd: {default: 1},
+        },
+    props: {
+            gpd: {default: 1}
         },
         mixins: [http, common, tinymceInit]
     };
