@@ -1,38 +1,40 @@
 <template>
-    <div>
-        <div class="top">
-            活动标题名:
-            <Input v-model="title" placeholder="活动名" style="width:300px;"></Input>
-            <Button type="primary" @click="queryData">查询</Button>
-            <Button type="success" @click="add">添加活动</Button>
-            <Button type="success" @click="urladd">添加链接活动</Button>
-        </div>
+    <card>
         <div>
-        </div>
-        <div class="content" style="margin-top:10px;">
-            <Table :context="self" :border="border" :stripe="stripe" :show-header="showheader"
-                   :size="size" :data="datas" :columns="tableColumns" style="width: 100%">
-            </Table>
-            <div style="margin: 10px;overflow: hidden">
-                <div style="float: right;">
-                    <Page :total="total" :current="current" @on-change="changePage"
-                          @on-page-size-change="changePageSize"
-                          show-total
-                          show-elevator>
-                    </Page>
+            <div class="top">
+                活动标题名:
+                <Input v-model="title" placeholder="活动名" style="width:300px;"></Input>
+                <Button type="primary" @click="queryData">查询</Button>
+                <Button type="success" @click="add">添加活动</Button>
+                <Button type="success" @click="urladd">添加链接活动</Button>
+            </div>
+            <div>
+            </div>
+            <div class="content" style="margin-top:10px;">
+                <Table :context="self" :border="border" :stripe="stripe" :show-header="showheader"
+                       :size="size" :data="datas" :columns="tableColumns" style="width: 100%">
+                </Table>
+                <div style="margin: 10px;overflow: hidden">
+                    <div style="float: right;">
+                        <Page :total="total" :current="current" @on-change="changePage"
+                              @on-page-size-change="changePageSize"
+                              show-total
+                              show-elevator>
+                        </Page>
+                    </div>
                 </div>
             </div>
+            <Alert type="success" show-icon>
+                说明:
+                <span slot="desc">活动创意部分支持站内活动跟链接活动，链接活动选择添加链接活动，添加需要链接到的网址。 </span>
+            </Alert>
+            <padd ref="add"></padd>
+            <psave ref="save" :form="editinfo"></psave>
+            <urladd ref="urladd"></urladd>
+            <urlsave ref="urlsave" :form="editinfo"></urlsave>
+            <editimg ref="editimg" :form="imginfo"></editimg>
         </div>
-        <Alert type="success" show-icon>
-            说明:
-            <span slot="desc">活动创意部分支持站内活动跟链接活动，链接活动选择添加链接活动，添加需要链接到的网址。 </span>
-        </Alert>
-        <padd ref="add"></padd>
-        <psave ref="save" :form="editinfo"></psave>
-        <urladd ref="urladd"></urladd>
-        <urlsave ref="urlsave" :form="editinfo"></urlsave>
-        <editimg ref="editimg" :form="imginfo"></editimg>
-    </div>
+    </card>
 </template>
 
 <script type="text/ecmascript-6">
