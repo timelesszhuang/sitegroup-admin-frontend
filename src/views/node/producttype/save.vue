@@ -110,6 +110,7 @@
                                     this.$emit('getdata');
                                 }
                                 this.getTagType(true);
+                                this.getProductType(true);
                                 this.$Message.success(msg);
                                 this.modal_loading = false;
                                 this.$refs.ptypesave.resetFields();

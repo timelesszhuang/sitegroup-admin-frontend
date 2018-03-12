@@ -38,8 +38,8 @@
             </div>
             <br>
         </div>
-        <siteadd ref="add" :keyword="keyword" :menutype="menutype" :mobileSite="mobileSite"></siteadd>
-        <sitesave ref="save" :keyword="keyword" :menutype="menutype" :form="editinfo" :mobileSite="mobileSite"></sitesave>
+        <siteadd ref="add" :keyword="keyword" :menutype="menutype" :mobileSite="mobileSite" v-on:getdata="getData"></siteadd>
+        <sitesave ref="save" :keyword="keyword" :menutype="menutype" :form="editinfo" :mobileSite="mobileSite" v-on:getdata="getData"></sitesave>
         <ftpsave ref="ftpsave" :ftp_id="ftp_id" :form="ftp_info"></ftpsave>
         <cdnsave ref="cdnsave" :cdn_id="ftp_id" :form="cdn_info"></cdnsave>
         <win ref="windows" :genaraterId="genarate_id"></win>

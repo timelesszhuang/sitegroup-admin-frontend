@@ -133,7 +133,7 @@
                                 this.$refs.articlesave.resetFields();
                                 this.$refs.select.clearSingleSelect();
                                 this.getTagType(true);
-                                this.getProductType(true);
+                                this.getArticleType(true);
                             }, (data, msg) => {
                                 this.modal_loading = false;
                                 this.$Message.error(msg);
