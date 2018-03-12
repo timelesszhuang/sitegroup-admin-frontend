@@ -35,8 +35,8 @@
                     okText: '更新',
                     cancelText: '取消',
                     onOk: (index) => {
-                        let id = Lockr.get("currentSiteId")
-                        this.apiGet('user/siteGetCurl/' + id + '/aKeyGeneration').then((res) => {
+                        let id = localStorage.siteId;
+                        this.apiGet('siteGetCurl/' + id + '/aKeyGeneration').then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {
                                 this.modal = false;
                                 this.modal_loading = false;
@@ -63,8 +63,8 @@
                     okText: '更新',
                     cancelText: '取消',
                     onOk: (index) => {
-                        let id = Lockr.get("currentSiteId")
-                        this.apiGet('user/siteGetCurl/' + id + '/generatIndex').then((res) => {
+                        let id = localStorage.siteId;
+                        this.apiGet('siteGetCurl/' + id + '/generatIndex').then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {
                                 this.modal = false;
                                 this.modal_loading = false;
@@ -91,8 +91,8 @@
                     okText: '更新',
                     cancelText: '取消',
                     onOk: (index) => {
-                        let id = Lockr.get("currentSiteId")
-                        this.apiGet('user/siteGetCurl/' + id + '/generatArticle').then((res) => {
+                        let id = localStorage.siteId;
+                        this.apiGet('siteGetCurl/' + id + '/generatArticle').then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {
                                 this.modal = false;
                                 this.modal_loading = false;
@@ -119,8 +119,8 @@
                     okText: '更新',
                     cancelText: '取消',
                     onOk: (index) => {
-                        let id = Lockr.get("currentSiteId")
-                        this.apiGet('user/siteGetCurl/' + id + '/generatMenu').then((res) => {
+                        let id = localStorage.siteId;
+                        this.apiGet('siteGetCurl/' + id + '/generatMenu').then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {
                                 this.modal = false;
                                 this.modal_loading = false;
