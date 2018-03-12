@@ -43,61 +43,15 @@
             </Row>
             </Col>
             <Col :md="24" :lg="16">
-            <Row :gutter="5">
-                <Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
-                <infor-card
-                        id-name="user_created_count"
-                        :end-val="count.createUser"
-                        iconType="android-person-add"
-                        color="#2d8cf0"
-                        intro-text="今日新增用户"
-                ></infor-card>
-                </Col>
-                <Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
-                <infor-card
-                        id-name="visit_count"
-                        :end-val="count.visit"
-                        iconType="ios-eye"
-                        color="#64d572"
-                        :iconSize="50"
-                        intro-text="今日浏览量"
-                ></infor-card>
-                </Col>
-                <Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
-                <infor-card
-                        id-name="collection_count"
-                        :end-val="count.collection"
-                        iconType="upload"
-                        color="#ffd572"
-                        intro-text="今日数据采集量"
-                ></infor-card>
-                </Col>
-                <Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
-                <infor-card
-                        id-name="transfer_count"
-                        :end-val="count.transfer"
-                        iconType="shuffle"
-                        color="#f25e43"
-                        intro-text="今日服务调用量"
-                ></infor-card>
-                </Col>
-            </Row>
+            <fourStaticsInfo></fourStaticsInfo>
             <Row>
-                <Card :padding="0">
+                <Card>
                     <p slot="title" class="card-title">
-                        <Icon type="map"></Icon>
-                        今日服务调用地理分布
+                        <Icon type="ios-shuffle-strong"></Icon>
+                        爬虫爬取趋势
                     </p>
-                    <div class="map-con">
-                        <Col span="10">
-                        <map-data-table :cityData="cityData" height="281"
-                                        :style-obj="{margin: '12px 0 0 11px'}"></map-data-table>
-                        </Col>
-                        <Col span="14" class="map-incon">
-                        <Row type="flex" justify="center" align="middle">
-                            <home-map :city-data="cityData"></home-map>
-                        </Row>
-                        </Col>
+                    <div class="line-chart-con">
+                        <spider-trend></spider-trend>
                     </div>
                 </Card>
             </Row>
@@ -107,48 +61,22 @@
             <Col :md="24" :lg="8" :style="{marginBottom: '10px'}">
             <Card>
                 <p slot="title" class="card-title">
-                    <Icon type="android-map"></Icon>
-                    上周每日来访量统计
+                    <Icon type="ios-pulse-strong"></Icon>
+                    浏览量趋势
                 </p>
                 <div class="data-source-row">
-                    <visite-volume></visite-volume>
+                    <pageview-trend></pageview-trend>
                 </div>
             </Card>
             </Col>
             <Col :md="24" :lg="8" :style="{marginBottom: '10px'}">
-            <Card>
-                <p slot="title" class="card-title">
-                    <Icon type="ios-pulse-strong"></Icon>
-                    数据来源统计
-                </p>
-                <div class="data-source-row">
-                    <data-source-pie></data-source-pie>
-                </div>
-            </Card>
+            <marketMode></marketMode>
             </Col>
             <Col :md="24" :lg="8">
-            <Card>
-                <p slot="title" class="card-title">
-                    <Icon type="android-wifi"></Icon>
-                    各类用户服务调用变化统计
-                </p>
-                <div class="data-source-row">
-                    <user-flow></user-flow>
-                </div>
-            </Card>
+            <caseCenter></caseCenter>
             </Col>
         </Row>
-        <Row class="margin-top-10">
-            <Card>
-                <p slot="title" class="card-title">
-                    <Icon type="ios-shuffle-strong"></Icon>
-                    上周每日服务调用量(万)
-                </p>
-                <div class="line-chart-con">
-                    <service-requests></service-requests>
-                </div>
-            </Card>
-        </Row>
+
     </div>
 </template>
 
@@ -163,8 +91,12 @@
     import inforCard from './components/inforCard.vue';
     import mapDataTable from './components/mapDataTable.vue';
     import toDoListItem from './components/toDoListItem.vue';
+    import spiderTrend from '../../Common/home_info/spider-trend';
+    import pageviewTrend from '../../Common/home_info/pageview-trend';
     import userLoginInfo from '../../Common/home_info/user-login-info';
-
+    import fourStaticsInfo from '../../Common/home_info/four-statics-info';
+    import marketMode from '../../Common/home_info/market-mode';
+    import caseCenter from '../../Common/home_info/case-center';
 
     export default {
         name: 'home',
@@ -178,9 +110,14 @@
             inforCard,
             mapDataTable,
             toDoListItem,
-            userLoginInfo
+            spiderTrend,
+            userLoginInfo,
+            fourStaticsInfo,
+            pageviewTrend,
+            marketMode,
+            caseCenter
         },
-        data() {
+        data () {
             return {
                 toDoList: [
                     {
@@ -211,15 +148,15 @@
             };
         },
         computed: {
-            avatorPath() {
+            avatorPath () {
                 return localStorage.avatorImgPath;
             }
         },
         methods: {
-            addNewToDoItem() {
+            addNewToDoItem () {
                 this.showAddNewTodo = true;
             },
-            addNew() {
+            addNew () {
                 if (this.newToDoItemValue.length !== 0) {
                     this.toDoList.unshift({
                         title: this.newToDoItemValue
@@ -232,7 +169,7 @@
                     this.$Message.error('请输入待办事项内容');
                 }
             },
-            cancelAdd() {
+            cancelAdd () {
                 this.showAddNewTodo = false;
                 this.newToDoItemValue = '';
             }
