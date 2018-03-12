@@ -12,7 +12,7 @@
                             type="drag"
                             ref="upImg"
                             with-credentials
-                            name="file_name"
+                            name="file"
                             :format="['jpg','jpeg','png','gif']"
                             :on-success="getResponse"
                             :on-error="getErrorInfo"
@@ -155,7 +155,7 @@
                 }
             },
             getResponse(response, file, filelist) {
-                this.form.img = response.data;
+                this.form.img = response.data.url;
                 this.$Message.success(response.msg);
             },
             getErrorInfo(error, file, filelist) {

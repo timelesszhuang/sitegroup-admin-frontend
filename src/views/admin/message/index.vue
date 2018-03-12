@@ -1,24 +1,26 @@
 <template>
     <div>
-        <div class="top">
-            系统推送:
-            <Button type="success" @click="add">添加</Button>
-        </div>
-        <div class="content" style="margin-top:10px;">
-            <Table :context="self" :border="border" :stripe="stripe" :show-header="showheader"
-                   :size="size" :data="datas" :columns="tableColumns" style="width: 100%">
-            </Table>
-            <div style="margin: 10px;overflow: hidden">
-                <div style="float: right;">
-                    <Page :total="total" :current="current" @on-change="changePage"
-                          @on-page-size-change="changePageSize"
-                          show-total
-                          show-elevator show-sizer></Page>
+        <card>
+            <div class="top">
+                系统推送:
+                <Button type="success" @click="add">添加</Button>
+            </div>
+            <div class="content" style="margin-top:10px;">
+                <Table :context="self" :border="border" :stripe="stripe" :show-header="showheader"
+                       :size="size" :data="datas" :columns="tableColumns" style="width: 100%">
+                </Table>
+                <div style="margin: 10px;overflow: hidden">
+                    <div style="float: right;">
+                        <Page :total="total" :current="current" @on-change="changePage"
+                              @on-page-size-change="changePageSize"
+                              show-total
+                              show-elevator show-sizer></Page>
+                    </div>
                 </div>
             </div>
-        </div>
-        <systempushadd ref="add" :nodeids="nodeids" v-on:getdata="getData"/>
-        <systempushsave ref="save" :nodeids="nodeids" :form="editinfo" v-on:getdata="getData"/>
+            <systempushadd ref="add" :nodeids="nodeids" v-on:getdata="getData"/>
+            <systempushsave ref="save" :nodeids="nodeids" :form="editinfo" v-on:getdata="getData"/>
+        </card>
     </div>
 </template>
 <script type="text/ecmascript-6">
@@ -45,12 +47,12 @@
             };
         },
         components: {systempushadd, systempushsave},
-        created () {
+        created() {
             this.getData();
             this.getNodeids();
         },
         methods: {
-            getData () {
+            getData() {
                 let data = {
                     params: {
                         page: this.page,
@@ -68,7 +70,7 @@
                     this.$Message.error('网络异常，请稍后重试');
                 });
             },
-            getNodeids () {
+            getNodeids() {
                 this.apiGet('getNodelist').then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.nodeids = data;
@@ -80,18 +82,18 @@
                     this.$Message.error('网络异常，请稍后重试。');
                 });
             },
-            changePage (page) {
+            changePage(page) {
                 this.page = page;
                 this.getData();
             },
-            changePageSize (pagesize) {
+            changePageSize(pagesize) {
                 this.rows = pagesize;
                 this.getData();
             },
-            add () {
+            add() {
                 this.$refs.add.modal = true;
             },
-            edit (index) {
+            edit(index) {
                 let editid = this.datas[index].id;
                 this.apiGet('system_notice/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
@@ -113,7 +115,7 @@
                     this.$Message.error('网络异常，请稍后重试。');
                 });
             },
-            remove (index) {
+            remove(index) {
                 // 需要删除确认
                 let id = this.datas[index].id;
                 let _this = this;
@@ -142,7 +144,7 @@
             }
         },
         computed: {
-            tableColumns () {
+            tableColumns() {
                 let _this = this;
                 let columns = [];
                 if (this.showCheckbox) {
@@ -176,7 +178,7 @@
                         width: 150,
                         align: 'center',
                         fixed: 'right',
-                        render (h, params) {
+                        render(h, params) {
                             return h('div', [
                                 h('Button', {
                                     props: {
