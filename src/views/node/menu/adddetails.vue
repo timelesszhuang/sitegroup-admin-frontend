@@ -29,7 +29,7 @@
                         <Form-item label="上级分类" prop="p_id">
                             <Select style="width:200px;position: relative;"
                                     label-in-value filterable @on-change="changeArticletype">
-                                <Option v-for="item in pidtype" :value="item.id" :label="item.name" :key="item.id">
+                                <Option v-for="item in pidtype" :value="item.id" :label="item.text" :key="item.id">
                                     {{ item.text }}
                                 </Option>
                             </Select>
