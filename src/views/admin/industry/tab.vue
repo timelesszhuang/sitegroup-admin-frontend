@@ -1,12 +1,14 @@
 <template>
-    <Tabs value="company" @on-click="getdata">
-        <Tab-pane label="公司" name="company">
-            <Company ref="gongsi"></Company>
-        </Tab-pane>
-        <Tab-pane label="行业" name="industry">
-            <Industry ref="hangye"></Industry>
-        </Tab-pane>
-    </Tabs>
+    <card>
+        <Tabs value="company" @on-click="getdata">
+            <Tab-pane label="公司" name="company">
+                <Company ref="gongsi"></Company>
+            </Tab-pane>
+            <Tab-pane label="行业" name="industry">
+                <Industry ref="hangye"></Industry>
+            </Tab-pane>
+        </Tabs>
+    </card>
 </template>
 <script>
     import http from '../../../libs/http';
