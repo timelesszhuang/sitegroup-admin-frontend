@@ -21,6 +21,16 @@
                             </Col>
                         </Row>
                         <Row>
+                            <Col span="17">
+                            <Form-item label="子站显示" prop="title">
+                                <i-switch v-model="form.stations">
+                                    <span slot="open">开</span>
+                                    <span slot="close">关</span>
+                                </i-switch>
+                            </Form-item>
+                            </Col>
+                        </Row>
+                        <Row>
                             <Col span="21">
                             <Form-item label="标记" prop="flag"
                                        style="position: relative;z-index: 10">
@@ -192,6 +202,7 @@
                     title: '',
                     title_color: '',
                     content: '',
+                    stations: false,
                     come_from: '',
                     posttime: '',
                     thumbnails: '',
