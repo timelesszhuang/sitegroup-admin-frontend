@@ -253,7 +253,7 @@
             },
             add() {
                 this.$refs.add.modal = true
-                this.$refs.add.shuju()
+                this.$refs.add.distridata()
             },
             edit(index) {
                 let editid = this.datas[index].id;
@@ -293,6 +293,7 @@
                         //console.log(this.editinfo);
                         this.modal = false;
                         this.$refs.save.modal = true
+                        this.$refs.save.distridata()
                     }, (data, msg) => {
                         this.$Message.error(msg);
                     })

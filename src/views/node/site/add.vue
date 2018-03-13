@@ -97,7 +97,7 @@
                             </Select>
                         </Form-item>
                         <Form-item label="子站地区" prop="district" style="text-align: left;width:500px;">
-                            <Cascader :data="districtdata" change-on-select  :load-data="loadData"></Cascader>
+                            <Cascader :data="districtdata" change-on-select  :load-data="loadData" @on-change="ChangeSite"></Cascader>
                         </Form-item>
 
                         <Form-item label="模板" prop="template_id">
@@ -267,9 +267,8 @@
             };
 
             return {
-                districtdata: [
-
-                ],
+                bkdata: [],
+                districtdata: [],
                 editorOption: {},
                 modal: false,
                 modal_loading: false,
@@ -293,6 +292,7 @@
                     walterString: '',
                     sitelogo_id: 0,
                     siteico_id: 0,
+                    stations_area: 0,
                     site_water_image_id: 0
                 },
                 AddRule: {
@@ -327,11 +327,15 @@
             };
         },
         methods: {
+            ChangeSite (value, selectedData) {
+                this.bkdata = selectedData[selectedData.length - 1];
+                this.form.stations_area = this.bkdata.id
+            },
             loadData (item, callback) {
                 item.loading = true;
                 if (item.id) {
                     let data = {};
-                    if (item.id != 0) {
+                    if (item.id !== 0) {
                         data = {
                             params: {
                                 id: item.id
@@ -340,18 +344,11 @@
                     }
                     this.apiGet('district', data).then((res) => {
                         this.handleAjaxResponse(res, (data, msg) => {
-                            if (data.length === 0) {
-                                setTimeout(() => {
-                                    item.loading = false;
-                                    callback();
-                                }, 1000);
-                            } else {
-                                setTimeout(() => {
-                                    item.children = data;
-                                    item.loading = false;
-                                    callback();
-                                }, 1000);
-                            }
+                            setTimeout(() => {
+                                item.children = data;
+                                item.loading = false;
+                                callback();
+                            }, 100);
                         }, (data, msg) => {
                             this.$Message.error(msg);
                         });
@@ -361,29 +358,9 @@
                     });
                 }
             },
-            shuju1 (id) {
+            distridata (id) {
                 let data = {};
-                if (id != 0) {
-                    data = {
-                        params: {
-                            id: id
-                        }
-                    };
-                }
-                this.apiGet('district', data).then((res) => {
-                    this.handleAjaxResponse(res, (data, msg) => {
-                        this.data11 = data;
-                    }, (data, msg) => {
-                        this.$Message.error(msg);
-                    });
-                }, (res) => {
-                    // 处理错误信息
-                    this.$Message.error('网络异常，请稍后重试。');
-                });
-            },
-            shuju (id) {
-                let data = {};
-                if (id != 0) {
+                if (id !== 0) {
                     data = {
                         params: {
                             id: id
@@ -401,7 +378,6 @@
                     this.$Message.error('网络异常，请稍后重试。');
                 });
             },
-
             SiteUser () {
                 this.$refs.SiteUser.modal = true;
             },
