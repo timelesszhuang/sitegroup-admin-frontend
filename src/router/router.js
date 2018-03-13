@@ -1035,50 +1035,52 @@ export const siteappRouter = [
             },
         ]
     },
-    // {
-    //     path: '/count',
-    //     icon: 'earth',
-    //     title: "统计",
-    //     name: 'count',
-    //     component: Main,
-    //     children: [
-    //         {
-    //             path: '/keyword',
-    //             icon: 'earth',
-    //             title: "关键词占比统计",
-    //             name: 'keyword',
-    //             component: () => import('@/views/site/keyword/index.vue')
-    //         },
-    //         {
-    //             path: '/pv',
-    //             icon: 'earth',
-    //             title: "浏览量统计",
-    //             name: 'pv',
-    //             component: () => import('@/views/site/pv/pv.vue')
-    //         },
-    //         {
-    //             path: '/show',
-    //             icon: 'earth',
-    //             title: "浏览量展示",
-    //             name: 'show',
-    //             component: () => import('@/views/site/show/index.vue')
-    //         },
-    //         {
-    //             path: '/crawler',
-    //             icon: 'earth',
-    //             title: "爬虫统计",
-    //             name: 'crawler',
-    //             component: () => import('@/views/site/crawler/crawler.vue')
-    //         },
-    //         {
-    //             path: '/flow',
-    //             icon: 'earth',
-    //             title: "搜索引擎占比",
-    //             name: 'flow',
-    //             component: () => import('@/views/site/flow/index.vue')
-    //         },
-    //     ]
-    // },
+    {
+        path: '/count',
+        icon: 'earth',
+        title: "统计",
+        name: 'count',
+        component: Main,
+        children: [
+            {
+                path: '/keywordcount',
+                icon: 'earth',
+                title: "关键词占比统计",
+                name: 'keywordcount',
+              component: () => import('@/views/Common/countkeyword/index.vue')
+
+            },
+            {
+                path: '/pv',
+                icon: 'earth',
+                title: "浏览量统计",
+                name: 'pv',
+              component: () => import('@/views/Common/pv/pv.vue')
+
+            },
+            {
+                path: '/show',
+                icon: 'earth',
+                title: "浏览量展示",
+                name: 'show',
+                component: () => import('@/views/Common/show/index.vue')
+            },
+            {
+                path: '/crawler',
+                icon: 'earth',
+                title: "爬虫统计",
+                name: 'crawler',
+                component: () => import('@/views/Common/crawler/crawler.vue')
+            },
+            {
+                path: '/flow',
+                icon: 'earth',
+                title: "搜索引擎占比",
+                name: 'flow',
+                component: () => import('@/views/Common/countkeyword/index.vue')
+            },
+        ]
+    },
     // {
     //     path: '/international',
     //     icon: 'earth',

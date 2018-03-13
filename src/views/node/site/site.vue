@@ -253,6 +253,7 @@
             },
             add() {
                 this.$refs.add.modal = true
+                this.$refs.add.shuju()
             },
             edit(index) {
                 let editid = this.datas[index].id;

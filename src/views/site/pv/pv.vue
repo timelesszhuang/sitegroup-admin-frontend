@@ -1,119 +1,161 @@
 <template>
-  <div class="echarts">
-    <div style="width: 500px;height: 20px;margin: 0 auto">
-      <Row>
-        <Col span="9">
-        <Date-picker type="daterange" v-model="time" placement="bottom-end" placeholder="选择日期查询"></Date-picker>
-        </Col>
-        &nbsp;<Button type="primary" @click="queryData">查询</Button>
-      </Row>
+  <card>
+    <div class="echarts">
+      <div style="width: 700px;height: 20px;margin: 0 auto">
+        <Row>
+          <Col span="9">
+          <Date-picker type="daterange" v-model="time" placement="bottom-end" placeholder="选择日期查询"></Date-picker>
+          </Col>
+          <Select v-model="site_id" style="width:310px;" label-in-value filterable clearable>
+            <Option v-for="item in site" :value="item.id" :label="item.text" :key="item.id">
+              {{ item.text }}
+            </Option>
+          </Select>
+          &nbsp;<Button type="primary" @click="queryData">查询</Button>
+        </Row>
+      </div>
+      <div style=" width: 700px;
+    height: 500px;
+    margin: 0 auto;
+    padding-bottom: 50px;" id="pageview-trend"></div>
     </div>
-    <IEcharts :option="bar" :loading="loading" @ready="onReady" @click="onClick"></IEcharts>
-  </div>
+  </card>
 </template>
-<script type="text/babel">
-  import IEcharts from 'vue-echarts-v3/src/full.vue';
+
+<script>
+  import echarts from 'echarts';
   import http from '../../../libs/http';
+
   export default {
-    name: 'view',
-    components: {
-      IEcharts,
-    },
-    props: {},
-    data: () => ({
-      time:[],
-      loading: false,
-      data: [],
-      bar: {
-        color: ["#20a0ff", "#BBFFFF"],
-        title: {
-          text: '浏览量统计',
-          left: 'center',
-          top: 10
-        },
-        tooltip: {
-          trigger: 'axis'
-        },
-        legend: {
-          bottom: 'bottom',
-          data: []
-        },
-        grid: {
-          left: '5%',
-          right: '25%',
-          bottom: '20%',
-          containLabel: true
-
-        },
-
-        xAxis: {
-          type: 'category',
-          boundaryGap: false,
-          data: [],
-          axisLabel: {
-            interval: 0,
-            rotate: -25,
-          },
-          axisLine: {show: false},
-          splitNumber: 100,
-          splitLine: {
-            show: true,
-          },
-        },
-        yAxis: {
-          type: 'value',
-        },
-        series: [
-          {
-            name:'',
-            type:'line',
-            stack: '',
-            areaStyle: {normal: {}},
-            data:[]
-          },
-        ]
+      name: 'pageviewTrend',
+      data () {
+          return {
+              site: [],
+              time: [],
+              site_id: '',
+              spiderTrendCharts: {},
+              xAxisData: [],
+              series: [],
+              color: this.$store.state.commondata.color
+          };
       },
-    }),
-    created() {
-      this.doRandom();
-    },
-    methods: {
-      queryData() {
-        this.doRandom();
-      },
-      doRandom() {
-        const that = this;
-        let data = {
-          params: {
-            time: this.time,
+      computed: {
+          finalseries: function () {
+              let length = this.color.length;
+              let _this = this;
+              let random = Math.ceil(Math.random() * 100);
+              return this.series.map(function (data, index) {
+                  // console.log(data)
+                  let colorIndex = (index + random) % length;
+                  let color = _this.color[colorIndex];
+                  data['areaStyle'] = {
+                      normal: {
+                          color: color
+                      }
+                  };
+                  data['name'] = '浏览量(pv)统计';
+                  return data;
+              });
+          },
+          option: function () {
+              return {
+                  title: {
+                      text: '浏览量统计',
+                      left: 'center',
+                      top: 10
+                  },
+                  tooltip: {
+                      trigger: 'axis',
+                      axisPointer: {
+                          type: 'cross',
+                          label: {
+                              backgroundColor: '#6a7985'
+                          }
+                      }
+                  },
+                  grid: {
+                      top: '10%',
+                      left: '1.2%',
+                      right: '1%',
+                      bottom: '1%',
+                      containLabel: true
+                  },
+                  xAxis: [
+                      {
+                          type: 'category',
+                          boundaryGap: false,
+                          data: this.xAxisData
+                      }
+                  ],
+                  yAxis: [
+                      {
+                          type: 'value'
+                      }
+                  ],
+                  series: this.finalseries
+              };
           }
-        }
-        this.apiGet('user/pv', data).then((data) => {
-          this.handleAjaxResponse(data, (data, msg) => {
-            that.bar.legend.data = data.type;
-            that.bar.xAxis.data = data.time;
-            that.bar.series = data.type;
-          }, (data, msg) => {
-            this.$Message.error(msg);
-          })
-        },)
-
-//        that.loading = !that.loading;
       },
-      onReady(instance) {
+      methods: {
+          queryData () {
+              this.getData();
+              this.getSite((data) => {
+                  this.site = data;
+              });
+          },
+          getSite () {
+              this.apiGet('getSites').then((res) => {
+                  this.handleAjaxResponse(res, (data, msg) => {
+                      this.site = data;
+                  }, (data, msg) => {
+                      this.$Message.error(msg);
+                  });
+              }, (res) => {
+                  // 处理错误信息
+                  this.$Message.error('网络异常，请稍后重试。');
+              });
+          },
+          getData () {
+              // 获取相关统计信息
+              let data = {
+                  params: {
+                      time: this.time,
+                      site_id: this.site_id
+                  }
+              };
+              this.apiGet('pvStatistic', data).then((res) => {
+                  this.handleAjaxResponse(res, (data, msg) => {
+                      // console.log(data.type)
+                      this.series = data.type;
+                      this.xAxisData = data.time;
+                      this.spiderTrendCharts.setOption(this.option);
+                  });
+              });
+          },
+          init () {
+              this.spiderTrendCharts = echarts.init(document.getElementById('pageview-trend'));
+              // 页面resize 的时候触发
+              let _this = this;
+              window.addEventListener('resize', function () {
+                  _this.spiderTrendCharts.resize();
+              });
+          }
       },
-      onClick(event, instance, echarts) {
-      }
-    },
-    mixins: [http]
-
+      mounted () {
+          this.getSite((data) => {
+              this.site = data;
+          });
+          this.init();
+          // 加载获取数据库中数据
+          this.getData();
+      },
+      mixins: [http]
   };
 </script>
-
 <style scoped>
   .echarts {
     width: 800px;
-    height: 600px;
+    height: auto;
     margin: 0 auto;
     padding-bottom: 50px;
   }

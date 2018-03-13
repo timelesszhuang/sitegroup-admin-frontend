@@ -16,10 +16,9 @@
   export default {
       name: 'view',
       components: {
-      articletype,
-      questiontype,
+          articletype,
+          questiontype,
           keyword
-
       },
       methods: {
           init () {

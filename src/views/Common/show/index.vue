@@ -1,12 +1,13 @@
 <template>
   <div>
-    <div class="top">
-      <Select v-model="site_id" style="margin-left:40%;width:300px;" label-in-value filterable clearable>
+    <div class="top" style="margin-top: 10px" ><div v-show="this.showsite" >
+      <Select   v-model="site_id" style="margin-left:40%;width:300px;" label-in-value filterable clearable>
         <Option v-for="item in site" :value="item.id" :label="item.text" :key="item.id">
           {{ item.text }}
         </Option>
       </Select>
       <Button type="primary" @click="queryData">查询</Button>
+    </div>
     </div>
     <div class="content" style="margin-top:10px;">
       <Table :context="self" :border="border" :stripe="stripe" :show-header="showheader"
@@ -28,6 +29,7 @@
   export default {
       data () {
           return {
+              showsite: true,
               self: this,
               border: true,
               stripe: true,
@@ -45,8 +47,14 @@
           };
       },
       components: {},
+      created () {
+          this.init();
+      },
       methods: {
           init () {
+              if (localStorage.siteId) {
+                  this.showsite = false;
+              }
               this.getData();
               this.getSite((data) => {
                   this.site = data;
@@ -69,6 +77,9 @@
               this.getSite((data) => {
                   this.site = data;
               });
+          },
+          showsites () {
+
           },
           getData () {
               let data = {
