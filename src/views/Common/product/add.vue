@@ -11,10 +11,17 @@
                             <Form-item label="名称" prop="name">
                                 <Input type="text" v-model="form.name" placeholder="请输入产品名称 （或其他名称）"></Input>
                             </Form-item>
+                            <Form-item label="子站显示" prop="title">
+                                <i-switch v-model="form.stations">
+                                    <span slot="open">开</span>
+                                    <span slot="close">关</span>
+                                </i-switch>
+                            </Form-item>
                             <Form-item label="标记" prop="flag"
                                        style="position: relative;z-index: 10">
                                 <CheckboxGroup v-model="form.flag">
-                                    <Checkbox v-for="(item,index) in this.$store.state.commondata.FlagList" :key="index" :label=item[0]>
+                                    <Checkbox v-for="(item,index) in this.$store.state.commondata.FlagList" :key="index"
+                                              :label=item[0]>
                                         {{item[1]}}
                                     </Checkbox>
                                 </CheckboxGroup>
@@ -185,6 +192,7 @@
                     summary: '',
                     payway: '',
                     sn: '',
+                    stations: false,
                     type_name: '',
                     type_id: 0,
                     imgser: [],

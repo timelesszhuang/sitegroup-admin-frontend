@@ -10,10 +10,17 @@
                         <Form-item label="问题名" prop="question">
                             <Input type="text" v-model="form.question" placeholder="请填写问题"></Input>
                         </Form-item>
+                        <Form-item label="子站显示" prop="title">
+                            <i-switch v-model="form.stations">
+                                <span slot="open">开</span>
+                                <span slot="close">关</span>
+                            </i-switch>
+                        </Form-item>
                         <Form-item label="标记" prop="flag"
                                    style="position: relative;z-index: 10">
                             <CheckboxGroup v-model="form.flag">
-                                <Checkbox v-for="(item,index) in this.$store.state.commondata.FlagList" :key="index" :label=item[0]>
+                                <Checkbox v-for="(item,index) in this.$store.state.commondata.FlagList" :key="index"
+                                          :label=item[0]>
                                     {{item[1]}}
                                 </Checkbox>
                             </CheckboxGroup>
@@ -94,7 +101,7 @@
 
     export default {
         components: {materialimg},
-        data () {
+        data() {
             const checkquestiontype = (rule, value, callback) => {
                 if (!value) {
                     callback(new Error('请选择问答分类'));
@@ -113,6 +120,7 @@
                     question: '',
                     content_paragraph: '',
                     type_id: 0,
+                    stations: false,
                     type_name: '',
                     tag_id: [],
                     flag: []
@@ -130,7 +138,7 @@
             };
         },
         methods: {
-            change (status) {
+            change(status) {
                 if (status) {
                     this.tag_name = true;
                     this.$Message.info('切换到下拉选择');
@@ -144,10 +152,10 @@
                     this.tinymceInit(this, document.body.offsetHeight - 500, 'tinymceEditer');
                 });
             },
-            changeTagtype (value) {
+            changeTagtype(value) {
                 this.form.tag_id = value.value;
             },
-            addmaterial (src) {
+            addmaterial(src) {
                 if (this.img === 'content') {
                     let imgsrc = '<img src=' + src + '>';
                     tinymce.get('tinymceEditer').insertContent(imgsrc);
@@ -155,10 +163,10 @@
                     this.form.thumbnails = src;
                 }
             },
-            changeQuestiontype (type) {
+            changeQuestiontype(type) {
                 this.form.type_name = type.label;
             },
-            addtags () {
+            addtags() {
                 let data = {
                     type: 'question',
                     name: this.tags
@@ -211,13 +219,13 @@
                 });
             }
         },
-        mounted () {
+        mounted() {
             this.init();
         },
-        destroyed () {
+        destroyed() {
             tinymce.get('tinymceEditer').destroy();
         },
-    props: {
+        props: {
             gpd: {default: 1}
         },
         mixins: [http, common, tinymceInit]

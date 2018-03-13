@@ -10,11 +10,21 @@
                         <Row :gutter="16">
                             <Col span="17">
                             <Form-item label="标题" prop="title">
-                                <Input type="text" v-model="form.title" placeholder="请输入标题"></Input>
+                                <Input type="text" v-model="form.title" placeholder="请输入标题"/>
                             </Form-item>
                             </Col>
-                            <Col span="5">
+                            <Col span="3">
                             <ColorPicker v-model="form.title_color"/>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col span="17">
+                            <Form-item label="子站显示" prop="title">
+                                <i-switch v-model="form.stations">
+                                    <span slot="open">开</span>
+                                    <span slot="close">关</span>
+                                </i-switch>
+                            </Form-item>
                             </Col>
                         </Row>
                         <Row>
@@ -22,7 +32,9 @@
                             <Form-item label="标记" prop="flag"
                                        style="position: relative;z-index: 10">
                                 <CheckboxGroup v-model="form.flag">
-                                    <Checkbox v-for="(item,index) in this.$store.state.commondata.FlagList" :key="index" :label=item[0]>{{item[1]}}</Checkbox>
+                                    <Checkbox v-for="(item,index) in this.$store.state.commondata.FlagList" :key="index"
+                                              :label=item[0]>{{item[1]}}
+                                    </Checkbox>
                                 </CheckboxGroup>
                             </Form-item>
                             </Col>
@@ -30,7 +42,7 @@
                         <Row>
                             <Col span="8">
                             <Form-item label="简略标题" prop="shorttitle">
-                                <Input type="text" v-model="form.shorttitle" placeholder="请输入简略标题"></Input>
+                                <Input type="text" v-model="form.shorttitle" placeholder="请输入简略标题"/>
                             </Form-item>
                             </Col>
                         </Row>
@@ -38,13 +50,13 @@
                             <Col span="12">
                             <Form-item label="来源" prop="come_from">
                                 <Input type="text" v-model="form.come_from" placeholder="请输入来源"
-                                       style="width: 200px;"></Input>
+                                       style="width: 200px;"/>
                             </Form-item>
                             </Col>
                             <Col span="12">
                             <Form-item label="作者" prop="auther">
                                 <Input type="text" v-model="form.auther" placeholder="请输入作者"
-                                       style="width: 200px;"></Input>
+                                       style="width: 200px;"/>
                             </Form-item>
                             </Col>
                         </Row>
@@ -82,7 +94,7 @@
                             <Form-item label="文章分类" prop="articletype_id">
                                 <Select ref="select" :clearable="true" v-model="form.articletype_id"
                                         style="width:200px;position: relative;z-index: 10000"
-                                        label-in-value filterable  @on-change="changeArticletype">
+                                        label-in-value filterable @on-change="changeArticletype">
                                     <Option-group v-for="(item,index) in this.$store.state.commondata.articleType"
                                                   :label="index" :key="index">
                                         <Option v-for="(peritem ,perindex) in item" :value="peritem.id"
@@ -125,7 +137,7 @@
                             <Col span="21">
                             <Form-item v-if="tag_name" label="文章标签" prop="tag_id"
                                        style="position: relative;z-index: 10">
-                                <Select  v-model="form.tag_id"
+                                <Select v-model="form.tag_id"
                                         style="text-align: left;width:350px;"
                                         label-in-value multiple filterable　>
                                     <Option v-for="(item,index) in this.$store.state.commondata.articleTag"
@@ -173,7 +185,7 @@
 
     export default {
         components: {materialimg},
-        data () {
+        data() {
             const checkarticletype = (rule, value, callback) => {
                 if (!value) {
                     callback(new Error('请选择文章分类'));
@@ -194,6 +206,7 @@
                 imgcontent: '',
                 form: {
                     summary: '',
+                    stations: false,
                     thumbnails: '',
                     keywords: '',
                     readcount: 0,
@@ -234,7 +247,7 @@
                     this.tinymceInit(this, height, 'tinymceEditerAddArticle');
                 });
             },
-            change (status) {
+            change(status) {
                 if (status) {
                     this.tag_name = true;
                     this.$Message.info('切换到下拉选择');
@@ -243,10 +256,10 @@
                     this.$Message.info('切换到添加标签');
                 }
             },
-            changeTagtype (value) {
+            changeTagtype(value) {
                 this.form.tag_id = value.value;
             },
-            addmaterial (src) {
+            addmaterial(src) {
                 if (this.img === 'content') {
                     let imgsrc = '<img src=' + src + '>';
                     tinymce.get('tinymceEditerAddArticle').insertContent(imgsrc);
@@ -254,12 +267,12 @@
                     this.form.thumbnails = src;
                 }
             },
-            addimg (img) {
+            addimg(img) {
                 this.img = img;
                 this.$refs.addmaterial.getData();
                 this.$refs.addmaterial.modal = true;
             },
-            addtags () {
+            addtags() {
                 let data = {
                     type: 'article',
                     name: this.tags
@@ -280,7 +293,7 @@
                     // 处理错误信息
                 });
             },
-            getResponse (response, file, filelist) {
+            getResponse(response, file, filelist) {
                 this.form.thumbnails = response.data.url;
                 if (response.status) {
                     this.$Message.success('上传成功');
@@ -291,17 +304,17 @@
                 }
                 this.$refs.upImg.clearFiles();
             },
-            getErrorInfo (error, file, filelist) {
+            getErrorInfo(error, file, filelist) {
                 this.$Message.error(error);
             },
-            formatError () {
+            formatError() {
                 this.$Message.error('文件格式只支持 jpg,jpeg,png三种格式。');
             },
-            changeArticletype (value) {
+            changeArticletype(value) {
                 this.form.articletype_name = value.label;
                 this.form.articletype_id = value.value;
             },
-            add () {
+            add() {
                 this.$refs.add.validate((valid) => {
                     if (valid) {
                         this.modal_loading = true;
@@ -337,10 +350,10 @@
                 });
             }
         },
-        mounted () {
+        mounted() {
             this.init();
         },
-        destroyed () {
+        destroyed() {
             tinymce.get('tinymceEditerAddArticle').destroy();
         },
         mixins: [http, common, tinymceInit],
