@@ -75,7 +75,7 @@
           option: function () {
               return {
                   title: {
-                      text: ' 关键词占比统计',
+                      text: ' 搜索引擎占比统计',
                       left: 'center',
                       top: 10
                   },
@@ -134,7 +134,7 @@
                       site_id: this.site_id
                   }
               };
-              this.apiGet('countkeyword', data).then((res) => {
+              this.apiGet('acount', data).then((res) => {
                   this.handleAjaxResponse(res, (data, msg) => {
                       this.nameArr = data.name;
                       this.countArr = data.count;
