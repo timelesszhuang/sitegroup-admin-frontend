@@ -94,8 +94,16 @@
 
                             </Select>
                         </Form-item>
-                        <Form-item label="模板" prop="template_id">
+                        <Form-item label="子站地区" prop="district" style="text-align: left;width:700px;">
+                            <Row>
+                                <Col span="15">
+                                <Cascader :data="districtdata" change-on-select  :load-data="loadData" @on-change="ChangeSite"></Cascader>
+                                </Col>
+                                <Col span="9"> <Alert type="error">不选择默认上次选择的地区</Alert></Col>
+                            </Row>
 
+                        </Form-item>
+                        <Form-item label="模板" prop="template_id">
                             <Select v-model="form.template_id" style="text-align: left;width:350px;"
                                     label-in-value 　@on-change="changeTemptype">
                                 <Option disabled :value="0"><span
@@ -200,26 +208,24 @@
     import FriendLink from '../link/add.vue';
     import PublicCode from '../code/add.vue';
 
-
     export default {
         components: {SiteUser, SiteType, Ico, Logo, WaterImage, Template, ContentWay, Domain, FriendLink, PublicCode},
-        data() {
+        data () {
             const checkmenutype = (rule, value, callback) => {
-                if (value == "") {
+                if (value == '') {
                     callback(new Error('请选择栏目分类'));
                 } else {
                     callback();
                 }
             };
             const checkkeyword = (rule, value, callback) => {
-                if (value == "") {
+                if (value == '') {
                     callback(new Error('请选择关键词'));
                 } else if (value.length > 5) {
                     callback(new Error('关键词不能超过5个'));
                 } else {
                     callback();
                 }
-
             };
             const checktemptype = (rule, value, callback) => {
                 if (!value) {
@@ -240,9 +246,7 @@
                     callback(new Error('请选择网站分类'));
                 } else {
                     callback();
-
                 }
-
             };
             const checkdomain = (rule, value, callback) => {
                 if (!value) {
@@ -250,7 +254,7 @@
                 } else {
                     callback();
                 }
-            }
+            };
             const checkuser = (rule, value, callback) => {
                 if (!value) {
                     callback(new Error('请选择用户'));
@@ -260,147 +264,199 @@
             };
 
             return {
+                bkdata: [],
+                districtdata: [],
                 modal: false,
                 modal_loading: false,
                 AddRule: {
                     site_name: [
-                        {required: true, message: '请输入名称', trigger: 'blur'},
+                        {required: true, message: '请输入名称', trigger: 'blur'}
                     ],
                     com_name: [
-                        {required: true, message: '请输入公司名', trigger: 'blur'},
+                        {required: true, message: '请输入公司名', trigger: 'blur'}
                     ],
                     menu: [
-                        {required: true, validator: checkmenutype, trigger: 'blur'},
+                        {required: true, validator: checkmenutype, trigger: 'blur'}
                     ],
                     keyword_ids: [
-                        {required: true, validator: checkkeyword, trigger: 'blur'},
+                        {required: true, validator: checkkeyword, trigger: 'blur'}
                     ],
                     template_id: [
-                        {required: true, validator: checktemptype, trigger: 'blur'},
+                        {required: true, validator: checktemptype, trigger: 'blur'}
                     ],
                     site_type: [
-                        {required: true, validator: checksitetype, trigger: 'blur'},
+                        {required: true, validator: checksitetype, trigger: 'blur'}
                     ],
                     domain_id: [
-                        {required: true, validator: checkdomain, trigger: 'blur'},
+                        {required: true, validator: checkdomain, trigger: 'blur'}
                     ],
                     user_id: [
-                        {required: true, validator: checkuser, trigger: 'blur'},
+                        {required: true, validator: checkuser, trigger: 'blur'}
                     ],
                     url: [
                         {required: true, message: '请输入url', trigger: 'blue'}
                     ]
 
                 }
-            }
+            };
         },
         methods: {
-            SiteUser(){
-                this.$refs.SiteUser.modal = true
+            ChangeSite (value, selectedData) {
+                this.bkdata = selectedData[selectedData.length - 1];
+                this.form.stations_area = this.bkdata.id;
             },
-            SiteType(){
-                this.$refs.SiteType.modal = true
-            },
-            Ico(){
-                this.$refs.Ico.modal = true
-            },
-            Logo(){
-                this.$refs.Logo.modal = true
-            },
-            WaterImage(){
-                this.$refs.WaterImage.modal = true
-            },
-            Template(){
-                this.$refs.Template.modal = true
-            },
-            ContentWay(){
-                this.$refs.ContentWay.modal = true
-            },
-            Domain(){
-                this.$refs.Domain.modal = true
-            },
-            FriendLink(){
-                this.$refs.FriendLink.modal = true
-            },
-            PublicCode(){
-                this.$refs.PublicCode.modal = true
-            },
-            computed: {
-                editor() {
-                    return this.$refs.myTextEditor.quillEditor
+            loadData (item, callback) {
+                item.loading = true;
+                if (item.id) {
+                    let data = {};
+                    if (item.id !== 0) {
+                        data = {
+                            params: {
+                                id: item.id
+                            }
+                        };
+                    }
+                    this.apiGet('district', data).then((res) => {
+                        this.handleAjaxResponse(res, (data, msg) => {
+                            setTimeout(() => {
+                                item.children = data;
+                                item.loading = false;
+                                callback();
+                            }, 100);
+                        }, (data, msg) => {
+                            this.$Message.error(msg);
+                        });
+                    }, (res) => {
+                        // 处理错误信息
+                        this.$Message.error('网络异常，请稍后重试。');
+                    });
                 }
             },
-            changeLink() {
+            distridata (id) {
+                let data = {};
+                if (id !== 0) {
+                    data = {
+                        params: {
+                            id: id
+                        }
+                    };
+                }
+                this.apiGet('district', data).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.districtdata = data;
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            },
+            SiteUser () {
+                this.$refs.SiteUser.modal = true;
+            },
+            SiteType () {
+                this.$refs.SiteType.modal = true;
+            },
+            Ico () {
+                this.$refs.Ico.modal = true;
+            },
+            Logo () {
+                this.$refs.Logo.modal = true;
+            },
+            WaterImage () {
+                this.$refs.WaterImage.modal = true;
+            },
+            Template () {
+                this.$refs.Template.modal = true;
+            },
+            ContentWay () {
+                this.$refs.ContentWay.modal = true;
+            },
+            Domain () {
+                this.$refs.Domain.modal = true;
+            },
+            FriendLink () {
+                this.$refs.FriendLink.modal = true;
+            },
+            PublicCode () {
+                this.$refs.PublicCode.modal = true;
+            },
+            computed: {
+                editor () {
+                    return this.$refs.myTextEditor.quillEditor;
+                }
+            },
+            changeLink () {
 
             },
-            changeLogo(value) {
-                this.form.sitelogo_id = value.value
+            changeLogo (value) {
+                this.form.sitelogo_id = value.value;
             },
-            changeMenutype(value) {
-                this.form.menu = value.label
+            changeMenutype (value) {
+                this.form.menu = value.label;
             },
-            changeHotline(value) {
-                this.form.support_hotline = value.value
+            changeHotline (value) {
+                this.form.support_hotline = value.value;
             },
-            changeIco(value) {
-                this.form.siteico_id = value.value
+            changeIco (value) {
+                this.form.siteico_id = value.value;
             },
-            changeWater(value) {
-                this.form.site_water_image_id = value.value
+            changeWater (value) {
+                this.form.site_water_image_id = value.value;
             },
-            changeSitetype(value) {
-                this.form.site_type = value.value
-                this.form.site_type_name = value.label
+            changeSitetype (value) {
+                this.form.site_type = value.value;
+                this.form.site_type_name = value.label;
             },
-            changeUser(value) {
-                this.form.user_name = value.label
-                this.form.user_id = value.value
+            changeUser (value) {
+                this.form.user_name = value.label;
+                this.form.user_id = value.value;
             },
-            changekeyword() {
+            changekeyword () {
 
             },
 
-            changeTemptype(value) {
-                this.form.template_id = value.value
+            changeTemptype (value) {
+                this.form.template_id = value.value;
             },
-            changeDomainlist(value) {
-                this.form.domain = value.label
-                this.form.domain_id = value.value
+            changeDomainlist (value) {
+                this.form.domain = value.label;
+                this.form.domain_id = value.value;
             },
-            add() {
+            add () {
                 this.$refs.sitesave.validate((valid) => {
                     if (valid) {
                         this.modal_loading = true;
                         if (!this.form.walterString) {
-                            this.form.walterString = ''
+                            this.form.walterString = '';
                         }
                         let data = this.form;
                         let id = data.id;
                         this.apiPut('site/' + id, data).then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {
                                 this.modal = false;
-                                if (this.gpd) {this.$emit('getdata');}
+                                if (this.gpd) { this.$emit('getdata'); }
                                 this.$Message.success(msg);
                                 this.modal_loading = false;
                             }, (data, msg) => {
                                 this.modal_loading = false;
                                 this.$Message.error(msg);
-                            })
+                            });
                         }, (res) => {
-                            //处理错误信息
+                            // 处理错误信息
                             this.modal_loading = false;
                             this.$Message.error('网络异常，请稍后重试。');
-                        })
+                        });
                     }
-                })
+                });
             }
         },
         props: {
             menutype: {
                 default:
                     []
-            }
-            ,
+            },
             keyword: {
                 default:
                     []
@@ -409,20 +465,21 @@
             gpd: {default: 1},
             form: {
                 default: {
-                    site_name: "",
-                    com_name: "",
-                    menu: "",
-                    link_id: "",
-                    template_id: "",
-                    support_hotline: "",
-                    site_type: "",
-                    domain_id: "",
-                    before_header_jscode: "",
-                    other_jscode: "",
-                    keyword_ids: "",
+                    site_name: '',
+                    com_name: '',
+                    menu: '',
+                    link_id: '',
+                    template_id: '',
+                    support_hotline: '',
+                    site_type: '',
+                    domain_id: '',
+                    before_header_jscode: '',
+                    other_jscode: '',
+                    stations_area: 0,
+                    keyword_ids: ''
                 }
             }
         },
-        mixins: [http,common]
-    }
+        mixins: [http, common]
+    };
 </script>

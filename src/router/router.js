@@ -1077,7 +1077,7 @@ export const siteappRouter = [
                 icon: 'earth',
                 title: "搜索引擎占比",
                 name: 'flow',
-                component: () => import('@/views/Common/countkeyword/index.vue')
+                component: () => import('@/views/site/countkeyword/index.vue')
             },
         ]
     },
