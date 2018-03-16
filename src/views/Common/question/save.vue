@@ -11,10 +11,10 @@
                             <Input type="text" v-model="form.question" placeholder="请填写问答分类"></Input>
                         </Form-item>
                         <Form-item label="子站显示" prop="title">
-                            <i-switch v-model="form.stations">
-                                <span slot="open">开</span>
-                                <span slot="close">关</span>
-                            </i-switch>
+                            <RadioGroup v-model="form.stations">
+                                <Radio label="10">开</Radio>
+                                <Radio label="20">关</Radio>
+                            </RadioGroup>
                         </Form-item>
                         <Form-item label="标记" prop="flag"
                                    style="position: relative;z-index: 10">

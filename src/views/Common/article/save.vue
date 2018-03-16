@@ -23,10 +23,10 @@
                         <Row>
                             <Col span="17">
                             <Form-item label="子站显示" prop="title">
-                                <i-switch v-model="form.stations">
-                                    <span slot="open">开</span>
-                                    <span slot="close">关</span>
-                                </i-switch>
+                                <RadioGroup v-model="form.stations">
+                                    <Radio label="10">开</Radio>
+                                    <Radio label="20">关</Radio>
+                                </RadioGroup>
                             </Form-item>
                             </Col>
                         </Row>
