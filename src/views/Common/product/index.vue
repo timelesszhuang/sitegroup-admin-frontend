@@ -264,7 +264,8 @@
                                         size: 'small'
                                     },
                                     attrs: {
-                                        type: 'primary'
+                                        type: 'primary',
+                                        style: 'margin-left:3px'
                                     },
                                     on: {
                                         click: function () {
