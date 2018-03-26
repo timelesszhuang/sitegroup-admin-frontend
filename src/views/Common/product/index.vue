@@ -151,6 +151,32 @@
                 this.$refs.edit.modal = true;
                 this.$refs.edit.editdata(editid);
             },
+            remove(index) {
+                // 需要删除确认
+                let id = this.datas[index].id;
+                let _this = this;
+                this.$Modal.confirm({
+                    title: '确认删除',
+                    content: '您确定删除该记录?',
+                    okText: '删除',
+                    cancelText: '取消',
+                    onOk: (index) => {
+                        _this.apiDelete('product/', id).then((res) => {
+                            _this.handleAjaxResponse(res, (data, msg) => {
+                                _this.getData();
+                                _this.$Message.success(msg);
+                            }, (data, msg) => {
+                                _this.$Message.error(msg);
+                            });
+                        }, (res) => {
+                            // 处理错误信息
+                        });
+                    },
+                    onCancel: () => {
+                        return false;
+                    }
+                });
+            },
             editimg (index) {
                 let editid = this.datas[index].id;
                 this.$refs.editimg.editimg(editid);
@@ -233,6 +259,20 @@
                                         }
                                     }
                                 }, '修改'),
+                                h('Button', {
+                                    props: {
+                                        size: 'small'
+                                    },
+                                    attrs: {
+                                        type: 'primary'
+                                    },
+                                    on: {
+                                        click: function () {
+                                            // 不知道为什么这个地方不是我需要的this
+                                            _this.remove(params.index);
+                                        }
+                                    }
+                                }, '删除'),
                                 h('Button', {
                                     props: {
                                         size: 'small'

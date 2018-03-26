@@ -232,6 +232,20 @@
                                         size: 'small'
                                     },
                                     attrs: {
+                                        type: 'primary'
+                                    },
+                                    on: {
+                                        click: function () {
+                                            // 不知道为什么这个地方不是我需要的this
+                                            _this.remove(params.index);
+                                        }
+                                    }
+                                }, '删除'),
+                                h('Button', {
+                                    props: {
+                                        size: 'small'
+                                    },
+                                    attrs: {
                                         type: 'info',
                                         style: 'margin-left:3px'
                                     },
