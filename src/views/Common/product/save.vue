@@ -184,7 +184,7 @@
                         summary: '',
                         payway: '',
                         sn: '',
-                        stations: "10",
+                        stations: '',
                         type_name: '',
                         type_id: 0,
                         keywords: '',
@@ -195,7 +195,7 @@
                         field3: '',
                         field4: '',
                         content: '',
-                        flag: '',
+                        flag: ''
                     }
                 },
                 tags: '',

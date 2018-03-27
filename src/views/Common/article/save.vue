@@ -202,7 +202,7 @@
                     title: '',
                     title_color: '',
                     content: '',
-                    stations: "10",
+                    stations: '',
                     come_from: '',
                     posttime: '',
                     thumbnails: '',

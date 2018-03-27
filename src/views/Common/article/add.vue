@@ -206,7 +206,7 @@
                 imgcontent: '',
                 form: {
                     summary: '',
-                    stations: "10",
+                    stations: '10',
                     thumbnails: '',
                     keywords: '',
                     readcount: 0,

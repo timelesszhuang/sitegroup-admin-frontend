@@ -120,7 +120,7 @@
                     question: '',
                     content_paragraph: '',
                     type_id: 0,
-                    stations: "10",
+                  stations: '10',
                     type_name: '',
                     tag_id: [],
                     flag: []
