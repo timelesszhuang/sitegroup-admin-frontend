@@ -192,7 +192,7 @@
                     summary: '',
                     payway: '',
                     sn: '',
-                    stations: false,
+                    stations: "10",
                     type_name: '',
                     type_id: 0,
                     imgser: [],
