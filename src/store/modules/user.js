@@ -20,6 +20,7 @@ const user = {
             Cookies.remove('type');
             Cookies.remove('rememberKey');
             Cookies.remove('siteId');
+            Cookies.remove('locking');
             // 恢复默认样式
             let themeLink = document.querySelector('link[name="theme"]');
             themeLink.setAttribute('href', '');
