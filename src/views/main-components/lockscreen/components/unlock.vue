@@ -42,6 +42,7 @@
                 avatorLeft: '0px',
                 inputLeft: '400px',
                 password: '',
+                return_data: false,
                 check: null
             };
         },
@@ -57,40 +58,29 @@
             }
         },
         methods: {
-            validator() {
-                let data = {};
-                data.password = this.password;
-                data.login_id = Cookies.get('user_id');
-                let return_data = false;
-                this.apiPost('unlock', data).then((res) => {
-                    this.handleAjaxResponse(res, (data, msg) => {
-                        return_data = true; // 你可以在这里写密码验证方式，如发起ajax请求将用户输入的密码this.password与数据库用户密码对比
-                    }, (data, msg) => {
-                        // 错误提示
-                        util.errorNotice(this, '验证失败', msg);
-                        return_data = false;
-                    });
-                }, (res) => {
-                    // 处理错误信息
-                    util.errorNotice(this, '网络异常', '请稍后再试或检查网络状况。');
-                });
-                return return_data;
-            },
             handleClickAvator() {
                 this.avatorLeft = '-180px';
                 this.inputLeft = '0px';
                 this.$refs.inputEle.focus();
             },
             handleUnlock() {
-                if (this.validator()) {
-                    this.avatorLeft = '0px';
-                    this.inputLeft = '400px';
-                    this.password = '';
-                    Cookies.set('locking', '0');
-                    this.$emit('on-unlock');
-                } else {
-                    this.$Message.error('密码错误,请重新输入。如果忘了密码，清除浏览器缓存重新登录即可，这里没有做后端验证');
-                }
+                let data = {};
+                data.password = this.password;
+                data.login_id = Cookies.get('user_id');
+                this.apiPost('unlock', data).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.avatorLeft = '0px';
+                        this.inputLeft = '400px';
+                        this.password = '';
+                        Cookies.set('locking', '0');
+                        this.$emit('on-unlock');
+                    }, (data, msg) => {
+                        this.$Message.error('密码错误,请重新输入。如果忘了密码，清除浏览器缓存重新登录即可，这里没有做后端验证');
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                    util.errorNotice(this, '网络异常', '请稍后再试或检查网络状况。');
+                });
             },
             unlockMousedown() {
                 this.$refs.unlockBtn.className = 'unlock-btn click-unlock-btn';
