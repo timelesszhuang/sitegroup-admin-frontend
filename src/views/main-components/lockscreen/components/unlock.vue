@@ -66,7 +66,7 @@
                         return true; // 你可以在这里写密码验证方式，如发起ajax请求将用户输入的密码this.password与数据库用户密码对比
                     }, (data, msg) => {
                         // 错误提示
-                        util.errorNotice(this, '验证失败', msg);
+                        return false;
                     });
                 }, (res) => {
                     // 处理错误信息
