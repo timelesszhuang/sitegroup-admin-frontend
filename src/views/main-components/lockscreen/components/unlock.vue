@@ -61,17 +61,20 @@
                 let data = {};
                 data.password = this.password;
                 data.login_id = Cookies.get('user_id');
-                return this.apiPost('unlock', data).then((res) => {
+                let return_data = false;
+                this.apiPost('unlock', data).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
-                        return true; // 你可以在这里写密码验证方式，如发起ajax请求将用户输入的密码this.password与数据库用户密码对比
+                        return_data = true; // 你可以在这里写密码验证方式，如发起ajax请求将用户输入的密码this.password与数据库用户密码对比
                     }, (data, msg) => {
                         // 错误提示
-                        return false;
+                        util.errorNotice(this, '验证失败', msg);
+                        return_data = false;
                     });
                 }, (res) => {
                     // 处理错误信息
                     util.errorNotice(this, '网络异常', '请稍后再试或检查网络状况。');
                 });
+                return return_data;
             },
             handleClickAvator() {
                 this.avatorLeft = '-180px';
