@@ -17,7 +17,7 @@
                             </Select>
                         </Form-item>
                         <Form-item label="生成起始时间" prop="time">
-                            <el-time-select
+                            <el-time-select id="savestarttime"
                                     placeholder="起始时间"
                                     v-model="form.starttime"
                                     :picker-options="{
@@ -26,7 +26,7 @@
                   end: '23:00'
                   }">
                             </el-time-select>
-                            <el-time-select
+                            <el-time-select  id="savetime"
                                     placeholder="结束时间"
                                     v-model="form.stoptime"
                                     :picker-options="{
