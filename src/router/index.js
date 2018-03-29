@@ -27,6 +27,16 @@ const RouterConfig = {
 export const router = new VueRouter(RouterConfig);
 
 router.beforeEach((to, from, next) => {
+    let locking = Cookies.get('locking');
+    console.log(to.name);
+    console.log(locking);
+    console.log(typeof locking);
+    if(Cookies.get('user_id')&&to.name!=='login'&&to.name!=='locking'&&locking&&locking==='1'){
+        next({
+            name: 'locking'
+        });
+        return;
+    }
     if (to.name === 'error-404' || to.name === 'error-403' || to.name === 'error-500') {
         next();
         return;
@@ -38,9 +48,10 @@ router.beforeEach((to, from, next) => {
     Util.title(to.meta.title);
     // 每次页面路由的时候执行
     let userType = Cookies.get('type');
+    console.log(userType);
     if (userType === '1') { // 判断当前是否是锁定状态
         // 系统管理员调用部分 不能跳转倒其他管理员的部分
-        if (to.path === '/node' || to.path === '/site') {
+        if ((to.path === '/node' || to.path === '/' || to.path === '' || to.path === '/site')&&(to.path !== '/site'&&to.path !== '/node'&&to.path !== '/admin')) {
             next({
                 name: 'admin_index'
             });
@@ -51,19 +62,24 @@ router.beforeEach((to, from, next) => {
             });
         } else if (Cookies.get('user_id') && to.name === 'login') { // 判断是否已经登录且前往的是登录页
             Util.title();
-            next({
-                name: 'admin_index'
-            });
+            if(locking!=='1'){
+                next({
+                    name: 'admin_index'
+                });
+            }else{
+                next();
+            }
         } else {
-            const curRouterObj = Util.getRouterObjByName([adminotherRouter, ...adminappRouter], to.name);
+            const curRouterObj = Util.getRouterObjByName([...adminrouters], to.name);
             if (!curRouterObj) {
+                console.log("111");
                 next({
                     name: 'error-404'
                 });
             }
             if (curRouterObj && curRouterObj.access !== undefined) { // 需要判断权限的路由
                 if (curRouterObj.access === parseInt(Cookies.get('type'))) {
-                    Util.toDefaultPage([adminotherRouter, ...adminappRouter], to.name, router, next); // 如果在地址栏输入的是一级菜单则默认打开其第一个二级菜单的页面
+                    Util.toDefaultPage([...adminrouters], to.name, router, next); // 如果在地址栏输入的是一级菜单则默认打开其第一个二级菜单的页面
                 } else {
                     next({
                         replace: true,
@@ -77,7 +93,7 @@ router.beforeEach((to, from, next) => {
         }
     } else if (userType === '2') {
         // admin用户 不能跳转到其他的管理后台首页
-        if (to.path === '/admin' || to.path === '/site') {
+        if ((to.path === '/node' || to.path === '/' || to.path === '' || to.path === '/site')&&(to.path !== '/site'&&to.path !== '/node'&&to.path !== '/admin')) {
             next({
                 name: 'node_index'
             });
@@ -88,19 +104,24 @@ router.beforeEach((to, from, next) => {
             });
         } else if (Cookies.get('user_id') && to.name === 'login') { // 判断是否已经登录且前往的是登录页
             Util.title();
-            next({
-                name: 'node_index'
-            });
+            if(locking!=='1'){
+                next({
+                    name: 'node_index'
+                });
+            }else{
+                next();
+            }
         } else {
-            const curRouterObj = Util.getRouterObjByName([nodeotherRouter, ...nodeappRouter], to.name);
+            const curRouterObj = Util.getRouterObjByName([...noderouters], to.name);
             if (!curRouterObj) {
+                console.log("222");
                 next({
                     name: 'error-404'
                 });
             }
             if (curRouterObj && curRouterObj.access !== undefined) { // 需要判断权限的路由
                 if (curRouterObj.access === parseInt(Cookies.get('type'))) {
-                    Util.toDefaultPage([nodeotherRouter, ...nodeappRouter], to.name, router, next); // 如果在地址栏输入的是一级菜单则默认打开其第一个二级菜单的页面
+                    Util.toDefaultPage([...noderouters], to.name, router, next); // 如果在地址栏输入的是一级菜单则默认打开其第一个二级菜单的页面
                 } else {
                     next({
                         replace: true,
@@ -115,7 +136,7 @@ router.beforeEach((to, from, next) => {
     } else if (userType === '3') {
         // 暂时有个问题不能完成更新
         // site用户 不能跳转到其他的管理后台首页
-        if (to.path === '/admin' || to.path === '/node') {
+        if ((to.path === '/node' || to.path === '/' || to.path === '' || to.path === '/site')&&(to.path !== '/site'&&to.path !== '/node'&&to.path !== '/admin')) {
             next({
                 name: 'site_index'
             });
@@ -136,19 +157,24 @@ router.beforeEach((to, from, next) => {
                 });
             } else if (Cookies.get('user_id') && to.name === 'login') { // 判断是否已经登录且前往的是登录页
                 Util.title();
-                next({
-                    name: 'site_index'
-                });
+                if(locking!=='1'){
+                    next({
+                        name: 'site_index'
+                    });
+                }else{
+                    next();
+                }
             } else {
-                const curRouterObj = Util.getRouterObjByName([siteotherRouter, ...siteappRouter], to.name);
+                const curRouterObj = Util.getRouterObjByName([...siterouters], to.name);
                 if (!curRouterObj) {
+                    console.log("333");
                     next({
                         name: 'error-404'
                     });
                 }
                 if (curRouterObj && curRouterObj.access !== undefined) { // 需要判断权限的路由
                     if (curRouterObj.access === parseInt(Cookies.get('type'))) {
-                        Util.toDefaultPage([siteotherRouter, ...siteappRouter], to.name, router, next); // 如果在地址栏输入的是一级菜单则默认打开其第一个二级菜单的页面
+                        Util.toDefaultPage([...siterouters], to.name, router, next); // 如果在地址栏输入的是一级菜单则默认打开其第一个二级菜单的页面
                     } else {
                         next({
                             replace: true,
