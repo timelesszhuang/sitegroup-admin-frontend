@@ -17,10 +17,25 @@
                             </Select>
                         </Form-item>
                         <Form-item label="生成起始时间" prop="time">
-                            <TimePicker @on-change="starthandleChange" format="HH:mm" :steps="[1, 30 ,60]"
-                                        placeholder="Select time" style="width: 112px"/>
-                            <TimePicker @on-change="endhandleChange" format="HH:mm" :steps="[1, 30 ,60]"
-                                        placeholder="Select time" style="width: 112px"/>
+                            <el-time-select
+                                    placeholder="起始时间"
+                                    v-model="form.starttime"
+                                    :picker-options="{
+                  start: '08:00',
+                  step: '00:30',
+                  end: '23:00'
+                  }">
+                            </el-time-select>
+                            <el-time-select
+                                    placeholder="结束时间"
+                                    v-model="form.stoptime"
+                                    :picker-options="{
+                  start: '08:30',
+                  step: '00:30',
+                  end: '23:30',
+                  minTime: form.starttime
+                }">
+                            </el-time-select>
                         </Form-item>
                         <Form-item label="允许发布的数量" prop="staticcount">
                             <InputNumber :min="1" v-model="form.staticcount" placeholder="请输入数量"></InputNumber>
@@ -49,7 +64,7 @@
     import http from '../../../libs/http';
 
     export default {
-        data() {
+        data () {
             return {
                 modal: false,
                 modal_loading: false,
@@ -72,55 +87,52 @@
                         label: '问答'
                     },
                     {
-                        value: 'scatteredarticle',
-                        label: '文章段落'
+                        value: 'product',
+                        label: '产品'
                     }
                 ],
                 AddRule: {}
-            }
+            };
         },
         methods: {
-            starthandleChange(time) {
-                //console.log(time);
-                this.form.starttime = time
+            starthandleChange (time) {
+                // console.log(time);
+                this.form.starttime = time;
             },
-            endhandleChange(time) {
-                this.form.stoptime = time
+            endhandleChange (time) {
+                this.form.stoptime = time;
             },
-            changeSite(value) {
-                this.form.site_name = value.label
-                this.form.site_id = value.value
+            changeSite (value) {
+                this.form.site_name = value.label;
+                this.form.site_id = value.value;
             },
-            changeStat(value) {
-                this.form.type_name = value.label
-                this.form.type = value.value
+            changeStat (value) {
+                this.form.type_name = value.label;
+                this.form.type = value.value;
             },
-            add() {
+            add () {
                 this.$refs.staticconfig.validate((valid) => {
                     if (valid) {
                         this.modal_loading = true;
                         let data = this.form;
-//            console.log(data)
                         this.apiPost('Staticconfig', data).then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {
                                 this.modal = false;
-                                if (this.gpd) {
-                                    this.$emit('getdata');
-                                }
+                                this.$emit('getdata');
                                 this.$Message.success(msg);
                                 this.modal_loading = false;
                                 this.$refs.staticconfig.resetFields();
                             }, (data, msg) => {
                                 this.modal_loading = false;
                                 this.$Message.error(msg);
-                            })
+                            });
                         }, (res) => {
-                            //处理错误信息
+                            // 处理错误信息
                             this.modal_loading = false;
                             this.$Message.error('网络异常，请稍后重试。');
-                        })
+                        });
                     }
-                })
+                });
             }
         },
         mixins: [http],
@@ -129,7 +141,7 @@
                 site: {
                     default:
                         []
-                },
+                }
             }
-    }
+    };
 </script>

@@ -34,7 +34,7 @@
             </Form-item>
             <Form-item label="生成类型" prop="type">
               <Select v-model="form.type" style="text-align: left;width:200px;">
-                <Option v-for="item in type" :value="item.value" :key="item">{{ item.label }}</Option>
+                <Option v-for="item in type" :value="item.value" :key="item.id">{{ item.label }}</Option>
               </Select>
             </Form-item>
           </Form>
@@ -49,66 +49,66 @@
 <script type="text/ecmascript-6">
   import http from '../../../libs/http';
   export default {
-    data() {
-      return {
-        modal: false,
-        modal_loading: false,
-        type: [
-          {
-            value: 'article',
-            label: '文章'
-          },
-          {
-            value: 'question',
-            label: '问答'
-          },
-          {
-            value: 'scatteredarticle',
-            label: '零散文章'
-          }
-        ],
-        AddRule: {
-        }
-      }
-    },
-    methods: {
-      add() {
-          this.$refs.staticconfigsave.validate((valid) => {
-              if(valid){
-                this.modal_loading = true;
-                let data = this.form;
-                let id = data.id;
-                this.apiPut('Staticconfig/'+ id, data).then((res) => {
-                  this.handleAjaxResponse(res, (data, msg) => {
-                    this.modal = false;
-                    this.$parent.getData();
-                    this.$Message.success(msg);
-                    this.modal_loading = false;
-                    this.$refs.staticconfigsave.resetFields();
-                  }, (data, msg) => {
-                    this.modal_loading = false;
-                    this.$Message.error(msg);
-                  })
-                }, (res) => {
-                  //处理错误信息
-                  this.modal_loading = false;
-                  this.$Message.error('网络异常，请稍后重试。');
-                })
+      data () {
+          return {
+              modal: false,
+              modal_loading: false,
+              type: [
+                  {
+                      value: 'article',
+                      label: '文章'
+                  },
+                  {
+                      value: 'question',
+                      label: '问答'
+                  },
+                  {
+                      value: 'product',
+                      label: '产品'
+                  }
+              ],
+              AddRule: {
               }
-          })
-        }
-    },
-    props: {
+          };
+      },
+      methods: {
+          add () {
+              this.$refs.staticconfigsave.validate((valid) => {
+                  if (valid) {
+                      this.modal_loading = true;
+                      let data = this.form;
+                      let id = data.id;
+                      this.apiPut('Staticconfig/' + id, data).then((res) => {
+                          this.handleAjaxResponse(res, (data, msg) => {
+                              this.modal = false;
+                              this.$parent.getData();
+                              this.$Message.success(msg);
+                              this.modal_loading = false;
+                              this.$refs.staticconfigsave.resetFields();
+                          }, (data, msg) => {
+                              this.modal_loading = false;
+                              this.$Message.error(msg);
+                          });
+                      }, (res) => {
+                          // 处理错误信息
+                          this.modal_loading = false;
+                          this.$Message.error('网络异常，请稍后重试。');
+                      });
+                  }
+              });
+          }
+      },
+      props: {
 
-      form: {
-        default: {
-          starttime: '',
-          stoptime: '',
-          staticcount:"",
-        }
-      }
-    },
-    mixins: [http],
+          form: {
+              default: {
+                  starttime: '',
+                  stoptime: '',
+                  staticcount: ''
+              }
+          }
+      },
+      mixins: [http]
 
-  }
+  };
 </script>

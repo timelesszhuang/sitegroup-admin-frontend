@@ -34,7 +34,7 @@
             </Form-item>
             <Form-item label="生成类型" prop="type">
               <Select v-model="form.type" style="text-align: left;width:200px;" @on-change="changeStat" label-in-value filterable clearable>
-                <Option v-for="item in type" :value="item.value" :label="item.label":key="item">
+                <Option v-for="item in type" :value="item.value" :label="item.label":key="item.id">
                   {{ item.label }}
                 </Option>
               </Select>
@@ -75,8 +75,8 @@
                       label: '问答'
                   },
                   {
-                      value: 'scatteredarticle',
-                      label: '零散文章'
+                      value: 'product',
+                      label: '产品'
                   }
               ],
               AddRule: {
