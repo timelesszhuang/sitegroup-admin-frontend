@@ -98,7 +98,7 @@
                         <Form-item label="子站地区" prop="district" style="text-align: left;width:500px;">
                             <Cascader :data="districtdata" change-on-select  :load-data="loadData" @on-change="ChangeSite"></Cascader>
                         </Form-item>
-                        <Form-item label="子站等级"  style="text-align: left;width:500px;">
+                        <Form-item label="子站等级" prop="level"  style="text-align: left;width:500px;">
                             <RadioGroup v-model="form.level">
                                 <Radio v-show="this.level<=1" label="1" >省/直辖市</Radio>
                                 <Radio  v-show="this.level<=2" label="2">市</Radio>
@@ -329,6 +329,9 @@
                     ],
                     url: [
                         {required: true, message: '请输入url', trigger: 'blue'}
+                    ],
+                    level: [
+                        {required: true, message: '请选择', trigger: 'blue'}
                     ]
                 }
             };

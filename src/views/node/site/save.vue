@@ -303,6 +303,9 @@
                     ],
                     url: [
                         {required: true, message: '请输入url', trigger: 'blue'}
+                    ],
+                    level: [
+                        {required: true, message: '请选择', trigger: 'blue'}
                     ]
 
                 }
