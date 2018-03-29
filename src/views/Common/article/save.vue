@@ -92,7 +92,7 @@
                             <Col span="12">
                             <Form-item label="文章分类" prop="articletype_id" style="position: relative;z-index: 100">
                                 <Select ref="select" :clearable="selects" v-model="form.articletype_id"
-                                        style="width:200px;position: relative;z-index: 10000"
+                                        style="width:200px;"
                                         label-in-value filterable clearable 　@on-change="changeArticletype">
                                     <Option-group v-for="(item,index) in this.$store.state.commondata.articleType"
                                                   :label="index" :key="index">

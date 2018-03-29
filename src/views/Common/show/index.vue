@@ -143,7 +143,17 @@
               columns.push({
                   title: '来源页',
                   key: 'referer',
-                  sortable: true
+                  sortable: true,
+                  render (h, params) {
+                      return h('div', [
+                          h('a', {
+                              attrs: {
+                                  href: params.row.referer,
+                                  target: '_blank'
+                              }
+                          }, params.row.referer)
+                      ]);
+                  }
               });
               columns.push({
                   title: '访问时间',

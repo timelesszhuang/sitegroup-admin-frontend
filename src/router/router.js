@@ -233,10 +233,10 @@ export const nodeappRouter = [
                 component: () => import('@/views/node/contentget/index.vue')
             },
             {
-                path: 'index',
+                path: 'lightbulb',
                 icon: 'lightbulb',
                 title: '活动创意管理',
-                name: 'access_index',
+                name: 'lightbulb',
                 component: () => import('@/views/node/activity/index.vue')
             },
             // {path: 'index', title: '场景秀', name: 'access_index', component: () => import('@/views/access/access.vue')},
