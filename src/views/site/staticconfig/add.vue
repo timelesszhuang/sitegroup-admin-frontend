@@ -54,68 +54,68 @@
 <script type="text/ecmascript-6">
   import http from '../../../libs/http';
   export default {
-    data() {
-      return {
-        modal: false,
-        modal_loading: false,
-        form: {
-          starttime: '',
-          stoptime: '',
-          staticcount:"",
-          type:'',
-          type_name:''
-        },
-        type: [
-          {
-            value: 'article',
-            label: '文章'
-          },
-          {
-            value: 'question',
-            label: '问答'
-          },
-          {
-            value: 'scatteredarticle',
-            label: '零散文章'
-          }
-        ],
-        AddRule: {
+      data () {
+          return {
+              modal: false,
+              modal_loading: false,
+              form: {
+                  starttime: '',
+                  stoptime: '',
+                  staticcount: '',
+                  type: '',
+                  type_name: ''
+              },
+              type: [
+                  {
+                      value: 'article',
+                      label: '文章'
+                  },
+                  {
+                      value: 'question',
+                      label: '问答'
+                  },
+                  {
+                      value: 'scatteredarticle',
+                      label: '零散文章'
+                  }
+              ],
+              AddRule: {
 
-        }
-      }
-    },
-    methods: {
-      changeStat(value){
-        this.form.type_name = value.label
-        this.form.type = value.value
+              }
+          };
       },
-      add() {
-        this.$refs.staticconfig.validate((valid) => {
-          if (valid) {
-            this.modal_loading = true;
-            let data = this.form;
-            //console.log(data)
-            this.apiPost('Staticconfig', data).then((res) => {
-              this.handleAjaxResponse(res, (data, msg) => {
-                this.modal = false;
-                this.$parent.getData();
-                this.$Message.success(msg);
-                this.modal_loading = false;
-                this.$refs.staticconfig.resetFields();
-              }, (data, msg) => {
-                this.modal_loading = false;
-                this.$Message.error(msg);
-              })
-            }, (res) => {
-              //处理错误信息
-              this.modal_loading = false;
-              this.$Message.error('网络异常，请稍后重试。');
-            })
+      methods: {
+          changeStat (value) {
+              this.form.type_name = value.label;
+              this.form.type = value.value;
+          },
+          add () {
+              this.$refs.staticconfig.validate((valid) => {
+                  if (valid) {
+                      this.modal_loading = true;
+                      let data = this.form;
+                      // console.log(data)
+                      this.apiPost('Staticconfig', data).then((res) => {
+                          this.handleAjaxResponse(res, (data, msg) => {
+                              this.modal = false;
+                              this.$emit('getdata');
+                              this.$Message.success(msg);
+                              this.modal_loading = false;
+                              this.$refs.staticconfig.resetFields();
+                          }, (data, msg) => {
+                              this.modal_loading = false;
+                              this.$Message.error(msg);
+                          });
+                      }, (res) => {
+                          // 处理错误信息
+                          this.modal_loading = false;
+                          this.$Message.error('网络异常，请稍后重试。');
+                      });
+                  }
+              });
           }
-        })
-      }
-    },
-    mixins: [http],
+      },
+      mixins: [http]
 
-  }
+  };
 </script>

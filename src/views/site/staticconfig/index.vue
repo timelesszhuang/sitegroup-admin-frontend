@@ -24,8 +24,8 @@
                     </div>
                 </div>
             </div>
-            <staticconfigadd ref="add"></staticconfigadd>
-            <staticconfigsave ref="save" :form="editinfo"></staticconfigsave>
+            <staticconfigadd ref="add" v-on:getdata="getData"></staticconfigadd>
+            <staticconfigsave ref="save" :form="editinfo" v-on:getdata="getData"></staticconfigsave>
         </div>
     </card>
 </template>
