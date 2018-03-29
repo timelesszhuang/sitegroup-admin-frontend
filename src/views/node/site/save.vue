@@ -103,6 +103,13 @@
                             </Row>
 
                         </Form-item>
+                        <Form-item label="子站等级"  style="text-align: left;width:500px;">
+                            <RadioGroup v-model="form.level">
+                                <Radio v-show="this.level<=1" label="1" >省/直辖市</Radio>
+                                <Radio  v-show="this.level<=2" label="2">市</Radio>
+                                <Radio v-show="this.level<=3"  label="3">区/县</Radio>
+                            </RadioGroup>
+                        </Form-item>
                         <Form-item label="模板" prop="template_id">
                             <Select v-model="form.template_id" style="text-align: left;width:350px;"
                                     label-in-value 　@on-change="changeTemptype">
@@ -265,6 +272,7 @@
 
             return {
                 bkdata: [],
+                level: '1',
                 districtdata: [],
                 modal: false,
                 modal_loading: false,
@@ -303,6 +311,7 @@
         methods: {
             ChangeSite (value, selectedData) {
                 this.bkdata = selectedData[selectedData.length - 1];
+                this.level = this.bkdata.level;
                 this.form.stations_area = this.bkdata.id;
             },
             loadData (item, callback) {
@@ -465,6 +474,7 @@
             gpd: {default: 1},
             form: {
                 default: {
+                    level: '',
                     site_name: '',
                     com_name: '',
                     menu: '',

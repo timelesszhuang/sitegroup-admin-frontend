@@ -93,13 +93,18 @@
                                     <span v-if="item.type_name ==''">{{item.type_name}}</span>
                                     <span v-else>{{item.typeName}}</span>—{{item.title}}
                                 </Option>
-
                             </Select>
                         </Form-item>
                         <Form-item label="子站地区" prop="district" style="text-align: left;width:500px;">
                             <Cascader :data="districtdata" change-on-select  :load-data="loadData" @on-change="ChangeSite"></Cascader>
                         </Form-item>
-
+                        <Form-item label="子站等级"  style="text-align: left;width:500px;">
+                            <RadioGroup v-model="form.level">
+                                <Radio v-show="this.level<=1" label="1" >省/直辖市</Radio>
+                                <Radio  v-show="this.level<=2" label="2">市</Radio>
+                                <Radio v-show="this.level<=3"  label="3">区/县</Radio>
+                            </RadioGroup>
+                        </Form-item>
                         <Form-item label="模板" prop="template_id">
                             <Select v-model="form.template_id" style="text-align: left;width:400px;"
                                     label-in-value filterable　@on-change="changeTemptype">
@@ -272,8 +277,10 @@
                 editorOption: {},
                 modal: false,
                 modal_loading: false,
+                level: '1',
                 form: {
                     com_name: '',
+                    level: '3',
                     site_name: '',
                     menu: [],
                     template_id: '',
@@ -329,7 +336,8 @@
         methods: {
             ChangeSite (value, selectedData) {
                 this.bkdata = selectedData[selectedData.length - 1];
-                this.form.stations_area = this.bkdata.id
+                this.level = this.bkdata.level;
+                this.form.stations_area = this.bkdata.id;
             },
             loadData (item, callback) {
                 item.loading = true;
