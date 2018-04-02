@@ -56,6 +56,10 @@
       created () {
           this.getData();
       },
+      mounted () {
+          this.getArticleType();
+          this.getArticleTag();
+      },
       methods: {
           getData () {
               let data = {
