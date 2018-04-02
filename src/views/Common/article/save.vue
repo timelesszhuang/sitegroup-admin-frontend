@@ -459,7 +459,7 @@
             },
             // 缩略图上传回调
             getResponse(response, file, filelist) {
-                this.form.thumbnails = response.url;
+                this.form.thumbnails = response.data.url;
                 if (response.status) {
                     this.$Message.success(response.msg);
                     this.imgshow = true;
