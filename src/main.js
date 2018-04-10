@@ -25,7 +25,12 @@ const ajaxUrl = env === 'development'
     : env === 'production'
         ? 'http://api.' + domain + '/index.php/'
         : 'http://debugapi.' + domain + '/index.php/';
-
+window.HOST_sort = env === 'development'
+    ? 'http://bn.sjy/'
+    // ? 'http://bn.sjy/index.php/'
+    : env === 'production'
+        ? 'http://api.' + domain + '/'
+        : 'http://debugapi.' + domain + '/';
 window.HOST = ajaxUrl;
 window.axios = require('axios');
 window.axios.defaults.baseURL = ajaxUrl;

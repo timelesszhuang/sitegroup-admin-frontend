@@ -1,4 +1,5 @@
 <template>
+  <card>
   <div>
     <div class="top" style="margin-top: 10px" ><div v-show="this.showsite" >
       <Select   v-model="site_id" style="margin-left:40%;width:300px;" label-in-value filterable clearable>
@@ -22,6 +23,7 @@
       </div>
     </div>
   </div>
+  </card>
 </template>
 
 <script type="text/ecmascript-6">

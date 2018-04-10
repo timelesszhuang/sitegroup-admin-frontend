@@ -116,7 +116,7 @@
                 return this.form.path_oss;
             },
             showPathdown: function () {
-                return HOST + this.form.show_path_href;
+                return HOST_sort + this.form.show_path_href;
             },
         },
         created() {

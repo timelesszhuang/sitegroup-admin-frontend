@@ -1,4 +1,5 @@
 <template>
+  <card>
   <div>
     <div class="top">
 
@@ -16,6 +17,7 @@
       </div>
     </div>
   </div>
+  </card>
 </template>
 
 <script type="text/ecmascript-6">

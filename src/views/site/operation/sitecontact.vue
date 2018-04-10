@@ -4,7 +4,8 @@
     }
 </style>
 <template>
-    <div>
+    <card>
+    <div style="max-width: 500px">
         <div style="text-align:center">
             <Form ref="add" :model="form" :label-width="100" :rules="companyRule" class="change-pwd-form">
                 <Form-item label="传真" prop="fax">
@@ -40,6 +41,7 @@
             <Button type="success" size="large" :loading="modal_loading" @click="add">更新</Button>
         </div>
     </div>
+    </card>
 </template>
 <script>
     import http from '../../../libs/http';
