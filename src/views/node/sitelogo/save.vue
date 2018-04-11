@@ -54,7 +54,7 @@
             return {
                 modal: false,
                 modal_loading: false,
-                action: HOST + 'siteWaterImage',
+                action: HOST + 'image_upload',
                 AddRule: {
                     name: [
                         {required: true, message: '请填写LOGO名字', trigger: 'blur'},
