@@ -50,21 +50,21 @@
     import http from '../../../libs/http';
     import common from '../../../libs/common';
     export default {
-        data() {
+        data () {
             return {
                 modal: false,
                 modal_loading: false,
                 action: HOST + 'image_upload',
                 AddRule: {
                     name: [
-                        {required: true, message: '请填写LOGO名字', trigger: 'blur'},
+                        {required: true, message: '请填写LOGO名字', trigger: 'blur'}
                     ],
 
                     oss_logo_path: [
                         {required: true, message: '请上传logo', trigger: 'blur'}
                     ]
                 }
-            }
+            };
         },
         computed: {
             imgshow: function () {
@@ -75,29 +75,29 @@
             }
         },
         methods: {
-            imgpath() {
+            imgpath () {
                 return this.form.oss_logo_path;
             },
-            //缩略图上传回调
-            getResponse(response, file, filelist) {
+            // 缩略图上传回调
+            getResponse (response, file, filelist) {
                 this.form.oss_logo_path = response.data.url;
                 if (response.status) {
                     this.$Message.success(response.msg);
                     this.imgpath();
-                    this.imgshow = true
+                    this.imgshow = true;
                     this.$refs.upImg.clearFiles();
                 } else {
                     this.$Message.error(response.msg);
                 }
-                this.$refs.upImg.clearFiles()
+                this.$refs.upImg.clearFiles();
             },
-            getErrorInfo(error, file, filelist) {
+            getErrorInfo (error, file, filelist) {
                 this.$Message.error(error);
             },
-            formatError() {
+            formatError () {
                 this.$Message.error('文件格式只支持 jpg,jpeg,png三种格式。');
             },
-            add() {
+            add () {
                 this.$refs.logosave.validate((valid) => {
                     if (valid) {
                         this.modal_loading = true;
@@ -116,14 +116,14 @@
                             }, (data, msg) => {
                                 this.modal_loading = false;
                                 this.$Message.error(msg);
-                            })
+                            });
                         }, (res) => {
-                            //处理错误信息
+                            // 处理错误信息
                             this.modal_loading = false;
                             this.$Message.error('网络异常，请稍后重试。');
-                        })
+                        });
                     }
-                })
+                });
             }
         },
         props: {
@@ -132,6 +132,6 @@
                 default: {}
             }
         },
-        mixins: [http,common]
-    }
+        mixins: [http, common]
+    };
 </script>

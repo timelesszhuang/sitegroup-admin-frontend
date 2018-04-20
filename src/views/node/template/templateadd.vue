@@ -43,41 +43,41 @@
     import http from '../../../libs/http';
     import common from '../../../libs/common';
     export default {
-        data() {
+        data () {
             return {
                 modal: false,
                 modal_loading: false,
                 action: HOST + 'uploadTemplate',
                 form: {
-                    name: "",
+                    name: '',
                     detail: '',
-                    path_oss: '',
+                    path_oss: ''
                 },
                 AddRule: {
                     name: [
-                        {required: true, message: '请填写模板名', trigger: 'blur'},
+                        {required: true, message: '请填写模板名', trigger: 'blur'}
                     ],
                     detail: [
-                        {required: true, message: '请填写模板说明', trigger: 'blur'},
-                    ],
+                        {required: true, message: '请填写模板说明', trigger: 'blur'}
+                    ]
                 }
-            }
+            };
         },
         methods: {
-            getResponse(response, file, filelist) {
-                this.form.path_oss = response.data;
+            getResponse (response, file, filelist) {
+                this.form.path_oss = response.data.url;
                 this.$Message.success(response.msg);
             },
-            getErrorInfo(error, file, filelist) {
+            getErrorInfo (error, file, filelist) {
                 this.$Message.error(error);
             },
-            formatError() {
+            formatError () {
                 this.$Message.error('文件格式只支持 zip格式。');
             },
-            add() {
+            add () {
                 if (!this.form.path_oss) {
                     this.$Message.error('请首先上传模板文件。');
-                    return
+                    return;
                 }
                 this.$refs.templateadd.validate((valid) => {
                     if (valid) {
@@ -93,22 +93,23 @@
                                 this.$Message.success(msg);
                                 this.modal_loading = false;
                                 this.$refs.templateadd.resetFields();
-                                this.$refs.uploadzip.clearFiles()
+                                this.$refs.uploadzip.clearFiles();
                             }, (data, msg) => {
                                 this.modal_loading = false;
                                 this.$Message.error(msg);
-                            })
+                            });
                         }, (res) => {
-                            //处理错误信息
+                            // 处理错误信息
                             this.modal_loading = false;
                             this.$Message.error('网络异常，请稍后重试。');
-                        })
+                        });
                     }
-                })
+                });
             }
-        }, props: {
-            gpd: {default: 1},
         },
-        mixins: [http,common]
-    }
+    props: {
+            gpd: {default: 1}
+        },
+        mixins: [http, common]
+    };
 </script>

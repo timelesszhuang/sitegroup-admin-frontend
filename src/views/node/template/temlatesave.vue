@@ -46,17 +46,17 @@
     import http from '../../../libs/http';
     import common from '../../../libs/common';
     export default {
-        data() {
+        data () {
             return {
                 modal: false,
                 modal_loading: false,
                 action: HOST + 'uploadTemplate',
                 AddRule: {
                     name: [
-                        {required: true, message: '请填写问答分类', trigger: 'blur'},
-                    ],
+                        {required: true, message: '请填写问答分类', trigger: 'blur'}
+                    ]
                 }
-            }
+            };
         },
         computed: {
             downloadPath: function () {
@@ -64,17 +64,17 @@
             }
         },
         methods: {
-            getResponse(response, file, filelist) {
-                this.form.path_oss = response.data;
+            getResponse (response, file, filelist) {
+                this.form.path_oss = response.data.url;
                 this.$Message.success(response.msg);
             },
-            getErrorInfo(error, file, filelist) {
+            getErrorInfo (error, file, filelist) {
                 this.$Message.error(error);
             },
-            formatError() {
+            formatError () {
                 this.$Message.error('文件格式只支持 zip格式。');
             },
-            add() {
+            add () {
                 this.$refs.templatesave.validate((valid) => {
                     if (valid) {
                         this.modal_loading = true;
@@ -90,18 +90,18 @@
                                 this.$Message.success(msg);
                                 this.modal_loading = false;
                                 this.$refs.templatesave.resetFields();
-                                this.$refs.uploadzip.clearFiles()
+                                this.$refs.uploadzip.clearFiles();
                             }, (data, msg) => {
                                 this.modal_loading = false;
                                 this.$Message.error(msg);
-                            })
+                            });
                         }, (res) => {
-                            //处理错误信息
+                            // 处理错误信息
                             this.modal_loading = false;
                             this.$Message.error('网络异常，请稍后重试。');
-                        })
+                        });
                     }
-                })
+                });
             }
         },
         props: {
@@ -114,6 +114,6 @@
                 }
             }
         },
-        mixins: [http,common]
-    }
+        mixins: [http, common]
+    };
 </script>
