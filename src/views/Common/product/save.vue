@@ -17,15 +17,25 @@
                                     <Radio label="20">关</Radio>
                                 </RadioGroup>
                             </Form-item>
-                            <Form-item label="标记" prop="flag"
-                                       style="position: relative;z-index: 10">
-                                <CheckboxGroup v-model="form.flag">
-                                    <Checkbox v-for="(item,index) in this.$store.state.commondata.FlagList" :key="index"
-                                              :label=item[0]>
-                                        {{item[1]}}
-                                    </Checkbox>
-                                </CheckboxGroup>
-                            </Form-item>
+                            <Row>
+                                <Col span="12">
+                                    <Form-item label="标记" prop="flag"
+                                               style="position: relative;z-index: 10">
+                                        <CheckboxGroup v-model="form.flag">
+                                            <Checkbox v-for="(item,index) in this.$store.state.commondata.FlagList" :key="index"
+                                                      :label=item[0]>
+                                                {{item[1]}}
+                                            </Checkbox>
+                                        </CheckboxGroup>
+                                    </Form-item>
+                                </Col>
+                                <Col span="7">
+                                    <Form-item label="权重" prop="sort">
+                                        <Input type="text" v-model="form.sort" placeholder="请输入权重"
+                                               style="width: 200px;"/>
+                                    </Form-item>
+                                </Col>
+                            </Row>
                             <Form-item label="缩略图" prop="image">
                                 <Upload
                                         type="select"
@@ -195,7 +205,8 @@
                         field3: '',
                         field4: '',
                         content: '',
-                        flag: ''
+                        flag: '',
+                        sort:0
                     }
                 },
                 tags: '',

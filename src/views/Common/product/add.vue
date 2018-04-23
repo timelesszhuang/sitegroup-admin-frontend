@@ -17,6 +17,8 @@
                                     <Radio label="20">关</Radio>
                                 </RadioGroup>
                             </Form-item>
+                            <Row>
+                                <Col span="12">
                             <Form-item label="标记" prop="flag"
                                        style="position: relative;z-index: 10">
                                 <CheckboxGroup v-model="form.flag">
@@ -26,6 +28,14 @@
                                     </Checkbox>
                                 </CheckboxGroup>
                             </Form-item>
+                                </Col>
+                            <Col span="7">
+                                <Form-item label="权重" prop="sort">
+                                    <Input type="text" v-model="form.sort" placeholder="请输入权重"
+                                           style="width: 200px;"/>
+                                </Form-item>
+                            </Col>
+                            </Row>
                             <Form-item label="产品缩略图" prop="name">
                                 <Upload
                                         type="select"
@@ -204,7 +214,8 @@
                     field4: '',
                     description: '',
                     tag_id: [],
-                    flag: []
+                    flag: [],
+                    sort:0
                 },
                 tags: '',
                 AddRule: {
