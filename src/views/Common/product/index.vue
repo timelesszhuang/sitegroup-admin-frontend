@@ -240,7 +240,6 @@
                     {
                         title: '操作',
                         key: 'action',
-                        width: 250,
                         align: 'center',
                         fixed: 'right',
                         render (h, params) {
@@ -250,7 +249,7 @@
                                         size: 'small'
                                     },
                                     attrs: {
-                                        type: 'default'
+                                        type: 'primary'
                                     },
                                     on: {
                                         click: function () {
@@ -264,7 +263,7 @@
                                         size: 'small'
                                     },
                                     attrs: {
-                                        type: 'primary',
+                                        type: 'error',
                                         style: 'margin-left:3px'
                                     },
                                     on: {

@@ -243,7 +243,7 @@
                                         size: 'small'
                                     },
                                     attrs: {
-                                        type: 'info'
+                                        type: 'error'
                                     },
                                     on: {
                                         click: function () {

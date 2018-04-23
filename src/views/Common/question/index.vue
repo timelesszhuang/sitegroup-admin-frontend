@@ -232,7 +232,7 @@
                                         size: 'small'
                                     },
                                     attrs: {
-                                        type: 'primary',
+                                        type: 'error',
                                         style: 'margin-left:3px'
                                     },
                                     on: {
