@@ -42,7 +42,6 @@
         <sitesave ref="save" :keyword="keyword" :menutype="menutype" :form="editinfo" :mobileSite="mobileSite" v-on:getdata="getData"></sitesave>
         <ftpsave ref="ftpsave" :ftp_id="ftp_id" :form="ftp_info"></ftpsave>
         <cdnsave ref="cdnsave" :cdn_id="ftp_id" :form="cdn_info"></cdnsave>
-        <win ref="windows" :genaraterId="genarate_id"></win>
         <other ref="other" :otherArr="others"></other>
         <Activity ref="activity" :datas="activity_data" :sid="site_id"></Activity>
         <activepush :ping_id="ping_id" :form="ping" ref="activepush"></activepush>
@@ -56,7 +55,6 @@
     import sitesave from './save.vue';
     import ftpsave from './ftp.vue';
     import cdnsave from './cdn.vue';
-    import win from './window.vue';
     import other from './other.vue';
     import Activity from './activity.vue';
     import activepush from './activepush.vue'
@@ -105,7 +103,7 @@
 
             }
         },
-        components: {siteadd, sitesave, ftpsave, cdnsave, win, Activity, other, activepush},
+        components: {siteadd, sitesave, ftpsave, cdnsave, Activity, other, activepush},
         created() {
             this.getData();
             this.getCommontype();
@@ -379,8 +377,32 @@
                 this.$refs.activepush.modal = true;
             },
             generateStatic(index) {
-                this.genarate_id = index;
-                this.$refs.windows.modal2 = true
+                this.$Modal.confirm({
+                    title: '一键生成',
+                    content: '是否一键生成站点?',
+                    okText: '更新',
+                    cancelText: '取消',
+                    onOk: () => {
+                        let id = index;
+                        this.apiGet('siteGetCurl/' + id + '/oneKeyGenerate').then((res) => {
+                            this.handleAjaxResponse(res, (data, msg) => {
+                                this.modal = false;
+                                this.modal_loading = false;
+                                this.$Message.success(msg);
+                            }, (data, msg) => {
+                                this.modal_loading = false;
+                                this.$Message.error(msg, 5);
+                            })
+                        }, (res) => {
+                            //处理错误信息
+                            this.modal_loading = false;
+                            this.$Message.error('网络异常，请稍后重试。');
+                        })
+                    },
+                    onCancel: () => {
+                        return false
+                    }
+                })
             },
             other(index) {
                 this.others = index;
