@@ -41,6 +41,7 @@
         <siteadd ref="add" :keyword="keyword" :menutype="menutype" :mobileSite="mobileSite" v-on:getdata="getData"></siteadd>
         <sitesave ref="save" :keyword="keyword" :menutype="menutype" :form="editinfo" :mobileSite="mobileSite" v-on:getdata="getData"></sitesave>
         <ftpsave ref="ftpsave" :ftp_id="ftp_id" :form="ftp_info"></ftpsave>
+        <node_debug ref="node_debug"  v-on:getdata="getData"></node_debug>
         <cdnsave ref="cdnsave" :cdn_id="ftp_id" :form="cdn_info"></cdnsave>
         <other ref="other" :otherArr="others"></other>
         <Activity ref="activity" :datas="activity_data" :sid="site_id"></Activity>
@@ -55,6 +56,7 @@
     import sitesave from './save.vue';
     import ftpsave from './ftp.vue';
     import cdnsave from './cdn.vue';
+    import node_debug from './debug.vue';
     import other from './other.vue';
     import Activity from './activity.vue';
     import activepush from './activepush.vue'
@@ -85,6 +87,8 @@
                 keyword: [],
                 link: [],
                 ftp_id: 0,
+                debug_id: 0,
+                debug_info: {},
                 ftp_info: {},
                 cdn_info: {},
                 mobileSite: [],
@@ -103,7 +107,7 @@
 
             }
         },
-        components: {siteadd, sitesave, ftpsave, cdnsave, Activity, other, activepush},
+        components: {siteadd, sitesave, ftpsave, cdnsave, Activity, other,node_debug, activepush},
         created() {
             this.getData();
             this.getCommontype();
@@ -363,6 +367,12 @@
                 this.ftp_info.ftp_user = index.ftp_user;
                 this.ftp_info.ftp_pwd = index.ftp_pwd;
                 this.$refs.ftpsave.modal = true;
+                this.$refs.other.modal2 = false
+            },
+            changeDebug(index) {
+                this.debug_id = index.id;
+                this.debug_info = index.app_debug;
+                this.$refs.node_debug.changeDebug(this.debug_id,this.debug_info );
                 this.$refs.other.modal2 = false
             },
             changeCdn(index) {
