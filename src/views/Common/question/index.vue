@@ -6,7 +6,7 @@
                 <Input v-model="content" placeholder="问答" style="width:300px;"></Input>
                 问答分类:
                 <Select v-model="type_id" style="width:200px;position: relative;z-index: 10000;"
-                        label-in-value filterable clearable placeholder="根据分类查询">
+                        label-in-value multiple filterable clearable placeholder="根据分类查询">
                     <Option-group v-for="(item,index) in this.$store.state.commondata.questionType" :label="index"
                                   　:key="index">
                         <Option v-for="(items, indexs) in item" :value="items.id" :label="items.name" :key="indexs">{{
@@ -59,7 +59,7 @@
                 current: 1,
                 rows: 10,
                 content: '',
-                type_id: 0,
+                type_id: [],
                 datas: [],
                 editinfo: {},
                 questiontypelist: [],
@@ -84,7 +84,7 @@
                         page: this.page,
                         rows: this.rows,
                         content: this.content,
-                        type_id: this.type_id
+                        type_id: this.type_id.join(',')
                     }
                 };
                 this.apiGet('question', data).then((data) => {

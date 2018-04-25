@@ -9,8 +9,7 @@
                 标题:
                 <Input v-model="title" placeholder="请输入文章标题" style="width:300px;"></Input>
                 文章分类:
-                <Select v-model="article_type" style="width:200px"
-                        label-in-value filterable clearable>
+                <Select v-model="article_type" style="width:200px" label-in-value filterable clearable multiple>
                     <Option-group v-for="(item,index) in this.$store.state.commondata.articleType" :label="index"
                                   :key="index">
                         <Option v-for="(peritem,perindex) in item" :value="peritem.id" :label="peritem.name"
@@ -70,7 +69,7 @@
                 current: 1,
                 pageSize: 10,
                 title: '',
-                article_type: 0,
+                article_type: [],
                 datas: [],
                 showhtmldata: []
             };
@@ -89,7 +88,7 @@
                         page: this.page,
                         rows: this.rows,
                         title: this.title,
-                        article_type: this.article_type
+                        article_type: this.article_type.join(',')
                     }
                 };
                 this.apiGet('article', data).then((data) => {
