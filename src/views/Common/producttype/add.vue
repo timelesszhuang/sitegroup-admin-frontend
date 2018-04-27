@@ -23,7 +23,7 @@
                                 <Select ref="select" :clearable="selects" v-model="form.tag_id"
                                         style="position:relative;text-align: left;width:250px;z-index: 10000;"
                                         label-in-value filterable　@on-change="changeTagtype">
-                                    <Option v-for="item in tagname" :value="item.id" :label="item.tag" :key="item">
+                                    <Option v-for="item in this.$store.state.commondata.TagType" :value="item.id" :label="item.tag" :key="item">
                                         {{ item.tag }}
                                     </Option>
                                 </Select>

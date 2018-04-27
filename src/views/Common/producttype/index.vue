@@ -6,7 +6,7 @@
             <Select ref="select" v-model="tag_id" filterable clearable placeholder="标签名"
                     style="position:relative;text-align: left;width:250px;z-index: 10000;"
                     label-in-value filterable　>
-                <Option v-for="item in tagname" :value="item.id" :label="item.tag" :key="item">
+                <Option v-for="item in this.$store.state.commondata.TagType" :value="item.id" :label="item.tag" :key="item">
                     {{ item.tag }}
                 </Option>
             </Select>
@@ -62,7 +62,7 @@
         components: {ptypeadd, ptypesave},
         created() {
             //      this.getData();
-            this.gettagtype();
+            this.getTagType();
         },
         methods: {
             getData() {
