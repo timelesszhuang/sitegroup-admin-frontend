@@ -18,6 +18,9 @@ const commondata = {
         Domain: [],
         FriendLink: [],
         PublicCode: [],
+        menutype: [],
+        keyword: [],
+        mobileSite: [],
         backgroundcolor: [
             'background-image:url(dist/sitebackimg/flower.jpg);background-size: 100% 100%',
             'background-image:linear-gradient(45deg, rgb(252, 54, 253) 0%, rgb(93, 63, 218) 100%)',
@@ -44,7 +47,7 @@ const commondata = {
         ],
         FileType: [
             ['html', '模板文件'],
-            ['static', '静态文件'],
+            ['static', '静态文件']
         ],
         // 相关统计报表的color
         color: [
@@ -92,7 +95,7 @@ const commondata = {
         ]
     },
     mutations: {
-        resetCommonData(state) {
+        resetCommonData (state) {
             // 切换网站之后相关的 vuex 中的信息需要重置
             state.articleType = [];
             state.productType = [];
