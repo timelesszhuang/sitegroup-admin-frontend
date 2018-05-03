@@ -83,7 +83,7 @@
           },
           edit (index) {
               let editid = this.datas[index].id;
-              this.apiGet('user/pageInfo/' + editid).then((res) => {
+              this.apiGet('pageInfo/' + editid).then((res) => {
                   this.handleAjaxResponse(res, (data, msg) => {
                       this.editinfo = data;
                       this.modal = false;
@@ -100,7 +100,7 @@
               this.menuid = this.datas[id].id;
               this.oldKeyId = this.datas[id].akeyword_id;
               this.$refs.mainsave.modal = true;
-              this.apiGet('user/getAkeyword').then((res) => {
+              this.apiGet('siteAkeyword').then((res) => {
                   this.handleAjaxResponse(res, (data, msg) => {
                       this.keyArr = data;
                   }, (data, msg) => {
@@ -158,24 +158,6 @@
                   key: 'keyword',
                   sortable: true
               });
-              //         columns.push(
-              //           {
-              //             title: '操作',
-              //             key: 'action',
-              //             width: 150,
-              //             align: 'center',
-              //             fixed: 'right',
-              //             render (row, column, index) {
-              //               if(row.akeyword_id!=0) {
-              //                 return `<i-button type="success" size="small" @click="edit(${index})">修改</i-button>
-              // <span style="display:inline-block;width:100%;margin:5px">
-              // <i-button type="primary" size="small" @click="editMain(${index})">修改主关键词</i-button></span>`;
-              //               }else{
-              //                 return `<i-button type="success" size="small" @click="edit(${index})">修改</i-button>`
-              //               }
-              //             }
-              //           }
-              //         );
               columns.push(
                   {
                       title: '操作',

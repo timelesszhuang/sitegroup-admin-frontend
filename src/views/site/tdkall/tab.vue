@@ -18,26 +18,26 @@
 </template>
 <script>
     import http from '../../../libs/http';
-    import tdk from '../tdk/index.vue'
-    import articletdk from '../articletdk/index.vue'
-    import questiontdk from '../questiontdk/index.vue'
-    import producttdk from '../producttdk/index.vue'
+    import tdk from '../tdk/index.vue';
+    import articletdk from '../articletdk/index.vue';
+    import questiontdk from '../questiontdk/index.vue';
+    import producttdk from '../producttdk/index.vue';
 
     export default {
         components: {tdk, articletdk, questiontdk, producttdk},
         methods: {
-            getdata(name) {
-                if (name == "tdk") {
-                    this.$refs.tdk.getData()
-                } else if (name == "articletdk") {
-                    this.$refs.articletdk.getData()
-                } else if (name == "questiontdk") {
-                    this.$refs.questiontdk.getData()
-                } else if (name == "producttdk") {
-                    this.$refs.producttdk.getData()
+            getdata (name) {
+                if (name == 'tdk') {
+                    this.$refs.tdk.getData();
+                } else if (name == 'articletdk') {
+                    this.$refs.articletdk.getData();
+                } else if (name == 'questiontdk') {
+                    this.$refs.questiontdk.getData();
+                } else if (name == 'producttdk') {
+                    this.$refs.producttdk.getData();
                 }
             }
         },
         mixins: [http]
-    }
+    };
 </script>
