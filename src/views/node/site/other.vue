@@ -14,7 +14,7 @@
             <Button type="error" @click="resetSite" title="全站重新生成适用于重新发送模板的情形，请慎重执行该操作！">重置站点</Button>
             <Button type="info" @click="changeCdn" title="用于保存站点的CDN相关信息">cdn信息</Button>
             <Button type="success" @click="activepush" title="更新内容搜索引擎主动推送">主动推送</Button>
-            <Button type="warning" @click="changeDebug" title="" v-on:getdata="changeDebugGetData">debug</Button>
+            <Button type="warning" @click="changeDebug" title="" v-on:getdata="changeDebug">debug</Button>
             <!--<Button type="warning" @click="ftpInfo" title="">FTP信息</Button>-->
         </div>
         <div slot="footer">

@@ -22,7 +22,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import http from '../../../libs/http'; ;
+  import http from '../../../libs/http';
   import tdksave from './save.vue';
   export default {
       data () {

@@ -7,7 +7,7 @@
 const common = {
     methods: {
         // 获取文章分类的 id => name 属性
-        getArticleType(reset = false) {
+        getArticleType (reset = false) {
             let articletype = this.$store.state.commondata.articleType;
             if (articletype.length === 0 || reset) {
                 let data = {
@@ -27,7 +27,7 @@ const common = {
                 });
             }
         },
-        getProductType(reset = false) {
+        getProductType (reset = false) {
             // 获取产品分类
             let productType = this.$store.state.commondata.productType;
             if (productType.length === 0 || reset) {
@@ -48,7 +48,7 @@ const common = {
                 });
             }
         },
-        getQuestionType(reset = false) {
+        getQuestionType (reset = false) {
             let questionType = this.$store.state.commondata.questionType;
             if (questionType.length === 0 || reset) {
                 let data = {
@@ -68,7 +68,7 @@ const common = {
                 });
             }
         },
-        getArticleTag(reset = false) {
+        getArticleTag (reset = false) {
             let articleTag = this.$store.state.commondata.articleTag;
             if (articleTag.length === 0 || reset) {
                 let data = {
@@ -88,7 +88,7 @@ const common = {
                 });
             }
         },
-        getProductTag(reset = false) {
+        getProductTag (reset = false) {
             let productTag = this.$store.state.commondata.productTag;
             if (productTag.length === 0 || reset) {
                 let data = {
@@ -108,7 +108,7 @@ const common = {
                 });
             }
         },
-        getQuestionTag(reset = false) {
+        getQuestionTag (reset = false) {
             let questionTag = this.$store.state.commondata.questionTag;
             if (questionTag.length === 0 || reset) {
                 let data = {
@@ -128,7 +128,7 @@ const common = {
                 });
             }
         },
-        getAllTag(reset = false) {
+        getAllTag (reset = false) {
             let Tag = this.$store.state.commondata.Tag;
             if (Tag.length === 0 || reset) {
                 let data = {
@@ -146,7 +146,7 @@ const common = {
                 });
             }
         },
-        getTagType(reset = false) {
+        getTagType (reset = false) {
             let TagType = this.$store.state.commondata.TagType;
             if (TagType.length === 0 || reset) {
                 let data = {
@@ -164,43 +164,7 @@ const common = {
                 });
             }
         },
-        getSiteUser(reset = false) {
-            let SiteUser = this.$store.state.commondata.SiteUser;
-            if (SiteUser.length === 0 || reset) {
-                let data = {
-                    params: {}
-                };
-                this.apiGet('commonType').then((res) => {
-                    this.handleAjaxResponse(res, (data, msg) => {
-                        this.$store.state.commondata.SiteUser = data.userlist;
-                    }, (data, msg) => {
-                        this.$Message.error(msg);
-                    })
-                }, (res) => {
-                    // 处理错误信息
-                    this.$Message.error('网络异常，请稍后重试。');
-                });
-            }
-        },
-        getSiteType(reset = false) {
-            let SiteType = this.$store.state.commondata.SiteType;
-            if (SiteType.length === 0 || reset) {
-                let data = {
-                    params: {}
-                };
-                this.apiGet('commonType').then((res) => {
-                    this.handleAjaxResponse(res, (data, msg) => {
-                        this.$store.state.commondata.SiteType = data.sitetype;
-                    }, (data, msg) => {
-                        this.$Message.error(msg);
-                    })
-                }, (res) => {
-                    // 处理错误信息
-                    this.$Message.error('网络异常，请稍后重试。');
-                });
-            }
-        },
-        getIco(reset = false) {
+        getIco (reset = false) {
             let Ico = this.$store.state.commondata.Ico;
             if (Ico.length === 0 || reset) {
                 let data = {
@@ -218,7 +182,7 @@ const common = {
                 });
             }
         },
-        getLogo(reset = false) {
+        getLogo (reset = false) {
             let Logo = this.$store.state.commondata.Logo;
             if (Logo.length === 0 || reset) {
                 let data = {
@@ -236,7 +200,7 @@ const common = {
                 });
             }
         },
-        getWaterImage(reset = false) {
+        getWaterImage (reset = false) {
             let WaterImage = this.$store.state.commondata.WaterImage;
             if (WaterImage.length === 0 || reset) {
                 let data = {
@@ -254,87 +218,33 @@ const common = {
                 });
             }
         },
-        getTemplate(reset = false) {
+        getCommontype (reset = false) {
+            let SiteUser = this.$store.state.commondata.SiteUser;
             let Template = this.$store.state.commondata.Template;
-            if (Template.length === 0 || reset) {
+            let ContentWay = this.$store.state.commondata.ContentWay;
+            let Domain = this.$store.state.commondata.Domain;
+            let FriendLink = this.$store.state.commondata.FriendLink;
+            let PublicCode = this.$store.state.commondata.PublicCode;
+            let SiteType = this.$store.state.commondata.SiteType;
+            let menutype = this.$store.state.commondata.menutype;
+            let keyword = this.$store.state.commondata.keyword;
+            let mobileSite = this.$store.state.commondata.mobileSite;
+            if (Template.length === 0 || SiteUser === 0 || ContentWay === 0 || Domain === 0 || FriendLink === 0 || PublicCode === 0 || SiteType === 0 || menutype === 0 || keyword === 0 || mobileSite === 0 || reset) {
                 let data = {
                     params: {}
                 };
                 this.apiGet('commonType', data).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.$store.state.commondata.Template = data.temptype;
-                    }, (data, msg) => {
-                        this.$Message.error(msg);
-                    });
-                }, (res) => {
-                    // 处理错误信息
-                    this.$Message.error('网络异常，请稍后重试。');
-                });
-            }
-        },
-        getContentWay(reset = false) {
-            let ContentWay = this.$store.state.commondata.ContentWay;
-            if (ContentWay.length === 0 || reset) {
-                let data = {
-                    params: {}
-                };
-                this.apiGet('commonType', data).then((res) => {
-                    this.handleAjaxResponse(res, (data, msg) => {
                         this.$store.state.commondata.ContentWay = data.hotline;
-                    }, (data, msg) => {
-                        this.$Message.error(msg);
-                    });
-                }, (res) => {
-                    // 处理错误信息
-                    this.$Message.error('网络异常，请稍后重试。');
-                });
-            }
-        },
-        getDomain(reset = false) {
-            let Domain = this.$store.state.commondata.Domain;
-            if (Domain.length === 0 || reset) {
-                let data = {
-                    params: {}
-                };
-                this.apiGet('commonType', data).then((res) => {
-                    this.handleAjaxResponse(res, (data, msg) => {
                         this.$store.state.commondata.Domain = data.domainlist;
-                    }, (data, msg) => {
-                        this.$Message.error(msg);
-                    });
-                }, (res) => {
-                    // 处理错误信息
-                    this.$Message.error('网络异常，请稍后重试。');
-                });
-            }
-        },
-        getFriendLink(reset = false) {
-            let FriendLink = this.$store.state.commondata.FriendLink;
-            if (FriendLink.length === 0 || reset) {
-                let data = {
-                    params: {}
-                };
-                this.apiGet('commonType', data).then((res) => {
-                    this.handleAjaxResponse(res, (data, msg) => {
                         this.$store.state.commondata.FriendLink = data.link;
-                    }, (data, msg) => {
-                        this.$Message.error(msg);
-                    });
-                }, (res) => {
-                    // 处理错误信息
-                    this.$Message.error('网络异常，请稍后重试。');
-                });
-            }
-        },
-        getPublicCode(reset = false) {
-            let PublicCode = this.$store.state.commondata.PublicCode;
-            if (PublicCode.length === 0 || reset) {
-                let data = {
-                    params: {}
-                };
-                this.apiGet('commonType', data).then((res) => {
-                    this.handleAjaxResponse(res, (data, msg) => {
                         this.$store.state.commondata.PublicCode = data.code;
+                        this.$store.state.commondata.SiteUser = data.userlist;
+                        this.$store.state.commondata.SiteType = data.sitetype;
+                        this.$store.state.commondata.menutype = data.menutype;
+                        this.$store.state.commondata.keyword = data.keyword;
+                        this.$store.state.commondata.mobileSite = data.mobileSite;
                     }, (data, msg) => {
                         this.$Message.error(msg);
                     });
@@ -344,7 +254,7 @@ const common = {
                 });
             }
         },
-        randomWord(randomFlag, min, max) {
+        randomWord (randomFlag, min, max) {
             let str = '';
             let range = min;
             let arr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];

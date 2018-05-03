@@ -38,8 +38,8 @@
             </div>
             <br>
         </div>
-        <siteadd ref="add" :keyword="keyword" :menutype="menutype" :mobileSite="mobileSite" v-on:getdata="getData"></siteadd>
-        <sitesave ref="save" :keyword="keyword" :menutype="menutype" :form="editinfo" :mobileSite="mobileSite" v-on:getdata="getData"></sitesave>
+        <siteadd ref="add"  v-on:getdata="getData"></siteadd>
+        <sitesave ref="save"  :form="editinfo"  v-on:getdata="getData"></sitesave>
         <ftpsave ref="ftpsave" :ftp_id="ftp_id" :form="ftp_info"></ftpsave>
         <node_debug ref="node_debug"  v-on:getdata="getData"></node_debug>
         <cdnsave ref="cdnsave" :cdn_id="ftp_id" :form="cdn_info"></cdnsave>
@@ -59,10 +59,10 @@
     import node_debug from './debug.vue';
     import other from './other.vue';
     import Activity from './activity.vue';
-    import activepush from './activepush.vue'
+    import activepush from './activepush.vue';
 
     export default {
-        data() {
+        data () {
             return {
                 modal_loading: false,
                 self: this,
@@ -103,72 +103,51 @@
                 url: '',
                 ping: {},
                 ping_id: 0,
-                waterdata: [],
+                waterdata: []
 
-            }
+            };
         },
-        components: {siteadd, sitesave, ftpsave, cdnsave, Activity, other,node_debug, activepush},
-        created() {
+        components: {siteadd, sitesave, ftpsave, cdnsave, Activity, other, node_debug, activepush},
+        created () {
             this.getData();
-            this.getCommontype();
         },
-        mounted() {
-            this.getSiteUser();
-            this.getSiteType();
+        mounted () {
+            this.getCommontype();
             this.getIco();
             this.getLogo();
             this.getWaterImage();
-            this.getTemplate();
-            this.getContentWay();
-            this.getDomain();
-            this.getFriendLink();
-            this.getPublicCode();
         },
         methods: {
-            formatter_title(str) {
-                return str.id + str.site_name + str.site_type_name
+            formatter_title (str) {
+                return str.id + str.site_name + str.site_type_name;
             },
-            choose_bgimg(index) {
+            choose_bgimg (index) {
                 let background = this.$store.state.commondata.backgroundcolor;
                 index = index % background.length;
-                return background[index]
+                return background[index];
             },
-            init() {
+            init () {
                 this.getData();
-
             },
-            sendActivity(id) {
+            sendActivity (id) {
                 this.site_id = id;
-                this.getActivity(id)
+                this.getActivity(id);
             },
-            getActivity(id) {
+            getActivity (id) {
                 this.apiGet('getActivily/' + id).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.activity_data = data;
                         this.$refs.activity.modal2 = true;
                     }, (data, msg) => {
                         this.$Message.error(msg);
-                    })
+                    });
                 }, (res) => {
-                    //处理错误信息
+                    // 处理错误信息
                     this.$Message.error('网络异常，请稍后重试。');
-                })
+                });
             },
-            getCommontype() {
-                this.apiGet('commonType').then((res) => {
-                    this.handleAjaxResponse(res, (data, msg) => {
-                        this.menutype = data.menutype;
-                        this.keyword = data.keyword;
-                        this.mobileSite = data.mobileSite;
-                    }, (data, msg) => {
-                        this.$Message.error(msg);
-                    })
-                }, (res) => {
-                    //处理错误信息
-                    this.$Message.error('网络异常，请稍后重试。');
-                })
-            },
-            sendTemp(index) {
+
+            sendTemp (index) {
                 let _this = this;
                 this.$Modal.confirm({
                     title: '确认',
@@ -176,51 +155,51 @@
                     okText: '确认',
                     cancelText: '取消',
                     onOk: () => {
-                        _this.apiGet('ignoreFrontend/1' + "/" + index + "/template").then((res) => {
+                        _this.apiGet('ignoreFrontend/1' + '/' + index + '/template').then((res) => {
                             _this.handleAjaxResponse(res, (data, msg) => {
                                 _this.getData();
                                 _this.$Message.success(msg);
                             }, (data, msg) => {
                                 _this.modal_loading = false;
                                 _this.$Message.error(msg, 5);
-                            })
+                            });
                         }, (res) => {
-                            //处理错误信息
+                            // 处理错误信息
                             _this.$Message.error('网络异常，请稍后重试');
-                        })
+                        });
                     },
                     onCancel: () => {
-                        return false
+                        return false;
                     }
-                })
+                });
             },
-            removeCache(index) {
+            removeCache (index) {
                 let linkid = index.id;
-                this.apiGet('siteGetCurl/' + linkid + "/clearCache").then((res) => {
+                this.apiGet('siteGetCurl/' + linkid + '/clearCache').then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.getData();
                         this.$Message.success(msg);
                     }, (data, msg) => {
                         this.$Message.error(msg);
-                    })
+                    });
                 }, (res) => {
-                    //处理错误信息
+                    // 处理错误信息
                     this.$Message.error('网络异常，请稍后重试。');
-                })
+                });
             },
-            getMobileSite() {
+            getMobileSite () {
                 this.apiGet('Site/mobileSite').then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.mobileSite = data;
                     }, (data, msg) => {
                         this.$Message.error(msg);
-                    })
+                    });
                 }, (res) => {
-                    //处理错误信息
+                    // 处理错误信息
                     this.$Message.error('网络异常，请稍后重试。');
-                })
+                });
             },
-            getData() {
+            getData () {
                 let data = {
                     params: {
                         page: this.page,
@@ -236,28 +215,28 @@
                         this.total = data.total;
                     }, (data, msg) => {
                         this.$Message.error(msg);
-                    })
+                    });
                 }, (data) => {
                     this.$Message.error('网络异常，请稍后重试');
-                })
+                });
             },
 
-            changePage(page) {
+            changePage (page) {
                 this.page = page;
                 this.getData();
             },
-            changePageSize(pagesize) {
+            changePageSize (pagesize) {
                 this.rows = pagesize;
                 this.getData();
             },
-            queryData() {
+            queryData () {
                 this.getData();
             },
-            add() {
-                this.$refs.add.modal = true
-                this.$refs.add.distridata()
+            add () {
+                this.$refs.add.modal = true;
+                this.$refs.add.distridata();
             },
-            edit(index) {
+            edit (index) {
                 let editid = this.datas[index].id;
                 this.apiGet('site/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
@@ -266,46 +245,46 @@
                         let keyAar = [];
                         let link_id = [];
                         let code = [];
-                        //console.log(this.editinfo.menu)
-                        if (this.editinfo.menu !== "") {
-                            this.editinfo.menu.split(",").map(function (key) {
-                                tempNUmber.push(Number(key))
-                            })
+                        // console.log(this.editinfo.menu)
+                        if (this.editinfo.menu !== '') {
+                            this.editinfo.menu.split(',').map(function (key) {
+                                tempNUmber.push(Number(key));
+                            });
                         }
-                        if (this.editinfo.keyword_ids !== "") {
-                            this.editinfo.keyword_ids.split(",").map(function (key) {
-                                keyAar.push(Number(key))
-                            })
+                        if (this.editinfo.keyword_ids !== '') {
+                            this.editinfo.keyword_ids.split(',').map(function (key) {
+                                keyAar.push(Number(key));
+                            });
                         }
-                        if (this.editinfo.link_id !== "") {
-                            this.editinfo.link_id.split(",").map(function (key) {
-                                link_id.push(Number(key))
-                            })
+                        if (this.editinfo.link_id !== '') {
+                            this.editinfo.link_id.split(',').map(function (key) {
+                                link_id.push(Number(key));
+                            });
                         }
-                        if (this.editinfo.public_code !== "") {
-                            this.editinfo.public_code.split(",").map(function (key) {
-                                code.push(Number(key))
-                            })
+                        if (this.editinfo.public_code !== '') {
+                            this.editinfo.public_code.split(',').map(function (key) {
+                                code.push(Number(key));
+                            });
                         }
 
                         this.editinfo.menu = tempNUmber;
                         this.editinfo.keyword_ids = keyAar;
                         this.editinfo.link_id = link_id;
                         this.editinfo.public_code = code;
-                        //console.log(this.editinfo);
+                        // console.log(this.editinfo);
                         this.modal = false;
-                        this.$refs.save.modal = true
-                        this.$refs.save.distridata()
+                        this.$refs.save.modal = true;
+                        this.$refs.save.distridata();
                     }, (data, msg) => {
                         this.$Message.error(msg);
-                    })
+                    });
                 }, (res) => {
-                    //处理错误信息
+                    // 处理错误信息
                     this.$Message.error('网络异常，请稍后重试。');
-                })
+                });
             },
-            changeStatus(index, main_site) {
-                //需要删除确认
+            changeStatus (index, main_site) {
+                // 需要删除确认
                 let id = index.id;
                 let _this = this;
                 let data = {
@@ -325,16 +304,16 @@
                                     _this.$Message.success(msg);
                                 }, (data, msg) => {
                                     _this.$Message.error(msg);
-                                })
+                                });
                             }, (res) => {
-                                //处理错误信息
+                                // 处理错误信息
                                 _this.$Message.error('网络异常，请稍后重试。');
-                            })
+                            });
                         },
                         onCancel: () => {
-                            return false
+                            return false;
                         }
-                    })
+                    });
                 } else if (data.main_site == 10) {
                     this.$Modal.confirm({
                         title: '确认取消',
@@ -348,45 +327,45 @@
                                     _this.$Message.success(msg);
                                 }, (data, msg) => {
                                     _this.$Message.error(msg);
-                                })
+                                });
                             }, (res) => {
-                                //处理错误信息
+                                // 处理错误信息
                                 _this.$Message.error('网络异常，请稍后重试。');
-                            })
+                            });
                         },
                         onCancel: () => {
-                            return false
+                            return false;
                         }
-                    })
+                    });
                 }
             },
-            ftpInfo(index) {
+            ftpInfo (index) {
                 this.ftp_id = index.id;
                 this.ftp_info.ftp_place = index.ftp_place;
                 this.ftp_info.ftp_host = index.ftp_host;
                 this.ftp_info.ftp_user = index.ftp_user;
                 this.ftp_info.ftp_pwd = index.ftp_pwd;
                 this.$refs.ftpsave.modal = true;
-                this.$refs.other.modal2 = false
+                this.$refs.other.modal2 = false;
             },
-            changeDebug(index) {
+            changeDebug (index) {
                 this.debug_id = index.id;
                 this.debug_info = index.app_debug;
-                this.$refs.node_debug.changeDebug(this.debug_id,this.debug_info );
-                this.$refs.other.modal2 = false
+                this.$refs.node_debug.changeDebug(this.debug_id, this.debug_info);
+                this.$refs.other.modal2 = false;
             },
-            changeCdn(index) {
+            changeCdn (index) {
                 this.ftp_id = index.id;
                 this.cdn_info.cdn_type = index.cdn_type;
                 this.cdn_info.cdn_ip = index.cdn_ip;
-                this.$refs.cdnsave.modal = true
+                this.$refs.cdnsave.modal = true;
             },
-            activepush(index) {
+            activepush (index) {
                 this.ping_id = index.id;
                 this.ping.pingbaiduurl = index.pingbaiduurl;
                 this.$refs.activepush.modal = true;
             },
-            generateStatic(index) {
+            generateStatic (index) {
                 this.$Modal.confirm({
                     title: '一键生成',
                     content: '是否一键生成站点?',
@@ -402,26 +381,26 @@
                             }, (data, msg) => {
                                 this.modal_loading = false;
                                 this.$Message.error(msg, 5);
-                            })
+                            });
                         }, (res) => {
-                            //处理错误信息
+                            // 处理错误信息
                             this.modal_loading = false;
                             this.$Message.error('网络异常，请稍后重试。');
-                        })
+                        });
                     },
                     onCancel: () => {
-                        return false
+                        return false;
                     }
-                })
+                });
             },
-            other(index) {
+            other (index) {
                 this.others = index;
-                this.$refs.other.modal2 = true
+                this.$refs.other.modal2 = true;
             }
         },
         computed: {},
-        mixins: [http,common]
-    }
+        mixins: [http, common]
+    };
 </script>
 <style>
     .siteborder {

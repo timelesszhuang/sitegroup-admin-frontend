@@ -72,7 +72,7 @@
                         <Form-item label="手机网站" prop="m_site_id">
                             <Select clearable v-model="form.m_site_id" style="text-align: left;width:200px;"
                                     label-in-value filterable>
-                                <Option v-for="item in mobileSite" :value="item.id" :label="item.text" :key="item.id">
+                                <Option v-for="item in  this.$store.state.commondata.mobileSite" :value="item.id" :label="item.text" :key="item.id">
                                     {{ item.text }}
                                 </Option>
                             </Select>
@@ -80,15 +80,16 @@
 
                         <Form-item label="关键词" prop="keyword_ids">
                             <Select v-model="form.keyword_ids" multiple style="text-align: left;width:200px;">
-                                <Option v-for="item in keyword" :value="item.id" :label="item.label" :key="item.id">
+                                <Option v-for="item in this.$store.state.commondata.keyword" :value="item.id" :label="item.label" :key="item.id">
                                     {{ item.label }}
                                 </Option>
                             </Select>
+
                         </Form-item>
                         <Form-item label="栏目" prop="menu">
                             <Select filterable v-model="form.menu" multiple style="text-align: left;width:500px;">
                                 <Option disabled :value="0"><span>栏目名—栏目分类—栏目类型—所属文章分类—详情</span></Option>
-                                <Option v-for="item in menutype" :value="item.id" :label="item.text" :key="item.id">
+                                <Option v-for="item in this.$store.state.commondata.menutype" :value="item.id" :label="item.text" :key="item.id">
                                     {{ item.text}}—{{item.tag_name}}—{{item.flag_name}}
                                     <span v-if="item.type_name ==''">{{item.type_name}}</span>
                                     <span v-else>{{item.typeName}}</span>—{{item.title}}
@@ -487,16 +488,6 @@
     mixins: [http, common],
         props:
             {
-                menutype: {
-                    default:
-                        []
-                },
-                keyword: {
-                    default:
-                        []
-                },
-                mobileSite:
-                    {},
                 gpd: {default: 1}
             }
     };
