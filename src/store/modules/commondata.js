@@ -115,6 +115,9 @@ const commondata = {
             state.Domain = [];
             state.FriendLink = [];
             state.PublicCode = [];
+            state.menutype = [];
+            state.keyword = [];
+            state.mobileSite = [];
         }
     }
 };
