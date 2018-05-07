@@ -41,8 +41,8 @@
         </Row>
       </div>
       <div style="float: right;">
-        <Page :total="total" :current="current" @on-change="changePage" @on-page-size-change="changePageSize"
-              show-total show-elevator>
+        <Page :total="total" :page-size="pagesize"  :current="current" @on-change="changePage" @on-page-size-change="changePageSize"
+              show-total show-elevator >
         </Page>
       </div>
       <br>
@@ -73,7 +73,8 @@
               rows: 12,
               name: '',
               datas: [],
-              editinfo: {}
+              editinfo: {},
+              pagesize: 12
           };
       },
       components: {templateadd, templatesave},
@@ -87,7 +88,6 @@
           showhtml (index) {
               let showdata = this.datas[index];
               let showurl = window.HOST + showdata['show_path_href'];
-              //        console.log(dataimg)
               window.open(showurl);
           },
           choose_bgimg (index) {
