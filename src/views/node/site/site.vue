@@ -45,7 +45,6 @@
         <cdnsave ref="cdnsave" :cdn_id="ftp_id" :form="cdn_info"></cdnsave>
         <other ref="other" :otherArr="others"></other>
         <Activity ref="activity" :datas="activity_data" :sid="site_id"></Activity>
-        <activepush :ping_id="ping_id" :form="ping" ref="activepush"></activepush>
     </div>
 </template>
 
@@ -59,7 +58,6 @@
     import node_debug from './debug.vue';
     import other from './other.vue';
     import Activity from './activity.vue';
-    import activepush from './activepush.vue';
 
     export default {
         data () {
@@ -107,7 +105,7 @@
 
             };
         },
-        components: {siteadd, sitesave, ftpsave, cdnsave, Activity, other, node_debug, activepush},
+        components: {siteadd, sitesave, ftpsave, cdnsave, Activity, other, node_debug},
         created () {
             this.getData();
         },
