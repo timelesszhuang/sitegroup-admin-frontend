@@ -382,8 +382,10 @@
             getAuther () {
                 this.apiGet('articleautopoint/auther').then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
-                        this.Auther = data;
-                        console.log(this.Auther)
+                        data.forEach((item) => {
+                            const newChild = item;
+                            this.Auther.push(newChild);
+                        });
                     }, (data, msg) => {
                         this.$Message.error(msg);
                     });
@@ -405,7 +407,6 @@
                 });
             },
             loadAll () {
-
                 return this.Auther;
                 // return [
                 //     {'value': '三全鲜食（北新泾店）'},
@@ -459,7 +460,7 @@
                 // ];
             },
             handleSelect (item) {
-                console.log(item);
+                // console.log(item);
             }
         },
         mounted () {
@@ -467,7 +468,7 @@
             this.getAuther();
             this.getComForm();
             this.restaurants = this.loadAll();
-            console.log(this.loadAll());
+            // console.log(this.loadAll());
         },
         destroyed () {
             tinymce.get('tinymceEditerAddArticle').destroy();
