@@ -56,14 +56,28 @@
                         <Row>
                             <Col span="12">
                             <Form-item label="来源" prop="come_from">
-                                <Input type="text" v-model="form.come_from" placeholder="请输入来源"
-                                       style="width: 200px;"></Input>
+                                <!--<Input type="text" v-model="form.come_from" placeholder="请输入来源"-->
+                                       <!--style="width: 200px;"></Input>-->
+                                <el-autocomplete
+                                        class="inline-input"
+                                        v-model="form.come_from"
+                                        :fetch-suggestions="querySearch"
+                                        placeholder="请输入来源"
+                                        @select="handleSelect"
+                                ></el-autocomplete>
                             </Form-item>
                             </Col>
                             <Col span="12">
                             <Form-item label="作者" prop="auther">
-                                <Input type="text" v-model="form.auther" placeholder="请输入作者"
-                                       style="width: 200px;"></Input>
+                                <!--<Input type="text" v-model="form.auther" placeholder="请输入作者"-->
+                                       <!--style="width: 200px;"></Input>-->
+                                <el-autocomplete
+                                        class="inline-input"
+                                        v-model="form.auther"
+                                        :fetch-suggestions="querySearch1"
+                                        placeholder="请输入作者"
+                                        @select="handleSelect"
+                                ></el-autocomplete>
                             </Form-item>
                             </Col>
                         </Row>
@@ -190,7 +204,7 @@
 
     export default {
         components: {materialimg, tinymceInit},
-        data() {
+        data () {
             const checkarticletype = (rule, value, callback) => {
                 if (!value) {
                     callback(new Error('请选择文章分类'));
@@ -199,6 +213,10 @@
                 }
             };
             return {
+                ComForm: [],
+                Auther: [],
+                restaurants: [],
+                restaurantscom: [],
                 img: '',
                 form: {
                     articletype_id: 0,
@@ -218,7 +236,7 @@
                     is_collection: '',
                     tag_id: [],
                     flag: [],
-                    sort:0
+                    sort: 0
                 },
                 tags: '',
                 imgcontent: '',
@@ -261,7 +279,7 @@
             };
         },
         methods: {
-            addexclusive(editid) {
+            addexclusive (editid) {
                 this.apiGet('public_article/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         data.readcount = 0;
@@ -286,7 +304,7 @@
                     this.$Message.error('网络异常，请稍后重试。');
                 });
             },
-            addqq(editid) {
+            addqq (editid) {
                 this.apiGet('qicq/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         data.thumbnails = '';
@@ -310,7 +328,7 @@
                     this.$Message.error('网络异常，请稍后重试。');
                 });
             },
-            addhots(editid) {
+            addhots (editid) {
                 this.apiGet('hot_news/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         data.readcount = 0;
@@ -335,7 +353,7 @@
                     this.$Message.error('网络异常，请稍后重试。');
                 });
             },
-            addsouhu(editid) {
+            addsouhu (editid) {
                 this.apiGet('souhu/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         data.readcount = 0;
@@ -359,7 +377,7 @@
                     this.$Message.error('网络异常，请稍后重试。');
                 });
             },
-            add163(editid) {
+            add163 (editid) {
                 this.apiGet('wangyi/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         data.readcount = 0;
@@ -382,7 +400,7 @@
                     this.$Message.error('网络异常，请稍后重试。');
                 });
             },
-            edit(editid) {
+            edit (editid) {
                 this.apiGet('article/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.form = data;
@@ -400,7 +418,7 @@
                         if (this.form.flag !== '') {
                             this.form.flag.split(',').map(function (key) {
                                 flag.push(key);
-                                //console.log(flag);
+                                // console.log(flag);
                             });
                         }
                         this.form.flag = flag;
@@ -419,7 +437,7 @@
                     this.tinymceInit(vm, height, this.editImgId);
                 });
             },
-            change(status) {
+            change (status) {
                 if (status) {
                     this.tag_name = true;
                     this.$Message.info('切换到下拉选择');
@@ -428,10 +446,10 @@
                     this.$Message.info('切换到添加标签');
                 }
             },
-            changeTagtype(value) {
+            changeTagtype (value) {
                 this.form.tag_id = value.value;
             },
-            addmaterial(src) {
+            addmaterial (src) {
                 if (this.img === 'content') {
                     let imgsrc = '<img src=' + src + '>';
                     tinymce.get(this.editImgId).insertContent(imgsrc);
@@ -439,12 +457,12 @@
                     this.form.thumbnails = src;
                 }
             },
-            addimg(img) {
+            addimg (img) {
                 this.img = img;
                 this.$refs.addmaterial.getData();
                 this.$refs.addmaterial.modal = true;
             },
-            addtags() {
+            addtags () {
                 let data = {
                     type: 'article',
                     name: this.tags
@@ -465,7 +483,7 @@
                 });
             },
             // 缩略图上传回调
-            getResponse(response, file, filelist) {
+            getResponse (response, file, filelist) {
                 this.form.thumbnails = response.data.url;
                 if (response.status) {
                     this.$Message.success(response.msg);
@@ -476,20 +494,20 @@
                 }
                 this.$refs.upImg.clearFiles();
             },
-            getErrorInfo(error, file, filelist) {
+            getErrorInfo (error, file, filelist) {
                 this.$Message.error(error);
             },
-            formatError() {
+            formatError () {
                 this.$Message.error('文件格式只支持 jpg,jpeg,png三种格式。');
             },
-            updateData(data) {
+            updateData (data) {
                 this.form.content = data;
             },
-            changeArticletype(value) {
+            changeArticletype (value) {
                 this.form.articletype_name = value.label;
                 this.form.articletype_id = value.value;
             },
-            save() {
+            save () {
                 this.$refs.save.validate((valid) => {
                     if (valid) {
                         this.modal_loading = true;
@@ -520,7 +538,7 @@
                     }
                 });
             },
-            add() {
+            add () {
                 this.$refs.save.validate((valid) => {
                     if (valid) {
                         this.modal_loading = true;
@@ -561,20 +579,78 @@
                         });
                     }
                 });
+            },
+            querySearch (queryString, cb) {
+                var restaurants = this.restaurants;
+                var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
+                // 调用 callback 返回建议列表的数据
+                cb(results);
+            },
+            querySearch1 (queryString, cb) {
+                var restaurants = this.restaurantscom;
+                var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
+                // 调用 callback 返回建议列表的数据
+                cb(results);
+            },
+            createFilter (queryString) {
+                return (restaurant) => {
+                    return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+                };
+            },
+            getAuther () {
+                this.apiGet('articleautopoint/auther').then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        data.forEach((item) => {
+                            const newChild = item;
+                            this.Auther.push(newChild);
+                        });
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            },
+            getComForm () {
+                this.apiGet('articleautopoint/come_from').then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        data.forEach((item) => {
+                            const newChild = item;
+                            this.ComForm.push(newChild);
+                        });
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            },
+            loadAll () {
+                return this.Auther;
+            },
+            handleSelect (item) {
+            // console.log(item);
             }
+
         },
-        created() {
+        created () {
             this.editImgId = this.editImgId + this.randomWord(true, 3, 32);
         },
-        mounted() {
+        mounted () {
             this.init();
+            this.getAuther();
+            this.getComForm();
+            this.restaurants = this.loadAll();
+            this.restaurantscom = this.ComForm;
         },
-        destroyed() {
+        destroyed () {
             tinymce.get(this.editImgId).destroy();
         },
         mixins: [http, common, tinymceInit],
         props: {
-            gpd: {default: 1},
+            gpd: {default: 1}
             //
             // tagname: {
             //     default: {}
