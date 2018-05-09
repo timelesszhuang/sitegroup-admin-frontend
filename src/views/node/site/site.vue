@@ -43,7 +43,7 @@
         <ftpsave ref="ftpsave" :ftp_id="ftp_id" :form="ftp_info"></ftpsave>
         <node_debug ref="node_debug"  v-on:getdata="getData"></node_debug>
         <cdnsave ref="cdnsave" :cdn_id="ftp_id" :form="cdn_info"></cdnsave>
-        <other ref="other" :otherArr="others"></other>
+        <other ref="other" :otherArr="others"  v-on:siteManage="siteManage"></other>
         <Activity ref="activity" :datas="activity_data" :sid="site_id"></Activity>
     </div>
 </template>
@@ -127,9 +127,28 @@
             init () {
                 this.getData();
             },
+            siteManage (id) {
+                console.log(id);
+                this.site_id = id;
+
+                this.getChildSite(id);
+            },
             sendActivity (id) {
                 this.site_id = id;
                 this.getActivity(id);
+            },
+            getChildSite (id) {
+                this.apiGet('getActivily/' + id).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.activity_data = data;
+                        this.$refs.activity.modal2 = true;
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
             },
             getActivity (id) {
                 this.apiGet('getActivily/' + id).then((res) => {
