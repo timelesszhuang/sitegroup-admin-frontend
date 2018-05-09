@@ -94,22 +94,22 @@
 
                             </Select>
                         </Form-item>
-                        <Form-item label="子站地区" prop="district" style="text-align: left;width:700px;">
-                            <Row>
-                                <Col span="15">
-                                <Cascader :data="districtdata" change-on-select  :load-data="loadData" @on-change="ChangeSite"></Cascader>
-                                </Col>
-                                <Col span="9"> <Alert type="error">不选择默认上次选择的地区</Alert></Col>
-                            </Row>
+                        <!--<Form-item label="子站地区" prop="district" style="text-align: left;width:700px;">-->
+                            <!--<Row>-->
+                                <!--<Col span="15">-->
+                                <!--<Cascader :data="districtdata" change-on-select  :load-data="loadData" @on-change="ChangeSite"></Cascader>-->
+                                <!--</Col>-->
+                                <!--<Col span="9"> <Alert type="error">不选择默认上次选择的地区</Alert></Col>-->
+                            <!--</Row>-->
 
-                        </Form-item>
-                        <Form-item label="子站等级"  style="text-align: left;width:500px;">
-                            <RadioGroup v-model="form.level">
-                                <Radio v-show="this.level<=1" label="1" >省/直辖市</Radio>
-                                <Radio  v-show="this.level<=2" label="2">市</Radio>
-                                <Radio v-show="this.level<=3"  label="3">区/县</Radio>
-                            </RadioGroup>
-                        </Form-item>
+                        <!--</Form-item>-->
+                        <!--<Form-item label="子站等级"  style="text-align: left;width:500px;">-->
+                            <!--<RadioGroup v-model="form.level">-->
+                                <!--<Radio v-show="this.level<=1" label="1" >省/直辖市</Radio>-->
+                                <!--<Radio  v-show="this.level<=2" label="2">市</Radio>-->
+                                <!--<Radio v-show="this.level<=3"  label="3">区/县</Radio>-->
+                            <!--</RadioGroup>-->
+                        <!--</Form-item>-->
                         <Form-item label="模板" prop="template_id">
                             <Select v-model="form.template_id" style="text-align: left;width:350px;"
                                     label-in-value 　@on-change="changeTemptype">
@@ -465,15 +465,6 @@
             }
         },
         props: {
-            menutype: {
-                default:
-                    []
-            },
-            keyword: {
-                default:
-                    []
-            },
-            mobileSite: {},
             gpd: {default: 1},
             form: {
                 default: {
