@@ -11,12 +11,6 @@
                             <Form-item label="名称" prop="name">
                                 <Input type="text" v-model="form.name" placeholder="请输入产品名称 （或其他名称）"></Input>
                             </Form-item>
-                            <Form-item label="子站显示" prop="title">
-                                <RadioGroup v-model="form.stations">
-                                    <Radio label="10">开</Radio>
-                                    <Radio label="20">关</Radio>
-                                </RadioGroup>
-                            </Form-item>
                             <Row>
                                 <Col span="12">
                             <Form-item label="标记" prop="flag"
@@ -63,19 +57,47 @@
                             <Form-item label="编号" prop="sn">
                                 <Input type="text" v-model="form.sn" placeholder="请输入产品编号 （或其他编号）"></Input>
                             </Form-item>
-                            <Form-item label="产品分类" prop="type_name">
-                                <Select v-model="form.type_id" ref="select" :clearable="selects"
-                                        style="width:200px;"
-                                        label-in-value filterable clearable placeholder="根据分类查询"
-                                        @on-change="changePtype">
-                                    <Option-group v-for="(item,index) in this.$store.state.commondata.productType"
-                                                  :label="index" :key="index">
-                                        <Option v-for="(peritem, perindex) in item" :value="peritem.id"
-                                                :label="peritem.name" :key="perindex">{{ peritem.name }}
-                                        </Option>
-                                    </Option-group>
-                                </Select>
-                            </Form-item>
+                            <Row>
+                                <Col span="17">
+                                    <Form-item label="选择站点">
+                                        <Select  style="width:300px" label-in-value filterable clearable @on-change="changeChildSite">
+                                            <Option v-for="item in site" :value="item.id" :label="item.text" :key="item.id">
+                                                {{ item.text }}
+                                            </Option>
+                                        </Select>
+
+                                    </Form-item>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col span="12">
+                                    <Form-item label="产品分类" prop="type_name">
+                                        <Select v-model="form.type_id" ref="select" :clearable="selects"
+                                                style="width:200px;"
+                                                label-in-value filterable clearable placeholder="根据分类查询"
+                                                @on-change="changePtype">
+                                            <Option-group v-for="(item,index) in productType"
+                                                          :label="index" :key="index">
+                                                <Option v-for="(peritem, perindex) in item" :value="peritem.id"
+                                                        :label="peritem.name" :key="perindex">{{ peritem.name }}
+                                                </Option>
+                                            </Option-group>
+                                        </Select>
+                                    </Form-item>
+                                </Col>
+                                <Col span="12">
+                                    <Form-item label="子站选择" prop="stations_ids">
+                                        <Select v-model="form.stations_ids" multiple style="text-align: left;width:200px;">
+                                            <Option v-for="item in ChildsSitedata" :value="item.district_id" :label="item.name" :key="item.district_id">
+                                                {{ item.name }}
+                                            </Option>
+
+                                        </Select>
+                                    </Form-item>
+                                </Col>
+                            </Row>
+
+
                             <Form-item label="收费方式" prop="payway">
                                 <Input type="text" v-model="form.payway" placeholder="请输入收费方式（比如××元/户/年）"></Input>
                             </Form-item>
@@ -176,7 +198,7 @@
 
     export default {
         components: {materialimg},
-        data() {
+        data () {
             const checkptype = (rule, value, callback) => {
                 if (!value) {
                     callback(new Error('请选择产品分类'));
@@ -185,6 +207,10 @@
                 }
             };
             return {
+                ChildsSitedata: [],
+                site_id: Number,
+                site: [],
+                productType: [],
                 spinShow: true,
                 switch1: true,
                 tag_name: true,
@@ -196,6 +222,7 @@
                 imgshow: false,
                 selects: true,
                 form: {
+                    stations_ids: [],
                     name: '',
                     detail: '',
                     image: '',
@@ -215,7 +242,7 @@
                     description: '',
                     tag_id: [],
                     flag: [],
-                    sort:0
+                    sort: 0
                 },
                 tags: '',
                 AddRule: {
@@ -234,14 +261,68 @@
                 }
             };
         },
-        mounted() {
+        mounted () {
+            this.getSite();
+            this.getArticleType();
             this.init();
         },
-        destroyed() {
+        destroyed () {
             tinymce.get('tinymceEditerAddProduct').destroy();
             tinymce.get('tinymceEditerAddProductField4').destroy();
         },
         methods: {
+            changeChildSite (value) {
+                this.getArticleType(value.value);
+                this.getChildSitelist(value.value);
+            },
+            getArticleType (site_id) {
+                let data = {
+                    params: {
+                        module_type: 'product',
+                        site_id: site_id
+                    }
+                };
+                this.apiGet('get_type_list', data).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.productType = data;
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            },
+            getChildSitelist (site_id) {
+                let data = {
+                    params: {
+                        site_id: site_id
+                    }
+                };
+                this.apiGet('childsitelistbysiteid', data).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.ChildsSitedata = data;
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            },
+            getSite () {
+                this.apiGet('getSites').then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.site = data;
+                        //            console.log(this.site)
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            },
             init: function () {
                 this.$nextTick(() => {
                     let height = document.body.offsetHeight - 500;
@@ -249,16 +330,16 @@
                     this.tinymceInit(this, height, 'tinymceEditerAddProductField4', 'field4');
                 });
             },
-            addimg(img) {
+            addimg (img) {
                 this.img = img;
                 this.$refs.addmaterial.getData();
                 this.$refs.addmaterial.modal = true;
             },
-            formReset() {
+            formReset () {
                 // 表单重置
                 this.$refs.padd.resetFields();
             },
-            addmaterial(src) {
+            addmaterial (src) {
                 if (this.img === 'content') {
                     let imgsrc = '<img src=' + src + '>';
                     tinymce.get('tinymceEditerAddProduct').insertContent(imgsrc);
@@ -268,10 +349,10 @@
                     tinymce.get('tinymceEditerAddProductField4').insertContent(imgsrc);
                 } else if (this.img === 'thumbnail') {
                     this.form.image = src;
-                    //console.log(this.form.image)
+                    // console.log(this.form.image)
                 }
             },
-            change(status) {
+            change (status) {
                 if (status) {
                     this.tag_name = true;
                     this.$Message.info('切换到下拉选择');
@@ -280,10 +361,10 @@
                     this.$Message.info('切换到添加标签');
                 }
             },
-            changeTagtype(value) {
+            changeTagtype (value) {
                 this.form.tag_id = value.value;
             },
-            addtags() {
+            addtags () {
                 let data = {
                     type: 'product',
                     name: this.tags
@@ -304,12 +385,12 @@
                     // 处理错误信息
                 });
             },
-            changePtype(value) {
+            changePtype (value) {
                 this.form.type_id = value.value;
                 this.form.type_name = value.label;
             },
             // 缩略图上传回调
-            getResponse(response, file, filelist) {
+            getResponse (response, file, filelist) {
                 this.form.image = response.data.url;
                 if (response.status) {
                     this.$Message.success(response.msg);
@@ -320,19 +401,19 @@
                 }
                 this.$refs.upImg.clearFiles();
             },
-            getErrorInfo(error, file, filelist) {
+            getErrorInfo (error, file, filelist) {
                 this.$Message.error(error);
             },
-            formatError() {
+            formatError () {
                 this.$Message.error('文件格式只支持 jpg,jpeg,png三种格式。');
             },
-            getError(error, file, filelist) {
+            getError (error, file, filelist) {
                 this.$Message.error(error);
             },
-            formatE() {
+            formatE () {
                 this.$Message.error('文件格式只支持 jpg,jpeg,png三种格式。');
             },
-            add() {
+            add () {
                 this.$refs.padd.validate((valid) => {
                     if (valid) {
                         this.modal_loading = true;
@@ -368,11 +449,12 @@
                 });
             }
         },
-        destroyed() {
+        destroyed () {
             tinymce.get('tinymceEditerAddProduct').destroy();
             tinymce.get('tinymceEditerAddProductField4').destroy();
-        }, props: {
-            gpd: {default: 1},
+        },
+    props: {
+            gpd: {default: 1}
         },
         mixins: [http, common, tinymceInit]
     };

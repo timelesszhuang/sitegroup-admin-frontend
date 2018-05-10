@@ -121,6 +121,8 @@
             edit(index) {
                 let editid = this.datas[index].id;
                 this.$refs.save.edit(editid);
+                this.$refs.save.getSite();
+                this.$refs.save.getArticleType();
                 this.$refs.save.modal = true;
             },
             showhtml(index) {

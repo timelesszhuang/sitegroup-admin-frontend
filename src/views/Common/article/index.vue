@@ -55,7 +55,7 @@
 
     export default {
         name: 'index',
-        data() {
+        data () {
             return {
                 page_show: true,
                 border: true,
@@ -74,15 +74,15 @@
                 showhtmldata: []
             };
         },
-        mounted() {
+        mounted () {
             this.getArticleType();
             this.getArticleTag();
         },
-        created() {
+        created () {
             this.getData();
         },
         methods: {
-            getData() {
+            getData () {
                 let data = {
                     params: {
                         page: this.page,
@@ -101,7 +101,7 @@
 
                 });
             },
-            remove(index) {
+            remove (index) {
                 // 需要删除确认
                 let id = this.datas[index].id;
                 let _this = this;
@@ -128,30 +128,30 @@
                 });
             },
 
-            queryData() {
+            queryData () {
                 this.page = 1;
                 this.page_show = false;
                 this.getData();
                 this.page_show = true;
             },
-            changePage(page) {
+            changePage (page) {
                 this.page = page;
                 this.getData();
             },
-            changePageSize(pagesize) {
+            changePageSize (pagesize) {
                 this.rows = pagesize;
                 this.getData();
             },
-            importadd() {
+            importadd () {
                 this.$refs.csvimport.modal = true;
                 this.$refs.csvimport.csvclose();
             },
-            show(index) {
+            show (index) {
                 let editid = this.datas[index].id;
                 this.$refs.show.edit(editid);
                 this.$refs.show.modal = true;
             },
-            showhtml(index) {
+            showhtml (index) {
                 let data = this.datas[index];
                 this.apiPost('article_show_html', data).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
@@ -175,24 +175,26 @@
                 });
             },
             // 添加文章相关操作
-            add() {
+            add () {
                 this.$refs.add.modal = true;
             },
-            error(nodesc) {
+            error (nodesc) {
                 this.$Notice.error({
                     title: '预览模板页被浏览器拦截,请允许',
                     desc: nodesc ? '' : ''
                 });
             },
-            edit(index) {
+            edit (index) {
                 let editid = this.datas[index].id;
                 this.$refs.save.edit(editid);
+                this.$refs.save.getSite();
+                this.$refs.save.getArticleType();
                 this.$refs.save.modal = true;
             }
         },
         components: {articleadd, articlesave, articleshow, articlecsv, showhtml},
         computed: {
-            tableColumns() {
+            tableColumns () {
                 let columns = [];
                 let _this = this;
                 if (this.showCheckbox) {
@@ -211,7 +213,7 @@
                 columns.push({
                     title: '标题',
                     sortable: true,
-                    render(h, params) {
+                    render (h, params) {
                         return h('span', {
                             attrs: {
                                 title: params.row.title,
@@ -241,7 +243,7 @@
                         key: 'action',
                         align: 'center',
                         fixed: 'right',
-                        render(h, params) {
+                        render (h, params) {
                             return h('div', [
                                 h('Button', {
                                     props: {

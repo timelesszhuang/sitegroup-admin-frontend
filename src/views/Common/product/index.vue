@@ -148,10 +148,13 @@
             },
             edit (index) {
                 let editid = this.datas[index].id;
+
                 this.$refs.edit.modal = true;
                 this.$refs.edit.editdata(editid);
+                this.$refs.edit.getSite();
+                this.$refs.edit.getArticleType();
             },
-            remove(index) {
+            remove (index) {
                 // 需要删除确认
                 let id = this.datas[index].id;
                 let _this = this;

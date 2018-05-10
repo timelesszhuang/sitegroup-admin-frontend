@@ -63,18 +63,45 @@
                             <Form-item label="编号" prop="sn">
                                 <Input type="text" v-model="form.sn" placeholder="请输入产品编号 （或其他编号）"></Input>
                             </Form-item>
-                            <Form-item label="产品分类" prop="type_name">
-                                <Select ref="select" v-model="form.type_id" style="width:200px;"
-                                        label-in-value filterable clearable 　@on-change="changePtype">
-                                    <Option-group v-for="(item,index) in this.$store.state.commondata.productType"
-                                                  :label="index" :key="index">
-                                        <Option v-for="(peritem,perindex) in item" :value="peritem.id"
-                                                :label="peritem.name"
-                                                :key="perindex">{{ peritem.name }}
-                                        </Option>
-                                    </Option-group>
-                                </Select>
-                            </Form-item>
+                            <Row>
+                                <Col span="17">
+                                    <Form-item label="选择站点">
+                                        <Select  style="width:300px" label-in-value filterable clearable @on-change="changeChildSite">
+                                            <Option v-for="item in site" :value="item.id" :label="item.text" :key="item.id">
+                                                {{ item.text }}
+                                            </Option>
+                                        </Select>
+
+                                    </Form-item>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col span="12">
+                                    <Form-item label="产品分类" prop="type_name">
+                                        <Select v-model="form.type_id" ref="select" :clearable="selects"
+                                                style="width:200px;"
+                                                label-in-value filterable clearable placeholder="根据分类查询"
+                                                @on-change="changePtype">
+                                            <Option-group v-for="(item,index) in productType"
+                                                          :label="index" :key="index">
+                                                <Option v-for="(peritem, perindex) in item" :value="peritem.id"
+                                                        :label="peritem.name" :key="perindex">{{ peritem.name }}
+                                                </Option>
+                                            </Option-group>
+                                        </Select>
+                                    </Form-item>
+                                </Col>
+                                <Col span="12">
+                                    <Form-item label="子站选择" prop="stations_ids">
+                                        <Select v-model="form.stations_ids" multiple style="text-align: left;width:200px;">
+                                            <Option v-for="item in ChildsSitedata" :value="item.district_id" :label="item.name" :key="item.district_id">
+                                                {{ item.name }}
+                                            </Option>
+
+                                        </Select>
+                                    </Form-item>
+                                </Col>
+                            </Row>
                             <Form-item label="收费方式" prop="payway">
                                 <Input type="text" v-model="form.payway" placeholder="请输入收费方式（比如××元/户/年）"></Input>
                             </Form-item>
@@ -178,6 +205,10 @@
                 }
             };
             return {
+                ChildsSitedata: [],
+                site_id: Number,
+                site: [],
+                productType: [],
                 tag_name: true,
                 switch1: true,
                 selects: true,
@@ -187,27 +218,27 @@
                 action: window.ImgUploadPath,
                 type_name: '',
                 form: {
-                    default: {
-                        name: '',
-                        detail: '',
-                        image: '',
-                        summary: '',
-                        payway: '',
-                        sn: '',
-                        stations: '',
-                        type_name: '',
-                        type_id: 0,
-                        keywords: '',
-                        title: '',
-                        description: '',
-                        field1: '',
-                        field2: '',
-                        field3: '',
-                        field4: '',
-                        content: '',
-                        flag: '',
-                        sort:0
-                    }
+                  stations_ids: [],
+                  name: '',
+                  detail: '',
+                  image: '',
+                  summary: '',
+                  payway: '',
+                  sn: '',
+                  stations: '10',
+                  type_name: '',
+                  type_id: 0,
+                  imgser: [],
+                  keywords: '',
+                  title: '',
+                  field1: '',
+                  field2: '',
+                  field3: '',
+                  field4: '',
+                  description: '',
+                  tag_id: [],
+                  flag: [],
+                  sort: 0
                 },
                 tags: '',
                 ptype: [],
@@ -230,6 +261,58 @@
         },
         computed: {},
         methods: {
+            changeChildSite (value) {
+                this.getArticleType(value.value);
+                this.getChildSitelist(value.value);
+            },
+            getArticleType (site_id) {
+                let data = {
+                    params: {
+                        module_type: 'product',
+                        site_id: site_id
+                    }
+                };
+                this.apiGet('get_type_list', data).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.productType = data;
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            },
+            getChildSitelist (site_id) {
+                let data = {
+                    params: {
+                        site_id: site_id
+                    }
+                };
+                this.apiGet('childsitelistbysiteid', data).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.ChildsSitedata = data;
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            },
+            getSite () {
+                this.apiGet('getSites').then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.site = data;
+                        //            console.log(this.site)
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            },
             init: function () {
                 this.$nextTick(() => {
                     let vm = this;
@@ -354,8 +437,9 @@
                 this.apiGet('product/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.form = data;
-                        tinymce.get('tinymceEditerSaveProduct').setContent(this.form.detail);
-                        tinymce.get('tinymceEditerSaveProductField4').setContent(this.form.field4);
+                      tinymce.get('tinymceEditerSaveProduct').setContent(this.form.detail);
+                      if(this.form.field4){
+                      tinymce.get('tinymceEditerSaveProductField4').setContent(this.form.field4);}
                         let tempNUmber = [];
                         if (this.form.tags !== '') {
                             this.form.tags.split(',').map(function (key) {
@@ -372,6 +456,13 @@
                         }
                         this.form.flag = flag;
                         this.form.tag_id = tempNUmber;
+                        let ChildNUmber = [];
+                        if (this.form.stations_ids !== '') {
+                            this.form.stations_ids.split(',').map(function (key) {
+                                ChildNUmber.push(Number(key));
+                            });
+                        }
+                        this.form.stations_ids = ChildNUmber;
                         this.tags = '';
                     }, (data, msg) => {
                         this.$Message.error(msg);

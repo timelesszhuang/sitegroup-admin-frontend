@@ -21,16 +21,6 @@
                             </Col>
                         </Row>
                         <Row>
-                            <Col span="17">
-                            <Form-item label="子站显示" prop="title">
-                                <RadioGroup v-model="form.stations">
-                                    <Radio label="10">开</Radio>
-                                    <Radio label="20">关</Radio>
-                                </RadioGroup>
-                            </Form-item>
-                            </Col>
-                        </Row>
-                        <Row>
                             <Col span="12">
                             <Form-item label="标记" prop="flag"
                                        style="position: relative;z-index: 10">
@@ -109,25 +99,47 @@
                             </Col>
                         </Row>
                         <Row>
-                            <Col span="12">
-                            <Form-item label="文章分类" prop="articletype_id" style="position: relative;z-index: 100">
-                                <Select ref="select" :clearable="selects" v-model="form.articletype_id"
-                                        style="width:200px;"
-                                        label-in-value filterable clearable 　@on-change="changeArticletype">
-                                    <Option-group v-for="(item,index) in this.$store.state.commondata.articleType"
-                                                  :label="index" :key="index">
-                                        <Option v-for="(peritem ,perindex) in item" :value="peritem.id"
-                                                :label="peritem.name"
-                                                :key="perindex">{{ peritem.name }}
+                            <Col span="17">
+                                <Form-item label="选择站点">
+                                    <Select v-model="form.site_id"  style="width:300px" label-in-value filterable clearable @on-change="changeChildSite">
+                                        <Option v-for="item in site" :value="item.id" :label="item.text" :key="item.id">
+                                            {{ item.text }}
                                         </Option>
-                                    </Option-group>
-                                </Select>
-                            </Form-item>
+                                    </Select>
+
+                                </Form-item>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col span="12">
+                                <Form-item label="文章分类" prop="articletype_id">
+                                    <Select ref="select" :clearable="true" v-model="form.articletype_id"
+                                            style="width:200px;"
+                                            label-in-value filterable @on-change="changeArticletype">
+                                        <Option-group v-for="(item,index) in articleType"
+                                                      :label="index" :key="index">
+                                            <Option v-for="(peritem ,perindex) in item" :value="peritem.id"
+                                                    :label="peritem.name"
+                                                    :key="perindex">{{ peritem.name }}
+                                            </Option>
+
+                                        </Option-group>
+                                    </Select>
+                                </Form-item>
                             </Col>
                             <Col span="12">
-                            <Form-item label="阅读次数" prop="readcount">
-                                <InputNumber :min="1" v-model="form.readcount" placeholder="请输入作者"></InputNumber>
-                            </Form-item>
+                                <Form-item label="子站选择" prop="stations_ids">
+                                    <Select v-model="form.stations_ids" multiple style="text-align: left;width:200px;">
+                                        <Option v-for="item in ChildsSitedata" :value="item.district_id" :label="item.name" :key="item.district_id">
+                                            {{ item.name }}
+                                        </Option>
+
+                                    </Select>
+                                </Form-item>
+
+                                <!--<Form-item label="子站选择" prop="stations_ids">-->
+                                <!--<InputNumber :min="1" v-model="form.stations_ids" placeholder="请选择站点"></InputNumber>-->
+                                <!--</Form-item>-->
                             </Col>
                         </Row>
                         <Form-item label="文章描述" prop="summary">
@@ -213,12 +225,18 @@
                 }
             };
             return {
+                site: [],
+                articleType: [],
                 ComForm: [],
                 Auther: [],
                 restaurants: [],
                 restaurantscom: [],
                 img: '',
+                ChildsSitedata: [],
                 form: {
+                    site_id: 0,
+                    testid: 160,
+                    stations_ids: [],
                     articletype_id: 0,
                     articletype_name: '',
                     auther: '',
@@ -279,6 +297,58 @@
             };
         },
         methods: {
+            changeChildSite (value) {
+                this.getArticleType(value.value);
+                this.getChildSitelist(value.value);
+            },
+            getArticleType (site_id) {
+                let data = {
+                    params: {
+                        module_type: 'article',
+                        site_id: site_id
+                    }
+                };
+                this.apiGet('get_type_list', data).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.articleType = data;
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            },
+            getChildSitelist (site_id) {
+                let data = {
+                    params: {
+                        site_id: site_id
+                    }
+                };
+                this.apiGet('childsitelistbysiteid', data).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.ChildsSitedata = data;
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            },
+            getSite () {
+                this.apiGet('getSites').then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.site = data;
+                        //            console.log(this.site)
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            },
             addexclusive (editid) {
                 this.apiGet('public_article/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
@@ -406,9 +476,10 @@
                         this.form = data;
                         tinymce.get(this.editImgId).setContent(this.form.content);
                         let tempNUmber = [];
+
                         if (this.form.tags !== '') {
                             this.form.tags.split(',').map(function (key) {
-                                tempNUmber.push(key);
+                                tempNUmber.push(Number(key));
                             });
                         }
                         delete this.form.tags;
@@ -421,6 +492,13 @@
                                 // console.log(flag);
                             });
                         }
+                        let ChildNUmber = [];
+                        if (this.form.stations_ids !== '') {
+                            this.form.stations_ids.split(',').map(function (key) {
+                                ChildNUmber.push(Number(key));
+                            });
+                        }
+                        this.form.stations_ids = ChildNUmber;
                         this.form.flag = flag;
                         this.flags = '';
                     }, (data, msg) => {
@@ -516,6 +594,7 @@
                         let text = activeEditor.selection.getContent({'format': 'html'});
                         this.form.content = text;
                         let data = this.form;
+                        console.log(data);
                         let id = data.id;
                         this.apiPut('article/' + id, data).then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {
