@@ -1,8 +1,3 @@
-<style scoped>
-    .ivu-tooltip-inner {
-        max-width: 500px;
-    }
-</style>
 <template>
     <div>
         <Modal v-model="modal" width="900" :styles="{top: '20px'}" :mask-closable="false">
@@ -107,7 +102,7 @@
                         </Row>
                         <Form-item label="显示范围">
                             <RadioGroup v-model="form.stations" @on-change="ChangRadio">
-                                <Tooltip content="主站（主域名）和所有子站（二级域名）显示该篇文章" placement="top-start">
+                                <Tooltip content="主站（主域名）和子站（二级域名）显示该篇文章" placement="top-start">
                                     <Radio label="10"><span>全部显示</span></Radio>
                                 </Tooltip>
                                 <Tooltip content="只有主站（主域名）显示该篇文章" placement="top-start" class="tooltip">
