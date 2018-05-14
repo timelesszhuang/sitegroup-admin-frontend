@@ -71,10 +71,6 @@
 
                                     </Select>
                                 </Form-item>
-
-                                <!--<Form-item label="子站选择" prop="stations_ids">-->
-                                <!--<InputNumber :min="1" v-model="form.stations_ids" placeholder="请选择站点"></InputNumber>-->
-                                <!--</Form-item>-->
                             </Col>
                         </Row>
                         <Form-item class="contentarticle" label="内容">
@@ -405,7 +401,7 @@
         destroyed () {
             tinymce.get('tinymceEditersave').destroy();
         },
-    props: {
+        props: {
             gpd: {default: 1}
         },
         mixins: [http, common, tinymceInit]

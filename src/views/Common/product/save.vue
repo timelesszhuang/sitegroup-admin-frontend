@@ -101,10 +101,6 @@
 
                                         </Select>
                                     </Form-item>
-
-                                    <!--<Form-item label="子站选择" prop="stations_ids">-->
-                                    <!--<InputNumber :min="1" v-model="form.stations_ids" placeholder="请选择站点"></InputNumber>-->
-                                    <!--</Form-item>-->
                                 </Col>
                             </Row>
                             <Form-item label="收费方式" prop="payway">

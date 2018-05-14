@@ -17,7 +17,6 @@
                             <ColorPicker v-model="form.title_color"/>
                             </Col>
                         </Row>
-
                         <Row>
                             <Col span="12">
                             <Form-item label="标记" prop="flag"
@@ -45,8 +44,6 @@
                         <Row>
                             <Col span="12">
                             <Form-item label="来源" prop="come_from">
-                                <!--<Input type="text" v-model="form.come_from" placeholder="请输入来源"-->
-                                       <!--style="width: 200px;"/>-->
                                 <el-autocomplete
                                         size="small"
                                         class="inline-input"
@@ -55,9 +52,7 @@
                                         placeholder="请输入来源"
                                         @select="handleSelect"
                                 ></el-autocomplete>
-
                             </Form-item>
-
                             </Col>
                             <Col span="12">
                             <Form-item label="作者" prop="auther">
@@ -69,10 +64,6 @@
                                         placeholder="请输入作者"
                                         @select="handleSelect"
                                 ></el-autocomplete>
-
-
-                                <!--<Input type="text" v-model="form.auther" placeholder="请输入作者"-->
-                                       <!--style="width: 200px;"/>-->
                             </Form-item>
                             </Col>
                         </Row>
@@ -111,7 +102,6 @@
                             <Radio label="40">   <span>选定子站</span></Radio>
                             </RadioGroup>
                         </Form-item>
-
                         <Row v-if="this.form.stations =='40' && this.ShowId == null">
                             <Col span="17">
                                 <Form-item label="选择站点">
@@ -120,7 +110,6 @@
                                             {{ item.text }}
                                         </Option>
                                     </Select>
-
                                 </Form-item>
                             </Col>
                         </Row>
@@ -136,7 +125,6 @@
                                                 :label="peritem.name"
                                                 :key="perindex">{{ peritem.name }}
                                         </Option>
-
                                     </Option-group>
                                 </Select>
                             </Form-item>
@@ -147,13 +135,8 @@
                                     <Option v-for="item in ChildsSitedata" :value="item.district_id" :label="item.name" :key="item.district_id">
                                         {{ item.name }}
                                     </Option>
-
                                 </Select>
                                     </Form-item>
-
-                                    <!--<Form-item label="子站选择" prop="stations_ids">-->
-                                    <!--<InputNumber :min="1" v-model="form.stations_ids" placeholder="请选择站点"></InputNumber>-->
-                                <!--</Form-item>-->
                             </Col>
                         </Row>
                         <Form-item label="阅读次数" prop="readcount">

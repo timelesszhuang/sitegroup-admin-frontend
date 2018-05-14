@@ -45,8 +45,6 @@
                         <Row>
                             <Col span="12">
                             <Form-item label="来源" prop="come_from">
-                                <!--<Input type="text" v-model="form.come_from" placeholder="请输入来源"-->
-                                       <!--style="width: 200px;"></Input>-->
                                 <el-autocomplete
                                         size="small"
                                         class="inline-input"
@@ -59,8 +57,6 @@
                             </Col>
                             <Col span="12">
                             <Form-item label="作者" prop="auther">
-                                <!--<Input type="text" v-model="form.auther" placeholder="请输入作者"-->
-                                       <!--style="width: 200px;"></Input>-->
                                 <el-autocomplete
                                         size="small"
                                         class="inline-input"
@@ -107,7 +103,6 @@
                                 <Radio label="40">   <span>选定子站</span></Radio>
                             </RadioGroup>
                         </Form-item>
-
                         <Row v-if="this.form.stations =='40' && this.ShowId == null">
                             <Col span="17">
                                 <Form-item label="选择站点">
@@ -116,7 +111,6 @@
                                             {{ item.text }}
                                         </Option>
                                     </Select>
-
                                 </Form-item>
                             </Col>
                         </Row>
@@ -146,10 +140,6 @@
 
                                     </Select>
                                 </Form-item>
-
-                                <!--<Form-item label="子站选择" prop="stations_ids">-->
-                                <!--<InputNumber :min="1" v-model="form.stations_ids" placeholder="请选择站点"></InputNumber>-->
-                                <!--</Form-item>-->
                             </Col>
                         </Row>
                         <Form-item label="文章描述" prop="summary">
@@ -513,13 +503,11 @@
                 this.apiGet('article/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.form = data;
-
                         tinymce.get(this.editImgId).setContent(this.form.content);
                         if (this.form.stations == 40) {
                             this.getChildSitelist(this.form.site_id);
                         }
                         let tempNUmber = [];
-
                         if (this.form.tags !== '') {
                             this.form.tags.split(',').map(function (key) {
                                 tempNUmber.push(Number(key));
@@ -532,7 +520,6 @@
                         if (this.form.flag !== '') {
                             this.form.flag.split(',').map(function (key) {
                                 flag.push(key);
-                                // console.log(flag);
                             });
                         }
                         let ChildNUmber = [];
