@@ -30,9 +30,11 @@
                             </Form-item>
                             </Col>
                             <Col span="7">
-                                <Tooltip content="权重越大越显示在前面" placement="top-start" class="tooltip">
-                                    <InputNumber :min="1" v-model="form.sort" placeholder="请输入权重"></InputNumber>
-                                </Tooltip>
+                                <Form-item label="权重" prop="sort">
+                                    <Tooltip content="权重越大越显示在前面" placement="top-start" class="tooltip">
+                                        <InputNumber :min="1" v-model="form.sort" placeholder="请输入权重"></InputNumber>
+                                    </Tooltip>
+                                </Form-item>
                             </Col>
                         </Row>
                         <Row>
@@ -63,7 +65,7 @@
                                         v-model="form.auther"
                                         :fetch-suggestions="querySearch1"
                                         placeholder="请输入作者"
-                                        @select="handleSelect"
+                                        @select="handleSelect1"
                                 ></el-autocomplete>
                             </Form-item>
                             </Col>
@@ -426,7 +428,8 @@
                         let tempNUmber = [];
                         this.form.tag_id = tempNUmber;
                         this.form.flag = tempNUmber;
-                        this.modal = true;
+                        this.form.stations_ids = [];
+                      this.modal = true;
                     }, (data, msg) => {
                         this.$Message.error(msg);
                     });
@@ -451,6 +454,7 @@
                         let tempNUmber = [];
                         this.form.tag_id = tempNUmber;
                         this.form.flag = tempNUmber;
+                        this.form.stations_ids = [];
                         this.modal = true;
                     }, (data, msg) => {
                         this.$Message.error(msg);
@@ -475,6 +479,7 @@
                         let tempNUmber = [];
                         this.form.tag_id = tempNUmber;
                         this.form.flag = tempNUmber;
+                        this.form.stations_ids = [];
                         this.modal = true;
                     }, (data, msg) => {
                         this.$Message.error(msg);
@@ -498,6 +503,7 @@
                         let tempNUmber = [];
                         this.form.tag_id = tempNUmber;
                         this.form.flag = tempNUmber;
+                        this.form.stations_ids = [];
                         this.modal = true;
                     }, (data, msg) => {
                         this.$Message.error(msg);
@@ -632,7 +638,7 @@
                         let text = activeEditor.selection.getContent({'format': 'html'});
                         this.form.content = text;
                         let data = this.form;
-                        //console.log(data);
+                        // console.log(data);
                         let id = data.id;
                         this.apiPut('article/' + id, data).then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {
@@ -674,7 +680,10 @@
                             keywords: this.form.keywords,
                             shorttitle: this.form.shorttitle,
                             is_collection: this.form.is_collection,
-                            tag_id: this.form.tag_id
+                            tag_id: this.form.tag_id,
+                            stations_ids: this.form.stations_ids,
+                            stations: this.form.stations,
+                            site_id: this.form.site_id
                         };
                         this.apiPost('article', data).then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {
@@ -704,12 +713,17 @@
                 cb(results);
             },
             querySearch1 (queryString, cb) {
-                var restaurants = this.restaurantscom;
-                var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
+                var restaurants1 = this.restaurantscom;
+                var results = queryString ? restaurants1.filter(this.createFilter1(queryString)) : restaurants1;
                 // 调用 callback 返回建议列表的数据
                 cb(results);
             },
             createFilter (queryString) {
+                return (restaurant) => {
+                    return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+                };
+            },
+          createFilter1 (queryString) {
                 return (restaurant) => {
                     return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
                 };
@@ -748,7 +762,10 @@
                 return this.Auther;
             },
             handleSelect (item) {
-            // console.log(item);
+
+            },
+            handleSelect1 (item) {
+
             }
 
         },

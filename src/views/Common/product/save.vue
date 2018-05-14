@@ -77,7 +77,7 @@
                             <Row v-if="this.form.stations =='40' ">
                                 <Col span="17">
                                     <Form-item label="选择站点">
-                                        <Select  style="width:300px" label-in-value filterable clearable @on-change="changeChildSite">
+                                        <Select v-model="form.site_id" style="width:300px" label-in-value filterable clearable @on-change="changeChildSite">
                                             <Option v-for="item in site" :value="item.id" :label="item.text" :key="item.id">
                                                 {{ item.text }}
                                             </Option>
@@ -210,7 +210,7 @@
         data () {
             const checkptype = (rule, value, callback) => {
                 if (!value) {
-                    callback(new Error('请选择文章分类'));
+                    callback(new Error('请选择分类'));
                 } else {
                     callback();
                 }
@@ -230,7 +230,7 @@
                 action: window.ImgUploadPath,
                 type_name: '',
                 form: {
-                    site_id:0,
+                    site_id: 0,
                     stations_ids: [],
                     name: '',
                     detail: '',
@@ -473,6 +473,11 @@
                 this.apiGet('product/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.form = data;
+                        this.form.type_name = data.type_name;
+                        this.form.type_id = data.type_id;
+                        if (this.form.stations == 40) {
+                            this.getChildSitelist(this.form.site_id);
+                        }
                         tinymce.get('tinymceEditerSaveProduct').setContent(this.form.detail);
                         if (this.form.field4) {
                             tinymce.get('tinymceEditerSaveProductField4').setContent(this.form.field4);

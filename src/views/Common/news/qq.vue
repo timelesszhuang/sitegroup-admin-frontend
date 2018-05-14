@@ -106,6 +106,8 @@
           },
           edit (index) {
               let editid = this.datas[index].id;
+              this.$refs.save.getSite();
+              this.$refs.save.getArticleType();
               this.$refs.save.addqq(editid);
           },
           show (index) {

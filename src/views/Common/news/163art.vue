@@ -110,6 +110,8 @@
           edit (index) {
               let editid = this.datas[index].id;
               this.$refs.save.add163(editid);
+              this.$refs.save.getSite();
+              this.$refs.save.getArticleType();
           },
           show (index) {
               this.getArticle(index);
