@@ -31,7 +31,7 @@
                             </Col>
                             <Col span="7">
                                 <Form-item label="权重" prop="sort">
-                                    <Tooltip content="权重越大月越显示在前面" placement="top-start" class="tooltip">
+                                    <Tooltip content="权重越大越显示在前面" placement="top-start" class="tooltip">
                                         <InputNumber :min="1" v-model="form.sort" placeholder="请输入权重"></InputNumber>
                                     </Tooltip>
                                 </Form-item>
