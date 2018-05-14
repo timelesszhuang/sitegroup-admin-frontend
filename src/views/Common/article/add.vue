@@ -1,3 +1,8 @@
+<style scoped>
+    .ivu-tooltip-inner {
+        max-width: 500px;
+    }
+</style>
 <template>
     <div>
         <Modal v-model="modal" width="900" :styles="{top: '20px'}" :mask-closable="false">
