@@ -46,7 +46,7 @@
     import showhtml from './showhtml.vue';
 
     export default {
-        data() {
+        data () {
             return {
                 self: this,
                 border: true,
@@ -70,15 +70,15 @@
         components: {
             questionadd, questionsave, showhtml
         },
-        created() {
+        created () {
             this.getData();
         },
-        mounted() {
+        mounted () {
             this.getQuestionType();
             this.getQuestionTag();
         },
         methods: {
-            getData() {
+            getData () {
                 let data = {
                     params: {
                         page: this.page,
@@ -98,34 +98,35 @@
 
                 });
             },
-            changePage(page) {
+            changePage (page) {
                 this.page = page;
                 this.getData();
             },
-            changePageSize(pagesize) {
+            changePageSize (pagesize) {
                 this.rows = pagesize;
                 this.getData();
             },
-            queryData() {
+            queryData () {
                 this.getData();
             },
-            add() {
+            add () {
                 this.$refs.add.modal = true;
             },
-            error(nodesc) {
+            error (nodesc) {
                 this.$Notice.error({
                     title: '预览模板页被浏览器拦截,请允许',
                     desc: nodesc ? '' : ''
                 });
             },
-            edit(index) {
+            edit (index) {
                 let editid = this.datas[index].id;
                 this.$refs.save.edit(editid);
                 this.$refs.save.getSite();
+                this.$refs.save.getShow();
                 this.$refs.save.getArticleType();
                 this.$refs.save.modal = true;
             },
-            showhtml(index) {
+            showhtml (index) {
                 let data = this.datas[index];
                 this.apiPost('question_show_html', data).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
@@ -148,7 +149,7 @@
                     this.modal_loading = false;
                 });
             },
-            remove(index) {
+            remove (index) {
                 // 需要删除确认
                 let id = this.datas[index].id;
                 let _this = this;
@@ -176,7 +177,7 @@
             }
         },
         computed: {
-            tableColumns() {
+            tableColumns () {
                 let columns = [];
                 let _this = this;
                 if (this.showCheckbox) {
@@ -213,7 +214,7 @@
                         key: 'action',
                         align: 'center',
                         fixed: 'right',
-                        render(h, params) {
+                        render (h, params) {
                             return h('div', [
                                 h('Button', {
                                     props: {

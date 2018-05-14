@@ -49,6 +49,7 @@
                                 <!--<Input type="text" v-model="form.come_from" placeholder="请输入来源"-->
                                        <!--style="width: 200px;"/>-->
                                 <el-autocomplete
+                                        size="small"
                                         class="inline-input"
                                         v-model="form.come_from"
                                         :fetch-suggestions="querySearch"
@@ -62,6 +63,7 @@
                             <Col span="12">
                             <Form-item label="作者" prop="auther">
                                 <el-autocomplete
+                                        size="small"
                                         class="inline-input"
                                         v-model="form.auther"
                                         :fetch-suggestions="querySearch1"
@@ -102,7 +104,16 @@
                                 <img style="max-width: 200px;" :src=this.form.thumbnails alt=""></div>
                             </Col>
                         </Row>
-                        <Row>
+                        <Form-item label="选择显示方式">
+                            <RadioGroup v-model="form.stations" @on-change="ChangRadio">
+                            <Radio label="10">   <span>全部显示</span></Radio>
+                            <Radio label="20">   <span>仅主站</span></Radio>
+                            <Radio label="30">   <span>全部子站</span></Radio>
+                            <Radio label="40">   <span>选定子站</span></Radio>
+                            </RadioGroup>
+                        </Form-item>
+
+                        <Row v-if="this.form.stations =='40' && this.ShowId == null">
                             <Col span="17">
                                 <Form-item label="选择站点">
                                     <Select  style="width:300px" label-in-value filterable clearable @on-change="changeChildSite">
@@ -131,9 +142,9 @@
                                 </Select>
                             </Form-item>
                             </Col>
-                            <Col span="12">
+                            <Col span="12" v-if="this.form.stations =='40' ">
                                 <Form-item label="子站选择" prop="stations_ids">
-                                    <Select v-model="form.stations_ids" multiple style="text-align: left;width:200px;">
+                                    <Select v-model="form.stations_ids"  label-in-value multiple style="text-align: left;width:200px;">
                                     <Option v-for="item in ChildsSitedata" :value="item.district_id" :label="item.name" :key="item.district_id">
                                         {{ item.name }}
                                     </Option>
@@ -231,9 +242,10 @@
                 }
             };
             return {
+                ShowId: '',
                 site_id: Number,
                 site: [],
-                articleType:[],
+                articleType: [],
                 ComForm: [],
                 Auther: [],
                 restaurants: [],
@@ -250,9 +262,9 @@
                 imgcontent: '',
                 ChildsSitedata: [],
                 form: {
+                    stations: '10',
                     stations_ids: [],
                     summary: '',
-                    stations: '10',
                     thumbnails: '',
                     keywords: '',
                     readcount: 0,
@@ -283,11 +295,40 @@
                     ],
                     articletype_id: [
                         {required: true, validator: checkarticletype, trigger: 'blur'}
-                    ]
+                    ],
+                    stations_ids: [{required: true,
+                        validator: (rule, value, callback) => {
+                            if (value.length === 0) {
+                                callback(new Error('请选择分类'));
+                            } else {
+                                callback();
+                            }
+                        },
+                        trigger: 'blur'}]
                 }
             };
         },
         methods: {
+            ChangRadio (value) {
+                this.form.stations = value;
+                this.ShowId = localStorage.siteId;
+                if (this.ShowId) {
+                    this.getChildSitelist(this.ShowId);
+                } else {
+                    this.ShowId == '';
+                }
+                if (value === '40') {
+                    this.$set(this.AddRule, 'stations_ids', [{required: true,
+                        validator: (rule, value, callback) => {
+                            if (value.length === 0) {
+                                callback(new Error('请选择分类'));
+                            } else {
+                                callback();
+                            }
+                        },
+                        trigger: 'blur'}]);
+                }
+            },
             changeChildSite (value) {
                 this.getArticleType(value.value);
                 this.getChildSitelist(value.value);

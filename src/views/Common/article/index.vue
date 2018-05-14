@@ -189,6 +189,7 @@
                 this.$refs.save.edit(editid);
                 this.$refs.save.getSite();
                 this.$refs.save.getArticleType();
+                this.$refs.save.getShow();
                 this.$refs.save.modal = true;
             }
         },

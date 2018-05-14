@@ -148,7 +148,6 @@
             },
             edit (index) {
                 let editid = this.datas[index].id;
-
                 this.$refs.edit.modal = true;
                 this.$refs.edit.editdata(editid);
                 this.$refs.edit.getSite();

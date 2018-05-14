@@ -11,12 +11,6 @@
                             <Form-item label="名称" prop="name">
                                 <Input type="text" v-model="form.name" placeholder="请输入产品名称 （或其他名称）"></Input>
                             </Form-item>
-                            <Form-item label="子站显示" prop="title">
-                                <RadioGroup v-model="form.stations">
-                                    <Radio label="10">开</Radio>
-                                    <Radio label="20">关</Radio>
-                                </RadioGroup>
-                            </Form-item>
                             <Row>
                                 <Col span="12">
                                     <Form-item label="标记" prop="flag"
@@ -63,7 +57,15 @@
                             <Form-item label="编号" prop="sn">
                                 <Input type="text" v-model="form.sn" placeholder="请输入产品编号 （或其他编号）"></Input>
                             </Form-item>
-                            <Row>
+                            <Form-item label="选择显示方式">
+                                <RadioGroup v-model="form.stations" @on-change="ChangRadio">
+                                    <Radio label="10">   <span>全部显示</span></Radio>
+                                    <Radio label="20">   <span>仅主站</span></Radio>
+                                    <Radio label="30">   <span>全部子站</span></Radio>
+                                    <Radio label="40">   <span>选定子站</span></Radio>
+                                </RadioGroup>
+                            </Form-item>
+                            <Row v-if="this.form.stations =='40' ">
                                 <Col span="17">
                                     <Form-item label="选择站点">
                                         <Select  style="width:300px" label-in-value filterable clearable @on-change="changeChildSite">
@@ -91,15 +93,19 @@
                                         </Select>
                                     </Form-item>
                                 </Col>
-                                <Col span="12">
+                                <Col span="12" v-if="this.form.stations =='40' ">
                                     <Form-item label="子站选择" prop="stations_ids">
-                                        <Select v-model="form.stations_ids" multiple style="text-align: left;width:200px;">
+                                        <Select v-model="form.stations_ids"  label-in-value multiple style="text-align: left;width:200px;">
                                             <Option v-for="item in ChildsSitedata" :value="item.district_id" :label="item.name" :key="item.district_id">
                                                 {{ item.name }}
                                             </Option>
 
                                         </Select>
                                     </Form-item>
+
+                                    <!--<Form-item label="子站选择" prop="stations_ids">-->
+                                    <!--<InputNumber :min="1" v-model="form.stations_ids" placeholder="请选择站点"></InputNumber>-->
+                                    <!--</Form-item>-->
                                 </Col>
                             </Row>
                             <Form-item label="收费方式" prop="payway">
@@ -196,7 +202,7 @@
 
     export default {
         components: {materialimg},
-        data() {
+        data () {
             const checkptype = (rule, value, callback) => {
                 if (!value) {
                     callback(new Error('请选择文章分类'));
@@ -205,6 +211,7 @@
                 }
             };
             return {
+                ShowId: '',
                 ChildsSitedata: [],
                 site_id: Number,
                 site: [],
@@ -218,27 +225,27 @@
                 action: window.ImgUploadPath,
                 type_name: '',
                 form: {
-                  stations_ids: [],
-                  name: '',
-                  detail: '',
-                  image: '',
-                  summary: '',
-                  payway: '',
-                  sn: '',
-                  stations: '10',
-                  type_name: '',
-                  type_id: 0,
-                  imgser: [],
-                  keywords: '',
-                  title: '',
-                  field1: '',
-                  field2: '',
-                  field3: '',
-                  field4: '',
-                  description: '',
-                  tag_id: [],
-                  flag: [],
-                  sort: 0
+                    stations_ids: [],
+                    name: '',
+                    detail: '',
+                    image: '',
+                    summary: '',
+                    payway: '',
+                    sn: '',
+                    stations: '10',
+                    type_name: '',
+                    type_id: 0,
+                    imgser: [],
+                    keywords: '',
+                    title: '',
+                    field1: '',
+                    field2: '',
+                    field3: '',
+                    field4: '',
+                    description: '',
+                    tag_id: [],
+                    flag: [],
+                    sort: 0
                 },
                 tags: '',
                 ptype: [],
@@ -255,12 +262,35 @@
                     ],
                     type_name: [
                         {required: true, validator: checkptype, trigger: 'blur'}
-                    ]
+                    ],
+                    stations_ids: [{required: true,
+                        validator: (rule, value, callback) => {
+                            if (value.length === 0) {
+                                callback(new Error('请选择分类'));
+                            } else {
+                                callback();
+                            }
+                        },
+                        trigger: 'blur'}]
                 }
             };
         },
         computed: {},
         methods: {
+            ChangRadio (value) {
+                this.form.stations = value;
+                if (value === '40') {
+                    this.$set(this.AddRule, 'stations_ids', [{required: true,
+                        validator: (rule, value, callback) => {
+                            if (value.length === 0) {
+                                callback(new Error('请选择分类'));
+                            } else {
+                                callback();
+                            }
+                        },
+                        trigger: 'blur'}]);
+                }
+            },
             changeChildSite (value) {
                 this.getArticleType(value.value);
                 this.getChildSitelist(value.value);
@@ -321,7 +351,7 @@
                     this.tinymceInit(vm, height, 'tinymceEditerSaveProductField4', 'field4');
                 });
             },
-            change(status) {
+            change (status) {
                 if (status) {
                     this.tag_name = true;
                     this.$Message.info('切换到 选择标签模式');
@@ -330,12 +360,12 @@
                     this.$Message.info('切换到 添加标签模式');
                 }
             },
-            addimg(img) {
+            addimg (img) {
                 this.img = img;
                 this.$refs.addmaterial.getData();
                 this.$refs.addmaterial.modal = true;
             },
-            addmaterial(src) {
+            addmaterial (src) {
                 if (this.img === 'content') {
                     let imgsrc = '<img src=' + src + '>';
                     tinymce.get('tinymceEditerSaveProduct').insertContent(imgsrc);
@@ -346,10 +376,10 @@
                     tinymce.get('tinymceEditerSaveProductField4').insertContent(imgsrc);
                 }
             },
-            changeTagtype(value) {
+            changeTagtype (value) {
                 this.form.tag_id = value.value;
             },
-            addtags() {
+            addtags () {
                 let data = {
                     type: 'product',
                     name: this.tags
@@ -371,15 +401,15 @@
                     this.$Message.error('网络异常，请稍后重试。');
                 });
             },
-            updateData(data) {
+            updateData (data) {
                 this.form.detail = data;
             },
-            changePtype(value) {
+            changePtype (value) {
                 this.form.type_id = value.value;
                 this.form.type_name = value.label;
             },
             // 缩略图上传回调
-            getResponse(response, file, filelist) {
+            getResponse (response, file, filelist) {
                 this.form.image = response.data.url;
                 if (response.status) {
                     this.$Message.success(response.msg);
@@ -388,19 +418,19 @@
                 }
                 this.$refs.upImg.clearFiles();
             },
-            getErrorInfo(error, file, filelist) {
+            getErrorInfo (error, file, filelist) {
                 this.$Message.error(error);
             },
-            formatError() {
+            formatError () {
                 this.$Message.error('文件格式只支持 jpg,jpeg,png三种格式。');
             },
-            getError(error, file, filelist) {
+            getError (error, file, filelist) {
                 this.$Message.error(error);
             },
-            formatE() {
+            formatE () {
                 this.$Message.error('文件格式只支持 jpg,jpeg,png三种格式。');
             },
-            save() {
+            save () {
                 this.$refs.psave.validate((valid) => {
                     if (valid) {
                         this.modal_loading = true;
@@ -433,13 +463,14 @@
                     }
                 });
             },
-            editdata(editid) {
+            editdata (editid) {
                 this.apiGet('product/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.form = data;
-                      tinymce.get('tinymceEditerSaveProduct').setContent(this.form.detail);
-                      if(this.form.field4){
-                      tinymce.get('tinymceEditerSaveProductField4').setContent(this.form.field4);}
+                        tinymce.get('tinymceEditerSaveProduct').setContent(this.form.detail);
+                        if (this.form.field4) {
+                            tinymce.get('tinymceEditerSaveProductField4').setContent(this.form.field4);
+                        }
                         let tempNUmber = [];
                         if (this.form.tags !== '') {
                             this.form.tags.split(',').map(function (key) {
@@ -451,7 +482,7 @@
                         if (this.form.flag !== '') {
                             this.form.flag.split(',').map(function (key) {
                                 flag.push(key);
-                                //console.log(flag);
+                                // console.log(flag);
                             });
                         }
                         this.form.flag = flag;
@@ -472,16 +503,17 @@
                 });
             }
         },
-        created() {
+        created () {
         },
-        mounted() {
+        mounted () {
             this.init();
         },
-        destroyed() {
+        destroyed () {
             tinymce.get('tinymceEditerSaveProduct').destroy();
             tinymce.get('tinymceEditerSaveProductField4').destroy();
-        }, props: {
-            gpd: {default: 1},
+        },
+    props: {
+            gpd: {default: 1}
         },
         mixins: [http, common, tinymceInit]
     };
