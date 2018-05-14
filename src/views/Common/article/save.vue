@@ -31,8 +31,7 @@
                             </Col>
                             <Col span="7">
                                 <Form-item label="权重" prop="sort">
-                                    <Input type="text" v-model="form.sort" placeholder="请输入权重"
-                                           style="width: 200px;"/>
+                                    <InputNumber :min="1" v-model="form.sort" placeholder="请输入权重"></InputNumber>
                                 </Form-item>
                             </Col>
                         </Row>
@@ -318,12 +317,6 @@
             };
         },
         methods: {
-            getShow () {
-                this.ShowId = localStorage.siteId;
-                if (this.ShowId) {
-                    this.getChildSitelist(this.ShowId);
-                }
-            },
             ChangRadio (value) {
                 this.form.stations = value;
                 this.ShowId = localStorage.siteId;
@@ -520,7 +513,11 @@
                 this.apiGet('article/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.form = data;
+
                         tinymce.get(this.editImgId).setContent(this.form.content);
+                        if (this.form.stations == 40) {
+                            this.getChildSitelist(this.form.site_id);
+                        }
                         let tempNUmber = [];
 
                         if (this.form.tags !== '') {

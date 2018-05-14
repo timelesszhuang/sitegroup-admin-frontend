@@ -24,8 +24,7 @@
                             </Col>
                             <Col span="7">
                                 <Form-item label="权重" prop="sort">
-                                    <Input type="text" v-model="form.sort" placeholder="请输入权重"
-                                           style="width: 200px;"/>
+                                    <InputNumber :min="1" v-model="form.sort" placeholder="请输入权重"></InputNumber>
                                 </Form-item>
                             </Col>
                         </Row>
@@ -171,7 +170,7 @@
                     tag_id: [],
                     flag: [],
                     sort: 0,
-                    site_id:0
+                    site_id: 0
                 },
                 tags: '',
                 AddRule: {
@@ -324,6 +323,9 @@
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.form = data;
                         this.form.type_name = data.type_name;
+                        if (this.form.stations == 40) {
+                            this.getChildSitelist(this.form.site_id);
+                        }
                         tinymce.get('tinymceEditersave').setContent(this.form.content_paragraph);
                         let tempNUmber = [];
                         if (this.form.tags !== '') {
