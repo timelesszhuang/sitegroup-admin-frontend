@@ -225,6 +225,7 @@
                 action: window.ImgUploadPath,
                 type_name: '',
                 form: {
+                    site_id:0,
                     stations_ids: [],
                     name: '',
                     detail: '',

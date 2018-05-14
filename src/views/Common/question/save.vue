@@ -170,7 +170,8 @@
                     type_name: '',
                     tag_id: [],
                     flag: [],
-                    sort: 0
+                    sort: 0,
+                    site_id:0
                 },
                 tags: '',
                 AddRule: {

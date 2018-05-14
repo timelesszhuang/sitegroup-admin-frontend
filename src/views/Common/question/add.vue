@@ -41,7 +41,7 @@
                         <Row v-if="this.form.stations =='40' && this.ShowId==null">
                             <Col span="17">
                                 <Form-item label="选择站点">
-                                    <Select  style="width:300px" label-in-value filterable clearable @on-change="changeChildSite">
+                                    <Select v-model="form.site_id"  style="width:300px" label-in-value filterable clearable @on-change="changeChildSite">
                                         <Option v-for="item in site" :value="item.id" :label="item.text" :key="item.id">
                                             {{ item.text }}
                                         </Option>
@@ -165,6 +165,7 @@
                 modal: false,
                 modal_loading: false,
                 form: {
+                    site_id:0,
                     stations_ids: [],
                     question: '',
                     content_paragraph: '',
