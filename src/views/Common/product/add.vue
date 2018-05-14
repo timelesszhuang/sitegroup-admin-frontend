@@ -25,7 +25,9 @@
                                 </Col>
                             <Col span="7">
                                 <Form-item label="权重" prop="sort">
-                                    <InputNumber :min="1" v-model="form.sort" placeholder="请输入权重"></InputNumber>
+                                    <Tooltip content="权重越大越显示在前面" placement="top-start" class="tooltip">
+                                        <InputNumber :min="1" v-model="form.sort" placeholder="请输入权重"></InputNumber>
+                                    </Tooltip>
                                 </Form-item>
                             </Col>
                             </Row>
@@ -59,10 +61,18 @@
 
                             <Form-item label="选择显示方式">
                                 <RadioGroup v-model="form.stations" @on-change="ChangRadio">
-                                    <Radio label="10">   <span>全部显示</span></Radio>
-                                    <Radio label="20">   <span>仅主站</span></Radio>
-                                    <Radio label="30">   <span>全部子站</span></Radio>
-                                    <Radio label="40">   <span>选定子站</span></Radio>
+                                    <Tooltip content="主站（主域名）和子站（二级域名）显示该篇文章" placement="top-start">
+                                        <Radio label="10"><span>全部显示</span></Radio>
+                                    </Tooltip>
+                                    <Tooltip content="只有主站（主域名）显示该篇文章" placement="top-start" class="tooltip">
+                                        <Radio label="20"><span>仅主站</span></Radio>
+                                    </Tooltip>
+                                    <Tooltip content="全部子站（二级域名）显示该篇文章" placement="top-start" class="tooltip">
+                                        <Radio label="30"><span>全部子站</span></Radio>
+                                    </Tooltip>
+                                    <Tooltip content="选定的子站（二级域名）显示该篇文章" placement="top-start" class="tooltip">
+                                        <Radio label="40"><span>特定子站</span></Radio>
+                                    </Tooltip>
                                 </RadioGroup>
                             </Form-item>
                             <Row v-if="this.form.stations =='40'  ">
@@ -95,7 +105,7 @@
                                 </Col>
                                 <Col span="12" v-if="this.form.stations =='40' ">
                                     <Form-item label="子站选择" prop="stations_ids">
-                                        <Select v-model="form.stations_ids"  label-in-value multiple style="text-align: left;width:200px;">
+                                        <Select v-model="form.stations_ids"  label-in-value multiple filterable style="text-align: left;width:200px;">
                                             <Option v-for="item in ChildsSitedata" :value="item.district_id" :label="item.name" :key="item.district_id">
                                                 {{ item.name }}
                                             </Option>

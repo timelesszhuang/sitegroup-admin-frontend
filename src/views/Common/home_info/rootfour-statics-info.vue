@@ -85,7 +85,7 @@
                 // 获取相关统计信息
                 this.apiGet('root_count').then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
-                        console.log(data);
+                        //console.log(data);
                         this.count = data;
                     });
                 });

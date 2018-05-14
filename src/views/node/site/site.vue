@@ -126,9 +126,9 @@
             },
             init () {
                 this.getData();
-            },
+            },//
             siteManage (id) {
-                console.log(id);
+                //console.log(id);
                 this.site_id = id;
 
                 this.getChildSite(id);

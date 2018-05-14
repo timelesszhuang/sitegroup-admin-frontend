@@ -47,8 +47,6 @@
                         <Row>
                             <Col span="12">
                                 <Form-item label="来源" prop="come_from">
-                                    <!--<Input type="text" v-model="form.come_from" placeholder="请输入来源"-->
-                                    <!--style="width: 200px;"/>-->
                                     <el-autocomplete
                                             size="small"
                                             class="inline-input"
@@ -146,7 +144,7 @@
                             </Col>
                             <Col span="12" v-if="this.form.stations =='40' ">
                                 <Form-item label="子站选择" prop="stations_ids">
-                                    <Select v-model="form.stations_ids" label-in-value multiple
+                                    <Select v-model="form.stations_ids" label-in-value multiple filterable
                                             style="text-align: left;width:200px;">
                                         <Option v-for="item in ChildsSitedata" :value="item.district_id"
                                                 :label="item.name" :key="item.district_id">
