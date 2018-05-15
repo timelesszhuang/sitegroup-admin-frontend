@@ -65,7 +65,7 @@
                                         v-model="form.auther"
                                         :fetch-suggestions="querySearch1"
                                         placeholder="请输入作者"
-                                        @select="handleSelect1"
+                                        @select="handleSelect"
                                 ></el-autocomplete>
                             </Form-item>
                             </Col>
@@ -398,8 +398,6 @@
                         this.form.thumbnails = data.thumbnail;
                         this.form.url = data.preurl;
                         this.form.summary = data.summary;
-                        this.form.come_from = data.comefrom;
-                        this.form.auther = data.author;
                         tinymce.get(this.editImgId).setContent(this.form.content);
                         let tempNUmber = [];
                         this.form.tag_id = tempNUmber;
@@ -422,14 +420,13 @@
                         data.readcount = 0;
                         data.title_color = '';
                         this.form = data;
-                        this.form.come_from = data.source;
                         this.form.createtime = data.ptime;
                         tinymce.get(this.editImgId).setContent(this.form.content);
                         let tempNUmber = [];
                         this.form.tag_id = tempNUmber;
                         this.form.flag = tempNUmber;
                         this.form.stations_ids = [];
-                      this.modal = true;
+                        this.modal = true;
                     }, (data, msg) => {
                         this.$Message.error(msg);
                     });
@@ -447,7 +444,6 @@
                         this.form = data;
                         this.form.articletype_id = '';
                         this.form.articletype_name = '';
-                        this.form.come_from = data.source;
                         this.form.createtime = data.ptime;
                         this.form.thumbnails = data.base64img;
                         tinymce.get(this.editImgId).setContent(this.form.content);
@@ -473,7 +469,6 @@
                         data.is_collection = 20;
                         data.title_color = '';
                         this.form = data;
-                        this.form.come_from = data.source;
                         this.form.thumbnails = data.thumbnail;
                         tinymce.get(this.editImgId).setContent(this.form.content);
                         let tempNUmber = [];
@@ -498,7 +493,6 @@
                         this.form = data;
                         this.form.thumbnails = data.imgsrc;
                         this.form.summary = data.digest;
-                        this.form.come_from = data.source;
                         tinymce.get(this.editImgId).setContent(this.form.content);
                         let tempNUmber = [];
                         this.form.tag_id = tempNUmber;
@@ -713,17 +707,12 @@
                 cb(results);
             },
             querySearch1 (queryString, cb) {
-                var restaurants1 = this.restaurantscom;
-                var results = queryString ? restaurants1.filter(this.createFilter1(queryString)) : restaurants1;
+                var restaurants = this.restaurantscom;
+                var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
                 // 调用 callback 返回建议列表的数据
                 cb(results);
             },
             createFilter (queryString) {
-                return (restaurant) => {
-                    return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
-                };
-            },
-          createFilter1 (queryString) {
                 return (restaurant) => {
                     return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
                 };
@@ -762,10 +751,7 @@
                 return this.Auther;
             },
             handleSelect (item) {
-
-            },
-            handleSelect1 (item) {
-
+                console.log(item);
             }
 
         },
