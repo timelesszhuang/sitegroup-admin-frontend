@@ -30,7 +30,7 @@
                                 </Form-item>
                             </Col>
                         </Row>
-                        <Form-item label="选择显示方式">
+                        <Form-item label="显示范围">
                             <RadioGroup v-model="form.stations" @on-change="ChangRadio">
                                 <Tooltip content="主站（主域名）和子站（二级域名）显示该篇文章" placement="top-start">
                                     <Radio label="10"><span>全部显示</span></Radio>

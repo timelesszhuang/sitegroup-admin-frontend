@@ -97,7 +97,7 @@
                                 <img style="max-width: 200px;" :src=this.form.thumbnails alt=""></div>
                             </Col>
                         </Row>
-                        <Form-item label="选择显示方式">
+                        <Form-item label="显示范围">
                             <RadioGroup v-model="form.stations" @on-change="ChangRadio">
                                 <Tooltip content="主站（主域名）和子站（二级域名）显示该篇文章" placement="top-start">
                                     <Radio label="10"><span>全部显示</span></Radio>
@@ -398,10 +398,13 @@
                         this.form.thumbnails = data.thumbnail;
                         this.form.url = data.preurl;
                         this.form.summary = data.summary;
+                        this.form.stations = '10';
                         tinymce.get(this.editImgId).setContent(this.form.content);
                         let tempNUmber = [];
                         this.form.tag_id = tempNUmber;
                         this.form.flag = tempNUmber;
+                        this.form.stations_ids = [];
+                        this.ShowId = localStorage.siteId;
                         this.modal = true;
                     }, (data, msg) => {
                         this.$Message.error(msg);
@@ -420,12 +423,14 @@
                         data.readcount = 0;
                         data.title_color = '';
                         this.form = data;
+                        this.form.stations = '10';
                         this.form.createtime = data.ptime;
                         tinymce.get(this.editImgId).setContent(this.form.content);
                         let tempNUmber = [];
                         this.form.tag_id = tempNUmber;
                         this.form.flag = tempNUmber;
                         this.form.stations_ids = [];
+                        this.ShowId = localStorage.siteId;
                         this.modal = true;
                     }, (data, msg) => {
                         this.$Message.error(msg);
@@ -442,6 +447,7 @@
                         data.title_color = '';
                         data.is_collection = 20;
                         this.form = data;
+                        this.form.stations = '10';
                         this.form.articletype_id = '';
                         this.form.articletype_name = '';
                         this.form.createtime = data.ptime;
@@ -451,6 +457,7 @@
                         this.form.tag_id = tempNUmber;
                         this.form.flag = tempNUmber;
                         this.form.stations_ids = [];
+                        this.ShowId = localStorage.siteId;
                         this.modal = true;
                     }, (data, msg) => {
                         this.$Message.error(msg);
@@ -469,12 +476,14 @@
                         data.is_collection = 20;
                         data.title_color = '';
                         this.form = data;
+                        this.form.stations = '10';
                         this.form.thumbnails = data.thumbnail;
                         tinymce.get(this.editImgId).setContent(this.form.content);
                         let tempNUmber = [];
                         this.form.tag_id = tempNUmber;
                         this.form.flag = tempNUmber;
                         this.form.stations_ids = [];
+                        this.ShowId = localStorage.siteId;
                         this.modal = true;
                     }, (data, msg) => {
                         this.$Message.error(msg);
@@ -493,11 +502,13 @@
                         this.form = data;
                         this.form.thumbnails = data.imgsrc;
                         this.form.summary = data.digest;
+                        this.form.stations = '10';
                         tinymce.get(this.editImgId).setContent(this.form.content);
                         let tempNUmber = [];
                         this.form.tag_id = tempNUmber;
                         this.form.flag = tempNUmber;
                         this.form.stations_ids = [];
+                        this.ShowId = localStorage.siteId;
                         this.modal = true;
                     }, (data, msg) => {
                         this.$Message.error(msg);
@@ -512,9 +523,11 @@
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.form = data;
                         tinymce.get(this.editImgId).setContent(this.form.content);
+                        this.ShowId = localStorage.siteId;
                         if (this.form.stations == 40) {
                             this.getChildSitelist(this.form.site_id);
                         }
+
                         let tempNUmber = [];
                         if (this.form.tags !== '') {
                             this.form.tags.split(',').map(function (key) {

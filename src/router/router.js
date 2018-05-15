@@ -97,7 +97,7 @@ export const nodeotherRouter = {
         },
         {
             path: 'error-message',
-            title: '错误中心',
+            title: '异常中心',
             name: 'error-message',
             component: () => import('@/views/node/error-message/error-message.vue')
         }
@@ -1025,13 +1025,6 @@ export const siteappRouter = [
                 title: "静态化配置",
                 name: 'staticconfig',
                 component: () => import('@/views/site/staticconfig/index.vue')
-            },
-            {
-                path: '/sitecontact',
-                icon: 'earth',
-                title: "联系方式",
-                name: 'sitecontact',
-                component: () => import('@/views/site/operation/sitecontact.vue')
             },
         ]
     },
