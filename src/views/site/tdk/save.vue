@@ -19,6 +19,17 @@
                      placeholder="请输入description">
               </Input>
             </Form-item>
+            <Form-item label="子站title" prop="childsite_title">
+              <Input type="text" v-model="form.childsite_title" placeholder="请输入子站title"></Input>
+            </Form-item>
+            <Form-item label="子站关键词" prop="childsite_keyword">
+              <Input type="text" v-model="form.childsite_keyword" placeholder="请输入子站关键词用逗号隔开"></Input>
+            </Form-item>
+            <Form-item label="子站description" prop="childsite_description">
+              <Input v-model="form.childsite_description" type="textarea" :autosize="{minRows: 2,maxRows: 20}"
+                     placeholder="请输入子站description">
+              </Input>
+            </Form-item>
           </Form>
         </div>
         <div slot="footer">
@@ -31,61 +42,61 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import http from '../../../libs/http';;
+  import http from '../../../libs/http'; ;
   export default {
-    data() {
-      return {
-        modal: false,
-        modal_loading: false,
-        AddRule: {
-          name: [
-            {required: true, message: '请输入名称', trigger: 'blur'},
-          ],
-          domain: [
-            {required: true, message: '请输入url', trigger: 'blur'},
-          ],
-          detail: [
-            {required: true, message: '请输入详情', trigger: 'blur'},
-          ],
-        }
-      }
-    },
-    methods: {
-        add() {
-          this.$refs.linksave.validate((valid) => {
-              if(valid){
-                this.modal_loading = true;
-                let data = this.form;
-                let id = data.id;
-                this.apiPut('user/pageInfo/'+ id, data).then((res) => {
-                  this.handleAjaxResponse(res, (data, msg) => {
-                    this.modal = false;
-                    this.$parent.getData();
-                    this.$Message.success(msg);
-                    this.modal_loading = false;
-                    this.$refs.linksave.resetFields();
-                  }, (data, msg) => {
-                    this.modal_loading = false;
-                    this.$Message.error(msg);
-                  })
-                }, (res) => {
-                  //处理错误信息
-                  this.modal_loading = false;
-                  this.$Message.error('网络异常，请稍后重试。');
-                })
+      data () {
+          return {
+              modal: false,
+              modal_loading: false,
+              AddRule: {
+                  name: [
+                      {required: true, message: '请输入名称', trigger: 'blur'}
+                  ],
+                  domain: [
+                      {required: true, message: '请输入url', trigger: 'blur'}
+                  ],
+                  detail: [
+                      {required: true, message: '请输入详情', trigger: 'blur'}
+                  ]
               }
-          })
-        }
-    },
-    props: {
-      form: {
-        default: {
-          name: '',
-          detail:'',
-          domain:''
-        }
-      }
-    },
-    mixins: [http]
-  }
+          };
+      },
+      methods: {
+          add () {
+              this.$refs.linksave.validate((valid) => {
+                  if (valid) {
+                      this.modal_loading = true;
+                      let data = this.form;
+                      let id = data.id;
+                      this.apiPut('pageInfo/' + id, data).then((res) => {
+                          this.handleAjaxResponse(res, (data, msg) => {
+                              this.modal = false;
+                              this.$parent.getData();
+                              this.$Message.success(msg);
+                              this.modal_loading = false;
+                              this.$refs.linksave.resetFields();
+                          }, (data, msg) => {
+                              this.modal_loading = false;
+                              this.$Message.error(msg);
+                          });
+                      }, (res) => {
+                          // 处理错误信息
+                          this.modal_loading = false;
+                          this.$Message.error('网络异常，请稍后重试。');
+                      });
+                  }
+              });
+          }
+      },
+      props: {
+          form: {
+              default: {
+                  name: '',
+                  detail: '',
+                  domain: ''
+              }
+          }
+      },
+      mixins: [http]
+  };
 </script>

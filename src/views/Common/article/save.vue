@@ -21,16 +21,6 @@
                             </Col>
                         </Row>
                         <Row>
-                            <Col span="17">
-                            <Form-item label="子站显示" prop="title">
-                                <RadioGroup v-model="form.stations">
-                                    <Radio label="10">开</Radio>
-                                    <Radio label="20">关</Radio>
-                                </RadioGroup>
-                            </Form-item>
-                            </Col>
-                        </Row>
-                        <Row>
                             <Col span="12">
                             <Form-item label="标记" prop="flag"
                                        style="position: relative;z-index: 10">
@@ -41,8 +31,9 @@
                             </Col>
                             <Col span="7">
                                 <Form-item label="权重" prop="sort">
-                                    <Input type="text" v-model="form.sort" placeholder="请输入权重"
-                                           style="width: 200px;"/>
+                                    <Tooltip content="权重越大越显示在前面" placement="top-start" class="tooltip">
+                                        <InputNumber :min="1" v-model="form.sort" placeholder="请输入权重"></InputNumber>
+                                    </Tooltip>
                                 </Form-item>
                             </Col>
                         </Row>
@@ -56,14 +47,26 @@
                         <Row>
                             <Col span="12">
                             <Form-item label="来源" prop="come_from">
-                                <Input type="text" v-model="form.come_from" placeholder="请输入来源"
-                                       style="width: 200px;"></Input>
+                                <el-autocomplete
+                                        size="small"
+                                        class="inline-input"
+                                        v-model="form.come_from"
+                                        :fetch-suggestions="querySearch"
+                                        placeholder="请输入来源"
+                                        @select="handleSelect"
+                                ></el-autocomplete>
                             </Form-item>
                             </Col>
                             <Col span="12">
                             <Form-item label="作者" prop="auther">
-                                <Input type="text" v-model="form.auther" placeholder="请输入作者"
-                                       style="width: 200px;"></Input>
+                                <el-autocomplete
+                                        size="small"
+                                        class="inline-input"
+                                        v-model="form.auther"
+                                        :fetch-suggestions="querySearch1"
+                                        placeholder="请输入作者"
+                                        @select="handleSelect"
+                                ></el-autocomplete>
                             </Form-item>
                             </Col>
                         </Row>
@@ -94,26 +97,59 @@
                                 <img style="max-width: 200px;" :src=this.form.thumbnails alt=""></div>
                             </Col>
                         </Row>
+                        <Form-item label="选择显示方式">
+                            <RadioGroup v-model="form.stations" @on-change="ChangRadio">
+                                <Tooltip content="主站（主域名）和子站（二级域名）显示该篇文章" placement="top-start">
+                                    <Radio label="10"><span>全部显示</span></Radio>
+                                </Tooltip>
+                                <Tooltip content="只有主站（主域名）显示该篇文章" placement="top-start" class="tooltip">
+                                    <Radio label="20"><span>仅主站</span></Radio>
+                                </Tooltip>
+                                <Tooltip content="全部子站（二级域名）显示该篇文章" placement="top-start" class="tooltip">
+                                    <Radio label="30"><span>全部子站</span></Radio>
+                                </Tooltip>
+                                <Tooltip content="选定的子站（二级域名）显示该篇文章" placement="top-start" class="tooltip">
+                                    <Radio label="40"><span>特定子站</span></Radio>
+                                </Tooltip>
+                            </RadioGroup>
+                        </Form-item>
+                        <Row v-if="this.form.stations =='40' && this.ShowId == null">
+                            <Col span="17">
+                                <Form-item label="选择站点">
+                                    <Select v-model="form.site_id"  style="width:300px" label-in-value filterable clearable @on-change="changeChildSite">
+                                        <Option v-for="item in site" :value="item.id" :label="item.text" :key="item.id">
+                                            {{ item.text }}
+                                        </Option>
+                                    </Select>
+                                </Form-item>
+                            </Col>
+                        </Row>
                         <Row>
                             <Col span="12">
-                            <Form-item label="文章分类" prop="articletype_id" style="position: relative;z-index: 100">
-                                <Select ref="select" :clearable="selects" v-model="form.articletype_id"
-                                        style="width:200px;"
-                                        label-in-value filterable clearable 　@on-change="changeArticletype">
-                                    <Option-group v-for="(item,index) in this.$store.state.commondata.articleType"
-                                                  :label="index" :key="index">
-                                        <Option v-for="(peritem ,perindex) in item" :value="peritem.id"
-                                                :label="peritem.name"
-                                                :key="perindex">{{ peritem.name }}
-                                        </Option>
-                                    </Option-group>
-                                </Select>
-                            </Form-item>
+                                <Form-item label="文章分类" prop="articletype_id">
+                                    <Select ref="select" :clearable="true" v-model="form.articletype_id"
+                                            style="width:200px;"
+                                            label-in-value filterable @on-change="changeArticletype">
+                                        <Option-group v-for="(item,index) in articleType"
+                                                      :label="index" :key="index">
+                                            <Option v-for="(peritem ,perindex) in item" :value="peritem.id"
+                                                    :label="peritem.name"
+                                                    :key="perindex">{{ peritem.name }}
+                                            </Option>
+
+                                        </Option-group>
+                                    </Select>
+                                </Form-item>
                             </Col>
-                            <Col span="12">
-                            <Form-item label="阅读次数" prop="readcount">
-                                <InputNumber :min="1" v-model="form.readcount" placeholder="请输入作者"></InputNumber>
-                            </Form-item>
+                            <Col span="12" v-if="this.form.stations =='40' ">
+                                <Form-item label="子站选择" prop="stations_ids">
+                                    <Select v-model="form.stations_ids"  label-in-value multiple filterable style="text-align: left;width:200px;">
+                                        <Option v-for="item in ChildsSitedata" :value="item.district_id" :label="item.name" :key="item.district_id">
+                                            {{ item.name }}
+                                        </Option>
+
+                                    </Select>
+                                </Form-item>
                             </Col>
                         </Row>
                         <Form-item label="文章描述" prop="summary">
@@ -190,7 +226,7 @@
 
     export default {
         components: {materialimg, tinymceInit},
-        data() {
+        data () {
             const checkarticletype = (rule, value, callback) => {
                 if (!value) {
                     callback(new Error('请选择文章分类'));
@@ -199,8 +235,19 @@
                 }
             };
             return {
+                ShowId: '',
+                site: [],
+                articleType: [],
+                ComForm: [],
+                Auther: [],
+                restaurants: [],
+                restaurantscom: [],
                 img: '',
+                ChildsSitedata: [],
                 form: {
+                    site_id: 0,
+                    testid: 160,
+                    stations_ids: [],
                     articletype_id: 0,
                     articletype_name: '',
                     auther: '',
@@ -218,7 +265,7 @@
                     is_collection: '',
                     tag_id: [],
                     flag: [],
-                    sort:0
+                    sort: 0
                 },
                 tags: '',
                 imgcontent: '',
@@ -252,7 +299,16 @@
                     ],
                     articletype_id: [
                         {validator: checkarticletype, trigger: 'blur'}
-                    ]
+                    ],
+                    stations_ids: [{required: true,
+                        validator: (rule, value, callback) => {
+                            if (value.length === 0) {
+                                callback(new Error('请选择分类'));
+                            } else {
+                                callback();
+                            }
+                        },
+                        trigger: 'blur'}]
                     // tag_id: [
                     //   {required: true, validator: checktag, trigger: 'blur'}
                     // ]
@@ -261,7 +317,78 @@
             };
         },
         methods: {
-            addexclusive(editid) {
+            ChangRadio (value) {
+                this.form.stations = value;
+                this.ShowId = localStorage.siteId;
+                if (this.ShowId) {
+                    this.getChildSitelist(this.ShowId);
+                }
+
+                if (value === '40') {
+                    this.$set(this.AddRule, 'stations_ids', [{required: true,
+                        validator: (rule, value, callback) => {
+                            if (value.length === 0) {
+                                callback(new Error('请选择分类'));
+                            } else {
+                                callback();
+                            }
+                        },
+                        trigger: 'blur'}]);
+                }
+            },
+            changeChildSite (value) {
+                this.getArticleType(value.value);
+                this.getChildSitelist(value.value);
+            },
+            getArticleType (site_id) {
+                let data = {
+                    params: {
+                        module_type: 'article',
+                        site_id: site_id
+                    }
+                };
+                this.apiGet('get_type_list', data).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.articleType = data;
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            },
+            getChildSitelist (site_id) {
+                let data = {
+                    params: {
+                        site_id: site_id
+                    }
+                };
+                this.apiGet('childsitelistbysiteid', data).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.ChildsSitedata = data;
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            },
+            getSite () {
+                this.apiGet('getSites').then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.site = data;
+                        //            console.log(this.site)
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            },
+            addexclusive (editid) {
                 this.apiGet('public_article/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         data.readcount = 0;
@@ -271,8 +398,6 @@
                         this.form.thumbnails = data.thumbnail;
                         this.form.url = data.preurl;
                         this.form.summary = data.summary;
-                        this.form.come_from = data.comefrom;
-                        this.form.auther = data.author;
                         tinymce.get(this.editImgId).setContent(this.form.content);
                         let tempNUmber = [];
                         this.form.tag_id = tempNUmber;
@@ -286,7 +411,7 @@
                     this.$Message.error('网络异常，请稍后重试。');
                 });
             },
-            addqq(editid) {
+            addqq (editid) {
                 this.apiGet('qicq/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         data.thumbnails = '';
@@ -295,12 +420,12 @@
                         data.readcount = 0;
                         data.title_color = '';
                         this.form = data;
-                        this.form.come_from = data.source;
                         this.form.createtime = data.ptime;
                         tinymce.get(this.editImgId).setContent(this.form.content);
                         let tempNUmber = [];
                         this.form.tag_id = tempNUmber;
                         this.form.flag = tempNUmber;
+                        this.form.stations_ids = [];
                         this.modal = true;
                     }, (data, msg) => {
                         this.$Message.error(msg);
@@ -310,7 +435,7 @@
                     this.$Message.error('网络异常，请稍后重试。');
                 });
             },
-            addhots(editid) {
+            addhots (editid) {
                 this.apiGet('hot_news/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         data.readcount = 0;
@@ -319,13 +444,13 @@
                         this.form = data;
                         this.form.articletype_id = '';
                         this.form.articletype_name = '';
-                        this.form.come_from = data.source;
                         this.form.createtime = data.ptime;
                         this.form.thumbnails = data.base64img;
                         tinymce.get(this.editImgId).setContent(this.form.content);
                         let tempNUmber = [];
                         this.form.tag_id = tempNUmber;
                         this.form.flag = tempNUmber;
+                        this.form.stations_ids = [];
                         this.modal = true;
                     }, (data, msg) => {
                         this.$Message.error(msg);
@@ -335,7 +460,7 @@
                     this.$Message.error('网络异常，请稍后重试。');
                 });
             },
-            addsouhu(editid) {
+            addsouhu (editid) {
                 this.apiGet('souhu/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         data.readcount = 0;
@@ -344,12 +469,12 @@
                         data.is_collection = 20;
                         data.title_color = '';
                         this.form = data;
-                        this.form.come_from = data.source;
                         this.form.thumbnails = data.thumbnail;
                         tinymce.get(this.editImgId).setContent(this.form.content);
                         let tempNUmber = [];
                         this.form.tag_id = tempNUmber;
                         this.form.flag = tempNUmber;
+                        this.form.stations_ids = [];
                         this.modal = true;
                     }, (data, msg) => {
                         this.$Message.error(msg);
@@ -359,7 +484,7 @@
                     this.$Message.error('网络异常，请稍后重试。');
                 });
             },
-            add163(editid) {
+            add163 (editid) {
                 this.apiGet('wangyi/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         data.readcount = 0;
@@ -368,11 +493,11 @@
                         this.form = data;
                         this.form.thumbnails = data.imgsrc;
                         this.form.summary = data.digest;
-                        this.form.come_from = data.source;
                         tinymce.get(this.editImgId).setContent(this.form.content);
                         let tempNUmber = [];
                         this.form.tag_id = tempNUmber;
                         this.form.flag = tempNUmber;
+                        this.form.stations_ids = [];
                         this.modal = true;
                     }, (data, msg) => {
                         this.$Message.error(msg);
@@ -382,15 +507,18 @@
                     this.$Message.error('网络异常，请稍后重试。');
                 });
             },
-            edit(editid) {
+            edit (editid) {
                 this.apiGet('article/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.form = data;
                         tinymce.get(this.editImgId).setContent(this.form.content);
+                        if (this.form.stations == 40) {
+                            this.getChildSitelist(this.form.site_id);
+                        }
                         let tempNUmber = [];
                         if (this.form.tags !== '') {
                             this.form.tags.split(',').map(function (key) {
-                                tempNUmber.push(key);
+                                tempNUmber.push(Number(key));
                             });
                         }
                         delete this.form.tags;
@@ -400,9 +528,15 @@
                         if (this.form.flag !== '') {
                             this.form.flag.split(',').map(function (key) {
                                 flag.push(key);
-                                //console.log(flag);
                             });
                         }
+                        let ChildNUmber = [];
+                        if (this.form.stations_ids !== '') {
+                            this.form.stations_ids.split(',').map(function (key) {
+                                ChildNUmber.push(Number(key));
+                            });
+                        }
+                        this.form.stations_ids = ChildNUmber;
                         this.form.flag = flag;
                         this.flags = '';
                     }, (data, msg) => {
@@ -419,7 +553,7 @@
                     this.tinymceInit(vm, height, this.editImgId);
                 });
             },
-            change(status) {
+            change (status) {
                 if (status) {
                     this.tag_name = true;
                     this.$Message.info('切换到下拉选择');
@@ -428,10 +562,10 @@
                     this.$Message.info('切换到添加标签');
                 }
             },
-            changeTagtype(value) {
+            changeTagtype (value) {
                 this.form.tag_id = value.value;
             },
-            addmaterial(src) {
+            addmaterial (src) {
                 if (this.img === 'content') {
                     let imgsrc = '<img src=' + src + '>';
                     tinymce.get(this.editImgId).insertContent(imgsrc);
@@ -439,12 +573,12 @@
                     this.form.thumbnails = src;
                 }
             },
-            addimg(img) {
+            addimg (img) {
                 this.img = img;
                 this.$refs.addmaterial.getData();
                 this.$refs.addmaterial.modal = true;
             },
-            addtags() {
+            addtags () {
                 let data = {
                     type: 'article',
                     name: this.tags
@@ -465,7 +599,7 @@
                 });
             },
             // 缩略图上传回调
-            getResponse(response, file, filelist) {
+            getResponse (response, file, filelist) {
                 this.form.thumbnails = response.data.url;
                 if (response.status) {
                     this.$Message.success(response.msg);
@@ -476,20 +610,20 @@
                 }
                 this.$refs.upImg.clearFiles();
             },
-            getErrorInfo(error, file, filelist) {
+            getErrorInfo (error, file, filelist) {
                 this.$Message.error(error);
             },
-            formatError() {
+            formatError () {
                 this.$Message.error('文件格式只支持 jpg,jpeg,png三种格式。');
             },
-            updateData(data) {
+            updateData (data) {
                 this.form.content = data;
             },
-            changeArticletype(value) {
+            changeArticletype (value) {
                 this.form.articletype_name = value.label;
                 this.form.articletype_id = value.value;
             },
-            save() {
+            save () {
                 this.$refs.save.validate((valid) => {
                     if (valid) {
                         this.modal_loading = true;
@@ -498,6 +632,7 @@
                         let text = activeEditor.selection.getContent({'format': 'html'});
                         this.form.content = text;
                         let data = this.form;
+                        // console.log(data);
                         let id = data.id;
                         this.apiPut('article/' + id, data).then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {
@@ -520,7 +655,7 @@
                     }
                 });
             },
-            add() {
+            add () {
                 this.$refs.save.validate((valid) => {
                     if (valid) {
                         this.modal_loading = true;
@@ -539,7 +674,10 @@
                             keywords: this.form.keywords,
                             shorttitle: this.form.shorttitle,
                             is_collection: this.form.is_collection,
-                            tag_id: this.form.tag_id
+                            tag_id: this.form.tag_id,
+                            stations_ids: this.form.stations_ids,
+                            stations: this.form.stations,
+                            site_id: this.form.site_id
                         };
                         this.apiPost('article', data).then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {
@@ -561,20 +699,79 @@
                         });
                     }
                 });
+            },
+            querySearch (queryString, cb) {
+                var restaurants = this.restaurants;
+                var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
+                // 调用 callback 返回建议列表的数据
+                cb(results);
+            },
+            querySearch1 (queryString, cb) {
+                var restaurants = this.restaurantscom;
+                var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
+                // 调用 callback 返回建议列表的数据
+                cb(results);
+            },
+            createFilter (queryString) {
+                return (restaurant) => {
+                    return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+                };
+            },
+            getAuther () {
+                this.apiGet('articleautopoint/auther').then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        data.forEach((item) => {
+                            const newChild = item;
+                            this.Auther.push(newChild);
+                        });
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            },
+            getComForm () {
+                this.apiGet('articleautopoint/come_from').then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        data.forEach((item) => {
+                            const newChild = item;
+                            this.ComForm.push(newChild);
+                        });
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            },
+            loadAll () {
+                return this.Auther;
+            },
+            handleSelect (item) {
+                console.log(item);
             }
+
         },
-        created() {
+        created () {
             this.editImgId = this.editImgId + this.randomWord(true, 3, 32);
         },
-        mounted() {
+        mounted () {
             this.init();
+            this.getAuther();
+            this.getComForm();
+
+            this.restaurants = this.loadAll();
+            this.restaurantscom = this.ComForm;
         },
-        destroyed() {
+        destroyed () {
             tinymce.get(this.editImgId).destroy();
         },
         mixins: [http, common, tinymceInit],
         props: {
-            gpd: {default: 1},
+            gpd: {default: 1}
             //
             // tagname: {
             //     default: {}

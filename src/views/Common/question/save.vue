@@ -10,12 +10,6 @@
                         <Form-item label="问题名称" prop="question">
                             <Input type="text" v-model="form.question" placeholder="请填写问答分类"></Input>
                         </Form-item>
-                        <Form-item label="子站显示" prop="title">
-                            <RadioGroup v-model="form.stations">
-                                <Radio label="10">开</Radio>
-                                <Radio label="20">关</Radio>
-                            </RadioGroup>
-                        </Form-item>
                         <Row>
                             <Col span="12">
                                 <Form-item label="标记" prop="flag"
@@ -30,22 +24,65 @@
                             </Col>
                             <Col span="7">
                                 <Form-item label="权重" prop="sort">
-                                    <Input type="text" v-model="form.sort" placeholder="请输入权重"
-                                           style="width: 200px;"/>
+                                    <Tooltip content="权重越大越显示在前面" placement="top-start" class="tooltip">
+                                        <InputNumber :min="1" v-model="form.sort" placeholder="请输入权重"></InputNumber>
+                                    </Tooltip>
                                 </Form-item>
                             </Col>
                         </Row>
-                        <Form-item label="问答分类" prop="type_id">
-                            <Select v-model="form.type_id" ref="select" :clearable="selects" style="width:200px;"
-                                    label-in-value filterable clearable @on-change="changeArticletype">
-                                <Option-group v-for="(item,index) in this.$store.state.commondata.questionType"
-                                              :label="index" :key="index">
-                                    <Option v-for="(items, indexs) in item" :value="items.id" :label="items.name"
-                                            :key="indexs">{{ items.name }}
-                                    </Option>
-                                </Option-group>
-                            </Select>
+                        <Form-item label="选择显示方式">
+                            <RadioGroup v-model="form.stations" @on-change="ChangRadio">
+                                <Tooltip content="主站（主域名）和子站（二级域名）显示该篇文章" placement="top-start">
+                                    <Radio label="10"><span>全部显示</span></Radio>
+                                </Tooltip>
+                                <Tooltip content="只有主站（主域名）显示该篇文章" placement="top-start" class="tooltip">
+                                    <Radio label="20"><span>仅主站</span></Radio>
+                                </Tooltip>
+                                <Tooltip content="全部子站（二级域名）显示该篇文章" placement="top-start" class="tooltip">
+                                    <Radio label="30"><span>全部子站</span></Radio>
+                                </Tooltip>
+                                <Tooltip content="选定的子站（二级域名）显示该篇文章" placement="top-start" class="tooltip">
+                                    <Radio label="40"><span>特定子站</span></Radio>
+                                </Tooltip>
+                            </RadioGroup>
                         </Form-item>
+                        <Row v-if="this.form.stations =='40' && this.ShowId==null">
+                            <Col span="17">
+                                <Form-item label="选择站点">
+                                    <Select  style="width:300px" label-in-value filterable clearable @on-change="changeChildSite">
+                                        <Option v-for="item in site" :value="item.id" :label="item.text" :key="item.id">
+                                            {{ item.text }}
+                                        </Option>
+                                    </Select>
+
+                                </Form-item>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col span="12">
+                                <Form-item label="问答分类" prop="type_id">
+                                    <Select v-model="form.type_id" ref="select" :clearable="selects" style="width:200px;"
+                                            label-in-value filterable clearable @on-change="changeQuestiontype">
+                                        <Option-group v-for="(item,index) in questionType"
+                                                      :label="index" :key="index">
+                                            <Option v-for="(items, indexs) in item" :value="items.id" :label="items.name"
+                                                    :key="indexs">{{ items.name }}
+                                            </Option>
+                                        </Option-group>
+                                    </Select>
+                                </Form-item>
+                            </Col>
+                            <Col span="12" v-if="this.form.stations =='40' ">
+                                <Form-item label="子站选择" prop="stations_ids">
+                                    <Select v-model="form.stations_ids"  label-in-value multiple filterable style="text-align: left;width:200px;">
+                                        <Option v-for="item in ChildsSitedata" :value="item.district_id" :label="item.name" :key="item.district_id">
+                                            {{ item.name }}
+                                        </Option>
+
+                                    </Select>
+                                </Form-item>
+                            </Col>
+                        </Row>
                         <Form-item class="contentarticle" label="内容">
                             <Card shadow>
                                 <textarea class='tinymce-textarea' id="tinymceEditersave"></textarea>
@@ -109,7 +146,7 @@
 
     export default {
         components: {materialimg},
-        data() {
+        data () {
             const checkquestiontype = (rule, value, callback) => {
                 if (!value) {
                     callback(new Error('请选择问答分类'));
@@ -118,6 +155,9 @@
                 }
             };
             return {
+                ShowId: '',
+                site: [],
+                questionType: [],
                 switch1: true,
                 tag_name: true,
                 modal: false,
@@ -125,7 +165,9 @@
                 spinShow: true,
                 modal_loading: false,
                 img: '',
+                ChildsSitedata: [],
                 form: {
+                    stations_ids: [],
                     question: '',
                     content_paragraph: '',
                     type_id: 0,
@@ -133,7 +175,8 @@
                     type_name: '',
                     tag_id: [],
                     flag: [],
-                    sort:0
+                    sort: 0,
+                    site_id: 0
                 },
                 tags: '',
                 AddRule: {
@@ -142,17 +185,102 @@
                     ],
                     type_id: [
                         {required: true, validator: checkquestiontype, trigger: 'blur'}
-                    ]
+                    ],
+                    stations_ids: [{required: true,
+                        validator: (rule, value, callback) => {
+                            if (value.length === 0) {
+                                callback(new Error('请选择分类'));
+                            } else {
+                                callback();
+                            }
+                        },
+                        trigger: 'blur'}]
                 }
             };
         },
         methods: {
+            getShow () {
+                this.ShowId = localStorage.siteId;
+                if (this.ShowId) {
+                    this.getChildSitelist(this.ShowId);
+                }
+            },
+            ChangRadio (value) {
+                this.form.stations = value;
+                this.ShowId = localStorage.siteId;
+                if (this.ShowId) {
+                    this.getChildSitelist(this.ShowId);
+                }
+                if (value === '40') {
+                    this.$set(this.AddRule, 'stations_ids', [{required: true,
+                        validator: (rule, value, callback) => {
+                            if (value.length === 0) {
+                                callback(new Error('请选择分类'));
+                            } else {
+                                callback();
+                            }
+                        },
+                        trigger: 'blur'}]);
+                }
+            },
+            changeChildSite (value) {
+                this.getArticleType(value.value);
+                this.getChildSitelist(value.value);
+            },
+            getArticleType (site_id) {
+                let data = {
+                    params: {
+                        module_type: 'question',
+                        site_id: site_id
+                    }
+                };
+                this.apiGet('get_type_list', data).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.questionType = data;
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            },
+            getChildSitelist (site_id) {
+                let data = {
+                    params: {
+                        site_id: site_id
+                    }
+                };
+                this.apiGet('childsitelistbysiteid', data).then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.ChildsSitedata = data;
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            },
+            getSite () {
+                this.apiGet('getSites').then((res) => {
+                    this.handleAjaxResponse(res, (data, msg) => {
+                        this.site = data;
+                        //            console.log(this.site)
+                    }, (data, msg) => {
+                        this.$Message.error(msg);
+                    });
+                }, (res) => {
+                    // 处理错误信息
+                    this.$Message.error('网络异常，请稍后重试。');
+                });
+            },
             init: function () {
                 this.$nextTick(() => {
                     this.tinymceInit(this, document.body.offsetHeight - 500, 'tinymceEditersave');
                 });
             },
-            change(status) {
+            change (status) {
                 if (status) {
                     this.tag_name = true;
                     this.$Message.info('切换到下拉选择');
@@ -161,16 +289,17 @@
                     this.$Message.info('切换到添加标签');
                 }
             },
-            changeTagtype(value) {
+            changeTagtype (value) {
                 this.form.tag_id = value.value;
             },
-            updateData(data) {
+            updateData (data) {
                 this.form.content_paragraph = data;
             },
-            changeArticletype(type) {
+            changeQuestiontype (type) {
                 this.form.type_name = type.label;
+                this.form.type_id = type.value;
             },
-            addtags() {
+            addtags () {
                 let data = {
                     type: 'question',
                     name: this.tags
@@ -192,13 +321,17 @@
 
                 });
             },
-            clearQuestionType() {
+            clearQuestionType () {
                 this.$refs.select.clearSingleSelect();
             },
-            edit(editid) {
+            edit (editid) {
                 this.apiGet('question/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.form = data;
+                        this.form.type_name = data.type_name;
+                        if (this.form.stations == 40) {
+                            this.getChildSitelist(this.form.site_id);
+                        }
                         tinymce.get('tinymceEditersave').setContent(this.form.content_paragraph);
                         let tempNUmber = [];
                         if (this.form.tags !== '') {
@@ -211,11 +344,19 @@
                         if (this.form.flag !== '') {
                             this.form.flag.split(',').map(function (key) {
                                 flag.push(key);
-                                //console.log(flag);
+                                // console.log(flag);
                             });
                         }
+
                         this.form.flag = flag;
                         this.form.tag_id = tempNUmber;
+                        let ChildNUmber = [];
+                        if (this.form.stations_ids !== '') {
+                            this.form.stations_ids.split(',').map(function (key) {
+                                ChildNUmber.push(Number(key));
+                            });
+                        }
+                        this.form.stations_ids = ChildNUmber;
                     }, (data, msg) => {
                         this.$Message.error(msg);
                     });
@@ -224,7 +365,7 @@
 
                 });
             },
-            add() {
+            add () {
                 this.$refs.questionadd.validate((valid) => {
                     if (valid) {
                         this.modal_loading = true;
@@ -250,28 +391,28 @@
                                 this.$Message.error(msg);
                             });
                         }, (res) => {
-                            // 处理错误信息
                             this.modal_loading = false;
                         });
                     }
                 });
             },
-            addmaterial(src) {
+            addmaterial (src) {
                 if (this.img === 'content') {
                     let imgsrc = '<img src=' + src + '>';
                     tinymce.get('tinymceEditersave').insertContent(imgsrc);
                 } else if (this.img === 'suolue') {
                     this.form.thumbnails = src;
                 }
-            },
+            }
         },
-        mounted() {
+        mounted () {
             this.init();
         },
-        destroyed() {
+        destroyed () {
             tinymce.get('tinymceEditersave').destroy();
-        }, props: {
-            gpd: {default: 1},
+        },
+        props: {
+            gpd: {default: 1}
         },
         mixins: [http, common, tinymceInit]
     };

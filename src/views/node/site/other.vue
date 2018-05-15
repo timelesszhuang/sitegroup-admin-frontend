@@ -1,4 +1,5 @@
 <template>
+    <div>
     <Modal v-model="modal2" width="560">
         <p slot="header" style="color:dodgerblue;text-align:center;font-size: 18px;">
             <Icon type="flag"></Icon>
@@ -13,58 +14,65 @@
             <!--需要有个整站重新生成的-->
             <Button type="error" @click="resetSite" title="全站重新生成适用于重新发送模板的情形，请慎重执行该操作！">重置站点</Button>
             <Button type="info" @click="changeCdn" title="用于保存站点的CDN相关信息">cdn信息</Button>
-            <Button type="success" @click="activepush" title="更新内容搜索引擎主动推送">主动推送</Button>
-            <Button type="warning" @click="changeDebug" title="" v-on:getdata="changeDebugGetData">debug</Button>
+            <Button type="warning" @click="changeDebug" title="" v-on:getdata="changeDebug">debug</Button>
+            <Button type="success" @click="siteManage" title="子站管理"  >子站管理</Button>
             <!--<Button type="warning" @click="ftpInfo" title="">FTP信息</Button>-->
         </div>
         <div slot="footer">
         </div>
-    </Modal>
 
+    </Modal>
+    <sitemanage ref="childsite"   ></sitemanage>
+    </div>
 </template>
 
 <script type="text/ecmascript-6">
     import http from '../../../libs/http';
-
-
+    import sitemanage from './sitemanage.vue';
     export default {
-        data() {
+        components: {sitemanage},
+        data () {
             return {
+                activity_data:[],
                 modal2: false,
-                modal_loading: false,
-            }
+                modal_loading: false
+            };
         },
         methods: {
-            activepush() {
+            changeCdn () {
                 let siteinfo = this.otherArr;
-                this.$parent.activepush(siteinfo)
+                this.$parent.changeCdn(siteinfo);
             },
-            changeCdn() {
+            ftpInfo () {
                 let siteinfo = this.otherArr;
-                this.$parent.changeCdn(siteinfo)
+                this.$parent.ftpInfo(siteinfo);
             },
-            ftpInfo() {
+            sendActivity () {
                 let siteinfo = this.otherArr;
-                this.$parent.ftpInfo(siteinfo)
+                let site_id = siteinfo.id;
+                this.$parent.sendActivity(site_id);
             },
-            sendActivity() {
+            siteManage () {
                 let siteinfo = this.otherArr;
-                let site_id = siteinfo.id
-                this.$parent.sendActivity(site_id)
+                let site_id = siteinfo.id;
+                this.$refs.childsite.modal2 = true; this.$refs.childsite.setsiteid(site_id);
+                this.$refs.childsite.getChildData(site_id);
+
+
             },
-            changeStatus(main_site) {
+            changeStatus (main_site) {
                 let siteinfo = this.otherArr;
-                this.$parent.changeStatus(siteinfo, main_site)
+                this.$parent.changeStatus(siteinfo, main_site);
             },
-            changeDebug() {
+            changeDebug () {
                 let siteinfo = this.otherArr;
-                this.$parent.changeDebug(siteinfo)
+                this.$parent.changeDebug(siteinfo);
             },
-            //整站重新静态化 只需要把 sync_count 表中栏目已经count 的置为空
-            resetSite() {
+            // 整站重新静态化 只需要把 sync_count 表中栏目已经count 的置为空
+            resetSite () {
                 let siteinfo = this.otherArr;
-                let site_id = siteinfo.id
-                let _this = this
+                let site_id = siteinfo.id;
+                let _this = this;
                 this.$Modal.confirm({
                     title: '重置站点',
                     content: '您确定重置站点? 操作请慎重，该操作会把站点重置为建站初期。',
@@ -76,24 +84,23 @@
                                 _this.$Message.success(msg);
                             }, (data, msg) => {
                                 _this.$Message.error(msg);
-                            })
+                            });
                         }, (res) => {
-                            //处理错误信息
+                            // 处理错误信息
                             _this.$Message.error('网络异常，请稍后重试。');
-                        })
+                        });
                     },
                     onCancel: () => {
-                        return false
+                        return false;
                     }
-                })
+                });
             }
         },
         props: {
             otherArr: {}
         },
         mixins: [http]
-    }
-
+    };
 </script>
 <style>
 

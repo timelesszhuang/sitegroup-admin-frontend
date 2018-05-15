@@ -28,9 +28,9 @@ export const router = new VueRouter(RouterConfig);
 
 router.beforeEach((to, from, next) => {
     let locking = Cookies.get('locking');
-    console.log(to.name);
-    console.log(locking);
-    console.log(typeof locking);
+    //console.log(to.name);
+    //console.log(locking);
+    //console.log(typeof locking);
     if(Cookies.get('user_id')&&to.name!=='login'&&to.name!=='locking'&&locking&&locking==='1'){
         next({
             name: 'locking'
@@ -48,7 +48,7 @@ router.beforeEach((to, from, next) => {
     Util.title(to.meta.title);
     // 每次页面路由的时候执行
     let userType = Cookies.get('type');
-    console.log(userType);
+    //console.log(userType);
     if (userType === '1') { // 判断当前是否是锁定状态
         // 系统管理员调用部分 不能跳转倒其他管理员的部分
         if ((to.path === '/node' || to.path === '/' || to.path === '' || to.path === '/site')&&(to.path !== '/site'&&to.path !== '/node'&&to.path !== '/admin')) {
@@ -72,7 +72,7 @@ router.beforeEach((to, from, next) => {
         } else {
             const curRouterObj = Util.getRouterObjByName([...adminrouters], to.name);
             if (!curRouterObj) {
-                console.log("111");
+                //console.log("111");
                 next({
                     name: 'error-404'
                 });
@@ -114,7 +114,7 @@ router.beforeEach((to, from, next) => {
         } else {
             const curRouterObj = Util.getRouterObjByName([...noderouters], to.name);
             if (!curRouterObj) {
-                console.log("222");
+                //console.log("222");
                 next({
                     name: 'error-404'
                 });
@@ -167,7 +167,7 @@ router.beforeEach((to, from, next) => {
             } else {
                 const curRouterObj = Util.getRouterObjByName([...siterouters], to.name);
                 if (!curRouterObj) {
-                    console.log("333");
+                    //console.log("333");
                     next({
                         name: 'error-404'
                     });

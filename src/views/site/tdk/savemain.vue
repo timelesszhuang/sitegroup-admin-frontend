@@ -7,7 +7,9 @@
         </p>
         <div>
           <Select v-model="oldKey" style="width:200px" label-in-value filterable clearable>
-            <Option v-for="item in keys" :value="item.id" :label="item.text" :key="item">{{ item.text }}</Option>
+            <Option v-for="(item,index) in keys" :value="item.id" :label="item.text" :key="index">{{ item.text }}</Option>
+
+
           </Select>
         </div>
         <div slot="footer">
@@ -19,44 +21,45 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import http from '../../../libs/http';;
-    export default {
-      data() {
+  import http from '../../../libs/http'; ;
+  export default {
+      data () {
           return {
-            modal_loading:false,
-            modal:false,
-            keyid:''
-          }
+              modal_loading: false,
+              modal: false,
+              keyid: ''
+          };
       },
       methods: {
-        add() {
-           if(!this.oldKey){
-             this.$Message.error("请选择关键词");
-             return
-           }
-           let data={
-             id:this.siteid,
-             akeyword_id:this.oldKey
-           }
-          this.apiPost('user/editpageinfo',data).then((data) => {
-            this.handleAjaxResponse(data, (data, msg) => {
-              this.$Message.success(msg);
-              this.modal=false;
-            }, (data, msg) => {
-              this.$Message.error(msg);
-            })
-          }, (data) => {
-            this.$Message.error('请先选择站点->点击查询!');
-          })
-        }
-      },
-      props:{
-        oldKey:'',
-        siteid:'',
-        keys:{
+          add () {
+              if (!this.oldKey) {
+                  this.$Message.error('请选择关键词');
+                  return;
+              }
 
-        }
+              let data = {
+                  id: this.siteid,
+                  akeyword_id: this.oldKey
+              };
+              this.apiPost('editpageinfo', data).then((data) => {
+                  this.handleAjaxResponse(data, (data, msg) => {
+                      this.$Message.success(msg);
+                      this.modal = false;
+                  }, (data, msg) => {
+                      this.$Message.error(msg);
+                  });
+              }, (data) => {
+                  this.$Message.error('请先选择站点->点击查询!');
+              });
+          }
+      },
+      props: {
+          oldKey: '',
+          siteid: '',
+          keys: {
+
+          }
       },
       mixins: [http]
-    }
+  };
 </script>

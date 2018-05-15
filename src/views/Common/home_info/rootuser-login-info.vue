@@ -1,6 +1,6 @@
 <template>
     <!--用户登陆信息-->
-    <Card>
+  <div  >
         <Row type="flex" class="user-infor">
             <Col span="16" style="padding-left:6px;">
             <Row class-name="made-child-con-middle" type="flex" align="middle">
@@ -8,8 +8,8 @@
                     <b class="card-user-infor-name">
                         {{this.$store.state.user.userName}}
                     </b>
-                    <p>
-
+                    <p style="margin-top:10px;">
+                        
                         {{this.$store.state.user.lastLoginTime}}
                     </p>
                 </div>
@@ -19,12 +19,12 @@
         <div class="line-gray"></div>
         <Row class="margin-top-8">
             <Col span="8">
-            <p class="notwrap">上次登录时间:</p></Col>
+            <p class="notwrap" style="margin-top:10px;">上次登录时间:</p></Col>
             <Col span="16" class="padding-left-8">
             {{this.$store.state.user.lastLoginTime}}
             </Col>
         </Row>
-        <Row class="margin-top-8">
+        <Row class="margin-top-8" style="margin-top:10px;">
             <Col span="8">
             <p class="notwrap">上次登录地点:</p>
             </Col>
@@ -32,7 +32,7 @@
             {{this.$store.state.user.lastLoginAddress}}
             </Col>
         </Row>
-    </Card>
+  </div>
 </template>
 
 <script>

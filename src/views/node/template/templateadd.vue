@@ -40,7 +40,9 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import http from '../../../libs/http';
+  /* eslint-disable indent */
+
+  import http from '../../../libs/http';
     import common from '../../../libs/common';
     export default {
         data () {

@@ -92,6 +92,8 @@
               this.page_show = true;
           },
           edit (index) {
+              this.$refs.save.getSite();
+              this.$refs.save.getArticleType();
               this.$refs.save.addhots();
           },
           show (index) {
@@ -100,7 +102,6 @@
           },
           getArticle (index) {
               let editid = this.datas[index].id;
-
           }
       },
       computed: {

@@ -72,7 +72,7 @@
                 this.apiGet('siteResource').then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.form = data;
-                        console.log(this.form)
+                        //console.log(this.form)
                     }, (data, msg) => {
                         this.$Message.error(msg);
                     })
