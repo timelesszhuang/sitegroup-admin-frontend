@@ -156,9 +156,6 @@
                             </Select>
                             <Button type="success" @click="FriendLink">添加</Button>
                         </Form-item>
-                        <Form-item label="url" prop="url">
-                            <Input v-model="form.url" placeholder="请输入url"></Input>
-                        </Form-item>
                         <Form-item label="公共代码" prop="public_code">
                             <Select v-model="form.public_code" multiple style="text-align: left;width:200px;">
                                 <Option v-for="item in this.$store.state.commondata.PublicCode" :value="item.id" :label="item.text" :key="item.id">
@@ -300,9 +297,6 @@
                     ],
                     user_id: [
                         {required: true, validator: checkuser, trigger: 'blur'}
-                    ],
-                    url: [
-                        {required: true, message: '请输入url', trigger: 'blue'}
                     ],
                     level: [
                         {required: true, message: '请选择', trigger: 'blue'}

@@ -24,7 +24,7 @@
 
 <script type="text/ecmascript-6">
     import http from '../../../libs/http';
-
+    import common from '../../../libs/common';
     export default {
         data() {
             return {
@@ -49,10 +49,10 @@
                         this.apiPost('type_tag', data).then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {
                                 this.modal = false;
+                                this.getTagType(true);
                                 if (this.gpd) {
                                     this.$emit('getdata');
                                 }
-                                this.getTagType(true);
                                 this.$Message.success(msg);
                                 this.modal_loading = false;
                                 this.$refs.articleadd.resetFields();
@@ -71,7 +71,7 @@
         }, props: {
             gpd: {default: 1},
         },
-        mixins: [http]
+        mixins: [http,common]
 
     };
 </script>
