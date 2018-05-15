@@ -385,6 +385,7 @@
                 });
             },
             init: function () {
+                this.ChildsSitedata=[];
                 this.$nextTick(() => {
                     let height = document.body.offsetHeight - 500;
                     this.tinymceInit(this, height, 'tinymceEditerAddArticle');

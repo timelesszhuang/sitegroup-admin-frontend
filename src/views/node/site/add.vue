@@ -67,15 +67,21 @@
                                     <Icon type="android-phone-portrait"></Icon>
                                     <span>手机</span>
                                 </Radio>
+                                <Radio label=30>
+                                    <Icon type="android-phone-landscape"></Icon>
+                                    <span>自适应</span>
+                                </Radio>
                             </Radio-group>
                         </Form-item>
-                        <Form-item label="手机网站" prop="m_site_id">
+                        <Form-item label="手机网站" prop="m_site_id"  v-show="form.is_mobile==10">
+                            <Tooltip content="请选择该网站对应手机站" placement="top">
                             <Select clearable v-model="form.m_site_id" style="text-align: left;width:200px;"
                                     label-in-value filterable>
                                 <Option v-for="item in  this.$store.state.commondata.mobileSite" :value="item.id" :label="item.text" :key="item.id">
                                     {{ item.text }}
                                 </Option>
                             </Select>
+                            </Tooltip>
                         </Form-item>
 
                         <Form-item label="关键词" prop="keyword_ids">
