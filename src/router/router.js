@@ -1026,13 +1026,6 @@ export const siteappRouter = [
                 name: 'staticconfig',
                 component: () => import('@/views/site/staticconfig/index.vue')
             },
-            {
-                path: '/sitecontact',
-                icon: 'earth',
-                title: "联系方式",
-                name: 'sitecontact',
-                component: () => import('@/views/site/operation/sitecontact.vue')
-            },
         ]
     },
     {
