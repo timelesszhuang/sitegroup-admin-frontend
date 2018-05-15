@@ -97,7 +97,7 @@ export const nodeotherRouter = {
         },
         {
             path: 'error-message',
-            title: '错误中心',
+            title: '异常中心',
             name: 'error-message',
             component: () => import('@/views/node/error-message/error-message.vue')
         }
