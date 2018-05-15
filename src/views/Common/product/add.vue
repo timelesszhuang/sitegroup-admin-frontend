@@ -105,7 +105,7 @@
                             <Row>
                                 <Col span="21">
                                 <Form-item v-if="tag_name" label="分类标签" prop="tags">
-                                    <Select ref="select" :clearable="selects" v-model="form.tag_id"
+                                    <Select v-model="form.tag_id"
                                             style="text-align: left;width:350px;"
                                             label-in-value multiple　>
                                         <Option v-for="(item,index) in this.$store.state.commondata.productTag"
@@ -355,6 +355,8 @@
                                 this.form.image = '';
                                 this.$refs.padd.resetFields();
                                 this.$refs.select.clearSingleSelect();
+                                tinymce.get('tinymceEditerAddProduct').setContent('');
+                                tinymce.get('tinymceEditerAddProductField4').setContent('');
                             }, (data, msg) => {
                                 this.modal_loading = false;
                                 this.$Message.error(msg);

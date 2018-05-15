@@ -36,7 +36,7 @@
                             </Col>
                         </Row>
                         <Form-item label="问答分类" prop="type_id">
-                            <Select v-model="form.type_id" ref="select" :clearable="selects" style="width:200px;"
+                            <Select v-model="form.type_id" ref="select" :clearable="true" style="width:200px;"
                                     label-in-value filterable clearable @on-change="changeQuestiontype">
                                 <Option-group v-for="(item,index) in this.$store.state.commondata.questionType"
                                               :label="index" :key="index">
@@ -66,7 +66,7 @@
                         <Row>
                             <Col span="21">
                             <Form-item v-if="tag_name" label="分类标签" prop="tags">
-                                <Select ref="select" :clearable="selects" v-model="form.tag_id"
+                                <Select ref="select1" :clearable="true" v-model="form.tag_id"
                                         style="position:relative;text-align: left;width:350px;z-index: 10000;"
                                         label-in-value multiple　>
                                     <Option v-for="(item,index) in this.$store.state.commondata.questionTag"
@@ -218,6 +218,8 @@
                                 this.modal_loading = false;
                                 this.$refs.questionadd.resetFields();
                                 this.$refs.select.clearSingleSelect();
+                                this.$refs.select1.clearSingleSelect();
+                                tinymce.get('tinymceEditer').setContent('');
                             }, (data, msg) => {
                                 this.modal_loading = false;
                                 this.$Message.error(msg);
