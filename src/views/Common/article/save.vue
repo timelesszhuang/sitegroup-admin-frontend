@@ -560,6 +560,7 @@
                 });
             },
             init: function () {
+                this.ChildsSitedata=[];
                 this.$nextTick(() => {
                     let vm = this;
                     let height = document.body.offsetHeight - 500;
