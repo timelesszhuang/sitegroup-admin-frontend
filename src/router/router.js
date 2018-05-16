@@ -931,13 +931,13 @@ export const siteappRouter = [
         children: [
             {
                 path: 'hotnews',
-                icon: 'pricetag',
+                icon: 'egg',
                 title: '新闻管理',
                 name: 'hotnews',
                 component: () => import('@/views/Common/news/tab.vue')
             }, {
                 path: 'wechat',
-                icon: 'edit',
+                icon: 'podium',
                 title: '公众号',
                 name: 'wechat',
                 component: () => import('@/views/node/articlemanage/tab.vue')
@@ -954,14 +954,14 @@ export const siteappRouter = [
         children: [
             {
                 path: '/sitearticle',
-                icon: 'earth',
+                icon: 'flame',
                 title: "文章管理",
                 name: 'sitearticlemanage',
                 component: () => import('@/views/Common/article/index.vue')
             },
             {
                 path: '/sitequestion',
-                icon: 'ios-help',
+                icon: 'university',
                 title: "问答管理",
                 name: 'sitequestionmanage',
                 component: () => import('@/views/Common/question/index.vue')
@@ -970,28 +970,28 @@ export const siteappRouter = [
     },
     {
         path: '/keywordsoperation',
-        icon: 'earth',
+        icon: 'lightbulb',
         title: "关键词管理",
         name: 'keywordsoperation',
         component: Main,
         children: [
             {
                 path: '/href',
-                icon: 'earth',
+                icon: 'play',
                 title: "文章插入链接",
                 name: 'href',
                 component: () => import('@/views/site/href/index.vue')
             },
             {
                 path: '/hrefreplace',
-                icon: 'earth',
+                icon: 'code',
                 title: "关键词链接替换",
                 name: 'hrefreplace',
                 component: () => import('@/views/site/hrefreplace/index.vue')
             },
             {
                 path: '/substitution',
-                icon: 'earth',
+                icon: 'code-working',
                 title: "文章关键词替换",
                 name: 'substitution',
                 component: () => import('@/views/site/substitution/index.vue')
@@ -1000,28 +1000,28 @@ export const siteappRouter = [
     },
     {
         path: '/sitemanagement',
-        icon: 'earth',
+        icon: 'laptop',
         title: "站点管理",
         name: 'sitemanagement',
         component: Main,
         children: [
             {
                 path: '/operation',
-                icon: 'earth',
+                icon: 'crop',
                 title: "页面生成",
                 name: 'operation',
                 component: () => import('@/views/site/operation/operation.vue')
             },
             {
                 path: '/tdkall',
-                icon: 'earth',
+                icon: 'battery-charging',
                 title: "搜索引擎优化管理",
                 name: 'tdkall',
                 component: () => import('@/views/site/tdkall/tab.vue')
             },
             {
                 path: '/staticconfig',
-                icon: 'earth',
+                icon: 'radio-waves',
                 title: "静态化配置",
                 name: 'staticconfig',
                 component: () => import('@/views/site/staticconfig/index.vue')
@@ -1030,44 +1030,44 @@ export const siteappRouter = [
     },
     {
         path: '/count',
-        icon: 'earth',
+        icon: 'record',
         title: "统计",
         name: 'count',
         component: Main,
         children: [
             {
                 path: '/keywordcount',
-                icon: 'earth',
+                icon: 'ios-nutrition',
                 title: "关键词占比统计",
                 name: 'keywordcount',
-              component: () => import('@/views/Common/countkeyword/index.vue')
+                component: () => import('@/views/Common/countkeyword/index.vue')
 
             },
             {
                 path: '/pv',
-                icon: 'earth',
+                icon: 'ios-videocam-outline',
                 title: "浏览量统计",
                 name: 'pv',
-              component: () => import('@/views/Common/pv/pv.vue')
+                component: () => import('@/views/Common/pv/pv.vue')
 
             },
             {
                 path: '/show',
-                icon: 'earth',
+                icon: 'android-cloud',
                 title: "浏览量展示",
                 name: 'show',
                 component: () => import('@/views/Common/show/index.vue')
             },
             {
                 path: '/crawler',
-                icon: 'earth',
+                icon: 'android-download',
                 title: "爬虫统计",
                 name: 'crawler',
                 component: () => import('@/views/Common/crawler/crawler.vue')
             },
             {
                 path: '/flow',
-                icon: 'earth',
+                icon: 'android-upload',
                 title: "搜索引擎占比",
                 name: 'flow',
                 component: () => import('@/views/site/countkeyword/index.vue')
