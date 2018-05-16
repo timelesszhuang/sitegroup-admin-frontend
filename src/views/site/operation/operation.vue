@@ -57,28 +57,6 @@
                         });
                     },
                     onCancel: () => {
-                        // let name = 'operation';
-                        // this.$store.state.app.pageOpenedList.map((item, index) => {
-                        //     if (item.name === name) {
-                        //         this.$store.state.app.pageOpenedList.splice(index, 1);
-                        //     }
-                        // });
-                        //
-                        // // util.openNewPage(this, name, this.$route.params || {}, this.$route.query || {});
-                        // let openpageHasTag = this.$store.state.app.pageOpenedList.some(item => {
-                        //     if (item.name === name) {
-                        //         return true;
-                        //     }
-                        // });
-                        // if (!openpageHasTag) { //  解决关闭当前标签后再点击回退按钮会退到当前页时没有标签的问题
-                        //     this.$store.state.app.pageOpenedList.map((item, index) => {
-                        //
-                        //
-                        //
-                        //     });
-                        //
-                        //     util.openNewPage(this, name, this.$route.params || {}, this.$route.query || {});
-                        // }
                         return false;
                     }
                 });
