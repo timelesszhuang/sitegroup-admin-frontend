@@ -11,34 +11,15 @@
                 <userLoginInfo></userLoginInfo>
                 </Col>
                 <Col :md="12" :lg="24" :style="{marginBottom: '10px'}">
-                <Card>
-                    <p slot="title" class="card-title">
-                        <Icon type="android-checkbox-outline"></Icon>
-                        待办事项
-                    </p>
-                    <a type="text" slot="extra" @click.prevent="addNewToDoItem">
-                        <Icon type="plus-round"></Icon>
-                    </a>
-                    <Modal
-                            v-model="showAddNewTodo"
-                            title="添加新的待办事项"
-                            @on-ok="addNew"
-                            @on-cancel="cancelAdd">
-                        <Row type="flex" justify="center">
-                            <Input v-model="newToDoItemValue" icon="compose" placeholder="请输入..." style="width: 300px"/>
-                        </Row>
-                        <Row slot="footer">
-                            <Button type="text" @click="cancelAdd">取消</Button>
-                            <Button type="primary" @click="addNew">确定</Button>
-                        </Row>
-                    </Modal>
-                    <div class="to-do-list-con">
-                        <div v-for="(item, index) in toDoList" :key="'todo-item' + (toDoList.length - index)"
-                             class="to-do-item">
-                            <to-do-list-item :content="item.title"></to-do-list-item>
+                    <Card>
+                        <p slot="title" class="card-title">
+                            <Icon type="ios-pulse-strong"></Icon>
+                            浏览量趋势
+                        </p>
+                        <div class="data-source-row">
+                            <pageview-trend></pageview-trend>
                         </div>
-                    </div>
-                </Card>
+                    </Card>
                 </Col>
             </Row>
             </Col>
@@ -58,22 +39,15 @@
             </Col>
         </Row>
         <Row :gutter="10" class="margin-top-10">
-            <Col :md="24" :lg="8" :style="{marginBottom: '10px'}">
-            <Card>
-                <p slot="title" class="card-title">
-                    <Icon type="ios-pulse-strong"></Icon>
-                    浏览量趋势
-                </p>
-                <div class="data-source-row">
-                    <pageview-trend></pageview-trend>
-                </div>
-            </Card>
-            </Col>
+
             <Col :md="24" :lg="8" :style="{marginBottom: '10px'}">
             <marketMode></marketMode>
             </Col>
             <Col :md="24" :lg="8">
             <caseCenter></caseCenter>
+            </Col>
+            <Col :md="24" :lg="8" :style="{marginBottom: '10px'}">
+
             </Col>
         </Row>
 
