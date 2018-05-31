@@ -20,12 +20,12 @@
     </card>
 </template>
 <script>
-    import http from "../../../libs/http";
+    import http from '../../../libs/http';
     import Nodeadd from './nodeadd.vue';
     import Nodeedit from './nodeedit.vue';
 
     export default {
-        data() {
+        data () {
             return {
                 self: this,
                 border: true,
@@ -39,51 +39,51 @@
                 nodelist: [],
                 editinfo: {},
                 userlist: [],
-                companylist: [],
-            }
+                companylist: []
+            };
         },
         components: {Nodeadd, Nodeedit},
-        created() {
+        created () {
             this.getData();
         },
         methods: {
-            //获取数据
-            getData() {
+            // 获取数据
+            getData () {
                 let data = {
                     params: {
                         'page': this.current,
-                        'rows': this.pagesize,
+                        'rows': this.pagesize
                         /*            'name': this.name,
-                         'industry_id': this.industry_id*/
+                         'industry_id': this.industry_id */
                     }
                 };
                 this.apiGet('node', data).then((data) => {
                     this.handleAjaxResponse(data, (data, msg) => {
-//            console.log(data)
+                    //            console.log(data)
                         this.nodelist = data.rows;
                         this.total = data.total;
                     }, (data, msg) => {
                         this.$Message.error(msg);
-                    })
+                    });
                 }, (data) => {
                     this.$Message.error('网络异常，请稍后重试');
-                })
+                });
             },
-            queryData() {
+            queryData () {
                 this.getData();
             },
-            changePage(page) {
+            changePage (page) {
                 this.current = page;
                 this.getData();
             },
-            changePageSize(pagesize) {
+            changePageSize (pagesize) {
                 this.pagesize = pagesize;
-                this.getData()
+                this.getData();
             },
-            add() {
-                this.$refs.add.modal = true
+            add () {
+                this.$refs.add.modal = true;
             },
-            edit(index) {
+            edit (index) {
                 //　需要删除确认
                 //　获取资源信息
                 let editid = this.nodelist[index].id;
@@ -91,8 +91,8 @@
                 // this.modal = false;
                 this.$refs.edit.modal = true;
             },
-            on(index) {
-                //需要删除确认
+            on (index) {
+                // 需要删除确认
                 let id = this.nodelist[index].id;
                 let _this = this;
                 let data = {
@@ -113,18 +113,18 @@
                                 _this.$Message.success(msg);
                             }, (data, msg) => {
                                 _this.$Message.error(msg);
-                            })
+                            });
                         }, (res) => {
-                            //处理错误信息
+                            // 处理错误信息
                             _this.$Message.error('网络异常，请稍后重试');
-                        })
+                        });
                     },
                     onCancel: () => {
-                        return false
+                        return false;
                     }
-                })
+                });
             },
-            off(index) {
+            off (index) {
                 let id = this.nodelist[index].id;
                 let _this = this;
                 let data = {
@@ -145,20 +145,20 @@
                                 _this.$Message.success(msg);
                             }, (data, msg) => {
                                 _this.$Message.error(msg);
-                            })
+                            });
                         }, () => {
-                            //处理错误信息
+                            // 处理错误信息
                             _this.$Message.error('网络异常，请稍后重试');
-                        })
+                        });
                     },
                     onCancel: () => {
-                        return false
+                        return false;
                     }
-                })
+                });
             }
         },
         computed: {
-            tableColumns3() {
+            tableColumns3 () {
                 let _this = this;
                 let columns = [
                     {
@@ -177,16 +177,15 @@
                         title: '绑定登录名', key: 'user_name'
                     },
                     {
-                        title: '添加时间', key: 'create_time',
+                        title: '添加时间', key: 'create_time'
                     }
                 ];
-
 
                 columns.push({
                     title: '审核状态',
                     key: 'title',
                     width: '100',
-                    render(h, params) {
+                    render (h, params) {
                         if (params.row.status === 'on') {
                             return h('div', [
                                 h('Icon', {
@@ -196,7 +195,7 @@
                                     attrs: {
                                         title: '启用',
                                         style: 'color:green'
-                                    },
+                                    }
                                 })
                             ]);
                         }
@@ -208,10 +207,10 @@
                                 attrs: {
                                     title: '禁用',
                                     style: 'color:red'
-                                },
+                                }
                             })
                         ]);
-                    },
+                    }
                 });
                 columns.push(
                     {
@@ -220,10 +219,10 @@
                         width: 150,
                         align: 'center',
                         fixed: 'right',
-                        render(h, params) {
+                        render (h, params) {
                             let statusbutton = '';
                             if (params.row.status === 'off') {
-                                //20 状态为禁用 应该启用
+                                // 20 状态为禁用 应该启用
                                 statusbutton = h('Button', {
                                     props: {
                                         size: 'small'
@@ -236,10 +235,10 @@
                                     },
                                     on: {
                                         click: function () {
-                                            _this.on(params.index)
+                                            _this.on(params.index);
                                         }
                                     }
-                                }, '启用')
+                                }, '启用');
                             } else {
                                 statusbutton = h('Button', {
                                     props: {
@@ -253,10 +252,10 @@
                                     },
                                     on: {
                                         click: function () {
-                                            _this.off(params.index)
+                                            _this.off(params.index);
                                         }
                                     }
-                                }, '禁用')
+                                }, '禁用');
                             }
 
                             return h('div', [
@@ -272,20 +271,19 @@
                                     },
                                     on: {
                                         click: function () {
-                                            _this.edit(params.index)
-
+                                            _this.edit(params.index);
                                         }
                                     }
                                 }, '修改'),
-                                statusbutton,
+                                statusbutton
 
                             ]);
-                        },
+                        }
                     }
                 );
                 return columns;
             }
         },
         mixins: [http]
-    }
+    };
 </script>

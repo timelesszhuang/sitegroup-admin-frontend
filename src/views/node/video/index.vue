@@ -25,7 +25,7 @@
     import http from '../../../libs/http';
 
     export default {
-        data() {
+        data () {
             return {
                 total: 0,
                 self: this,
@@ -45,74 +45,74 @@
                 keyword_type: '',
                 keywordtype: {},
                 currentKeyId: 0
-            }
+            };
         },
-        created() {
-            this.getData()
-            this.mainKeywordList()
+        created () {
+            this.getData();
+            this.mainKeywordList();
         },
         methods: {
-            changeKeyword(key) {
-                this.currentKeyId = key
+            changeKeyword (key) {
+                this.currentKeyId = key;
             },
-            mainKeywordList() {
+            mainKeywordList () {
                 this.apiGet('gettrack').then((data) => {
                     this.handleAjaxResponse(data, (data, msg) => {
-                        this.keywordtype = data
+                        this.keywordtype = data;
                     }, (data, msg) => {
                         this.$Message.error(msg);
-                    })
+                    });
                 }, (data) => {
                     this.$Message.error('网络异常，请稍后重试');
-                })
+                });
             },
-            changePage(page) {
+            changePage (page) {
                 this.page = page;
                 this.getData();
             },
-            changePageSize(pagesize) {
+            changePageSize (pagesize) {
                 this.rows = pagesize;
                 this.getData();
             },
-            queryData() {
+            queryData () {
                 this.getData();
             },
-            getData() {
+            getData () {
                 let data = {
                     params: {
                         page: this.page,
-                        rows: this.rows,
+                        rows: this.rows
                     }
-                }
+                };
                 this.apiGet('voice_cdr', data).then((data) => {
                     this.handleAjaxResponse(data, (data, msg) => {
-                        this.datas = data.rows
+                        this.datas = data.rows;
                         this.total = data.total;
-                        this.pageSize = 10
+                        this.pageSize = 10;
                     }, (data, msg) => {
                         this.$Message.error(msg);
-                    })
+                    });
                 }, (data) => {
                     this.$Message.error('网络异常，请稍后重试');
-                })
+                });
             }
         },
         computed: {
-            tableColumns() {
+            tableColumns () {
                 let columns = [];
                 if (this.showCheckbox) {
                     columns.push({
                         type: 'selection',
                         width: 60,
                         align: 'center'
-                    })
+                    });
                 }
                 if (this.showIndex) {
                     columns.push({
                         type: 'index',
                         width: 60,
                         align: 'center'
-                    })
+                    });
                 }
                 columns.push({
                     title: '客户的电话号码',
@@ -125,7 +125,7 @@
                     key: 'status',
                     align: 'center',
                     width: 90,
-                    render(h, params) {
+                    render (h, params) {
                         if (params.row.status == '10') {
                             return h('div', [
                                 h('Icon', {
@@ -135,7 +135,7 @@
                                     attrs: {
                                         title: '接通',
                                         style: 'color:green'
-                                    },
+                                    }
                                 })
                             ]);
                         }
@@ -147,23 +147,23 @@
                                 attrs: {
                                     title: '未接通',
                                     style: 'color:red'
-                                },
+                                }
                             })
                         ]);
-                    },
+                    }
                 });
                 columns.push({
                     title: '打出/打进',
                     key: 'type',
                     align: 'center',
                     width: 90,
-                    render(h, params) {
+                    render (h, params) {
                         let inou = h('span', {
-                            attrs: {},
+                            attrs: {}
                         }, '打进');
                         if (params.row.type == 'OU') {
                             inou = h('span', {
-                                attrs: {},
+                                attrs: {}
                             }, '打出');
                         }
                         return h('div', [
@@ -184,41 +184,41 @@
                     width: 150
                 });
                 columns.push({
-                        title: '录音',
-                        key: 'rec_name',
-                        align: 'center',
-                        render(h, params) {
-                            return h('audio',
-                                {
-                                    attrs: {
-                                        'controls': 'true',
-                                        'preload': 'none'
+                    title: '录音',
+                    key: 'rec_name',
+                    align: 'center',
+                    render (h, params) {
+                        return h('audio',
+                            {
+                                attrs: {
+                                    'controls': 'true',
+                                    'preload': 'none'
+                                }
+                            }, [
+                                h('source', {
+                                    props: {
+                                        size: 'small'
                                     },
-                                }, [
-                                    h('source', {
-                                        props: {
-                                            size: 'small'
-                                        },
-                                        attrs: {
-                                            'src': params.row.rec_name,
-                                        },
-                                    })
-                                ]
-                            )
-                        }
+                                    attrs: {
+                                        'src': params.row.rec_name
+                                    }
+                                })
+                            ]
+                        );
                     }
+                }
                 );
                 columns.push({
                     title: '添加时间',
                     key: 'create_time',
                     width: 150,
-                    align: 'center',
+                    align: 'center'
                 });
                 return columns;
             }
         },
         mixins: [http]
-    }
+    };
 </script>
 <style>
     em {

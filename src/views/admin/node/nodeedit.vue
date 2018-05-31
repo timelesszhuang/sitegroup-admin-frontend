@@ -16,6 +16,9 @@
                     <Form-item label="节点名" prop="name">
                         <Input type="text" v-model="form.name" placeholder="请输入节点名"></Input>
                     </Form-item>
+                    <Form-item label="分机号" prop="ext_num">
+                        <InputNumber :min="1" v-model="form.ext_num" placeholder="请输入分机号"></InputNumber>
+                    </Form-item>
                     <Form-item label="详情" prop="detail">
                         <Input type="text" v-model="form.detail" placeholder="请输入节点相关信息"></Input>
                     </Form-item>
@@ -36,11 +39,10 @@
     </div>
 </template>
 <script>
-    import http from "../../../libs/http";
+    import http from '../../../libs/http';
 
     export default {
-        data() {
-
+        data () {
             const checkcomtype = (rule, value, callback) => {
                 if (!value) {
                     callback(new Error('请选择公司名'));
@@ -54,59 +56,60 @@
                     name: '',
                     detail: '',
                     user_id: '',
-                    user_name: ''
+                    user_name: '',
+                    ext_num: ''
                 },
                 modal: false,
                 modal_loading: false,
                 label_in_value: true,
                 nodeEditRule: {
                     name: [
-                        {required: true, message: '请填写节点名', trigger: 'blur'},
+                        {required: true, message: '请填写节点名', trigger: 'blur'}
                     ],
                     detail: [
-                        { message: '请填写节点详情', trigger: 'blur'},
+                        { message: '请填写节点详情', trigger: 'blur'}
                     ],
                     com_id: [
-                        {required: true, validator: checkcomtype, trigger: "blur"}
+                        {required: true, validator: checkcomtype, trigger: 'blur'}
                     ]
-                },
-            }
+                }
+            };
         },
-        mounted() {
+        mounted () {
             this.getCompany();
         },
         methods: {
-            init(editid) {
+            init (editid) {
                 this.apiGet('node/' + editid).then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
-                        delete  data.create_time;
-                        delete  data.update_time;
-                        this.form = data
+                        delete data.create_time;
+                        delete data.update_time;
+                        this.form = data;
                     }, (data, msg) => {
                         this.$Message.error(msg);
-                    })
+                    });
                 }, (res) => {
-                    //处理错误信息
+                    // 处理错误信息
                     this.$Message.error('网络异常，请稍后重试。');
-                })
+                });
             },
-            getCompany() {
+            getCompany () {
                 this.apiGet('getCompany').then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.company = data;
                     }, (data, msg) => {
                         this.$Message.error(msg);
-                    })
+                    });
                 }, (res) => {
-                    //处理错误信息
+                    // 处理错误信息
                     this.$Message.error('网络异常，请稍后重试。');
                 });
             },
-            changeCompany(value) {
+            changeCompany (value) {
                 this.form.com_name = value.label;
                 this.form.com_id = value.value;
             },
-            edit() {
+            edit () {
                 this.$refs.nodeedit.validate((valid) => {
                     if (valid) {
                         this.modal_loading = true;
@@ -124,22 +127,22 @@
                             }, (data, msg) => {
                                 this.modal_loading = false;
                                 this.$Message.error(msg);
-                            })
+                            });
                         }, (res) => {
-                            //处理错误信息
+                            // 处理错误信息
                             this.$Message.error('网络异常，请稍后重试。');
                             this.modal_loading = false;
-                        })
+                        });
                     } else {
                         return false;
                     }
-                })
+                });
             }
         },
         props: {
-            gpd: {default: 1},
+            gpd: {default: 1}
 
         },
         mixins: [http]
-    }
+    };
 </script>

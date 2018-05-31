@@ -39,7 +39,6 @@
             </Col>
         </Row>
         <Row :gutter="10" class="margin-top-10">
-
             <Col :md="24" :lg="8" :style="{marginBottom: '10px'}">
             <marketMode></marketMode>
             </Col>
@@ -47,7 +46,6 @@
             <caseCenter></caseCenter>
             </Col>
             <Col :md="24" :lg="8" :style="{marginBottom: '10px'}">
-
             </Col>
         </Row>
 
