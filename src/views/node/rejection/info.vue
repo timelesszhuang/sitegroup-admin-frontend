@@ -4,7 +4,7 @@
             <Icon type="flag"></Icon>
             <span>线索信息</span>
         </p>
-        <Table :columns="columns1" :data="showdata"></Table>
+        <Table :columns="columns1" :data="showdata" show-header="false"></Table>
         <div slot="footer">
         </div>
     </Modal>
