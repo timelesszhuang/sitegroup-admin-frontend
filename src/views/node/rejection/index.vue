@@ -29,7 +29,7 @@
                     </div>
                 </div>
             </div>
-            <info ref="info" :data="showdata"></info>
+            <info ref="info" :showdata="showdata"></info>
         </div>
     </card>
 </template>
