@@ -48,31 +48,31 @@
     import http from '../../../libs/http';
     import common from '../../../libs/common';
     export default {
-        data() {
+        data () {
             return {
                 modal: false,
                 modal_loading: false,
                 AddRule: {
                     domain: [
-                        {required: true, message: '请填写域名', trigger: 'blur'},
-                    ],
-//          registrant_user: [
-//            {required: true, message: '请输入注册人', trigger: 'blur'},
-//          ],
-//          registrant_tel: [
-//            {required: true, message: '请输入注册电话', trigger: 'blur'},
-//          ],
-//          registrant_email: [
-//            {required: true, message: '请输入注册人邮箱', trigger: 'blur'},
-//          ],
-//          filing_num: [
-//            {required: true, message: '请填写备案号', trigger: 'blur'},
-//          ]
+                        {required: true, message: '请填写域名', trigger: 'blur'}
+                    ]
+                //          registrant_user: [
+                //            {required: true, message: '请输入注册人', trigger: 'blur'},
+                //          ],
+                //          registrant_tel: [
+                //            {required: true, message: '请输入注册电话', trigger: 'blur'},
+                //          ],
+                //          registrant_email: [
+                //            {required: true, message: '请输入注册人邮箱', trigger: 'blur'},
+                //          ],
+                //          filing_num: [
+                //            {required: true, message: '请填写备案号', trigger: 'blur'},
+                //          ]
                 }
-            }
+            };
         },
         methods: {
-            add() {
+            add () {
                 this.$refs.domainsave.validate((valid) => {
                     if (valid) {
                         this.modal_loading = true;
@@ -84,21 +84,21 @@
                                 if (this.gpd) {
                                     this.$emit('getdata');
                                 }
-                                //this.getDomain(true);
+                                // this.getDomain(true);
                                 this.$Message.success(msg);
                                 this.modal_loading = false;
                                 this.$refs.domainsave.resetFields();
                             }, (data, msg) => {
                                 this.modal_loading = false;
                                 this.$Message.error(msg);
-                            })
+                            });
                         }, (res) => {
-                            //处理错误信息
+                            // 处理错误信息
                             this.modal_loading = false;
                             this.$Message.error('网络异常，请稍后重试。');
-                        })
+                        });
                     }
-                })
+                });
             }
         },
         props: {
@@ -116,6 +116,6 @@
                 }
             }
         },
-        mixins: [http,common]
-    }
+        mixins: [http, common]
+    };
 </script>
