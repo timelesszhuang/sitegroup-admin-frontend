@@ -159,13 +159,13 @@
                   });
               }
               columns.push({
-                  title: '描述',
-                  key: 'detail',
+                  title: '联系方式分组',
+                  key: 'name',
                   sortable: true
               });
               columns.push({
-                  title: '配置',
-                  key: 'name',
+                  title: '联系方式备注',
+                  key: 'detail',
                   sortable: true
               });
               columns.push(

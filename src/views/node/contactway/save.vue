@@ -8,11 +8,11 @@
                 </p>
                 <div>
                     <Form ref="contactwaysave" :model="form" :label-width="90" :rules="AddRule" class="node-add-form">
-                        <Form-item label="配置名称" prop="name">
-                            <Input type="text" v-model="form.name" placeholder="请输入配置名称"></Input>
+                        <Form-item label="联系方式分组名称" prop="name">
+                            <Input type="text" v-model="form.name" placeholder="请输入联系方式分组名称"></Input>
                         </Form-item>
-                        <Form-item label="备注" prop="detail">
-                            <Input type="text" v-model="form.detail" placeholder="请输入分类名称"></Input>
+                        <Form-item label="联系方式分组备注" prop="detail">
+                            <Input type="text" v-model="form.detail" placeholder="请输入这一组联系方式的相关备注"></Input>
                         </Form-item>
                         <Form-item label="电话" prop="telephone">
                             <Input type="text" v-model="form.html.telephone" placeholder="请输入电话"></Input>
