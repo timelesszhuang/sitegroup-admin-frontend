@@ -29,7 +29,7 @@
                     </div>
                 </div>
             </div>
-            <info ref="info" :field1="field1" :field2="field2" :field3="field3" :field4="field4"></info>
+            <info ref="info" :data="showdata"></info>
         </div>
     </card>
 </template>
@@ -55,10 +55,7 @@
                 datas: [],
                 site: [],
                 site_id: '',
-                field1: '',
-                field2: '',
-                field3: '',
-                field4: '',
+                showdata: {},
                 userdefine: [],
                 search: '',
                 detail: ''
@@ -136,10 +133,10 @@
                 this.getData();
             },
             showCheck(index) {
-                this.field1 = this.datas[index].field1;
-                this.field2 = this.datas[index].field2;
-                this.field3 = this.datas[index].field3;
-                this.field4 = this.datas[index].field4;
+                this.showdata[0] = {value:this.datas[index].field1};
+                this.showdata[1] = {value:this.datas[index].field2};
+                this.showdata[2] = {value:this.datas[index].field3};
+                this.showdata[3] = {value:this.datas[index].field4};
                 this.$refs.info.modal = true;
             }
         },

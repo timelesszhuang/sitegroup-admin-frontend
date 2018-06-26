@@ -308,7 +308,7 @@ export const nodeappRouter = [
             {
                 path: 'clue',
                 icon: 'ios-shuffle-strong',
-                title: '线索',
+                title: '客户线索',
                 name: 'clue',
                 component: () => import('@/views/node/rejection/index.vue')
             },
