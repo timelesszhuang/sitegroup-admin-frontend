@@ -264,21 +264,6 @@
                                         size: 'small'
                                     },
                                     attrs: {
-                                        type: 'error',
-                                        style: 'margin-left:3px'
-                                    },
-                                    on: {
-                                        click: function () {
-                                            // 不知道为什么这个地方不是我需要的this
-                                            _this.remove(params.index);
-                                        }
-                                    }
-                                }, '删除'),
-                                h('Button', {
-                                    props: {
-                                        size: 'small'
-                                    },
-                                    attrs: {
                                         type: 'info',
                                         style: 'margin-left:3px'
                                     },
@@ -303,7 +288,22 @@
                                             _this.show(params.index);
                                         }
                                     }
-                                }, '查看')
+                                }, '查看'),
+                                h('Button', {
+                                    props: {
+                                        size: 'small'
+                                    },
+                                    attrs: {
+                                        type: 'error',
+                                        style: 'margin-left:3px'
+                                    },
+                                    on: {
+                                        click: function () {
+                                            // 不知道为什么这个地方不是我需要的this
+                                            _this.remove(params.index);
+                                        }
+                                    }
+                                }, '删除')
 
                             ]);
                         }

@@ -55,14 +55,15 @@
 <script type="text/ecmascript-6">
     import http from '../../../libs/http';
     import common from '../../../libs/common';
+
     export default {
-        data() {
+        data () {
             return {
                 modal: false,
                 modal_loading: false,
                 form: {
                     name: '',
-                    detail: "",
+                    detail: '',
                     html: {
                         zipcode: '',
                         fax: '',
@@ -71,19 +72,19 @@
                         email: '',
                         mobile: '',
                         four00: '',
-                        qq: '',
+                        qq: ''
                     }
                 },
                 AddRule: {
                     name: [
-                        {required: true, message: '请填写配置名称', trigger: 'blur'},
-                    ],
+                        {required: true, message: '请填写配置名称', trigger: 'blur'}
+                    ]
 
                 }
-            }
+            };
         },
         methods: {
-            add() {
+            add () {
                 this.$refs.contactway.validate((valid) => {
                     if (valid) {
                         this.modal_loading = true;
@@ -94,25 +95,26 @@
                                 if (this.gpd) {
                                     this.$emit('getdata');
                                 }
-                                this.getContentWay(true);
+                                // this.getContentWay(true);
                                 this.$Message.success(msg);
                                 this.modal_loading = false;
                                 this.$refs.contactway.resetFields();
                             }, (data, msg) => {
                                 this.modal_loading = false;
                                 this.$Message.error(msg);
-                            })
+                            });
                         }, (res) => {
-                            //处理错误信息
+                            // 处理错误信息
                             this.modal_loading = false;
                             this.$Message.error('网络异常，请稍后重试。');
-                        })
+                        });
                     }
-                })
+                });
             }
-        }, props: {
-            gpd: {default: 1},
         },
-        mixins: [http,common]
-    }
+    props: {
+            gpd: {default: 1}
+        },
+        mixins: [http, common]
+    };
 </script>

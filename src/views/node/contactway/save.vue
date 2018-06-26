@@ -81,7 +81,7 @@
                                 if (this.gpd) {
                                     this.$emit('getdata');
                                 }
-                                this.getContentWay(true);
+                                //this.getContentWay(true);
                                 this.$Message.success(msg);
                                 this.modal_loading = false;
 //                    this.$refs.contactsave.resetFields();
