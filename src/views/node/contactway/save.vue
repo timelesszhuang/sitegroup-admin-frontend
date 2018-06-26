@@ -7,7 +7,7 @@
                     <span>修改</span>
                 </p>
                 <div>
-                    <Form ref="contactwaysave" :model="form" :label-width="90" :rules="AddRule" class="node-add-form">
+                    <Form ref="contactwaysave" :model="form" :label-width="120" :rules="AddRule" class="node-add-form">
                         <Form-item label="联系方式分组名称" prop="name">
                             <Input type="text" v-model="form.name" placeholder="请输入联系方式分组名称"></Input>
                         </Form-item>
