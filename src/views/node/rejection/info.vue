@@ -4,7 +4,7 @@
             <Icon type="flag"></Icon>
             <span>线索信息</span>
         </p>
-        <Table :columns="columns1" :data="showdata" show-header="false"></Table>
+        <Table :row-class-name="rowClassName" :columns="columns1" :data="showdata" show-header="false"></Table>
         <div slot="footer">
         </div>
     </Modal>
@@ -24,8 +24,18 @@
                 ]
             }
         },
+        methods: {
+            rowClassName (row, index) {
+                if (index === 1) {
+                    return 'rowClassName';
+                } else if (index === 3) {
+                    return 'rowClassName';
+                }
+                return '';
+            }
+        },
         props: {
-            showdata:{}
+            showdata:Object
         }
     }
 
@@ -41,6 +51,10 @@
         padding: 10px 0;
         box-sizing: border-box;
         margin: 0 auto;
+    }
+
+    .rowClassName{
+        background: #e6e6e6;
     }
 
 </style>
