@@ -53,7 +53,7 @@
     import common from '../../../libs/common';
 
     export default {
-        data() {
+        data () {
             return {
                 switch1: true,
                 tag_name: true,
@@ -78,7 +78,7 @@
             };
         },
         methods: {
-            change(status) {
+            change (status) {
                 if (status) {
                     this.tag_name = true;
                     this.$Message.info('切换到下拉选择');
@@ -87,10 +87,10 @@
                     this.$Message.info('切换到添加标签');
                 }
             },
-            changeTagtype(value) {
+            changeTagtype (value) {
                 this.form.tag_id = value.value;
             },
-            add() {
+            add () {
                 this.$refs.articleadd.validate((valid) => {
                     if (valid) {
                         this.modal_loading = true;
@@ -99,6 +99,8 @@
                         this.apiPost('type', data).then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {
                                 this.modal = false;
+                                this.getQuestionType(true);
+                                this.getTagType(true);
                                 if (this.gpd) {
                                     this.$emit('getdata');
                                 }
@@ -106,8 +108,6 @@
                                 this.modal_loading = false;
                                 this.$refs.articleadd.resetFields();
                                 this.$refs.select.clearSingleSelect();
-                                this.getQuestionType(true);
-                                this.getTagType(true);
                             }, (data, msg) => {
                                 this.modal_loading = false;
                                 this.$Message.error(msg);
@@ -120,8 +120,9 @@
                     }
                 });
             }
-        }, props: {
-            gpd: {default: 1},
+        },
+    props: {
+            gpd: {default: 1}
         },
         mixins: [http, common]
     };
