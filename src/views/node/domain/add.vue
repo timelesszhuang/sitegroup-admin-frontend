@@ -91,7 +91,7 @@
                                 if (this.gpd) {
                                     this.$emit('getdata');
                                 }
-                                this.getDomain(true);
+                                //this.getDomain(true);
                                 this.$Message.success(msg);
                                 this.modal_loading = false;
                                 this.$refs.domain.resetFields();

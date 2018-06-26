@@ -553,12 +553,6 @@ export const adminotherRouter = {
             component: () => import('@/views/admin/home/home.vue')
         },
         {
-            path: 'adminownspace',
-            title: '个人中心',
-            name: 'nodeownspace',
-            component: () => import('@/views/own-space/own-space.vue')
-        },
-        {
             path: 'order/:order_id',
             title: '订单详情',
             name: 'nodeorder-info',

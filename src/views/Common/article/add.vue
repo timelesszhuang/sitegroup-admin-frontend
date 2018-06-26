@@ -231,7 +231,7 @@
 
     export default {
         components: {materialimg},
-        data() {
+        data () {
             const checkarticletype = (rule, value, callback) => {
                 if (!value) {
                     callback(new Error('请选择文章分类'));
@@ -310,7 +310,7 @@
             };
         },
         methods: {
-            ChangRadio(value) {
+            ChangRadio (value) {
                 this.form.stations = value;
                 this.ShowId = localStorage.siteId;
                 if (this.ShowId) {
@@ -332,11 +332,11 @@
                     }]);
                 }
             },
-            changeChildSite(value) {
+            changeChildSite (value) {
                 this.getArticleType(value.value);
                 this.getChildSitelist(value.value);
             },
-            getArticleType(site_id) {
+            getArticleType (site_id) {
                 let data = {
                     params: {
                         module_type: 'article',
@@ -354,7 +354,7 @@
                     this.$Message.error('网络异常，请稍后重试。');
                 });
             },
-            getChildSitelist(site_id) {
+            getChildSitelist (site_id) {
                 let data = {
                     params: {
                         site_id: site_id
@@ -371,7 +371,7 @@
                     this.$Message.error('网络异常，请稍后重试。');
                 });
             },
-            getSite() {
+            getSite () {
                 this.apiGet('getSites').then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.site = data;
@@ -385,13 +385,13 @@
                 });
             },
             init: function () {
-                this.ChildsSitedata=[];
+                this.ChildsSitedata = [];
                 this.$nextTick(() => {
                     let height = document.body.offsetHeight - 500;
                     this.tinymceInit(this, height, 'tinymceEditerAddArticle');
                 });
             },
-            change(status) {
+            change (status) {
                 if (status) {
                     this.tag_name = true;
                     this.$Message.info('切换到下拉选择');
@@ -400,10 +400,10 @@
                     this.$Message.info('切换到添加标签');
                 }
             },
-            changeTagtype(value) {
+            changeTagtype (value) {
                 this.form.tag_id = value.value;
             },
-            addmaterial(src) {
+            addmaterial (src) {
                 if (this.img === 'content') {
                     let imgsrc = '<img src=' + src + '>';
                     tinymce.get('tinymceEditerAddArticle').insertContent(imgsrc);
@@ -411,12 +411,12 @@
                     this.form.thumbnails = src;
                 }
             },
-            addimg(img) {
+            addimg (img) {
                 this.img = img;
                 this.$refs.addmaterial.getData();
                 this.$refs.addmaterial.modal = true;
             },
-            addtags() {
+            addtags () {
                 let data = {
                     type: 'article',
                     name: this.tags
@@ -437,7 +437,7 @@
                     // 处理错误信息
                 });
             },
-            getResponse(response, file, filelist) {
+            getResponse (response, file, filelist) {
                 this.form.thumbnails = response.data.url;
                 if (response.status) {
                     this.$Message.success('上传成功');
@@ -448,17 +448,17 @@
                 }
                 this.$refs.upImg.clearFiles();
             },
-            getErrorInfo(error, file, filelist) {
+            getErrorInfo (error, file, filelist) {
                 this.$Message.error(error);
             },
-            formatError() {
+            formatError () {
                 this.$Message.error('文件格式只支持 jpg,jpeg,png三种格式。');
             },
-            changeArticletype(value) {
+            changeArticletype (value) {
                 this.form.articletype_name = value.label;
                 this.form.articletype_id = value.value;
             },
-            add() {
+            add () {
                 this.$refs.add.validate((valid) => {
                     if (valid) {
                         this.modal_loading = true;
@@ -493,24 +493,24 @@
                     }
                 });
             },
-            querySearch(queryString, cb) {
+            querySearch (queryString, cb) {
                 var restaurants = this.restaurants;
                 var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
                 // 调用 callback 返回建议列表的数据
                 cb(results);
             },
-            querySearch1(queryString, cb) {
+            querySearch1 (queryString, cb) {
                 var restaurants = this.restaurantscom;
                 var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
                 // 调用 callback 返回建议列表的数据
                 cb(results);
             },
-            createFilter(queryString) {
+            createFilter (queryString) {
                 return (restaurant) => {
                     return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
                 };
             },
-            getAuther() {
+            getAuther () {
                 this.apiGet('articleautopoint/auther').then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         data.forEach((item) => {
@@ -525,7 +525,7 @@
                     this.$Message.error('网络异常，请稍后重试。');
                 });
             },
-            getComForm() {
+            getComForm () {
                 this.apiGet('articleautopoint/come_from').then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         data.forEach((item) => {
@@ -540,14 +540,14 @@
                     this.$Message.error('网络异常，请稍后重试。');
                 });
             },
-            loadAll() {
+            loadAll () {
                 return this.Auther;
             },
-            handleSelect(item) {
+            handleSelect (item) {
                 // console.log(item);
             }
         },
-        mounted() {
+        mounted () {
             this.init();
             this.getAuther();
             this.getComForm();
@@ -556,7 +556,7 @@
             this.restaurants = this.loadAll();
             this.restaurantscom = this.ComForm;
         },
-        destroyed() {
+        destroyed () {
             tinymce.get('tinymceEditerAddArticle').destroy();
         },
         mixins: [http, common, tinymceInit],
