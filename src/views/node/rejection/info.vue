@@ -25,7 +25,7 @@
             }
         },
         props: {
-            showdata:Object
+            showdata:{}
         }
     }
 
