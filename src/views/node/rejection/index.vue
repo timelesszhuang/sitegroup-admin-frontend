@@ -133,10 +133,12 @@
                 this.getData();
             },
             showCheck(index) {
-                this.showdata[0] = {value:this.datas[index].field1};
-                this.showdata[1] = {value:this.datas[index].field2};
-                this.showdata[2] = {value:this.datas[index].field3};
-                this.showdata[3] = {value:this.datas[index].field4};
+                this.showdata= [
+                    {value:this.datas[index].field1},
+                    {value:this.datas[index].field2},
+                    {value:this.datas[index].field3},
+                    {value:this.datas[index].field4}
+                    ];
                 this.$refs.info.modal = true;
             }
         },
