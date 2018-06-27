@@ -39,7 +39,7 @@
     import info from './info.vue';
 
     export default {
-        data() {
+        data () {
             return {
                 self: this,
                 border: true,
@@ -64,18 +64,18 @@
         components: {
             info
         },
-        created() {
+        created () {
             this.getData();
             this.getSite((data) => {
                 this.site = data;
             });
             this.getuserdefine((data) => {
                 this.userdefine = data;
-                //console.log(this.userdefine);
+                // console.log(this.userdefine);
             });
         },
         methods: {
-            getSite() {
+            getSite () {
                 this.apiGet('getSites').then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.site = data;
@@ -87,7 +87,7 @@
                     this.$Message.error('网络异常，请稍后重试。');
                 });
             },
-            getuserdefine() {
+            getuserdefine () {
                 this.apiGet('userdefine').then((res) => {
                     this.handleAjaxResponse(res, (data, msg) => {
                         this.userdefine = data;
@@ -99,7 +99,7 @@
                     this.$Message.error('网络异常，请稍后重试。');
                 });
             },
-            getData() {
+            getData () {
                 let data = {
                     params: {
                         page: this.page,
@@ -121,29 +121,30 @@
                     this.$Message.error('网络异常，请稍后重试');
                 });
             },
-            changePage(page) {
+            changePage (page) {
                 this.page = page;
                 this.getData();
             },
-            changePageSize(pagesize) {
+            changePageSize (pagesize) {
                 this.rows = pagesize;
                 this.getData();
             },
-            queryData() {
+            queryData () {
                 this.getData();
             },
-            showCheck(index) {
-                this.showdata= [
-                    {value:this.datas[index].field1},
-                    {value:this.datas[index].field2},
-                    {value:this.datas[index].field3},
-                    {value:this.datas[index].field4}
-                    ];
+            showCheck (index) {
+                this.showdata = [
+                    {value: this.datas[index].field1},
+                    {value: this.datas[index].field2},
+                    {value: this.datas[index].field3},
+                    {value: this.datas[index].field4}
+                ];
+                this.$refs.info.infodatas(this.showdata);
                 this.$refs.info.modal = true;
             }
         },
         computed: {
-            tableColumns() {
+            tableColumns () {
                 let _this = this;
                 let columns = [];
                 if (this.showCheckbox) {
@@ -194,7 +195,7 @@
                     title: '来源页',
                     key: 'referer',
                     sortable: true,
-                    render(h, params) {
+                    render (h, params) {
                         return h('div', [
                             h('a', {
                                 attrs: {
@@ -216,7 +217,7 @@
                         key: 'action',
                         align: 'center',
                         fixed: 'right',
-                        render(h, params) {
+                        render (h, params) {
                             return h('div', [
                                 h('Button', {
                                     props: {

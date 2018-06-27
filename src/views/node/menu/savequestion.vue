@@ -68,7 +68,7 @@
     import http from '../../../libs/http';
 
     export default {
-        data() {
+        data () {
             const checkNavtype = (rule, value, callback) => {
                 if (!value) {
                     callback(new Error('请选择栏目分类'));
@@ -91,7 +91,7 @@
                 sele: true,
                 AddRule: {
                     name: [
-                        {required: true, message: '请填写菜单名字', trigger: 'blur'},
+                        {required: true, message: '请填写菜单名字', trigger: 'blur'}
                     ],
                     title: [
                         { message: '请填写栏目的详情', trigger: 'blur'}
@@ -102,18 +102,21 @@
                     tag_name: [
                         {required: true, validator: checkNavtype, trigger: 'blur'}
                     ],
+                    type_id: [
+                        {required: true, validator: checkquestiontype, trigger: 'blur'}
+                    ]
                 }
-            }
+            };
         },
         methods: {
-            changeNavtype(value) {
-                this.form.tag_name = value.label
-                this.form.tag_id = value.value
+            changeNavtype (value) {
+                this.form.tag_name = value.label;
+                this.form.tag_id = value.value;
             },
-            changeArticletype(value) {
-                this.form.p_id = value.value
+            changeArticletype (value) {
+                this.form.p_id = value.value;
             },
-            savequestion() {
+            savequestion () {
                 this.$refs.questionadd.validate((valid) => {
                     if (valid) {
                         this.modal_loading = true;
@@ -128,19 +131,19 @@
                                 this.$Message.success(msg);
                                 this.modal_loading = false;
                                 this.$refs.questionadd.resetFields();
-                                this.$refs.select.clearSingleSelect()
-                                this.$refs.sel.clearSingleSelect()
+                                this.$refs.select.clearSingleSelect();
+                                this.$refs.sel.clearSingleSelect();
                             }, (data, msg) => {
                                 this.modal_loading = false;
                                 this.$Message.error(msg);
-                            })
+                            });
                         }, (res) => {
-                            //处理错误信息
+                            // 处理错误信息
                             this.modal_loading = false;
                             this.$Message.error('网络异常，请稍后重试。');
-                        })
+                        });
                     }
-                })
+                });
             }
         },
         mixins: [http],
@@ -157,13 +160,13 @@
             },
             form: {
                 default: {
-                    name: "",
+                    name: '',
                     title: '',
                     type_name: ''
                 }
             }
         }
-    }
+    };
 </script>
 <style>
     .ql-container .ql-editor {
