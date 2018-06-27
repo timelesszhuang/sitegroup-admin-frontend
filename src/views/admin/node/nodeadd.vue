@@ -91,7 +91,7 @@
                         {required: true, validator: checkcomtype, trigger: 'blur'}
                     ],
                     com_id: [
-                        {validator: checktype, trigger: 'blur'}
+                        {required: true,validator: checktype, trigger: 'blur'}
                     ]
 
                 }

@@ -325,9 +325,6 @@
                     domain_id: [
                         {required: true, validator: checkdomain, trigger: 'blur'}
                     ],
-                    user_id: [
-                        {required: true, validator: checkuser, trigger: 'blur'}
-                    ],
                     keyword_ids: [
                         {required: true, validator: checkkeyword, trigger: 'blur'}
                     ],

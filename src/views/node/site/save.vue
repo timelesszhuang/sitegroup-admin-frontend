@@ -301,9 +301,6 @@
                     domain_id: [
                         {required: true, validator: checkdomain, trigger: 'blur'}
                     ],
-                    user_id: [
-                        {required: true, validator: checkuser, trigger: 'blur'}
-                    ],
                     level: [
                         {required: true, message: '请选择', trigger: 'blue'}
                     ]
