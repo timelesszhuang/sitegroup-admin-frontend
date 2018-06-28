@@ -81,7 +81,8 @@
                 }
             };
             const checkquestiontype = (rule, value, callback) => {
-                if (!value) {
+              //console.log(value)
+                if (value.length === 0) {
                     callback(new Error('请选择问答分类'));
                 } else {
                     callback();

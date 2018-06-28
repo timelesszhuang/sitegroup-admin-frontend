@@ -84,7 +84,7 @@
                 }
             };
             const checkarticletype = (rule, value, callback) => {
-                if (!value) {
+                if (value.length === 0) {
                     callback(new Error('请选择文章分类'));
                 } else {
                     callback();
