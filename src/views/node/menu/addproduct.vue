@@ -18,9 +18,9 @@
                         <Form-item label="详情" prop="title">
                             <Input type="text" v-model="form.title" placeholder="请填写栏目的详情"></Input>
                         </Form-item>
-                        <Form-item label="产品分类" prop="type_name">
+                        <Form-item label="产品分类" prop="type_id">
                             <Select ref="select" v-model="form.type_id" style="width:200px"
-                                    multiple>
+                                    multiple :clearable="selects">
                                 <Option-group v-for="(item,index) in this.$store.state.commondata.productType" :label="index" :key="item.id">
                                     <Option v-for="items in item" :value="items.id" :label="items.name" :key="index.id">{{
                                         items.name }}
@@ -29,8 +29,9 @@
                             </Select>
                         </Form-item>
 
-                        <Form-item label="分类" prop="tag_name">
-                            <Select v-model="form.tag_id" ref="select" :clearable="selects"
+
+                        <Form-item label="分类" prop="tag_id">
+                            <Select v-model="form.tag_id" ref="productselect" :clearable="selects"
                                     style="text-align: left;width:200px;"
                                     label-in-value filterable 　@on-change="changeNavtype">
                                 <Option v-for="item in navtype" :value="item.id" :label="item.text" :key="item.id">
@@ -39,7 +40,7 @@
                             </Select>
                         </Form-item>
                         <Form-item label="上级分类" prop="p_id">
-                            <Select ref="select" :clearable="selects" style="width:250px;"
+                            <Select ref="productselect" :clearable="sele" style="width:250px;"
                                     label-in-value filterable @on-change="changeArticletype">
                                 <Option v-for="item in pidtype" :value="item.id" :label="item.text" :key="item.id">
                                     {{item.text}}
@@ -71,7 +72,7 @@
     import http from '../../../libs/http';
 
     export default {
-        data() {
+        data () {
             const checkNavtype = (rule, value, callback) => {
                 if (!value) {
                     callback(new Error('请选择栏目分类'));
@@ -94,65 +95,67 @@
                     listsize: 0,
                     p_id: '',
                     type_id: [],
-                    name: "",
-                    title: "",
-                    flag: "5",
-                    flag_name: "产品型",
+                    name: '',
+                    title: '',
+                    flag: '5',
+                    flag_name: '产品型',
                     generate_name: '',
                     type_name: ''
                 },
                 selects: true,
+                sele: true,
                 AddRule: {
                     name: [
-                        {required: true, message: '请填写菜单名字', trigger: 'blur'},
+                        {required: true, message: '请填写菜单名字', trigger: 'blur'}
                     ],
                     title: [
-                        { message: '请填写栏目的详情', trigger: 'blur'}
+                        {message: '请填写栏目的详情', trigger: 'blur'}
                     ],
                     generate_name: [
                         {required: true, message: '请填写生成的文件名', trigger: 'blur'}
                     ],
                     tag_name: [
                         {validator: checkNavtype, trigger: 'blur'}
-                    ],
+                    ]
                 }
-            }
+            };
         },
         methods: {
 
-            changeNavtype(value) {
-                this.form.tag_name = value.label
-                this.form.tag_id = value.value
+            changeNavtype (value) {
+                this.form.tag_name = value.label;
+                this.form.tag_id = value.value;
             },
-            changeArticletype(value) {
-                this.form.p_id = value.value
+            changeArticletype (value) {
+                this.form.p_id = value.value;
             },
-            addproduct() {
+            addproduct () {
                 this.$refs.productadd.validate((valid) => {
                     if (valid) {
                         this.modal_loading = true;
                         let data = this.form;
                         this.apiPost('menu', data).then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {
+                                this.$refs.productselect.clearSingleSelect();
                                 this.modal = false;
+
                                 if (this.gpd) {
                                     this.$emit('getdata');
                                 }
                                 this.$Message.success(msg);
                                 this.modal_loading = false;
                                 this.$refs.productadd.resetFields();
-                                this.$refs.select.clearSingleSelect()
                             }, (data, msg) => {
                                 this.modal_loading = false;
                                 this.$Message.error(msg);
-                            })
+                            });
                         }, (res) => {
-                            //处理错误信息
+                            // 处理错误信息
                             this.modal_loading = false;
                             this.$Message.error('网络异常，请稍后重试。');
-                        })
+                        });
                     }
-                })
+                });
             }
         },
         mixins: [http],
@@ -167,7 +170,7 @@
             },
             pidtype: {
                 default: []
-            },
+            }
         }
-    }
+    };
 </script>

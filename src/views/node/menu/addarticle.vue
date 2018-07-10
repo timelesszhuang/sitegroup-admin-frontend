@@ -30,7 +30,7 @@
                                 </Option-group>
                             </Select>
                         </Form-item>
-                        <Form-item label="分类" prop="tag_name">
+                        <Form-item label="分类" prop="tag_id">
                             <Select v-model="form.tag_id" ref="select" :clearable="selects"
                                     style="text-align: left;width:200px;"
                                     label-in-value filterable 　@on-change="changeNavtype">
@@ -90,6 +90,13 @@
                     callback();
                 }
             };
+            const checktagtype = (rule, value, callback) => {
+                if (value.length === 0) {
+                    callback(new Error('请选择分类'));
+                } else {
+                    callback();
+                }
+            };
             return {
                 modal: false,
                 modal_loading: false,
@@ -113,8 +120,8 @@
                     title: [
                         { message: '请填写栏目的详情', trigger: 'blur'}
                     ],
-                    type_name: [
-                        {required: true, message: '请选择文章分类', trigger: 'blur'}
+                    tag_id: [
+                        {required: true, validator: checktagtype, trigger: 'blur'}
                     ],
                     type_id: [
                         {required: true, validator: checkarticletype, trigger: 'blur'}

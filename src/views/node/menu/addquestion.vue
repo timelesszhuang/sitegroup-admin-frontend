@@ -17,7 +17,7 @@
                         <Form-item label="详情" prop="title">
                             <Input type="text" v-model="form.title" placeholder="请填写栏目的详情"/>
                         </Form-item>
-                        <Form-item label="问答分类" prop="type_name">
+                        <Form-item label="问答分类" prop="type_id">
 
                             <Select v-model="form.type_id" ref="select" :clearable="selects"
                                     style="width:200px;position: relative;z-index: 10000;"
@@ -30,7 +30,7 @@
                             </Select>
 
                         </Form-item>
-                        <Form-item label="分类" prop="tag_name">
+                        <Form-item label="分类" prop="tag_id">
                             <Select v-model="form.tag_id" ref="select" :clearable="selects"
                                     style="text-align: left;width:200px;"
                                     label-in-value filterable　@on-change="changeNavtype">
@@ -81,7 +81,6 @@
                 }
             };
             const checkquestiontype = (rule, value, callback) => {
-              //console.log(value)
                 if (value.length === 0) {
                     callback(new Error('请选择问答分类'));
                 } else {
@@ -116,7 +115,7 @@
                     tag_name: [
                         {required: true, validator: checkNavtype, trigger: 'blur'}
                     ],
-                    type_name: [
+                    type_id: [
                         {required: true, validator: checkquestiontype, trigger: 'blur'}
                     ]
                 }

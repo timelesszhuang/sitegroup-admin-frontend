@@ -67,7 +67,7 @@
 
     export default {
         components: {materialimg},
-        data() {
+        data () {
             const checkNavtype = (rule, value, callback) => {
                 if (!value) {
                     callback(new Error('请选择栏目分类'));
@@ -80,45 +80,45 @@
                 modal: false,
                 modal_loading: false,
                 form: {
-                    name: "",
-                    title: "",
-                    flag: "1",
-                    flag_name: "详情型",
+                    name: '',
+                    title: '',
+                    flag: '1',
+                    flag_name: '详情型',
                     generate_name: '',
                     content: '',
                     covertemplate: '',
                     listsize: 0,
                     type_id: '',
-                    p_id: 0,
+                    p_id: 0
                 },
                 selects: true,
                 AddRule: {
                     name: [
-                        {required: true, message: '请填写菜单名字', trigger: 'blur'},
+                        {required: true, message: '请填写菜单名字', trigger: 'blur'}
                     ],
                     title: [
                         { message: '请填写栏目的详情', trigger: 'blur'}
                     ],
                     type_name: [
-                        {required: true, message: '请选择问答分类', trigger: 'blur'},
+                        {required: true, message: '请选择问答分类', trigger: 'blur'}
                     ],
                     generate_name: [
                         {required: true, message: '请填写生成的文件名', trigger: 'blur'}
                     ],
                     tag_name: [
                         {required: true, validator: checkNavtype, trigger: 'blur'}
-                    ],
+                    ]
                 }
-            }
+            };
         },
-        mounted() {
+        mounted () {
             this.init();
         },
-        destroyed() {
+        destroyed () {
             tinymce.get('tinymceEditerAddDetails').destroy();
         },
         methods: {
-            addmaterial(src) {
+            addmaterial (src) {
                 if (this.img === 'content') {
                     let imgsrc = '<img src=' + src + '>';
                     tinymce.get('tinymceEditerAddDetails').insertContent(imgsrc);
@@ -132,21 +132,23 @@
                     this.tinymceInit(this, height, 'tinymceEditerAddDetails');
                 });
             },
-            changeArticletype(value) {
-                this.form.p_id = value.value
+            changeArticletype (value) {
+                this.form.p_id = value.value;
             },
-            changeNavtype(value) {
-                this.form.tag_name = value.label
-                this.form.tag_id = value.value
+            changeNavtype (value) {
+                this.form.tag_name = value.label;
+                this.form.tag_id = value.value;
             },
-            updateData(data) {
-                this.form.content = data
-            },
-            adddetails() {
+            adddetails () {
                 this.$refs.detailadd.validate((valid) => {
                     if (valid) {
                         this.modal_loading = true;
                         let data = this.form;
+                        let activeEditor = tinymce.activeEditor;
+                        let editBody = activeEditor.getBody();
+                        activeEditor.selection.select(editBody);
+                        let text = activeEditor.selection.getContent({'format': 'html'});
+                        this.form.content = text;
                         this.apiPost('menu', data).then((res) => {
                             this.handleAjaxResponse(res, (data, msg) => {
                                 this.modal = false;
@@ -156,18 +158,19 @@
                                 this.$Message.success(msg);
                                 this.modal_loading = false;
                                 this.$refs.detailadd.resetFields();
-                                this.$refs.select.clearSingleSelect()
+                                this.$refs.select.clearSingleSelect();
+                                tinymce.get('tinymceEditerAddDetails').setContent('');
                             }, (data, msg) => {
                                 this.modal_loading = false;
                                 this.$Message.error(msg);
-                            })
+                            });
                         }, (res) => {
-                            //处理错误信息
+                            // 处理错误信息
                             this.modal_loading = false;
                             this.$Message.error('网络异常，请稍后重试。');
-                        })
+                        });
                     }
-                })
+                });
             }
         },
         mixins: [http, common, tinymceInit, tinymce],
@@ -178,7 +181,7 @@
             },
             pidtype: {
                 default: []
-            },
+            }
         }
-    }
+    };
 </script>
