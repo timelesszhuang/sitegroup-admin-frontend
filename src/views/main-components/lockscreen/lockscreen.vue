@@ -1,5 +1,5 @@
 <template>
-    <div @click="lockScreen" class="lock-screen-btn-con" style="overflow: visible">
+    <div @click="lockScreen" class="lock-screen-btn-con" style="display: none">
         <Tooltip content="锁屏" placement="bottom">
             <Icon type="locked" :size="20"></Icon>
         </Tooltip>
